@@ -13,14 +13,14 @@
 #include "ns3/global-value.h"
 #include "ns3/integer.h"
 #include "ns3/ndn-common.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include "ns3/ndn-header-helper.h"
 
-#include "ndnsim.h"
-#include "ndnsim/wire-ndnsim.h"
-#include "ccnb.h"
-#include "ccnb/wire-ccnb.h"
+//#include "ndnsim.h"
+//#include "ndnsim/wire-ndnsim.h"
+//#include "ccnb.h"
+//#include "ccnb/wire-ccnb.h"
 
 NDN_NAMESPACE_BEGIN
 
@@ -34,7 +34,7 @@ GlobalValue g_wireFormat ("ndn::WireFormat",
 
 static inline uint32_t
 GetWireFormat ()
-{
+{ /*
   static int32_t format = -1;
   if (format >= 0)
     return format;
@@ -43,12 +43,12 @@ GetWireFormat ()
   g_wireFormat.GetValue (value);
   format = value.Get ();
 
-  return format;
+  return format; */
 }
 
 Ptr<Packet>
-Wire::FromInterest (Ptr<const Interest> interest, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
-{
+Wire::FromInterest (::ndn::shared_ptr<const ::ndn::Interest> interest, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
+{ /*
   if (wireFormat == WIRE_FORMAT_DEFAULT)
     wireFormat = GetWireFormat ();
 
@@ -60,12 +60,12 @@ Wire::FromInterest (Ptr<const Interest> interest, int8_t wireFormat/* = WIRE_FOR
     {
       NS_FATAL_ERROR ("Unsupported format requested");
       return 0;
-    }
+      } */
 }
 
-Ptr<Interest>
+::ndn::shared_ptr< ::ndn::Interest>
 Wire::ToInterest (Ptr<Packet> packet, int8_t wireFormat/* = WIRE_FORMAT_AUTODETECT*/)
-{
+{ /*
   if (wireFormat == WIRE_FORMAT_AUTODETECT)
     {
       try
@@ -109,12 +109,12 @@ Wire::ToInterest (Ptr<Packet> packet, int8_t wireFormat/* = WIRE_FORMAT_AUTODETE
           NS_FATAL_ERROR ("Unsupported format requested");
           return 0;
         }
-    }
+    } */
 }
 
 Ptr<Packet>
-Wire::FromData (Ptr<const Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
-{
+Wire::FromData (::ndn::shared_ptr<const ::ndn::Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
+{ /*
   if (wireFormat == WIRE_FORMAT_DEFAULT)
     wireFormat = GetWireFormat ();
 
@@ -126,12 +126,12 @@ Wire::FromData (Ptr<const Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*
     {
       NS_FATAL_ERROR ("Unsupported format requested");
       return 0;
-    }
+    } */
 }
 
-Ptr<Data>
+::ndn::shared_ptr< ::ndn::Data>
 Wire::ToData (Ptr<Packet> packet, int8_t wireFormat/* = WIRE_FORMAT_AUTODETECT*/)
-{
+{ /*
   if (wireFormat == WIRE_FORMAT_AUTODETECT)
     {
       try
@@ -175,44 +175,44 @@ Wire::ToData (Ptr<Packet> packet, int8_t wireFormat/* = WIRE_FORMAT_AUTODETECT*/
           NS_FATAL_ERROR ("Unsupported format requested");
           return 0;
         }
-    }
+    } */
 }
 
 
 std::string
-Wire::FromInterestStr (Ptr<const Interest> interest, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
-{
+Wire::FromInterestStr (::ndn::shared_ptr<const ::ndn::Interest> interest, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
+{ /*
   Ptr<Packet> pkt = FromInterest (interest, wireFormat);
   std::string wire;
   wire.resize (pkt->GetSize ());
   pkt->CopyData (reinterpret_cast<uint8_t*> (&wire[0]), wire.size ());
 
-  return wire;
+  return wire; */
 }
 
-Ptr<Interest>
+::ndn::shared_ptr< ::ndn::Interest>
 Wire::ToInterestStr (const std::string &wire, int8_t type/* = WIRE_FORMAT_AUTODETECT*/)
-{
+{ /*
   Ptr<Packet> pkt = Create<Packet> (reinterpret_cast<const uint8_t*> (&wire[0]), wire.size ());
-  return ToInterest (pkt, type);
+  return ToInterest (pkt, type); */
 }
 
 std::string
-Wire::FromDataStr (Ptr<const Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
-{
+Wire::FromDataStr (::ndn::shared_ptr<const ::ndn::Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
+{ /*
   Ptr<Packet> pkt = FromData (data, wireFormat);
   std::string wire;
   wire.resize (pkt->GetSize ());
   pkt->CopyData (reinterpret_cast<uint8_t*> (&wire[0]), wire.size ());
 
-  return wire;
+  return wire; */
 }
 
-Ptr<Data>
+::ndn::shared_ptr< ::ndn::Data>
 Wire::ToDataStr (const std::string &wire, int8_t type/* = WIRE_FORMAT_AUTODETECT*/)
-{
+{ /*
   Ptr<Packet> pkt = Create<Packet> (reinterpret_cast<const uint8_t*> (&wire[0]), wire.size ());
-  return ToData (pkt, type);
+  return ToData (pkt, type); */
 }
 
 // uint32_t
@@ -238,7 +238,7 @@ Wire::ToDataStr (const std::string &wire, int8_t type/* = WIRE_FORMAT_AUTODETECT
 std::string
 Wire::FromName (Ptr<const Name> name, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
 {
-
+  /*
   if (wireFormat == WIRE_FORMAT_DEFAULT)
     wireFormat = GetWireFormat ();
 
@@ -273,12 +273,12 @@ Wire::FromName (Ptr<const Name> name, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*
   else
     {
       NS_FATAL_ERROR ("Unsupported format requested");
-    }
+    } */
 }
 
 Ptr<Name>
 Wire::ToName (const std::string &name, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
-{
+{ /*
   Buffer buf;
   buf.AddAtStart (name.size ());
   Buffer::Iterator i = buf.Begin ();
@@ -300,7 +300,7 @@ Wire::ToName (const std::string &name, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT
   else
     {
       NS_FATAL_ERROR ("Unsupported format requested");
-    }
+    } */
 }
 
 NDN_NAMESPACE_END

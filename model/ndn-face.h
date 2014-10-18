@@ -30,6 +30,15 @@
 #include "ns3/type-id.h"
 #include "ns3/traced-callback.h"
 #include "ns3/ndn-name.h"
+#include <ndn-cxx/common.hpp>
+#include <ndn-cxx/interest.hpp>
+
+namespace ndn {
+
+class Data;
+class Interest;
+
+}
 
 namespace ns3 {
 
@@ -37,9 +46,6 @@ class Packet;
 class Node;
 
 namespace ndn {
-
-class Interest;
-class Data;
 
 /**
  * \ingroup ndn
@@ -68,8 +74,8 @@ public:
    * \param face Face from which packet has been received
    * \param packet Original packet
    */
-  typedef Callback<void, Ptr<Face>, Ptr<Interest> > InterestHandler;
-  typedef Callback<void, Ptr<Face>, Ptr<Data> > DataHandler;
+  typedef Callback<void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Interest> > InterestHandler;
+  typedef Callback<void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Data> > DataHandler;
 
   /**
    * \brief Default constructor
@@ -109,7 +115,7 @@ public:
    * @returns true if interest is considered to be send out (enqueued)
    */
   virtual bool
-  SendInterest (Ptr<const Interest> interest);
+  SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest);
 
   /**
    * @brief Send out Dat packet through the face
@@ -119,7 +125,7 @@ public:
    * @returns true if Data packet is considered to be send out (enqueued)
    */
   virtual bool
-  SendData (Ptr<const Data> data);
+  SendData (::ndn::shared_ptr<const ::ndn::Data> data);
 
   /**
    * \brief Receive interest from application or another node and forward it up to the NDN stack
@@ -127,7 +133,7 @@ public:
    * By default it is called from inside Receive method, but can be used directly, if appropriate
    */
   virtual bool
-  ReceiveInterest (Ptr<Interest> interest);
+  ReceiveInterest (::ndn::shared_ptr< ::ndn::Interest> interest);
 
   /**
    * \brief Receive Data packet from application or another node and forward it up to the NDN stack
@@ -135,7 +141,7 @@ public:
    * By default it is called from inside Receive method, but can be used directly, if appropriate
    */
   virtual bool
-  ReceiveData (Ptr<Data> data);
+  ReceiveData (::ndn::shared_ptr< ::ndn::Data> data);
   ////////////////////////////////////////////////////////////////////
 
   /**

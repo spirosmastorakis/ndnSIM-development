@@ -25,8 +25,8 @@
 #include <ns3/random-variable.h>
 
 #include <ns3/ndn-l3-protocol.h>
-#include <ns3/ndn-interest.h>
-#include <ns3/ndn-data.h>
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include <ns3/ndn-face.h>
 #include <ns3/ndn-fib.h>
 
@@ -99,24 +99,24 @@ ApiFace::Shutdown ()
 }
 
 void
-ApiFace::ExpressInterest (Ptr<Interest> interest,
+ApiFace::ExpressInterest (::ndn::shared_ptr< ::ndn::Interest> interest,
                           DataCallback onData,
                           TimeoutCallback onTimeout/* = MakeNullCallback< void, Ptr<Interest> > ()*/)
 {
-  NS_LOG_INFO (">> I " << interest->GetName ());
+  NS_LOG_INFO (">> I " << interest->getName ());
 
-  if (interest->GetNonce () == 0)
+  if (interest->getNonce () == 0)
     {
-      interest->SetNonce (m_this->m_rand.GetValue ());
+      interest->setNonce (m_this->m_rand.GetValue ());
     }
 
   // Record the callback
   bool needToActuallyExpressInterest = false;
-  PendingInterestContainer::iterator entry = m_this->m_pendingInterests.find_exact (interest->GetName ());
+  //PendingInterestContainer::iterator entry = m_this->m_pendingInterests.find_exact (interest->getName ());
   if (entry == m_this->m_pendingInterests.end ())
     {
-      pair<PendingInterestContainer::iterator, bool> status =
-        m_this->m_pendingInterests.insert (interest->GetName (), Create <PendingInterestEntry> (interest));
+      //pair<PendingInterestContainer::iterator, bool> status =
+      //m_this->m_pendingInterests.insert (interest->getName (), Create <PendingInterestEntry> (interest));
 
       entry = status.first;
 
@@ -164,7 +164,7 @@ ApiFace::ClearInterestFilter (Ptr<const Name> prefix)
 }
 
 void
-ApiFace::Put (Ptr<Data> data)
+ApiFace::Put (::ndn::shared_ptr< ::ndn::Data> data)
 {
   NS_LOG_INFO (">> D " << data->GetName ());
 
@@ -177,11 +177,11 @@ ApiFace::Put (Ptr<Data> data)
 
 
 bool
-ApiFace::SendInterest (Ptr<const Interest> interest)
+ApiFace::SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
 {
   NS_LOG_FUNCTION (this << interest);
 
-  NS_LOG_DEBUG ("<< I " << interest->GetName ());
+  NS_LOG_DEBUG ("<< I " << interest->getName ());
 
   if (!IsUp ())
     {
@@ -201,7 +201,7 @@ ApiFace::SendInterest (Ptr<const Interest> interest)
 }
 
 bool
-ApiFace::SendData (Ptr<const Data> data)
+ApiFace::SendData (::ndn::shared_data<const ::ndn::Data> data)
 {
   // data has been send out from NDN stack towards the application
   NS_LOG_DEBUG ("<< D " << data->GetName ());

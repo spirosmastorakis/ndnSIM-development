@@ -34,8 +34,8 @@ namespace ndn {
 class Interest;
 class Data;
 
-typedef Interest InterestHeader;
-typedef Data DataHeader;
+typedef ::ndn::Interest InterestHeader;
+typedef ::ndn::Data DataHeader;
 
 class App;
 
@@ -60,20 +60,20 @@ public:
    */
   AppFace (Ptr<App> app);
   virtual ~AppFace();
-  
+
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from Face
   virtual bool
-  SendInterest (Ptr<const Interest> interest);
+  SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest);
 
   virtual bool
-  SendData (Ptr<const Data> data);
+  SendData (::ndn::shared_ptr<const ::ndn::Data> data);
 
 public:
   virtual std::ostream&
   Print (std::ostream &os) const;
   ////////////////////////////////////////////////////////////////////
- 
+
 private:
   AppFace ();
   AppFace (const AppFace &); ///< \brief Disabled copy constructor
