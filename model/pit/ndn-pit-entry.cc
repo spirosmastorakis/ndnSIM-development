@@ -23,7 +23,7 @@
 #include "ns3/ndn-pit.h"
 #include "ns3/ndn-fib.h"
 #include "ns3/ndn-name.h"
-#include "ns3/ndn-interest.h"
+#include <ndn-cxx/interest.hpp>
 
 #include "ns3/packet.h"
 #include "ns3/simulator.h"
@@ -41,7 +41,7 @@ namespace ndn {
 namespace pit {
 
 Entry::Entry (Pit &container,
-              Ptr<const Interest> header,
+              ::ndn::shared_ptr<const ::ndn::Interest> header,
               Ptr<fib::Entry> fibEntry)
   : m_container (container)
   , m_interest (header)
@@ -91,7 +91,7 @@ Entry::OffsetLifetime (const Time &offsetTime)
 const Name &
 Entry::GetPrefix () const
 {
-  return m_interest->GetName ();
+  return m_interest->getName ();
 }
 
 const Time &
@@ -265,7 +265,7 @@ Entry::GetMaxRetxCount () const
   return m_maxRetxCount;
 }
 
-Ptr<const Interest>
+::ndn::shared_ptr<const ::ndn::Interest>
 Entry::GetInterest () const
 {
   return m_interest;

@@ -15,8 +15,9 @@
 
 #include "ns3/ndn-common.h"
 #include "ns3/ndn-name.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
+#include "ns3/packet.h"
 
 NDN_NAMESPACE_BEGIN
 
@@ -32,29 +33,29 @@ struct Wire
     };
 
   static Ptr<Packet>
-  FromInterest (Ptr<const Interest> interest, int8_t wireFormat = WIRE_FORMAT_DEFAULT);
+  FromInterest (::ndn::shared_ptr<const ::ndn::Interest> interest, int8_t wireFormat = WIRE_FORMAT_DEFAULT);
 
-  static Ptr<Interest>
+  static ::ndn::shared_ptr< ::ndn::Interest>
   ToInterest (Ptr<Packet> packet, int8_t type = WIRE_FORMAT_AUTODETECT);
 
   static Ptr<Packet>
-  FromData (Ptr<const Data> data, int8_t wireFormat = WIRE_FORMAT_DEFAULT);
+  FromData (::ndn::shared_ptr<const ::ndn::Data> data, int8_t wireFormat = WIRE_FORMAT_DEFAULT);
 
-  static Ptr<Data>
+  static ::ndn::shared_ptr< ::ndn::Data>
   ToData (Ptr<Packet> packet, int8_t type = WIRE_FORMAT_AUTODETECT);
 
 
   // Helper methods for Python
   static std::string
-  FromInterestStr (Ptr<const Interest> interest, int8_t wireFormat = WIRE_FORMAT_DEFAULT);
+  FromInterestStr (::ndn::shared_ptr<const ::ndn::Interest> interest, int8_t wireFormat = WIRE_FORMAT_DEFAULT);
 
-  static Ptr<Interest>
+  static ::ndn::shared_ptr< ::ndn::Interest>
   ToInterestStr (const std::string &wire, int8_t type = WIRE_FORMAT_AUTODETECT);
 
   static std::string
-  FromDataStr (Ptr<const Data> data, int8_t wireFormat = WIRE_FORMAT_DEFAULT);
+  FromDataStr (::ndn::shared_ptr<const ::ndn::Data> data, int8_t wireFormat = WIRE_FORMAT_DEFAULT);
 
-  static Ptr<Data>
+  static ::ndn::shared_ptr< ::ndn::Data>
   ToDataStr (const std::string &wire, int8_t type = WIRE_FORMAT_AUTODETECT);
 
   // /*

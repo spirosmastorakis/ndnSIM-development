@@ -58,7 +58,7 @@ public:
 
   trie::iterator to_iterator () { return item_; }
   trie::const_iterator to_iterator () const { return item_; }
-  
+
 private:
   trie::iterator item_;
 };
@@ -76,7 +76,7 @@ public:
   typedef ndnSIM::trie_with_policy< Name,
                                     ndnSIM::smart_pointer_payload_traits<EntryImpl>,
                                     ndnSIM::counting_policy_traits > super;
-  
+
   /**
    * \brief Interface ID
    *
@@ -90,11 +90,11 @@ public:
   FibImpl ();
 
   virtual Ptr<Entry>
-  LongestPrefixMatch (const Interest &interest);
+  LongestPrefixMatch (const ::ndn::Interest &interest);
 
   virtual Ptr<fib::Entry>
   Find (const Name &prefix);
-  
+
   virtual Ptr<Entry>
   Add (const Name &prefix, Ptr<Face> face, int32_t metric);
 
@@ -106,7 +106,7 @@ public:
 
   virtual void
   InvalidateAll ();
-  
+
   virtual void
   RemoveFromAll (Ptr<Face> face);
 
@@ -130,10 +130,10 @@ public:
 
   virtual Ptr<const Entry>
   Next (Ptr<const Entry> item) const;
-  
+
   virtual Ptr<Entry>
   Next (Ptr<Entry> item);
-  
+
 protected:
   // inherited from Object class
   virtual void NotifyNewAggregate (); ///< @brief Notify when object is aggregated

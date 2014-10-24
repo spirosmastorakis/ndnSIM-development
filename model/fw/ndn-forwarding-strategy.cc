@@ -23,8 +23,8 @@
 
 #include "ns3/ndn-pit.h"
 #include "ns3/ndn-pit-entry.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include "ns3/ndn-pit.h"
 #include "ns3/ndn-fib.h"
 #include "ns3/ndn-content-store.h"
@@ -89,7 +89,7 @@ TypeId ForwardingStrategy::GetTypeId (void)
                    BooleanValue (true),
                    MakeBooleanAccessor (&ForwardingStrategy::m_cacheUnsolicitedDataFromApps),
                    MakeBooleanChecker ())
-    
+
     .AddAttribute ("CacheUnsolicitedData", "Cache overheard data that have not been requested",
                    BooleanValue (false),
                    MakeBooleanAccessor (&ForwardingStrategy::m_cacheUnsolicitedData),
@@ -143,7 +143,7 @@ ForwardingStrategy::DoDispose ()
 
 void
 ForwardingStrategy::OnInterest (Ptr<Face> inFace,
-                                Ptr<Interest> interest)
+                                ::ndn::shared_ptr< ::ndn::Interest> interest)
 {
   NS_LOG_FUNCTION (inFace << interest->GetName ());
   m_inInterests (interest, inFace);
@@ -178,7 +178,7 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
       return;
     }
 
-  Ptr<Data> contentObject;
+  ::ndn::shared_ptr< ::ndn::Data> contentObject;
   contentObject = m_contentStore->Lookup (interest);
   if (contentObject != 0)
     {
@@ -222,7 +222,7 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
 
 void
 ForwardingStrategy::OnData (Ptr<Face> inFace,
-                            Ptr<Data> data)
+                            ::ndn::shared_ptr< ::ndn::Data> data)
 {
   NS_LOG_FUNCTION (inFace << data->GetName ());
   m_inData (data, inFace);
@@ -271,21 +271,21 @@ ForwardingStrategy::OnData (Ptr<Face> inFace,
 
 void
 ForwardingStrategy::DidCreatePitEntry (Ptr<Face> inFace,
-                                       Ptr<const Interest> interest,
+                                       ::ndn:shared_ptr<const ::ndn::Interest> interest,
                                        Ptr<pit::Entry> pitEntrypitEntry)
 {
 }
 
 void
 ForwardingStrategy::FailedToCreatePitEntry (Ptr<Face> inFace,
-                                            Ptr<const Interest> interest)
+                                            ::ndn::shared_ptr<const ::ndn::Interest> interest)
 {
   m_dropInterests (interest, inFace);
 }
 
 void
 ForwardingStrategy::DidReceiveDuplicateInterest (Ptr<Face> inFace,
-                                                 Ptr<const Interest> interest,
+                                                 ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                                  Ptr<pit::Entry> pitEntry)
 {
   /////////////////////////////////////////////////////////////////////////////////////////
@@ -299,21 +299,21 @@ ForwardingStrategy::DidReceiveDuplicateInterest (Ptr<Face> inFace,
 
 void
 ForwardingStrategy::DidSuppressSimilarInterest (Ptr<Face> face,
-                                                Ptr<const Interest> interest,
+                                                ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                                 Ptr<pit::Entry> pitEntry)
 {
 }
 
 void
 ForwardingStrategy::DidForwardSimilarInterest (Ptr<Face> inFace,
-                                               Ptr<const Interest> interest,
+                                               ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                                Ptr<pit::Entry> pitEntry)
 {
 }
 
 void
 ForwardingStrategy::DidExhaustForwardingOptions (Ptr<Face> inFace,
-                                                 Ptr<const Interest> interest,
+                                                 ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                                  Ptr<pit::Entry> pitEntry)
 {
   NS_LOG_FUNCTION (this << boost::cref (*inFace));
@@ -336,7 +336,7 @@ ForwardingStrategy::DidExhaustForwardingOptions (Ptr<Face> inFace,
 
 bool
 ForwardingStrategy::DetectRetransmittedInterest (Ptr<Face> inFace,
-                                                 Ptr<const Interest> interest,
+                                                 ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                                  Ptr<pit::Entry> pitEntry)
 {
   pit::Entry::in_iterator existingInFace = pitEntry->GetIncoming ().find (inFace);
@@ -354,7 +354,7 @@ ForwardingStrategy::DetectRetransmittedInterest (Ptr<Face> inFace,
 
 void
 ForwardingStrategy::SatisfyPendingInterest (Ptr<Face> inFace,
-                                            Ptr<const Data> data,
+                                            ::ndn::shared_ptr<const ::ndn::Data> data,
                                             Ptr<pit::Entry> pitEntry)
 {
   if (inFace != 0)
@@ -387,7 +387,7 @@ ForwardingStrategy::SatisfyPendingInterest (Ptr<Face> inFace,
 
 void
 ForwardingStrategy::DidReceiveSolicitedData (Ptr<Face> inFace,
-                                             Ptr<const Data> data,
+                                             ::ndn::shared_ptr<const ::ndn::Data> data,
                                              bool didCreateCacheEntry)
 {
   // do nothing
@@ -395,7 +395,7 @@ ForwardingStrategy::DidReceiveSolicitedData (Ptr<Face> inFace,
 
 void
 ForwardingStrategy::DidReceiveUnsolicitedData (Ptr<Face> inFace,
-                                               Ptr<const Data> data,
+                                               ::ndn::shared_ptr<const ::ndn::Data> data,
                                                bool didCreateCacheEntry)
 {
   // do nothing
@@ -418,7 +418,7 @@ ForwardingStrategy::WillSatisfyPendingInterest (Ptr<Face> inFace,
 
 bool
 ForwardingStrategy::ShouldSuppressIncomingInterest (Ptr<Face> inFace,
-                                                    Ptr<const Interest> interest,
+                                                    ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                                     Ptr<pit::Entry> pitEntry)
 {
   bool isNew = pitEntry->GetIncoming ().size () == 0 && pitEntry->GetOutgoing ().size () == 0;
@@ -452,7 +452,7 @@ ForwardingStrategy::ShouldSuppressIncomingInterest (Ptr<Face> inFace,
 
 void
 ForwardingStrategy::PropagateInterest (Ptr<Face> inFace,
-                                       Ptr<const Interest> interest,
+                                       ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                        Ptr<pit::Entry> pitEntry)
 {
   bool isRetransmitted = m_detectRetransmissions && // a small guard
@@ -492,7 +492,7 @@ ForwardingStrategy::PropagateInterest (Ptr<Face> inFace,
 bool
 ForwardingStrategy::CanSendOutInterest (Ptr<Face> inFace,
                                         Ptr<Face> outFace,
-                                        Ptr<const Interest> interest,
+                                        ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                         Ptr<pit::Entry> pitEntry)
 {
   if (outFace == inFace)
@@ -522,7 +522,7 @@ ForwardingStrategy::CanSendOutInterest (Ptr<Face> inFace,
 bool
 ForwardingStrategy::TrySendOutInterest (Ptr<Face> inFace,
                                         Ptr<Face> outFace,
-                                        Ptr<const Interest> interest,
+                                        ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                         Ptr<pit::Entry> pitEntry)
 {
   if (!CanSendOutInterest (inFace, outFace, interest, pitEntry))
@@ -547,7 +547,7 @@ ForwardingStrategy::TrySendOutInterest (Ptr<Face> inFace,
 void
 ForwardingStrategy::DidSendOutInterest (Ptr<Face> inFace,
                                         Ptr<Face> outFace,
-                                        Ptr<const Interest> interest,
+                                        ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                         Ptr<pit::Entry> pitEntry)
 {
   m_outInterests (interest, outFace);
@@ -556,7 +556,7 @@ ForwardingStrategy::DidSendOutInterest (Ptr<Face> inFace,
 void
 ForwardingStrategy::DidSendOutData (Ptr<Face> inFace,
                                     Ptr<Face> outFace,
-                                    Ptr<const Data> data,
+                                    ::ndn::shared_ptr<const ::ndn::Data> data,
                                     Ptr<pit::Entry> pitEntry)
 {
   m_outData (data, inFace == 0, outFace);

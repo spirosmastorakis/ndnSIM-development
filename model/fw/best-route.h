@@ -49,16 +49,16 @@ public:
    */
   static std::string
   GetLogName ();
-  
+
   /**
    * @brief Default constructor
    */
   BestRoute ();
-        
+
   // from super
   virtual bool
   DoPropagateInterest (Ptr<Face> incomingFace,
-                       Ptr<const Interest> interest,
+                       ::ndn::shared_ptr<const ::ndn::Interest> interest,
                        Ptr<pit::Entry> pitEntry);
 protected:
   static LogComponent g_log;

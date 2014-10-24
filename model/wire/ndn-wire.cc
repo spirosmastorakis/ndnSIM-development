@@ -13,8 +13,8 @@
 #include "ns3/global-value.h"
 #include "ns3/integer.h"
 #include "ns3/ndn-common.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include "ns3/ndn-header-helper.h"
 
 #include "ndnsim.h"
@@ -47,7 +47,7 @@ GetWireFormat ()
 }
 
 Ptr<Packet>
-Wire::FromInterest (Ptr<const Interest> interest, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
+Wire::FromInterest (::ndn::shared_ptr<const ::ndn::Interest> interest, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
 {
   if (wireFormat == WIRE_FORMAT_DEFAULT)
     wireFormat = GetWireFormat ();
@@ -63,7 +63,7 @@ Wire::FromInterest (Ptr<const Interest> interest, int8_t wireFormat/* = WIRE_FOR
     }
 }
 
-Ptr<Interest>
+::ndn::shared_ptr< ::ndn::Interest>
 Wire::ToInterest (Ptr<Packet> packet, int8_t wireFormat/* = WIRE_FORMAT_AUTODETECT*/)
 {
   if (wireFormat == WIRE_FORMAT_AUTODETECT)
@@ -113,7 +113,7 @@ Wire::ToInterest (Ptr<Packet> packet, int8_t wireFormat/* = WIRE_FORMAT_AUTODETE
 }
 
 Ptr<Packet>
-Wire::FromData (Ptr<const Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
+Wire::FromData (::ndn::shared_ptr<const ::ndn::Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
 {
   if (wireFormat == WIRE_FORMAT_DEFAULT)
     wireFormat = GetWireFormat ();
@@ -129,7 +129,7 @@ Wire::FromData (Ptr<const Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*
     }
 }
 
-Ptr<Data>
+::ndn::shared_ptr< ::ndn::Data>
 Wire::ToData (Ptr<Packet> packet, int8_t wireFormat/* = WIRE_FORMAT_AUTODETECT*/)
 {
   if (wireFormat == WIRE_FORMAT_AUTODETECT)
@@ -180,7 +180,7 @@ Wire::ToData (Ptr<Packet> packet, int8_t wireFormat/* = WIRE_FORMAT_AUTODETECT*/
 
 
 std::string
-Wire::FromInterestStr (Ptr<const Interest> interest, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
+Wire::FromInterestStr (::ndn::shared_ptr<const ::ndn::Interest> interest, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
 {
   Ptr<Packet> pkt = FromInterest (interest, wireFormat);
   std::string wire;
@@ -190,7 +190,7 @@ Wire::FromInterestStr (Ptr<const Interest> interest, int8_t wireFormat/* = WIRE_
   return wire;
 }
 
-Ptr<Interest>
+::ndn::shared_ptr< ::ndn::Interest>
 Wire::ToInterestStr (const std::string &wire, int8_t type/* = WIRE_FORMAT_AUTODETECT*/)
 {
   Ptr<Packet> pkt = Create<Packet> (reinterpret_cast<const uint8_t*> (&wire[0]), wire.size ());
@@ -198,7 +198,7 @@ Wire::ToInterestStr (const std::string &wire, int8_t type/* = WIRE_FORMAT_AUTODE
 }
 
 std::string
-Wire::FromDataStr (Ptr<const Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
+Wire::FromDataStr (::ndn::shared_ptr<const ::ndn::Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAULT*/)
 {
   Ptr<Packet> pkt = FromData (data, wireFormat);
   std::string wire;
@@ -208,7 +208,7 @@ Wire::FromDataStr (Ptr<const Data> data, int8_t wireFormat/* = WIRE_FORMAT_DEFAU
   return wire;
 }
 
-Ptr<Data>
+::ndn::shared_ptr< ::ndn::Data>
 Wire::ToDataStr (const std::string &wire, int8_t type/* = WIRE_FORMAT_AUTODETECT*/)
 {
   Ptr<Packet> pkt = Create<Packet> (reinterpret_cast<const uint8_t*> (&wire[0]), wire.size ());

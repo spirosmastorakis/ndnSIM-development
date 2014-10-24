@@ -80,7 +80,7 @@ public:
    */
   static void
   Destroy ();
-  
+
   /**
    * @brief Trace constructor that attaches to the node using node pointer
    * @param os    reference to the output stream
@@ -112,7 +112,7 @@ public:
    */
   static Ptr<L3RateTracer>
   Install (Ptr<Node> node, boost::shared_ptr<std::ostream> outputStream, Time averagingPeriod = Seconds (0.5));
-  
+
   // from L3Tracer
   virtual void
   PrintHeader (std::ostream &os) const;
@@ -123,14 +123,14 @@ public:
 protected:
   // from L3Tracer
   virtual void
-  OutInterests  (Ptr<const Interest>, Ptr<const Face>);
+  OutInterests  (::ndn::shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
 
   virtual void
-  InInterests   (Ptr<const Interest>, Ptr<const Face>);
+  InInterests   (::ndn::shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
 
   virtual void
-  DropInterests (Ptr<const Interest>, Ptr<const Face>);
-
+  DropInterests (::ndn::shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
+  /*
   virtual void
   OutNacks  (Ptr<const Interest>, Ptr<const Face>);
 
@@ -139,15 +139,15 @@ protected:
 
   virtual void
   DropNacks (Ptr<const Interest>, Ptr<const Face>);
+  */
+  virtual void
+  OutData  (::ndn::shared_ptr<const ::ndn::Data>, bool fromCache, Ptr<const Face>);
 
   virtual void
-  OutData  (Ptr<const Data>, bool fromCache, Ptr<const Face>);
+  InData   (::ndn::shared_ptr<const ::ndn::Data>, Ptr<const Face>);
 
   virtual void
-  InData   (Ptr<const Data>, Ptr<const Face>);
-
-  virtual void
-  DropData (Ptr<const Data>, Ptr<const Face>);
+  DropData (::ndn::shared_ptr<const ::ndn::Data>, Ptr<const Face>);
 
   virtual void
   SatisfiedInterests (Ptr<const pit::Entry>);

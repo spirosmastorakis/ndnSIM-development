@@ -21,7 +21,7 @@ namespace detail {
 struct PendingInterestEntry : public SimpleRefCount< PendingInterestEntry >
 {
 public:
-  PendingInterestEntry (Ptr<const Interest> interest)
+  PendingInterestEntry (::ndn::shared_ptr<const ::ndn::Interest> interest)
     : m_interest (interest)
   {
   }
@@ -32,7 +32,7 @@ public:
 
   void
   AddCallbacks (ApiFace::DataCallback onData, ApiFace::TimeoutCallback onTimeout)
-  { 
+  {
     if (! onData.IsNull ())
       {
          m_dataCallbacks.push_back (onData);
@@ -50,14 +50,14 @@ public:
     m_timeoutCallbacks.clear ();
   }
 
-  Ptr<const Interest>
+  ::ndn::shared_ptr<const ::ndn::Interest>
   GetInterest () const
   {
     return m_interest;
   }
 
   void
-  ProcessOnData (Ptr<const Interest> interest, Ptr<const Data> data)
+  ProcessOnData (::ndn::shared_ptr<const ::ndn::Interest> interest, ::ndn::shared_ptr<const ::ndn::Data> data)
   {
     for (std::list<ApiFace::DataCallback>::iterator i = m_dataCallbacks.begin ();
          i != m_dataCallbacks.end ();
@@ -68,7 +68,7 @@ public:
   }
 
   void
-  ProcessOnTimeout (Ptr<const Interest> interest)
+  ProcessOnTimeout (::ndn::shared_ptr<const ::ndn::Interest> interest)
   {
     for (std::list<ApiFace::TimeoutCallback>::iterator i = m_timeoutCallbacks.begin ();
          i != m_timeoutCallbacks.end ();
@@ -77,11 +77,11 @@ public:
         (*i) (interest);
       }
   }
-  
+
 private:
   std::list<ApiFace::DataCallback> m_dataCallbacks;
   std::list<ApiFace::TimeoutCallback> m_timeoutCallbacks;
-  Ptr<const Interest> m_interest;
+  ::ndn::shared_ptr<const ::ndn::Interest> m_interest;
 };
 
 

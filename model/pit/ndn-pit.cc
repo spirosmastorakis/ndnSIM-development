@@ -20,8 +20,8 @@
 
 #include "ndn-pit.h"
 
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 
 #include "ns3/log.h"
 #include "ns3/nstime.h"
