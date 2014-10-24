@@ -29,8 +29,8 @@
 
 #include "ns3/ndn-app.h"
 #include "ns3/ndn-face.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include "ns3/ndn-pit-entry.h"
 
 #include <fstream>
@@ -332,7 +332,7 @@ L3RateTracer::Print (std::ostream &os) const
 
 
 void
-L3RateTracer::OutInterests  (Ptr<const Interest> interest, Ptr<const Face> face)
+L3RateTracer::OutInterests  (::ndn::shared_ptr<const ::ndn::Interest> interest, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_outInterests ++;
   if (interest->GetWire ())
@@ -342,7 +342,7 @@ L3RateTracer::OutInterests  (Ptr<const Interest> interest, Ptr<const Face> face)
 }
 
 void
-L3RateTracer::InInterests   (Ptr<const Interest> interest, Ptr<const Face> face)
+L3RateTracer::InInterests   (::ndn::shared_ptr<const ::ndn::Interest> interest, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_inInterests ++;
   if (interest->GetWire ())
@@ -352,7 +352,7 @@ L3RateTracer::InInterests   (Ptr<const Interest> interest, Ptr<const Face> face)
 }
 
 void
-L3RateTracer::DropInterests (Ptr<const Interest> interest, Ptr<const Face> face)
+L3RateTracer::DropInterests (::ndn::shared_ptr<const ::ndn::Interest> interest, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_dropInterests ++;
   if (interest->GetWire ())
@@ -360,7 +360,7 @@ L3RateTracer::DropInterests (Ptr<const Interest> interest, Ptr<const Face> face)
       m_stats[face].get<1> ().m_dropInterests += interest->GetWire ()->GetSize ();
     }
 }
-
+/*
 void
 L3RateTracer::OutNacks  (Ptr<const Interest> interest, Ptr<const Face> face)
 {
@@ -390,9 +390,9 @@ L3RateTracer::DropNacks (Ptr<const Interest> interest, Ptr<const Face> face)
       m_stats[face].get<1> ().m_dropNacks += interest->GetWire ()->GetSize ();
     }
 }
-
+*/
 void
-L3RateTracer::OutData  (Ptr<const Data> data,
+L3RateTracer::OutData  (::ndn::shared_ptr<const ::ndn::Data> data,
                         bool fromCache, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_outData ++;
@@ -403,7 +403,7 @@ L3RateTracer::OutData  (Ptr<const Data> data,
 }
 
 void
-L3RateTracer::InData   (Ptr<const Data> data,
+L3RateTracer::InData   (::ndn::shared_ptr<const ::ndn::Data> data,
                         Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_inData ++;
@@ -414,7 +414,7 @@ L3RateTracer::InData   (Ptr<const Data> data,
 }
 
 void
-L3RateTracer::DropData (Ptr<const Data> data,
+L3RateTracer::DropData (::ndn::shared_ptr<const ::ndn::Data> data,
                         Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_dropData ++;
@@ -450,7 +450,7 @@ L3RateTracer::TimedOutInterests (Ptr<const pit::Entry> entry)
 {
   m_stats[0].get<0> ().m_timedOutInterests ++;
   // no "size" stats
-  
+
   for (pit::Entry::in_container::const_iterator i = entry->GetIncoming ().begin ();
        i != entry->GetIncoming ().end ();
        i++)

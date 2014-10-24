@@ -28,8 +28,9 @@
 #include <ns3/callback.h>
 #include <ns3/ndn-face.h>
 #include <ns3/ndn-name.h>
-#include <ns3/ndn-interest.h>
-#include <ns3/ndn-data.h>
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
+#include <ndn-cxx/common.hpp>
 
 namespace ns3 {
 namespace ndn {
@@ -52,9 +53,9 @@ class ApiFace
   : public ns3::ndn::Face
 {
 public:
-  typedef Callback<void, Ptr<const Name>,     Ptr<const Interest> > InterestCallback;
-  typedef Callback<void, Ptr<const Interest>, Ptr<const Data> > DataCallback;
-  typedef Callback<void, Ptr<const Interest> > TimeoutCallback;
+  typedef Callback<void, Ptr<const Name>,     ::ndn::shared_ptr<const ::ndn::Interest> > InterestCallback;
+  typedef Callback<void, ::ndn::shared_ptr<const ::ndn::Interest>, ::ndn::shared_ptr<const ::ndn::Data> > DataCallback;
+  typedef Callback<void, ::ndn::shared_ptr<const ::ndn::Interest> > TimeoutCallback;
 
   /**
    * @brief initialize the handler; a lot of things needs to be done. 1) init
@@ -69,7 +70,7 @@ public:
    */
   virtual void
   Shutdown ();
-  
+
   /**
    * @brief Express Interest
    *
@@ -78,7 +79,7 @@ public:
    * @param onTimeout the callback function to deal with timeouts
    */
   void
-  ExpressInterest (Ptr<Interest> interest,
+  ExpressInterest (::ndn::shared_ptr< ::ndn::Interest> interest,
                    DataCallback onData,
                    TimeoutCallback onTimeout); // = MakeNullCallback< void, Ptr<Interest> > ()
 
@@ -103,14 +104,14 @@ public:
    * @param data Data packet to publish
    */
   void
-  Put (Ptr<Data> data);
+  Put (::ndn::shared_ptr< ::ndn::Data> data);
 
 public:
   virtual bool
-  SendInterest (Ptr<const Interest> interest);
+  SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest);
 
   virtual bool
-  SendData (Ptr<const Data> data);
+  SendData (::ndn::shared_ptr<const ::ndn::Data> data);
 
   virtual std::ostream&
   Print (std::ostream &os) const;

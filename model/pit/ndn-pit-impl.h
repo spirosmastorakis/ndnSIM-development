@@ -29,8 +29,8 @@
 #include "../../utils/trie/trie-with-policy.h"
 #include "ndn-pit-entry-impl.h"
 
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include "ns3/ndn-forwarding-strategy.h"
 #include "ns3/ndn-name.h"
 
@@ -84,13 +84,13 @@ public:
   Lookup (const Data &header);
 
   virtual Ptr<Entry>
-  Lookup (const Interest &header);
+  Lookup (const ::ndn::Interest &header);
 
   virtual Ptr<Entry>
   Find (const Name &prefix);
 
   virtual Ptr<Entry>
-  Create (Ptr<const Interest> header);
+  Create (::ndn::shared_ptr<const ::ndn::Interest> header);
 
   virtual void
   MarkErased (Ptr<Entry> entry);
@@ -313,7 +313,7 @@ PitImpl<Policy>::Lookup (const Data &header)
 
 template<class Policy>
 Ptr<Entry>
-PitImpl<Policy>::Lookup (const Interest &header)
+PitImpl<Policy>::Lookup (const ::ndn::Interest &header)
 {
   // NS_LOG_FUNCTION (header.GetName ());
   NS_ASSERT_MSG (m_fib != 0, "FIB should be set");
@@ -344,7 +344,7 @@ PitImpl<Policy>::Find (const Name &prefix)
 
 template<class Policy>
 Ptr<Entry>
-PitImpl<Policy>::Create (Ptr<const Interest> header)
+PitImpl<Policy>::Create (Ptr<const ::ndn::Interest> header)
 {
   NS_LOG_DEBUG (header->GetName ());
   Ptr<fib::Entry> fibEntry = m_fib->LongestPrefixMatch (*header);

@@ -60,7 +60,7 @@ public:
    */
   static std::string
   GetLogName ();
-  
+
   /**
    * @brief Default constructor
    */
@@ -81,15 +81,15 @@ public:
 
     super::AddFace (face);
   }
-  
+
 protected:
   /// \copydoc ForwardingStrategy::CanSendOutInterest
   virtual bool
   CanSendOutInterest (Ptr<Face> inFace,
                       Ptr<Face> outFace,
-                      Ptr<const Interest> interest,
+                      ::ndn::shared_ptr<const ::ndn::Interest> interest,
                       Ptr<pit::Entry> pitEntry);
-  
+
   /// \copydoc ForwardingStrategy::WillSatisfyPendingInterest
   virtual void
   WillSatisfyPendingInterest (Ptr<Face> inFace,
@@ -97,7 +97,7 @@ protected:
 
 protected:
   static LogComponent g_log; ///< @brief Logging variable
-  
+
 private:
   std::string m_limitType;
 };
@@ -124,7 +124,7 @@ PerOutFaceLimits<Parent>::GetTypeId (void)
     .AddAttribute ("Limit", "Limit type to be used (e.g., ns3::ndn::Limits::Window or ns3::ndn::Limits::Rate)",
                    StringValue ("ns3::ndn::Limits::Window"),
                    MakeStringAccessor (&PerOutFaceLimits<Parent>::m_limitType),
-                   MakeStringChecker ())    
+                   MakeStringChecker ())
     ;
   return tid;
 }
@@ -133,11 +133,11 @@ template<class Parent>
 bool
 PerOutFaceLimits<Parent>::CanSendOutInterest (Ptr<Face> inFace,
                                               Ptr<Face> outFace,
-                                              Ptr<const Interest> interest,
+                                              ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                               Ptr<pit::Entry> pitEntry)
 {
   NS_LOG_FUNCTION (this << pitEntry->GetPrefix ());
-  
+
   Ptr<Limits> faceLimits = outFace->template GetObject<Limits> ();
   if (faceLimits->IsBelowLimit ())
     {
@@ -147,7 +147,7 @@ PerOutFaceLimits<Parent>::CanSendOutInterest (Ptr<Face> inFace,
           return true;
         }
     }
-  
+
   return false;
 }
 
@@ -185,7 +185,7 @@ PerOutFaceLimits<Parent>::WillSatisfyPendingInterest (Ptr<Face> inFace,
       for (uint32_t i = 0; i <= face->m_retxCount; i++)
         faceLimits->ReturnLimit ();
     }
-  
+
   super::WillSatisfyPendingInterest (inFace, pitEntry);
 }
 

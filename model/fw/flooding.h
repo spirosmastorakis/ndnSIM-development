@@ -58,7 +58,7 @@ public:
    */
   static std::string
   GetLogName ();
-  
+
   /**
    * @brief Default constructor
    */
@@ -68,7 +68,7 @@ protected:
   // inherited from  Nacks/ForwardingStrategy
   virtual bool
   DoPropagateInterest (Ptr<Face> inFace,
-                       Ptr<const Interest> interest,
+                       ::ndn::shared_ptr<const ::ndn::Interest> interest,
                        Ptr<pit::Entry> pitEntry);
 
 protected:

@@ -1,6 +1,6 @@
 /* -*- Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil -*- */
 /*
- * Copyright (c) 2011 University of California, Los Angeles 
+ * Copyright (c) 2011 University of California, Los Angeles
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 #include "ndn-fib-impl.h"
 
 #include "ns3/ndn-face.h"
-#include "ns3/ndn-interest.h"
+#include <ndn-cxx/interest.h>
 #include "ns3/ndn-forwarding-strategy.h"
 
 #include "ns3/node.h"
@@ -42,7 +42,7 @@ namespace fib {
 
 NS_OBJECT_ENSURE_REGISTERED (FibImpl);
 
-TypeId 
+TypeId
 FibImpl::GetTypeId (void)
 {
   static TypeId tid = TypeId ("ns3::ndn::fib::Default") // cheating ns3 object system
@@ -63,7 +63,7 @@ FibImpl::NotifyNewAggregate ()
   Object::NotifyNewAggregate ();
 }
 
-void 
+void
 FibImpl::DoDispose (void)
 {
   clear ();
@@ -72,9 +72,9 @@ FibImpl::DoDispose (void)
 
 
 Ptr<Entry>
-FibImpl::LongestPrefixMatch (const Interest &interest)
+FibImpl::LongestPrefixMatch (const ::ndn::Interest &interest)
 {
-  super::iterator item = super::longest_prefix_match (interest.GetName ());
+  super::iterator item = super::longest_prefix_match (interest.getName ());
   // @todo use predicate to search with exclude filters
 
   if (item == super::end ())
@@ -100,7 +100,7 @@ FibImpl::Add (const Name &prefix, Ptr<Face> face, int32_t metric)
 {
   return Add (Create<Name> (prefix), face, metric);
 }
-  
+
 Ptr<Entry>
 FibImpl::Add (const Ptr<const Name> &prefix, Ptr<Face> face, int32_t metric)
 {
@@ -116,7 +116,7 @@ FibImpl::Add (const Ptr<const Name> &prefix, Ptr<Face> face, int32_t metric)
           newEntry->SetTrie (result.first);
           result.first->set_payload (newEntry);
         }
-  
+
       super::modify (result.first,
                      ll::bind (&Entry::AddOrUpdateRoutingMetric, ll::_1, face, metric));
 
@@ -126,7 +126,7 @@ FibImpl::Add (const Ptr<const Name> &prefix, Ptr<Face> face, int32_t metric)
           NS_ASSERT (this->GetObject<ForwardingStrategy> () != 0);
           this->GetObject<ForwardingStrategy> ()->DidAddFibEntry (result.first->payload ());
         }
-      
+
       return result.first->payload ();
     }
   else
@@ -158,7 +158,7 @@ FibImpl::Remove (const Ptr<const Name> &prefix)
 //   super::iterator foundItem, lastItem;
 //   bool reachLast;
 //   boost::tie (foundItem, reachLast, lastItem) = super::getTrie ().find (*prefix);
-  
+
 //   if (!reachLast || lastItem->payload () == 0)
 //     return; // nothing to invalidate
 
@@ -266,7 +266,7 @@ Ptr<const Entry>
 FibImpl::Next (Ptr<const Entry> from) const
 {
   if (from == 0) return 0;
-  
+
   super::parent_trie::const_recursive_iterator item (*StaticCast<const EntryImpl> (from)->to_iterator ());
   super::parent_trie::const_recursive_iterator end (0);
   for (item++; item != end; item++)
@@ -308,7 +308,7 @@ Ptr<Entry>
 FibImpl::Next (Ptr<Entry> from)
 {
   if (from == 0) return 0;
-  
+
   super::parent_trie::recursive_iterator item (*StaticCast<EntryImpl> (from)->to_iterator ());
   super::parent_trie::recursive_iterator end (0);
   for (item++; item != end; item++)

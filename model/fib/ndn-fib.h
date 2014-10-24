@@ -26,11 +26,16 @@
 
 #include "ns3/ndn-fib-entry.h"
 
-namespace ns3 {
 namespace ndn {
 
 class Interest;
-typedef Interest InterestHeader;
+
+}
+
+namespace ns3 {
+namespace ndn {
+
+typedef ::ndn::Interest InterestHeader;
 
 /**
  * @ingroup ndn
@@ -54,12 +59,12 @@ public:
    * @brief Default constructor
    */
   Fib () {}
-  
+
   /**
    * @brief Virtual destructor
    */
   virtual ~Fib () { };
-  
+
   /**
    * \brief Perform longest prefix match
    *
@@ -69,7 +74,7 @@ public:
    * \returns If entry found a valid iterator (Ptr<fib::Entry>) will be returned, otherwise End () (==0)
    */
   virtual Ptr<fib::Entry>
-  LongestPrefixMatch (const Interest &interest) = 0;
+  LongestPrefixMatch (const ::ndn::Interest &interest) = 0;
 
   /**
    * @brief Get FIB entry for the prefix (exact match)
@@ -79,7 +84,7 @@ public:
    */
   virtual Ptr<fib::Entry>
   Find (const Name &prefix) = 0;
-  
+
   /**
    * \brief Add or update FIB entry
    *
@@ -120,7 +125,7 @@ public:
    */
   virtual void
   InvalidateAll () = 0;
-  
+
   /**
    * @brief Remove all references to a face from FIB.  If for some enty that face was the only element,
    * this FIB entry will be removed.
@@ -150,7 +155,7 @@ public:
    * @brief Return first element of FIB (no order guaranteed)
    */
   virtual Ptr<fib::Entry>
-  Begin () = 0;  
+  Begin () = 0;
 
   /**
    * @brief Return item next after last (no order guaranteed)
@@ -179,7 +184,7 @@ public:
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
-  
+
   /**
    * @brief Static call to cheat python bindings
    */
@@ -189,7 +194,7 @@ public:
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
-  
+
 private:
   Fib (const Fib&) {} ; ///< \brief copy constructor is disabled
 };

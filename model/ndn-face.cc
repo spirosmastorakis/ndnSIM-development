@@ -68,8 +68,8 @@ Face::GetTypeId ()
  */
 Face::Face (Ptr<Node> node)
   : m_node (node)
-  , m_upstreamInterestHandler (MakeNullCallback< void, Ptr<Face>, Ptr<Interest> > ())
-  , m_upstreamDataHandler (MakeNullCallback< void, Ptr<Face>, Ptr<Data> > ())
+  , m_upstreamInterestHandler (MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Interest> > ())
+  , m_upstreamDataHandler (MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Data> > ())
   , m_ifup (false)
   , m_id ((uint32_t)-1)
   , m_metric (0)
@@ -114,15 +114,15 @@ Face::UnRegisterProtocolHandlers ()
 {
   NS_LOG_FUNCTION_NOARGS ();
 
-  m_upstreamInterestHandler = MakeNullCallback< void, Ptr<Face>, Ptr<Interest> > ();
-  m_upstreamDataHandler = MakeNullCallback< void, Ptr<Face>, Ptr<Data> > ();
+  m_upstreamInterestHandler = MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn:Interest> > ();
+  m_upstreamDataHandler = MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Data> > ();
 }
 
 
 bool
-Face::SendInterest (Ptr<const Interest> interest)
+Face::SendInterest ( ::ndn::shared_ptr<const ::ndn::Interest> interest)
 {
-  NS_LOG_FUNCTION (this << boost::cref (*this) << interest->GetName ());
+  NS_LOG_FUNCTION (this << boost::cref (*this) << interest->getName ());
 
   if (!IsUp ())
     {
@@ -133,7 +133,7 @@ Face::SendInterest (Ptr<const Interest> interest)
 }
 
 bool
-Face::SendData (Ptr<const Data> data)
+Face::SendData (::ndn::shared_ptr<const ::ndn::Data> data)
 {
   NS_LOG_FUNCTION (this << data);
 
@@ -201,7 +201,7 @@ Face::Receive (Ptr<const Packet> p)
 }
 
 bool
-Face::ReceiveInterest (Ptr<Interest> interest)
+Face::ReceiveInterest (::ndn::shared_ptr< ::ndn::Interest> interest)
 {
   if (!IsUp ())
     {
@@ -214,7 +214,7 @@ Face::ReceiveInterest (Ptr<Interest> interest)
 }
 
 bool
-Face::ReceiveData (Ptr<Data> data)
+Face::ReceiveData (::ndn::shared_ptr< ::ndn::Data> data)
 {
   if (!IsUp ())
     {
@@ -279,4 +279,3 @@ operator<< (std::ostream& os, const Face &face)
 
 } // namespace ndn
 } // namespace ns3
-

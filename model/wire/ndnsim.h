@@ -1,10 +1,10 @@
 /** -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil -*- */
-/* 
+/*
  * Copyright (c) 2013, Regents of the University of California
  *                     Alexander Afanasyev
- * 
+ *
  * GNU 3.0 license, See the LICENSE file for more information
- * 
+ *
  * Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
@@ -12,7 +12,7 @@
 #define NDN_WIRE_NDNSIM_H
 
 #include "ns3/ndn-common.h"
-#include "ns3/ndn-interest.h"
+#include <ndn-cxx/interest.hpp>
 #include "ns3/ndn-data.h"
 
 NDN_NAMESPACE_BEGIN
@@ -30,13 +30,13 @@ namespace ndnSIM {
 /**
  * @brief Routines to serialize/deserialize Interest packet in ndnSIM format
  *
- * Optimized and simplified formatting of Interest packets 
+ * Optimized and simplified formatting of Interest packets
  *
- *	Interest ::= Nonce 
- *	     	     Scope 
- *		     InterestLifetime 
- *	     	     Name 
- *	     	     Selectors 
+ *	Interest ::= Nonce
+ *	     	     Scope
+ *		     InterestLifetime
+ *	     	     Name
+ *	     	     Selectors
  *	     	     Options
  *
  * Minumum size of the Interest packet: 1 + 4 + 2 + 1 + (2 + 0) + (2 + 0) + (2 + 0) = 14
@@ -56,19 +56,19 @@ namespace ndnSIM {
  *	   |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
  *        ~                                                               ~
  *        ~                            Name                               ~
- *        |							           |	
+ *        |							           |
  *        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  *        |            Length             |                               |
  *        |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
  *        ~                                                               ~
  *        ~                          Selectors                            ~
- *        |							            |	
+ *        |							            |
  *        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  *        |            Length             |                               |
  *	   |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
  *        ~                                                               ~
  *        ~                          Options                              ~
- *        |							           |	
+ *        |							           |
  *        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 class Interest : public Header
@@ -85,10 +85,10 @@ public:
 
   static Ptr<ndn::Interest>
   FromWire (Ptr<Packet> packet);
-  
+
   // from Header
-  static TypeId GetTypeId (void); 
-  virtual TypeId GetInstanceTypeId (void) const; 
+  static TypeId GetTypeId (void);
+  virtual TypeId GetInstanceTypeId (void) const;
   virtual void Print (std::ostream &os) const;
   virtual uint32_t GetSerializedSize (void) const;
   virtual void Serialize (Buffer::Iterator start) const;
@@ -116,19 +116,19 @@ private:
  *      |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
  *      ~                                                               ~
  *      ~                           Signature                           ~
- *      |							        |	
+ *      |							        |
  *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  *      |            Length             |                               |
  *      |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
  *      ~                                                               ~
  *      ~                             Name                              ~
- *      |							        |	
+ *      |							        |
  *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  *      |            Length             |                               |
  *      |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
  *      ~                                                               ~
  *      ~                           Content                             ~
- *      |							        |	
+ *      |							        |
  *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  *
  */
@@ -146,7 +146,7 @@ public:
 
   static Ptr<ndn::Data>
   FromWire (Ptr<Packet> packet);
-  
+
   // from Header
   static TypeId GetTypeId (void);
   virtual TypeId GetInstanceTypeId (void) const;
@@ -156,7 +156,7 @@ public:
   virtual uint32_t Deserialize (Buffer::Iterator start);
 
 private:
-  Ptr<ndn::Data> m_data;  
+  Ptr<ndn::Data> m_data;
 };
 
 } // ndnSIM

@@ -35,6 +35,9 @@ def required_boost_libs(conf):
 def configure(conf):
     conf.env['ENABLE_NDNSIM']=False;
 
+    conf.check_cfg(package='libndn-cxx', args=['--cflags', '--libs'],
+                   uselib_store='NDN_CXX', mandatory=True)
+
     if not conf.env['LIB_BOOST']:
         conf.report_optional_feature("ndnSIM", "ndnSIM", False,
                                      "Required boost libraries not found")
@@ -102,7 +105,7 @@ def build(bld):
     module = bld.create_ns3_module ('ndnSIM', deps)
     module.module = 'ndnSIM'
     module.features += ' ns3fullmoduleheaders'
-    module.uselib = 'BOOST BOOST_IOSTREAMS'
+    module.uselib = 'NDN_CXX BOOST BOOST_IOSTREAMS'
 
     headers = bld (features='ns3header')
     headers.module = 'ndnSIM'
@@ -116,7 +119,8 @@ def build(bld):
                                        'utils/**/*.cc',
                                        'helper/**/*.cc',
                                        'ndn.cxx/**/*.cc',
-                                       'ndn-cxx/src/**/*.cpp'
+                                       'helper/**/*.cpp',
+                                       'model/**/*.cpp'
                                        ])
     module.full_headers = [p.path_from(bld.path) for p in bld.path.ant_glob([
                            'utils/**/*.h',
@@ -124,7 +128,8 @@ def build(bld):
                            'apps/**/*.h',
                            'helper/**/*.h',
                            'ndn.cxx/**/*.h',
-                           'ndn-cxx/src/**/*.hpp'
+                           'helper/**/*.hpp',
+                           'model/**/*.hpp'
                            ])]
 
     headers.source = [
@@ -142,15 +147,15 @@ def build(bld):
         "model/ndn-face.h",
         "model/ndn-app-face.h",
         "model/ndn-net-device-face.h",
-        "model/ndn-interest.h",
-        "model/ndn-data.h",
+        #"model/ndn-interest.h",
+        #"model/ndn-data.h",
         "model/ndn-name-components.h",
         "model/ndn-name.h",
 
         "ndn.cxx/blob.h",
-        "ndn.cxx/name-component.h",
-        "ndn.cxx/name.h",
-        "ndn.cxx/exclude.h",
+        #"ndn.cxx/name-component.h",
+        #"ndn.cxx/name.h",
+        #"ndn.cxx/exclude.h",
         "ndn.cxx/ndn-api-face.h",
 
         "model/cs/ndn-content-store.h",
@@ -176,13 +181,13 @@ def build(bld):
         # "utils/tracers/ipv4-rate-l3-tracer.h",
         # "utils/tracers/ipv4-seqs-app-tracer.h",
 
-        "utils/tracers/l2-rate-tracer.h",
-        "utils/tracers/l2-tracer.h",
-        "utils/tracers/ndn-app-delay-tracer.h",
-        "utils/tracers/ndn-cs-tracer.h",
-        "utils/tracers/ndn-l3-aggregate-tracer.h",
-        "utils/tracers/ndn-l3-tracer.h",
-        "utils/tracers/ndn-l3-rate-tracer.h",
+        #"utils/tracers/l2-rate-tracer.h",
+        #"utils/tracers/l2-tracer.h",
+        #"utils/tracers/ndn-app-delay-tracer.h",
+        #"utils/tracers/ndn-cs-tracer.h",
+        #"utils/tracers/ndn-l3-aggregate-tracer.h",
+        #"utils/tracers/ndn-l3-tracer.h",
+        #"utils/tracers/ndn-l3-rate-tracer.h",
 
         "apps/callback-based-app.h",
         ]

@@ -21,8 +21,8 @@
 #include "per-out-face-limits.h"
 
 #include "ns3/ndn-l3-protocol.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 
 #include "best-route.h"
 #include "flooding.h"
@@ -64,4 +64,3 @@ class SmartFlooding::PerOutFaceLimits : public ::ns3::ndn::fw::PerOutFaceLimits<
 } // namespace fw
 } // namespace ndn
 } // namespace ns3
-

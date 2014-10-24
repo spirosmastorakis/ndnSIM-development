@@ -21,7 +21,7 @@
 
 #include "flooding.h"
 
-#include "ns3/ndn-interest.h"
+#include <ndn-cxx/interest.hpp>
 #include "ns3/ndn-pit.h"
 #include "ns3/ndn-pit-entry.h"
 
@@ -66,7 +66,7 @@ Flooding::Flooding ()
 
 bool
 Flooding::DoPropagateInterest (Ptr<Face> inFace,
-                               Ptr<const Interest> interest,
+                               ::ndn::shared_ptr<const ::ndn::Interest> interest,
                                Ptr<pit::Entry> pitEntry)
 {
   NS_LOG_FUNCTION (this);
