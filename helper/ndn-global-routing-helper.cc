@@ -29,7 +29,7 @@
 #include "ns3/ndn-l3-protocol.h"
 #include "../model/ndn-net-device-face.h"
 #include "../model/ndn-global-router.h"
-#include "ns3/ndn-name.h"
+#include <ndn-cxx/name.hpp>
 #include "ns3/ndn-fib.h"
 
 #include "ns3/node.h"

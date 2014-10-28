@@ -23,8 +23,8 @@
 #include "ns3/assert.h"
 #include "ns3/packet.h"
 
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-fib.h"
 #include "ns3/ndn-app-face.h"

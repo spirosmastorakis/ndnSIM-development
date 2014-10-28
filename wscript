@@ -118,7 +118,6 @@ def build(bld):
                                        'apps/*.cc',
                                        'utils/**/*.cc',
                                        'helper/**/*.cc',
-                                       'ndn.cxx/**/*.cc',
                                        'helper/**/*.cpp',
                                        'model/**/*.cpp'
                                        ])
@@ -127,7 +126,6 @@ def build(bld):
                            'model/**/*.h',
                            'apps/**/*.h',
                            'helper/**/*.h',
-                           'ndn.cxx/**/*.h',
                            'helper/**/*.hpp',
                            'model/**/*.hpp'
                            ])]
@@ -135,61 +133,47 @@ def build(bld):
     headers.source = [
         "helper/ndn-stack-helper.h",
         "helper/ndn-app-helper.h",
-        "helper/ndn-header-helper.h",
         "helper/ndn-face-container.h",
         "helper/ndn-global-routing-helper.h",
         "helper/ndn-link-control-helper.h",
 
         "apps/ndn-app.h",
+        "apps/callback-based-app.h",
 
         "model/ndn-common.h",
-        "model/ndn-l3-protocol.h",
+        "model/ndn-forwarder.h",
         "model/ndn-face.h",
         "model/ndn-app-face.h",
         "model/ndn-net-device-face.h",
-        #"model/ndn-interest.h",
-        #"model/ndn-data.h",
-        "model/ndn-name-components.h",
-        "model/ndn-name.h",
 
-        "ndn.cxx/blob.h",
-        #"ndn.cxx/name-component.h",
-        #"ndn.cxx/name.h",
-        #"ndn.cxx/exclude.h",
-        "ndn.cxx/ndn-api-face.h",
+#         "model/cs/ndn-content-store.h",
 
-       # "model/cs/ndn-content-store.h",
+         "model/fib/ndn-fib.h",
+         "model/fib/ndn-fib-entry.h",
 
-       # "model/fib/ndn-fib.h",
-       # "model/fib/ndn-fib-entry.h",
+#         "model/pit/ndn-pit.h",
+#         "model/pit/ndn-pit-entry.h",
+#         "model/pit/ndn-pit-entry-incoming-face.h",
+#         "model/pit/ndn-pit-entry-outgoing-face.h",
 
-        #"model/pit/ndn-pit.h",
-        #"model/pit/ndn-pit-entry.h",
-        #"model/pit/ndn-pit-entry-incoming-face.h",
-        #"model/pit/ndn-pit-entry-outgoing-face.h",
-
-        #"model/fw/ndn-forwarding-strategy.h",
-        #"model/fw/ndn-fw-tag.h",
-
-        "model/wire/ndn-wire.h",
+#         "model/fw/ndn-forwarding-strategy.h",
+#         "model/fw/ndn-fw-tag.h",
 
         "utils/ndn-limits.h",
         "utils/ndn-rtt-estimator.h",
 
-        # "utils/tracers/ipv4-app-tracer.h",
-        # "utils/tracers/ipv4-l3-tracer.h",
-        # "utils/tracers/ipv4-rate-l3-tracer.h",
-        # "utils/tracers/ipv4-seqs-app-tracer.h",
+#         "utils/tracers/ipv4-app-tracer.h",
+#         "utils/tracers/ipv4-l3-tracer.h",
+#         "utils/tracers/ipv4-rate-l3-tracer.h",
+#         "utils/tracers/ipv4-seqs-app-tracer.h",
 
-        #"utils/tracers/l2-rate-tracer.h",
-        #"utils/tracers/l2-tracer.h",
-        #"utils/tracers/ndn-app-delay-tracer.h",
-        #"utils/tracers/ndn-cs-tracer.h",
-        #"utils/tracers/ndn-l3-aggregate-tracer.h",
-        #"utils/tracers/ndn-l3-tracer.h",
-        #"utils/tracers/ndn-l3-rate-tracer.h",
-
-        "apps/callback-based-app.h",
+#         "utils/tracers/l2-rate-tracer.h",
+#         "utils/tracers/l2-tracer.h",
+#         "utils/tracers/ndn-app-delay-tracer.h",
+#         "utils/tracers/ndn-cs-tracer.h",
+#         "utils/tracers/ndn-l3-aggregate-tracer.h",
+#         "utils/tracers/ndn-l3-tracer.h",
+#         "utils/tracers/ndn-l3-rate-tracer.h",
         ]
 
     if 'topology' in bld.env['NDN_plugins']:

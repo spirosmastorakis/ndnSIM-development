@@ -22,11 +22,13 @@
 
 #include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-face.h"
-#include "ns3/ndn-name.h"
+#include <ndn-cxx/name.hpp>
 
 #include "ns3/channel.h"
 
 using namespace boost;
+
+using ::ndn::Name;
 
 namespace ns3 {
 namespace ndn {

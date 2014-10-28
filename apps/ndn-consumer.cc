@@ -31,14 +31,12 @@
 #include "ns3/double.h"
 
 #include "ns3/ndn-app-face.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include "ns3/ndnSIM/utils/ndn-fw-hop-count-tag.h"
 #include "ns3/ndnSIM/utils/ndn-rtt-mean-deviation.h"
 
 #include <boost/ref.hpp>
-
-#include "ns3/names.h"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.Consumer");
 
