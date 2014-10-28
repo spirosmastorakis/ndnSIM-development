@@ -112,11 +112,11 @@ ApiFace::ExpressInterest (::ndn::shared_ptr< ::ndn::Interest> interest,
 
   // Record the callback
   bool needToActuallyExpressInterest = false;
-  PendingInterestContainer::iterator entry = m_this->m_pendingInterests.find_exact (interest->GetName ());
+  //PendingInterestContainer::iterator entry = m_this->m_pendingInterests.find_exact (interest->getName ());
   if (entry == m_this->m_pendingInterests.end ())
     {
-      pair<PendingInterestContainer::iterator, bool> status =
-        m_this->m_pendingInterests.insert (interest->getName (), Create <PendingInterestEntry> (interest));
+      //pair<PendingInterestContainer::iterator, bool> status =
+      //m_this->m_pendingInterests.insert (interest->getName (), Create <PendingInterestEntry> (interest));
 
       entry = status.first;
 

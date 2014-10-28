@@ -91,11 +91,11 @@ AppFace::SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
     {
       return false;
     }
-
+  /*
   if (interest->GetNack () > 0)
     m_app->OnNack (interest);
-  else
-    m_app->OnInterest (interest);
+  */
+  m_app->OnInterest (interest);
 
   return true;
 }

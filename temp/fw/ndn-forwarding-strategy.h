@@ -21,6 +21,8 @@
 #ifndef NDN_FORWARDING_STRATEGY_H
 #define NDN_FORWARDING_STRATEGY_H
 
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include "ns3/packet.h"
 #include "ns3/callback.h"
 #include "ns3/object.h"
