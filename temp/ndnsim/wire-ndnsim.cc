@@ -1,10 +1,10 @@
 /** -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil -*- */
-/* 
+/*
  * Copyright (c) 2013, Regents of the University of California
  *                     Alexander Afanasyev
- * 
+ *
  * GNU 3.0 license, See the LICENSE file for more information
- * 
+ *
  * Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
@@ -75,13 +75,13 @@ NdnSim::DeserializeName (Buffer::Iterator &i)
 
 
 size_t
-NdnSim::SerializeExclude (Buffer::Iterator &i, const Exclude &exclude)
+NdnSim::SerializeExclude (Buffer::Iterator &i, const ::ndn::Exclude &exclude)
 {
   Buffer::Iterator start = i;
 
   i.WriteU16 (static_cast<uint16_t> (SerializedSizeExclude (exclude)-2));
 
-  for (Exclude::const_reverse_iterator item = exclude.rbegin ();
+  for (::ndn::Exclude::const_reverse_iterator item = exclude.rbegin ();
        item != exclude.rend ();
        item++)
     {
@@ -100,11 +100,11 @@ NdnSim::SerializeExclude (Buffer::Iterator &i, const Exclude &exclude)
 }
 
 size_t
-NdnSim::SerializedSizeExclude (const Exclude &exclude)
+NdnSim::SerializedSizeExclude (const ::ndn::Exclude &exclude)
 {
   size_t excludeSerializedSize = 2;
 
-  for (Exclude::const_reverse_iterator item = exclude.rbegin ();
+  for (::ndn::Exclude::const_reverse_iterator item = exclude.rbegin ();
        item != exclude.rend ();
        item++)
     {
@@ -121,17 +121,17 @@ NdnSim::SerializedSizeExclude (const Exclude &exclude)
   return excludeSerializedSize;
 }
 
-Ptr<Exclude>
+Ptr< ::ndn::Exclude>
 NdnSim::DeserializeExclude (Buffer::Iterator &i)
 {
-  Ptr<Exclude> exclude = Create<Exclude> ();
+  Ptr< ::ndn::Exclude> exclude = Create< ::ndn::Exclude> ();
 
   uint16_t excludeLength = i.ReadU16 ();
   while (excludeLength > 0)
     {
       uint8_t type = i.ReadU8 ();
       excludeLength --;
-      
+
       if (type == ExcludeAnyType)
         {
           exclude->appendExclude (name::Component (), true);

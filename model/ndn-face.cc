@@ -114,7 +114,7 @@ Face::UnRegisterProtocolHandlers ()
 {
   NS_LOG_FUNCTION_NOARGS ();
 
-  m_upstreamInterestHandler = MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn:Interest> > ();
+  m_upstreamInterestHandler = MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Interest> > ();
   m_upstreamDataHandler = MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Data> > ();
 }
 
