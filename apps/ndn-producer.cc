@@ -21,8 +21,8 @@
 
 #include "ndn-producer.h"
 #include "ns3/log.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include "ns3/string.h"
 #include "ns3/uinteger.h"
 #include "ns3/packet.h"
