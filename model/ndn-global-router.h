@@ -27,6 +27,17 @@
 #include <list>
 #include <boost/tuple/tuple.hpp>
 
+namespace ndn {
+namespace name {
+
+class Component;
+
+}
+
+class Name;
+
+} // namespace ndn
+
 namespace ns3 {
 
 class Channel;
@@ -35,9 +46,6 @@ namespace ndn {
 
 class L3Protocol;
 class Face;
-class Name;
-
-typedef Name NameComponents;
 
 /**
  * @ingroup ndn

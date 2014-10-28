@@ -35,8 +35,6 @@
 #include "ns3/ndn-header-helper.h"
 #include "ns3/ndnSIM/utils/ndn-fw-hop-count-tag.h"
 
-#include "ns3/ndn-wire.h"
-
 #include <boost/ref.hpp>
 
 NS_LOG_COMPONENT_DEFINE ("ndn.Face");

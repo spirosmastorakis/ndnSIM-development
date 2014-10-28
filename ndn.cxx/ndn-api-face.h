@@ -27,10 +27,12 @@
 #include <ns3/node.h>
 #include <ns3/callback.h>
 #include <ns3/ndn-face.h>
-#include <ns3/ndn-name.h>
+#include <ndn-cxx/name.hpp>
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
 #include <ndn-cxx/common.hpp>
+
+using ::ndn::Name;
 
 namespace ns3 {
 namespace ndn {
