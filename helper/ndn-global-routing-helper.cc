@@ -194,7 +194,7 @@ GlobalRoutingHelper::AddOrigin (const std::string &prefix, Ptr<Node> node)
   NS_ASSERT_MSG (gr != 0,
 		 "GlobalRouter is not installed on the node");
 
-  ::ndn::shared_ptr< ::ndn::Name> name = Create< ::ndn::Name> (boost::lexical_cast< ::ndn::Name> (prefix));
+  ::ndn::shared_ptr< ::ndn::Name> name = ::ndn::make_shared< ::ndn::Name> (prefix);
   gr->AddLocalPrefix (name);
 }
 
