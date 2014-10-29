@@ -52,7 +52,7 @@ Entry::Entry (Pit &container,
 
   // UpdateLifetime is (and should) be called from the forwarding strategy
 
-  UpdateLifetime ((!header->getInterestLifetime ().IsZero ()?
+  UpdateLifetime (!(header->getInterestLifetime ().IsZero () ?
                    header->getInterestLifetime ():
                    Seconds (1.0)));
 }
@@ -88,7 +88,7 @@ Entry::OffsetLifetime (const Time &offsetTime)
 }
 
 
-const Name &
+const ::ndn::Name &
 Entry::GetPrefix () const
 {
   return m_interest->getName ();

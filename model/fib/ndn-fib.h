@@ -51,12 +51,12 @@ public:
    * @brief Default constructor
    */
   Fib () {}
-  
+
   /**
    * @brief Virtual destructor
    */
   virtual ~Fib () { };
-  
+
   /**
    * \brief Perform longest prefix match
    *
@@ -66,7 +66,7 @@ public:
    * \returns If entry found a valid iterator (Ptr<fib::Entry>) will be returned, otherwise End () (==0)
    */
   virtual Ptr<fib::Entry>
-  LongestPrefixMatch (const Interest &interest) = 0;
+  LongestPrefixMatch (const ::ndn::Interest &interest) = 0;
 
   /**
    * @brief Get FIB entry for the prefix (exact match)
@@ -75,8 +75,8 @@ public:
    * @returns If entry is found, a valid iterator (Ptr<fib::Entry>) will be returned. Otherwise End () (==0)
    */
   virtual Ptr<fib::Entry>
-  Find (const Name &prefix) = 0;
-  
+  Find (const ::ndn::Name &prefix) = 0;
+
   /**
    * \brief Add or update FIB entry
    *
@@ -87,7 +87,7 @@ public:
    * @param metric	Routing metric
    */
   virtual Ptr<fib::Entry>
-  Add (const Name &prefix, Ptr<Face> face, int32_t metric) = 0;
+  Add (const ::ndn::Name &prefix, Ptr<Face> face, int32_t metric) = 0;
 
   /**
    * \brief Add or update FIB entry using smart pointer to prefix
@@ -99,7 +99,7 @@ public:
    * @param metric	Routing metric
    */
   virtual Ptr<fib::Entry>
-  Add (const shared_ptr<const Name> &prefix, Ptr<Face> face, int32_t metric) = 0;
+  Add (const ::ndn::shared_ptr<const ::ndn::Name> &prefix, Ptr<Face> face, int32_t metric) = 0;
 
   /**
    * @brief Remove FIB entry
@@ -110,14 +110,14 @@ public:
    * @param name	Smart pointer to prefix
    */
   virtual void
-  Remove (const shared_ptr<const Name> &prefix) = 0;
+  Remove (const ::ndn::shared_ptr<const ::ndn::Name> &prefix) = 0;
 
   /**
    * @brief Invalidate all FIB entries
    */
   virtual void
   InvalidateAll () = 0;
-  
+
   /**
    * @brief Remove all references to a face from FIB.  If for some enty that face was the only element,
    * this FIB entry will be removed.
@@ -147,7 +147,7 @@ public:
    * @brief Return first element of FIB (no order guaranteed)
    */
   virtual Ptr<fib::Entry>
-  Begin () = 0;  
+  Begin () = 0;
 
   /**
    * @brief Return item next after last (no order guaranteed)
@@ -176,7 +176,7 @@ public:
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
-  
+
   /**
    * @brief Static call to cheat python bindings
    */
@@ -186,7 +186,7 @@ public:
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
-  
+
 private:
   Fib (const Fib&) {} ; ///< \brief copy constructor is disabled
 };

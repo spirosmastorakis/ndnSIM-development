@@ -28,6 +28,8 @@
 #include "ns3/ndn-limits.h"
 #include "ns3/traced-value.h"
 
+#include <ndn-cxx/common.hpp>
+
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/tag.hpp>
 #include <boost/multi_index/ordered_index.hpp>
@@ -155,7 +157,7 @@ public:
   {
     return m_rttVar;
   }
-  
+
   /**
    * @brief Get real propagation delay to the producer, calculated based on NS-3 p2p link delays
    */
@@ -267,7 +269,7 @@ public:
    * \brief Constructor
    * \param prefix smart pointer to the prefix for the FIB entry
    */
-  Entry (Ptr<Fib> fib, const shared_ptr<const Name> &prefix)
+  Entry (Ptr<Fib> fib, const ::ndn::shared_ptr<const ::ndn::Name> &prefix)
   : m_fib (fib)
   , m_prefix (prefix)
   , m_needsProbing (false)
@@ -310,7 +312,7 @@ public:
   /**
    * \brief Get prefix for the FIB entry
    */
-  const Name&
+  const ::ndn::Name&
   GetPrefix () const { return *m_prefix; }
 
   /**
@@ -335,14 +337,14 @@ public:
    */
   Ptr<Fib>
   GetFib ();
-  
+
 private:
   friend std::ostream& operator<< (std::ostream& os, const Entry &entry);
 
 public:
   Ptr<Fib> m_fib; ///< \brief FIB to which entry is added
 
-  Ptr<const Name> m_prefix; ///< \brief Prefix of the FIB entry
+  ::ndn::shared_ptr<const ::ndn::Name> m_prefix; ///< \brief Prefix of the FIB entry
   FaceMetricContainer::type m_faces; ///< \brief Indexed list of faces
 
   bool m_needsProbing;      ///< \brief flag indicating that probing should be performed

@@ -107,7 +107,7 @@ public:
    * @returns If entry is found, a valid iterator (Ptr<pit::Entry>) will be returned. Otherwise End () (==0)
    */
   virtual Ptr<pit::Entry>
-  Find (const Name &prefix) = 0;
+  Find (const ::ndn::Name &prefix) = 0;
 
   /**
    * @brief Creates a PIT entry for the given interest

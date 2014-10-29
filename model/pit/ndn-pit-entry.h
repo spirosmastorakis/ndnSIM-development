@@ -103,7 +103,7 @@ public:
   /**
    * @brief Get prefix of the PIT entry
    */
-  const Name &
+  const ::ndn::Name &
   GetPrefix () const;
 
   /**
