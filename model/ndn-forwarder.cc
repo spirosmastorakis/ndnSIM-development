@@ -19,7 +19,7 @@
  *         Ilya Moiseenko <iliamo@cs.ucla.edu>
  */
 
-#include "ndn-l3-protocol.h"
+#include "ndn-forwarder.h"
 
 #include "ns3/packet.h"
 #include "ns3/node.h"

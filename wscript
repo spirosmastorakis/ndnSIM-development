@@ -151,13 +151,13 @@ def build(bld):
          "model/fib/ndn-fib.h",
          "model/fib/ndn-fib-entry.h",
 
-#         "model/pit/ndn-pit.h",
-#         "model/pit/ndn-pit-entry.h",
-#         "model/pit/ndn-pit-entry-incoming-face.h",
-#         "model/pit/ndn-pit-entry-outgoing-face.h",
+         "model/pit/ndn-pit.h",
+         "model/pit/ndn-pit-entry.h",
+         "model/pit/ndn-pit-entry-incoming-face.h",
+         "model/pit/ndn-pit-entry-outgoing-face.h",
 
-#         "model/fw/ndn-forwarding-strategy.h",
-#         "model/fw/ndn-fw-tag.h",
+        # "model/fw/ndn-forwarding-strategy.h",
+        # "model/fw/ndn-fw-tag.h",
 
         "utils/ndn-limits.h",
         "utils/ndn-rtt-estimator.h",
@@ -210,14 +210,14 @@ def build(bld):
 
     bld.recurse ('tools')
 
-    bld.ns3_python_bindings()
+    #bld.ns3_python_bindings()
 
-    if bld.env['ENABLE_PYTHON_BINDINGS']:
-        if bld.env['PyNDN_install_path']:
-            bld (features = "py",
-                 source = bld.path.ant_glob (["PyNDN/**/*.py"]),
-                 install_from = "PyNDN",
-                 install_path = bld.env['PyNDN_install_path'])
+    #if bld.env['ENABLE_PYTHON_BINDINGS']:
+        #if bld.env['PyNDN_install_path']:
+            #bld (features = "py",
+                 #source = bld.path.ant_glob (["PyNDN/**/*.py"]),
+                 #install_from = "PyNDN",
+                 #install_path = bld.env['PyNDN_install_path'])
 
 @TaskGen.feature('ns3fullmoduleheaders')
 @TaskGen.after_method('process_rule')

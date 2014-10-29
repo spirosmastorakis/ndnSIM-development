@@ -33,6 +33,8 @@
 #include <boost/lambda/bind.hpp>
 namespace ll = boost::lambda;
 
+using ::ndn::Name;
+
 NS_LOG_COMPONENT_DEFINE ("ndn.fib.Entry");
 
 namespace ns3 {

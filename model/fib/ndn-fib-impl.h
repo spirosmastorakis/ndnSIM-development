@@ -23,6 +23,8 @@
 
 #include "ns3/ndn-fib.h"
 #include <ndn-cxx/name.hpp>
+#include <ndn-cxx/common.hpp>
+#include <ndn-cxx/interest.hpp>
 
 #include "../../utils/trie/trie-with-policy.h"
 #include "../../utils/trie/counting-policy.h"
@@ -39,12 +41,12 @@ class EntryImpl : public Entry
 {
 public:
   typedef ndnSIM::trie_with_policy<
-    Name,
+    ::ndn::Name,
     ndnSIM::smart_pointer_payload_traits<EntryImpl>,
     ndnSIM::counting_policy_traits
     > trie;
 
-  EntryImpl (Ptr<Fib> fib, const Ptr<const Name> &prefix)
+  EntryImpl (Ptr<Fib> fib, const ::ndn::shared_ptr<const ::ndn::Name> &prefix)
     : Entry (fib, prefix)
     , item_ (0)
   {
@@ -58,7 +60,7 @@ public:
 
   trie::iterator to_iterator () { return item_; }
   trie::const_iterator to_iterator () const { return item_; }
-  
+
 private:
   trie::iterator item_;
 };
@@ -68,15 +70,15 @@ private:
  * \brief Class implementing FIB functionality
  */
 class FibImpl : public Fib,
-                protected ndnSIM::trie_with_policy< Name,
+                protected ndnSIM::trie_with_policy< ::ndn::Name,
                                                     ndnSIM::smart_pointer_payload_traits< EntryImpl >,
                                                     ndnSIM::counting_policy_traits >
 {
 public:
-  typedef ndnSIM::trie_with_policy< Name,
+  typedef ndnSIM::trie_with_policy< ::ndn::Name,
                                     ndnSIM::smart_pointer_payload_traits<EntryImpl>,
                                     ndnSIM::counting_policy_traits > super;
-  
+
   /**
    * \brief Interface ID
    *
@@ -90,23 +92,23 @@ public:
   FibImpl ();
 
   virtual Ptr<Entry>
-  LongestPrefixMatch (const Interest &interest);
+  LongestPrefixMatch (const ::ndn::Interest &interest);
 
   virtual Ptr<fib::Entry>
-  Find (const Name &prefix);
-  
-  virtual Ptr<Entry>
-  Add (const Name &prefix, Ptr<Face> face, int32_t metric);
+  Find (const ::ndn::Name &prefix);
 
   virtual Ptr<Entry>
-  Add (const Ptr<const Name> &prefix, Ptr<Face> face, int32_t metric);
+  Add (const ::ndn::Name &prefix, Ptr<Face> face, int32_t metric);
+
+  virtual Ptr<Entry>
+  Add (const ::ndn::shared_ptr<const ::ndn::Name> &prefix, Ptr<Face> face, int32_t metric);
 
   virtual void
-  Remove (const Ptr<const Name> &prefix);
+  Remove (const ::ndn::shared_ptr<const ::ndn::Name> &prefix);
 
   virtual void
   InvalidateAll ();
-  
+
   virtual void
   RemoveFromAll (Ptr<Face> face);
 
@@ -130,10 +132,10 @@ public:
 
   virtual Ptr<const Entry>
   Next (Ptr<const Entry> item) const;
-  
+
   virtual Ptr<Entry>
   Next (Ptr<Entry> item);
-  
+
 protected:
   // inherited from Object class
   virtual void NotifyNewAggregate (); ///< @brief Notify when object is aggregated
