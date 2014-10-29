@@ -22,7 +22,7 @@
 
 #include "ns3/ndn-pit.h"
 #include "ns3/ndn-fib.h"
-#include "ns3/ndn-name.h"
+#include <ndn-cxx/name.hpp>
 #include <ndn-cxx/interest.hpp>
 
 #include "ns3/packet.h"
@@ -52,9 +52,9 @@ Entry::Entry (Pit &container,
 
   // UpdateLifetime is (and should) be called from the forwarding strategy
 
-  UpdateLifetime (!(header->getInterestLifetime ().IsZero () ?
-                   header->getInterestLifetime ():
-                   Seconds (1.0)));
+  UpdateLifetime (header->getInterestLifetime () != ::ndn::time::milliseconds (0) ?
+                  MilliSeconds (header->getInterestLifetime ().count ()) :
+                  Seconds (1.0));
 }
 
 Entry::~Entry ()
