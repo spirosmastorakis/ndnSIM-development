@@ -38,7 +38,7 @@ class Header;
 namespace ndn {
 
 class Face;
-class ForwardingStrategy;
+//class ForwardingStrategy;
 
 /**
  * \defgroup ndn ndnSIM: NDN simulation module
@@ -53,7 +53,7 @@ class ForwardingStrategy;
  * the NDN stack implementation:
  * -# register a face (Face-derived object) for use by the NDN
  *    layer
- * 
+ *
  * Each Face-derived object has conceptually a single NDN
  * interface associated with it.
  *
@@ -90,12 +90,12 @@ public:
    * \param face smart pointer to NdnFace-derived object
    * (NdnLocalFace, NdnNetDeviceFace, NdnUdpFace) \returns the
    * index of the Ndn interface added.
-   * 
+   *
    * \see NdnLocalFace, NdnNetDeviceFace, NdnUdpFace
    */
   virtual uint32_t
   AddFace (const Ptr<Face> &face);
-  
+
   /**
    * \brief Get current number of faces added to Ndn stack
    *
@@ -111,7 +111,7 @@ public:
    */
   virtual Ptr<Face>
   GetFace (uint32_t face) const;
-  
+
   /**
    * \brief Get face by face ID
    * \param face The face ID number
@@ -144,14 +144,14 @@ protected:
 private:
   L3Protocol(const L3Protocol &); ///< copy constructor is disabled
   L3Protocol &operator = (const L3Protocol &); ///< copy operator is disabled
-  
+
 private:
   uint32_t m_faceCounter; ///< \brief counter of faces. Increased every time a new face is added to the stack
   FaceList m_faces; ///< \brief list of faces that belongs to ndn stack on this node
 
   // These objects are aggregated, but for optimization, get them here
   Ptr<Node> m_node; ///< \brief node on which ndn stack is installed
-  Ptr<ForwardingStrategy> m_forwardingStrategy; ///< \brief smart pointer to the selected forwarding strategy
+  //Ptr<ForwardingStrategy> m_forwardingStrategy; ///< \brief smart pointer to the selected forwarding strategy
 };
 
 } // namespace ndn

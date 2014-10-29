@@ -28,7 +28,7 @@
 #include "ns3/channel.h"
 #include "ns3/log.h"
 
-#include "ns3/ndn-l3-protocol.h"
+#include "ns3/ndn-forwarder.h"
 #include "ns3/ndn-net-device-face.h"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.LinkControlHelper");
@@ -40,10 +40,10 @@ void
 LinkControlHelper::FailLink (Ptr<Node> node1, Ptr<Node> node2)
 {
   NS_LOG_FUNCTION (node1 << node2);
-  
+
   NS_ASSERT (node1 != 0);
   NS_ASSERT (node2 != 0);
-  
+
   Ptr<ndn::L3Protocol> ndn1 = node1->GetObject<ndn::L3Protocol> ();
   Ptr<ndn::L3Protocol> ndn2 = node2->GetObject<ndn::L3Protocol> ();
 
@@ -92,7 +92,7 @@ LinkControlHelper::UpLink (Ptr<Node> node1, Ptr<Node> node2)
 
   NS_ASSERT (node1 != 0);
   NS_ASSERT (node2 != 0);
-  
+
   Ptr<ndn::L3Protocol> ndn1 = node1->GetObject<ndn::L3Protocol> ();
   Ptr<ndn::L3Protocol> ndn2 = node2->GetObject<ndn::L3Protocol> ();
 
