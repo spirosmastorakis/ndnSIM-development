@@ -26,8 +26,8 @@
 #include <ndn-cxx/common.hpp>
 #include <ndn-cxx/interest.hpp>
 
-#include "../../utils/trie/trie-with-policy.h"
-#include "../../utils/trie/counting-policy.h"
+//#include "../../utils/trie/trie-with-policy.h"
+//#include "../../utils/trie/counting-policy.h"
 
 namespace ns3 {
 namespace ndn {
@@ -39,7 +39,7 @@ namespace fib {
  */
 class EntryImpl : public Entry
 {
-public:
+public: /*
   typedef ndnSIM::trie_with_policy<
     ::ndn::Name,
     ndnSIM::smart_pointer_payload_traits<EntryImpl>,
@@ -62,23 +62,23 @@ public:
   trie::const_iterator to_iterator () const { return item_; }
 
 private:
-  trie::iterator item_;
+  trie::iterator item_; */
 };
 
 /**
  * @ingroup ndn-fib
  * \brief Class implementing FIB functionality
  */
-class FibImpl : public Fib,
+class FibImpl /*: public Fib,
                 protected ndnSIM::trie_with_policy< ::ndn::Name,
                                                     ndnSIM::smart_pointer_payload_traits< EntryImpl >,
-                                                    ndnSIM::counting_policy_traits >
+                                                    ndnSIM::counting_policy_traits > */
 {
-public:
+public: /*
   typedef ndnSIM::trie_with_policy< ::ndn::Name,
                                     ndnSIM::smart_pointer_payload_traits<EntryImpl>,
                                     ndnSIM::counting_policy_traits > super;
-
+    */
   /**
    * \brief Interface ID
    *
@@ -145,9 +145,9 @@ private:
   /**
    * @brief Remove reference to a face from the entry. If entry had only this face, the whole
    * entry will be removed
-   */
+   */ /*
   void
-  RemoveFace (super::parent_trie &item, Ptr<Face> face);
+  RemoveFace (super::parent_trie &item, Ptr<Face> face); */
 };
 
 } // namespace fib

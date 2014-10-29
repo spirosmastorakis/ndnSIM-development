@@ -1,6 +1,6 @@
 /* -*- Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil -*- */
 /*
- * Copyright (c) 2011 University of California, Los Angeles 
+ * Copyright (c) 2011 University of California, Los Angeles
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -43,13 +43,13 @@ namespace fib {
 
 NS_OBJECT_ENSURE_REGISTERED (FibImpl);
 
-TypeId 
+TypeId
 FibImpl::GetTypeId (void)
 {
   static TypeId tid = TypeId ("ns3::ndn::fib::Default") // cheating ns3 object system
     .SetParent<Fib> ()
     .SetGroupName ("Ndn")
-    .AddConstructor<FibImpl> ()
+    //.AddConstructor<FibImpl> ()
   ;
   return tid;
 }
@@ -60,51 +60,51 @@ FibImpl::FibImpl ()
 
 void
 FibImpl::NotifyNewAggregate ()
-{
-  Object::NotifyNewAggregate ();
+{ /*
+  Object::NotifyNewAggregate (); */
 }
 
-void 
+void
 FibImpl::DoDispose (void)
-{
+{ /*
   clear ();
-  Object::DoDispose ();
+  Object::DoDispose (); */
 }
 
 
 Ptr<Entry>
-FibImpl::LongestPrefixMatch (const Interest &interest)
-{
-  super::iterator item = super::longest_prefix_match (interest.GetName ());
+FibImpl::LongestPrefixMatch (const ::ndn::Interest &interest)
+{ /*
+  super::iterator item = super::longest_prefix_match (interest.getName ());
   // @todo use predicate to search with exclude filters
 
   if (item == super::end ())
     return 0;
   else
-    return item->payload ();
+    return item->payload (); */
 }
 
 Ptr<fib::Entry>
-FibImpl::Find (const Name &prefix)
-{
+FibImpl::Find (const ::ndn::Name &prefix)
+{ /*
   super::iterator item = super::find_exact (prefix);
 
   if (item == super::end ())
     return 0;
   else
-    return item->payload ();
+    return item->payload (); */
 }
 
 
 Ptr<Entry>
-FibImpl::Add (const Name &prefix, Ptr<Face> face, int32_t metric)
+FibImpl::Add (const ::ndn::Name &prefix, Ptr<Face> face, int32_t metric)
 {
-  return Add (Create<Name> (prefix), face, metric);
+  //return Add (::ndn::shared_ptr< ::ndn::Name> (prefix), face, metric);
 }
-  
+
 Ptr<Entry>
-FibImpl::Add (const shared_ptr<const Name> &prefix, Ptr<Face> face, int32_t metric)
-{
+FibImpl::Add (const ::ndn::shared_ptr<const ::ndn::Name> &prefix, Ptr<Face> face, int32_t metric)
+{ /*
   NS_LOG_FUNCTION (this->GetObject<Node> ()->GetId () << boost::cref(*prefix) << boost::cref(*face) << metric);
 
   // will add entry if doesn't exists, or just return an iterator to the existing entry
@@ -117,7 +117,7 @@ FibImpl::Add (const shared_ptr<const Name> &prefix, Ptr<Face> face, int32_t metr
           newEntry->SetTrie (result.first);
           result.first->set_payload (newEntry);
         }
-  
+
       super::modify (result.first,
                      ll::bind (&Entry::AddOrUpdateRoutingMetric, ll::_1, face, metric));
 
@@ -127,16 +127,16 @@ FibImpl::Add (const shared_ptr<const Name> &prefix, Ptr<Face> face, int32_t metr
           NS_ASSERT (this->GetObject<ForwardingStrategy> () != 0);
           this->GetObject<ForwardingStrategy> ()->DidAddFibEntry (result.first->payload ());
         }
-      
+
       return result.first->payload ();
     }
   else
-    return 0;
+    return 0; */
 }
 
 void
-FibImpl::Remove (const Ptr<const Name> &prefix)
-{
+FibImpl::Remove (const ::ndn::shared_ptr<const ::ndn::Name> &prefix)
+{ /*
   NS_LOG_FUNCTION (this->GetObject<Node> ()->GetId () << boost::cref(*prefix));
 
   super::iterator fibEntry = super::find_exact (*prefix);
@@ -148,7 +148,7 @@ FibImpl::Remove (const Ptr<const Name> &prefix)
 
       super::erase (fibEntry);
     }
-  // else do nothing
+    // else do nothing */
 }
 
 // void
@@ -159,7 +159,7 @@ FibImpl::Remove (const Ptr<const Name> &prefix)
 //   super::iterator foundItem, lastItem;
 //   bool reachLast;
 //   boost::tie (foundItem, reachLast, lastItem) = super::getTrie ().find (*prefix);
-  
+
 //   if (!reachLast || lastItem->payload () == 0)
 //     return; // nothing to invalidate
 
@@ -169,7 +169,7 @@ FibImpl::Remove (const Ptr<const Name> &prefix)
 
 void
 FibImpl::InvalidateAll ()
-{
+{ /*
   NS_LOG_FUNCTION (this->GetObject<Node> ()->GetId ());
 
   super::parent_trie::recursive_iterator item (super::getTrie ());
@@ -180,9 +180,10 @@ FibImpl::InvalidateAll ()
 
       super::modify (&(*item),
                      ll::bind (&Entry::Invalidate, ll::_1));
-    }
+    } */
 }
 
+/*
 void
 FibImpl::RemoveFace (super::parent_trie &item, Ptr<Face> face)
 {
@@ -190,12 +191,12 @@ FibImpl::RemoveFace (super::parent_trie &item, Ptr<Face> face)
   NS_LOG_FUNCTION (this);
 
   super::modify (&item,
-                 ll::bind (&Entry::RemoveFace, ll::_1, face));
+    ll::bind (&Entry::RemoveFace, ll::_1, face));
 }
-
+*/
 void
 FibImpl::RemoveFromAll (Ptr<Face> face)
-{
+{ /*
   NS_LOG_FUNCTION (this);
 
   Ptr<Entry> entry = Begin ();
@@ -217,12 +218,12 @@ FibImpl::RemoveFromAll (Ptr<Face> face)
         {
           entry = Next (entry);
         }
-    }
+    } */
 }
 
 void
 FibImpl::Print (std::ostream &os) const
-{
+{ /*
   // !!! unordered_set imposes "random" order of item in the same level !!!
   super::parent_trie::const_recursive_iterator item (super::getTrie ());
   super::parent_trie::const_recursive_iterator end (0);
@@ -231,18 +232,18 @@ FibImpl::Print (std::ostream &os) const
       if (item->payload () == 0) continue;
 
       os << item->payload ()->GetPrefix () << "\t" << *item->payload () << "\n";
-    }
+    } */
 }
 
 uint32_t
 FibImpl::GetSize () const
 {
-  return super::getPolicy ().size ();
+  //return super::getPolicy ().size ();
 }
 
 Ptr<const Entry>
 FibImpl::Begin () const
-{
+{ /*
   super::parent_trie::const_recursive_iterator item (super::getTrie ());
   super::parent_trie::const_recursive_iterator end (0);
   for (; item != end; item++)
@@ -254,20 +255,20 @@ FibImpl::Begin () const
   if (item == end)
     return End ();
   else
-    return item->payload ();
+    return item->payload (); */
 }
 
 Ptr<const Entry>
 FibImpl::End () const
 {
-  return 0;
+  //return 0;
 }
 
 Ptr<const Entry>
 FibImpl::Next (Ptr<const Entry> from) const
-{
+{ /*
   if (from == 0) return 0;
-  
+
   super::parent_trie::const_recursive_iterator item (*StaticCast<const EntryImpl> (from)->to_iterator ());
   super::parent_trie::const_recursive_iterator end (0);
   for (item++; item != end; item++)
@@ -279,12 +280,12 @@ FibImpl::Next (Ptr<const Entry> from) const
   if (item == end)
     return End ();
   else
-    return item->payload ();
+    return item->payload (); */
 }
 
 Ptr<Entry>
 FibImpl::Begin ()
-{
+{ /*
   super::parent_trie::recursive_iterator item (super::getTrie ());
   super::parent_trie::recursive_iterator end (0);
   for (; item != end; item++)
@@ -296,20 +297,20 @@ FibImpl::Begin ()
   if (item == end)
     return End ();
   else
-    return item->payload ();
+    return item->payload (); */
 }
 
 Ptr<Entry>
 FibImpl::End ()
 {
-  return 0;
+  //return 0;
 }
 
 Ptr<Entry>
 FibImpl::Next (Ptr<Entry> from)
-{
+{ /*
   if (from == 0) return 0;
-  
+
   super::parent_trie::recursive_iterator item (*StaticCast<EntryImpl> (from)->to_iterator ());
   super::parent_trie::recursive_iterator end (0);
   for (item++; item != end; item++)
@@ -321,7 +322,7 @@ FibImpl::Next (Ptr<Entry> from)
   if (item == end)
     return End ();
   else
-    return item->payload ();
+    return item->payload (); */
 }
 
 
