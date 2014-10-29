@@ -25,18 +25,18 @@
 
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
-#include "ns3/ndn-l3-protocol.h"
-#include "ns3/ndn-fib.h"
+#include "ns3/ndn-forwarder.h"
+//#include "ns3/ndn-fib.h"
 #include "ns3/ndn-app-face.h"
-#include "ns3/ndn-forwarding-strategy.h"
+//#include "ns3/ndn-forwarding-strategy.h"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.App");
 
 namespace ns3 {
 namespace ndn {
-    
+
 NS_OBJECT_ENSURE_REGISTERED (App);
-    
+
 TypeId
 App::GetTypeId (void)
 {
@@ -44,13 +44,13 @@ App::GetTypeId (void)
     .SetGroupName ("Ndn")
     .SetParent<Application> ()
     .AddConstructor<App> ()
-
+    /*
     .AddTraceSource ("ReceivedInterests", "ReceivedInterests",
                     MakeTraceSourceAccessor (&App::m_receivedInterests))
-    
+
     .AddTraceSource ("ReceivedNacks", "ReceivedNacks",
                     MakeTraceSourceAccessor (&App::m_receivedNacks))
-    
+
     .AddTraceSource ("ReceivedDatas", "ReceivedDatas",
                     MakeTraceSourceAccessor (&App::m_receivedDatas))
 
@@ -58,17 +58,17 @@ App::GetTypeId (void)
                     MakeTraceSourceAccessor (&App::m_transmittedInterests))
 
     .AddTraceSource ("TransmittedDatas", "TransmittedDatas",
-                    MakeTraceSourceAccessor (&App::m_transmittedDatas))
+                    MakeTraceSourceAccessor (&App::m_transmittedDatas)) */
     ;
   return tid;
 }
-    
+
 App::App ()
   : m_active (false)
   , m_face (0)
 {
 }
-    
+
 App::~App ()
 {
 }
@@ -80,7 +80,7 @@ App::DoDispose (void)
 
   // Unfortunately, this causes SEGFAULT
   // The best reason I see is that apps are freed after ndn stack is removed
-  // StopApplication ();  
+  // StopApplication ();
   Application::DoDispose ();
 }
 
@@ -94,55 +94,55 @@ App::GetId () const
 }
 
 void
-App::OnInterest (Ptr<const Interest> interest)
+App::OnInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
 {
-  NS_LOG_FUNCTION (this << interest);
-  m_receivedInterests (interest, this, m_face);
+  //NS_LOG_FUNCTION (this << interest);
+  //m_receivedInterests (interest, this, m_face);
 }
-
+/*
 void
-App::OnNack (Ptr<const Interest> interest)
+App::OnNack (::ndn::shared_ptr<const ::ndn::Interest> interest)
 {
-  NS_LOG_FUNCTION (this << interest);
-  m_receivedNacks (interest, this, m_face);
+  //NS_LOG_FUNCTION (this << interest);
+  //m_receivedNacks (interest, this, m_face);
 }
-
+*/
 void
-App::OnData (Ptr<const Data> contentObject)
+App::OnData (::ndn::shared_ptr<const ::ndn::Data> contentObject)
 {
-  NS_LOG_FUNCTION (this << contentObject);
-  m_receivedDatas (contentObject, this, m_face);
+  //NS_LOG_FUNCTION (this << contentObject);
+  //m_receivedDatas (contentObject, this, m_face);
 }
 
 // Application Methods
-void 
+void
 App::StartApplication () // Called at time specified by Start
 {
-  NS_LOG_FUNCTION_NOARGS ();
-  
-  NS_ASSERT (m_active != true);
-  m_active = true;
+  //NS_LOG_FUNCTION_NOARGS ();
 
-  NS_ASSERT_MSG (GetNode ()->GetObject<L3Protocol> () != 0,
-                 "Ndn stack should be installed on the node " << GetNode ());
+  //NS_ASSERT (m_active != true);
+  //m_active = true;
+
+  //NS_ASSERT_MSG (GetNode ()->GetObject<L3Protocol> () != 0,
+  //"Ndn stack should be installed on the node " << GetNode ());
 
   // step 1. Create a face
-  m_face = CreateObject<AppFace> (/*Ptr<App> (this)*/this);
-    
+  //m_face = CreateObject<AppFace> (/*Ptr<App> (this)*/this);
+
   // step 2. Add face to the Ndn stack
-  GetNode ()->GetObject<L3Protocol> ()->AddFace (m_face);
+  //GetNode ()->GetObject<L3Protocol> ()->AddFace (m_face);
 
   // step 3. Enable face
-  m_face->SetUp (true);
+  //m_face->SetUp (true);
 }
-    
-void 
+
+void
 App::StopApplication () // Called at time specified by Stop
-{
+{ /*
   NS_LOG_FUNCTION_NOARGS ();
 
   if (!m_active) return; //don't assert here, just return
- 
+
   NS_ASSERT (GetNode ()->GetObject<L3Protocol> () != 0);
 
   m_active = false;
@@ -164,7 +164,7 @@ App::StopApplication () // Called at time specified by Stop
   // NS_ASSERT_MSG (m_face->GetReferenceCount ()==2,
   //               "At this point, nobody else should have referenced this face, but we have "
   //               << m_face->GetReferenceCount () << " references");
-  m_face = 0;
+  m_face = 0; */
 }
 
 } // namespace ndn

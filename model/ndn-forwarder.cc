@@ -32,12 +32,12 @@
 #include "ns3/simulator.h"
 #include "ns3/random-variable.h"
 
-#include "ns3/ndn-pit.h"
+//#include "ns3/ndn-pit.h"
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
 
 #include "ns3/ndn-face.h"
-#include "ns3/ndn-forwarding-strategy.h"
+//#include "ns3/ndn-forwarding-strategy.h"
 
 #include "ndn-net-device-face.h"
 
@@ -92,16 +92,16 @@ L3Protocol::NotifyNewAggregate ()
       m_node = GetObject<Node> ();
       if (m_node != 0)
         {
-          NS_ASSERT_MSG (m_forwardingStrategy != 0,
-                         "Forwarding strategy should be aggregated before L3Protocol");
+          //NS_ASSERT_MSG (m_forwardingStrategy != 0,
+          //            "Forwarding strategy should be aggregated before L3Protocol");
         }
-    }
+    }/*
   if (m_forwardingStrategy == 0)
     {
       m_forwardingStrategy = GetObject<ForwardingStrategy> ();
     }
 
-  Object::NotifyNewAggregate ();
+  Object::NotifyNewAggregate ();*/
 }
 
 void
@@ -117,7 +117,7 @@ L3Protocol::DoDispose (void)
   m_node = 0;
 
   // Force delete on objects
-  m_forwardingStrategy = 0; // there is a reference to PIT stored in here
+  //m_forwardingStrategy = 0; // there is a reference to PIT stored in here
 
   Object::DoDispose ();
 }
@@ -130,13 +130,13 @@ L3Protocol::AddFace (const Ptr<Face> &face)
   face->SetId (m_faceCounter); // sets a unique ID of the face. This ID serves only informational purposes
 
   // ask face to register in lower-layer stack
-  face->RegisterProtocolHandlers (MakeCallback (&ForwardingStrategy::OnInterest, m_forwardingStrategy),
-                                  MakeCallback (&ForwardingStrategy::OnData, m_forwardingStrategy));
+  //face->RegisterProtocolHandlers (MakeCallback (&ForwardingStrategy::OnInterest, m_forwardingStrategy),
+  //MakeCallback (&ForwardingStrategy::OnData, m_forwardingStrategy));
 
   m_faces.push_back (face);
   m_faceCounter++;
 
-  m_forwardingStrategy->AddFace (face); // notify that face is added
+  //m_forwardingStrategy->AddFace (face); // notify that face is added
   return face->GetId ();
 }
 
@@ -146,25 +146,25 @@ L3Protocol::RemoveFace (Ptr<Face> face)
   NS_LOG_FUNCTION (this << boost::cref (*face));
   // ask face to register in lower-layer stack
   face->UnRegisterProtocolHandlers ();
-  Ptr<Pit> pit = GetObject<Pit> ();
+  //Ptr<Pit> pit = GetObject<Pit> ();
 
   // just to be on a safe side. Do the process in two steps
-  std::list< Ptr<pit::Entry> > entriesToRemoves;
-  for (Ptr<pit::Entry> pitEntry = pit->Begin (); pitEntry != 0; pitEntry = pit->Next (pitEntry))
+  //std::list< Ptr<pit::Entry> > entriesToRemoves;
+  //for (Ptr<pit::Entry> pitEntry = pit->Begin (); pitEntry != 0; pitEntry = pit->Next (pitEntry))
     {
-      pitEntry->RemoveAllReferencesToFace (face);
+      //pitEntry->RemoveAllReferencesToFace (face);
 
       // If this face is the only for the associated FIB entry, then FIB entry will be removed soon.
       // Thus, we have to remove the whole PIT entry
-      if (pitEntry->GetFibEntry ()->m_faces.size () == 1 &&
-          pitEntry->GetFibEntry ()->m_faces.begin ()->GetFace () == face)
+      //if (pitEntry->GetFibEntry ()->m_faces.size () == 1 &&
+        //pitEntry->GetFibEntry ()->m_faces.begin ()->GetFace () == face)
         {
-          entriesToRemoves.push_back (pitEntry);
+          //entriesToRemoves.push_back (pitEntry);
         }
     }
-  BOOST_FOREACH (Ptr<pit::Entry> removedEntry, entriesToRemoves)
+    //BOOST_FOREACH (Ptr<pit::Entry> removedEntry, entriesToRemoves)
     {
-      pit->MarkErased (removedEntry);
+      //pit->MarkErased (removedEntry);
     }
 
   FaceList::iterator face_it = find (m_faces.begin(), m_faces.end(), face);
@@ -174,8 +174,8 @@ L3Protocol::RemoveFace (Ptr<Face> face)
     }
   m_faces.erase (face_it);
 
-  GetObject<Fib> ()->RemoveFromAll (face);
-  m_forwardingStrategy->RemoveFace (face); // notify that face is removed
+  //GetObject<Fib> ()->RemoveFromAll (face);
+  //m_forwardingStrategy->RemoveFace (face); // notify that face is removed
 }
 
 Ptr<Face>

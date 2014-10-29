@@ -30,7 +30,7 @@
 #include "../model/ndn-net-device-face.h"
 #include "../model/ndn-global-router.h"
 #include <ndn-cxx/name.hpp>
-#include "ns3/ndn-fib.h"
+//#include "ns3/ndn-fib.h"
 
 #include "ns3/node.h"
 #include "ns3/node-container.h"
@@ -276,14 +276,14 @@ GlobalRoutingHelper::CalculateRoutes (bool invalidatedRoutes/* = true*/)
 			       );
 
       // NS_LOG_DEBUG (predecessors.size () << ", " << distances.size ());
-
+      /*
       Ptr<Fib>  fib  = source->GetObject<Fib> ();
       if (invalidatedRoutes)
         {
           fib->InvalidateAll ();
         }
       NS_ASSERT (fib != 0);
-
+*/
       NS_LOG_DEBUG ("Reachability from Node: " << source->GetObject<Node> ()->GetId ());
       for (DistancesMap::iterator i = distances.begin ();
 	   i != distances.end ();
@@ -306,20 +306,19 @@ GlobalRoutingHelper::CalculateRoutes (bool invalidatedRoutes/* = true*/)
                                     << " with distance " << i->second.get<1> ()
                                     << " with delay " << i->second.get<2> ());
 
-                      Ptr<fib::Entry> entry = fib->Add (prefix, i->second.get<0> (), i->second.get<1> ());
-                      entry->SetRealDelayToProducer (i->second.get<0> (), Seconds (i->second.get<2> ()));
+                      //Ptr<fib::Entry> entry = fib->Add (prefix, i->second.get<0> (), i->second.get<1> ());
+                      //entry->SetRealDelayToProducer (i->second.get<0> (), Seconds (i->second.get<2> ()));
 
-                      Ptr<Limits> faceLimits = i->second.get<0> ()->GetObject<Limits> ();
+                      //Ptr<Limits> faceLimits = i->second.get<0> ()->GetObject<Limits> ();
 
-                      Ptr<Limits> fibLimits = entry->GetObject<Limits> ();
-                      if (fibLimits != 0)
-                        {
+                      // Ptr<Limits> fibLimits = entry->GetObject<Limits> ();
+                      //if (fibLimits != 0)
+                        //{
                           // if it was created by the forwarding strategy via DidAddFibEntry event
-                          fibLimits->SetLimits (faceLimits->GetMaxRate (), 2 * i->second.get<2> () /*exact RTT*/);
-                          NS_LOG_DEBUG ("Set limit for prefix " << *prefix << " " << faceLimits->GetMaxRate () << " / " <<
-                                        2*i->second.get<2> () << "s (" << faceLimits->GetMaxRate () * 2 * i->second.get<2> () << ")");
-                        }
-                    }
+                          //fibLimits->SetLimits (faceLimits->GetMaxRate (), 2 * i->second.get<2> () /*exact RTT*/);
+                  //NS_LOG_DEBUG ("Set limit for prefix " << *prefix << " " << faceLimits->GetMaxRate () << " / " << 2*i->second.get<2> () << "s (" << faceLimits->GetMaxRate () * 2 * i->second.get<2> () << ")");
+                      //}
+                  }
 		}
 	    }
 	}
@@ -352,12 +351,12 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes (bool invalidatedRoutes/* = true
 	  continue;
 	}
 
-      Ptr<Fib>  fib  = source->GetObject<Fib> ();
+      //Ptr<Fib>  fib  = source->GetObject<Fib> ();
       if (invalidatedRoutes)
         {
-          fib->InvalidateAll ();
+          //fib->InvalidateAll ();
         }
-      NS_ASSERT (fib != 0);
+      //NS_ASSERT (fib != 0);
 
       NS_LOG_DEBUG ("===========");
       NS_LOG_DEBUG ("Reachability from Node: " << source->GetObject<Node> ()->GetId () << " (" << Names::FindName (source->GetObject<Node> ()) << ")");
@@ -425,19 +424,18 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes (bool invalidatedRoutes/* = true
                           if (i->second.get<0> ()->GetMetric () == std::numeric_limits<uint16_t>::max ()-1)
                             continue;
 
-                          Ptr<fib::Entry> entry = fib->Add (prefix, i->second.get<0> (), i->second.get<1> ());
-                          entry->SetRealDelayToProducer (i->second.get<0> (), Seconds (i->second.get<2> ()));
+                          //Ptr<fib::Entry> entry = fib->Add (prefix, i->second.get<0> (), i->second.get<1> ());
+                          //entry->SetRealDelayToProducer (i->second.get<0> (), Seconds (i->second.get<2> ()));
 
-                          Ptr<Limits> faceLimits = i->second.get<0> ()->GetObject<Limits> ();
+                          //Ptr<Limits> faceLimits = i->second.get<0> ()->GetObject<Limits> ();
 
-                          Ptr<Limits> fibLimits = entry->GetObject<Limits> ();
-                          if (fibLimits != 0)
-                            {
+                          //Ptr<Limits> fibLimits = entry->GetObject<Limits> ();
+                          //if (fibLimits != 0)
+                          //{
                               // if it was created by the forwarding strategy via DidAddFibEntry event
-                              fibLimits->SetLimits (faceLimits->GetMaxRate (), 2 * i->second.get<2> () /*exact RTT*/);
-                              NS_LOG_DEBUG ("Set limit for prefix " << *prefix << " " << faceLimits->GetMaxRate () << " / " <<
-                                            2*i->second.get<2> () << "s (" << faceLimits->GetMaxRate () * 2 * i->second.get<2> () << ")");
-                            }
+                              //fibLimits->SetLimits (faceLimits->GetMaxRate (), 2 * i->second.get<2> () /*exact RTT*/);
+                              //NS_LOG_DEBUG ("Set limit for prefix " << *prefix << " " << faceLimits->GetMaxRate () << " / " << 2*i->second.get<2> () << "s (" << faceLimits->GetMaxRate () * 2 * i->second.get<2> () << ")");
+                          //}
                         }
                     }
                 }

@@ -22,7 +22,7 @@
 #include "ndn-tcp-face.h"
 #include "ndn-ip-face-stack.h"
 
-#include "ns3/ndn-l3-protocol.h"
+#include "ns3/ndn-forwarder.h"
 
 #include "ns3/log.h"
 #include "ns3/packet.h"
@@ -55,11 +55,11 @@ public:
     : m_length (0)
   {
   }
-  
+
   TcpBoundaryHeader (Ptr<Packet> packet)
     : m_length (packet->GetSize ())
   {
-    
+
   }
 
   TcpBoundaryHeader (uint32_t length)
@@ -72,31 +72,31 @@ public:
   {
     return m_length;
   }
-  
+
   virtual TypeId
   GetInstanceTypeId (void) const
   {
     return TcpBoundaryHeader::GetTypeId ();
   }
-  
+
   virtual void
   Print (std::ostream &os) const
   {
     os << "[" << m_length << "]";
   }
-  
+
   virtual uint32_t
   GetSerializedSize (void) const
   {
     return 4;
   }
-  
+
   virtual void
   Serialize (Buffer::Iterator start) const
   {
     start.WriteU32 (m_length);
   }
-  
+
   virtual uint32_t
   Deserialize (Buffer::Iterator start)
   {
@@ -166,13 +166,13 @@ TcpFace::Send (Ptr<Packet> packet)
     {
       return false;
     }
-  
+
   NS_LOG_FUNCTION (this << packet);
 
   Ptr<Packet> boundary = Create<Packet> ();
   TcpBoundaryHeader hdr (packet);
   boundary->AddHeader (hdr);
-  
+
   m_socket->Send (boundary);
   m_socket->Send (packet);
 
@@ -193,15 +193,15 @@ TcpFace::ReceiveFromTcp (Ptr< Socket > clientSocket)
           NS_LOG_DEBUG ("+++ Expected " << m_pendingPacketLength << " bytes, got " << realPacket->GetSize () << " bytes");
           if (realPacket == 0)
             return;
-          
+
           Receive (realPacket);
         }
       else
         return; // still not ready
     }
-  
+
   m_pendingPacketLength = 0;
-  
+
   while (clientSocket->GetRxAvailable () >= hdr.GetSerializedSize ())
     {
       Ptr<Packet> boundary = clientSocket->Recv (hdr.GetSerializedSize (), 0);
@@ -209,11 +209,11 @@ TcpFace::ReceiveFromTcp (Ptr< Socket > clientSocket)
         return; // no idea why it would happen...
 
       NS_LOG_DEBUG ("Expected 4 bytes, got " << boundary->GetSize () << " bytes");
-      
+
       boundary->RemoveHeader (hdr);
       NS_LOG_DEBUG ("Header specifies length: " << hdr.GetLength ());
       m_pendingPacketLength = hdr.GetLength ();
-      
+
       if (clientSocket->GetRxAvailable () >= hdr.GetLength ())
         {
           Ptr<Packet> realPacket = clientSocket->Recv (hdr.GetLength (), 0);
@@ -222,7 +222,7 @@ TcpFace::ReceiveFromTcp (Ptr< Socket > clientSocket)
               NS_LOG_DEBUG ("Got nothing, but requested at least " << hdr.GetLength ());
               return;
             }
-          
+
           NS_LOG_DEBUG ("Receiving data " << hdr.GetLength () << " bytes, got " << realPacket->GetSize () << " bytes");
 
           Receive (realPacket);
@@ -260,7 +260,7 @@ TcpFace::OnConnect (Ptr<Socket> socket)
   NS_LOG_FUNCTION (this << socket);
 
   Ptr<L3Protocol> ndn = GetNode ()->GetObject<L3Protocol> ();
-  
+
   ndn->AddFace (this);
   this->SetUp (true);
 
@@ -273,7 +273,7 @@ TcpFace::OnConnect (Ptr<Socket> socket)
       m_onCreateCallback = IpFaceStack::NULL_CREATE_CALLBACK;
     }
 }
-    
+
 std::ostream&
 TcpFace::Print (std::ostream& os) const
 {
@@ -283,4 +283,3 @@ TcpFace::Print (std::ostream& os) const
 
 } // namespace ndn
 } // namespace ns3
-
