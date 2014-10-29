@@ -127,7 +127,7 @@ Face::SendInterest ( ::ndn::shared_ptr<const ::ndn::Interest> interest)
       return false;
     }
 
-  return Send (Wire::FromInterest (interest));
+  //return Send (Wire::FromInterest (interest));
 }
 
 bool
@@ -140,7 +140,7 @@ Face::SendData (::ndn::shared_ptr<const ::ndn::Data> data)
       return false;
     }
 
-  return Send (Wire::FromData (data));
+  //return Send (Wire::FromData (data));
 }
 
 bool
@@ -170,7 +170,7 @@ Face::Receive (Ptr<const Packet> p)
 
   Ptr<Packet> packet = p->Copy (); // give upper layers a rw copy of the packet
   try
-    {
+    { /*
       HeaderHelper::Type type = HeaderHelper::GetNdnHeaderType (packet);
       switch (type)
         {
@@ -185,7 +185,7 @@ Face::Receive (Ptr<const Packet> p)
         default:
           NS_FATAL_ERROR ("Not supported NDN header");
           return false;
-        }
+        } */
 
       // exception will be thrown if packet is not recognized
     }

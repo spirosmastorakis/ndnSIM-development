@@ -20,7 +20,7 @@
 
 #include "ndn-global-router.h"
 
-#include "ns3/ndn-l3-protocol.h"
+#include "ns3/ndn-forwarder.h"
 #include "ns3/ndn-face.h"
 #include <ndn-cxx/name.hpp>
 
@@ -37,7 +37,7 @@ uint32_t GlobalRouter::m_idCounter = 0;
 
 NS_OBJECT_ENSURE_REGISTERED (GlobalRouter);
 
-TypeId 
+TypeId
 GlobalRouter::GetTypeId ()
 {
   static TypeId tid = TypeId ("ns3::ndn::GlobalRouter")
@@ -76,7 +76,7 @@ GlobalRouter::GetL3Protocol () const
 }
 
 void
-GlobalRouter::AddLocalPrefix (Ptr< Name > prefix)
+GlobalRouter::AddLocalPrefix (::ndn::shared_ptr< ::ndn::Name > prefix)
 {
   m_localPrefixes.push_back (prefix);
 }

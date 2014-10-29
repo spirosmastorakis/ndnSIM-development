@@ -37,7 +37,7 @@
 #include "ns3/callback.h"
 
 #include "../model/ndn-net-device-face.h"
-#include "../model/ndn-fowarder.h"
+#include "../model/ndn-forwarder.h"
 
 #include "ns3/ndn-forwarding-strategy.h"
 #include "ns3/ndn-fib.h"
@@ -46,7 +46,7 @@
 #include "ns3/ndn-content-store.h"
 
 #include "ns3/node-list.h"
-// #include "ns3/loopback-net-device.h"
+//#include "ns3/loopback-net-device.h"
 
 #include "ns3/data-rate.h"
 

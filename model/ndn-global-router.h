@@ -26,6 +26,7 @@
 
 #include <list>
 #include <boost/tuple/tuple.hpp>
+#include <ndn-cxx/common.hpp>
 
 namespace ndn {
 namespace name {
@@ -65,8 +66,8 @@ public:
   /**
    * @brief List of locally exported prefixes
    */
-  typedef std::list< Ptr<Name> > LocalPrefixList;
-  
+  typedef std::list< ::ndn::shared_ptr< ::ndn::Name> > LocalPrefixList;
+
   /**
    * \brief Interface ID
    *
@@ -97,7 +98,7 @@ public:
    * @param prefix Prefix
    */
   void
-  AddLocalPrefix (Ptr< Name > prefix);
+  AddLocalPrefix ( ::ndn::shared_ptr< ::ndn::Name > prefix);
 
   /**
    * @brief Add edge to the node
@@ -123,10 +124,10 @@ public:
 protected:
   virtual void
   NotifyNewAggregate (); ///< @brief Notify when the object is aggregated to another object (e.g., Node)
-  
+
 private:
   uint32_t m_id;
-  
+
   Ptr<L3Protocol> m_ndn;
   LocalPrefixList m_localPrefixes;
   IncidencyList m_incidencies;
