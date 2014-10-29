@@ -32,7 +32,7 @@
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
 #include "ns3/ndn-forwarding-strategy.h"
-#include "ns3/ndn-name.h"
+#include <ndn-cxx/name.hpp>
 
 
 namespace ns3 {

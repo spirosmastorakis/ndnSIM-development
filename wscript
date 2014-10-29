@@ -137,8 +137,8 @@ def build(bld):
         "helper/ndn-global-routing-helper.h",
         "helper/ndn-link-control-helper.h",
 
-        "apps/ndn-app.h",
-        "apps/callback-based-app.h",
+#         "apps/ndn-app.h",
+#         "apps/callback-based-app.h",
 
         "model/ndn-common.h",
         "model/ndn-forwarder.h",
