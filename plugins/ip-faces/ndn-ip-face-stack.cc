@@ -22,7 +22,7 @@
 #include "ndn-tcp-face.h"
 #include "ndn-udp-face.h"
 
-#include "ns3/ndn-l3-protocol.h"
+#include "ns3/ndn-forwarder.h"
 
 #include "ns3/log.h"
 #include "ns3/assert.h"

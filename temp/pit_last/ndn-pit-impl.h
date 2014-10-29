@@ -26,7 +26,7 @@
 #include "ns3/log.h"
 #include "ns3/simulator.h"
 
-#include "../../utils/trie/trie-with-policy.h"
+//#include "../../utils/trie/trie-with-policy.h"
 #include "ndn-pit-entry-impl.h"
 
 #include <ndn-cxx/interest.hpp>
@@ -47,21 +47,21 @@ namespace pit {
  * @brief Class implementing Pending Interests Table
  */
 template<class Policy>
-class PitImpl : public Pit
+class PitImpl /*: public Pit
               , protected ndnSIM::trie_with_policy<Name,
                                                    ndnSIM::smart_pointer_payload_traits< EntryImpl< PitImpl< Policy > > >,
                                                    // ndnSIM::persistent_policy_traits
                                                    Policy
-                                                   >
+                                                   > */
 {
-public:
+public: /*
   typedef ndnSIM::trie_with_policy<Name,
                                    ndnSIM::smart_pointer_payload_traits< EntryImpl< PitImpl< Policy > > >,
                                    // ndnSIM::persistent_policy_traits
                                    Policy
                                    > super;
   typedef EntryImpl< PitImpl< Policy > > entry;
-
+        */
   /**
    * \brief Interface ID
    *
@@ -81,13 +81,13 @@ public:
 
   // inherited from Pit
   virtual Ptr<Entry>
-  Lookup (const Data &header);
+  Lookup (const ::ndn::Data &header);
 
   virtual Ptr<Entry>
   Lookup (const ::ndn::Interest &header);
 
   virtual Ptr<Entry>
-  Find (const Name &prefix);
+  Find (const ::ndn::Name &prefix);
 
   virtual Ptr<Entry>
   Create (::ndn::shared_ptr<const ::ndn::Interest> header);
@@ -109,13 +109,13 @@ public:
 
   virtual Ptr<Entry>
   Next (Ptr<Entry>);
-
+  /*
   const typename super::policy_container &
   GetPolicy () const { return super::getPolicy (); }
 
   typename super::policy_container &
   GetPolicy () { return super::getPolicy (); }
-
+  */
 protected:
   void RescheduleCleaning ();
   void CleanExpired ();
@@ -191,7 +191,7 @@ template<class Policy>
 uint32_t
 PitImpl<Policy>::GetCurrentSize () const
 {
-  return super::getPolicy ().size ();
+  //return super::getPolicy ().size ();
 }
 
 template<class Policy>
@@ -208,20 +208,20 @@ template<class Policy>
 uint32_t
 PitImpl<Policy>::GetMaxSize () const
 {
-  return super::getPolicy ().get_max_size ();
+  //return super::getPolicy ().get_max_size ();
 }
 
 template<class Policy>
 void
 PitImpl<Policy>::SetMaxSize (uint32_t maxSize)
 {
-  super::getPolicy ().set_max_size (maxSize);
+  //super::getPolicy ().set_max_size (maxSize);
 }
 
 template<class Policy>
 void
 PitImpl<Policy>::NotifyNewAggregate ()
-{
+{ /*
   if (m_fib == 0)
     {
       m_fib = GetObject<Fib> ();
@@ -231,25 +231,25 @@ PitImpl<Policy>::NotifyNewAggregate ()
       m_forwardingStrategy = GetObject<ForwardingStrategy> ();
     }
 
-  Pit::NotifyNewAggregate ();
+  Pit::NotifyNewAggregate (); */
 }
 
 template<class Policy>
 void
 PitImpl<Policy>::DoDispose ()
-{
+{ /*
   super::clear ();
 
   m_forwardingStrategy = 0;
   m_fib = 0;
 
-  Pit::DoDispose ();
+  Pit::DoDispose (); */
 }
 
 template<class Policy>
 void
 PitImpl<Policy>::RescheduleCleaning ()
-{
+{ /*
   // m_cleanEvent.Cancel ();
   Simulator::Remove (m_cleanEvent); // slower, but better for memory
   if (i_time.empty ())
@@ -266,13 +266,13 @@ PitImpl<Policy>::RescheduleCleaning ()
                 i_time.begin ()->GetExpireTime () << "s abs time");
 
   m_cleanEvent = Simulator::Schedule (nextEvent,
-                                      &PitImpl<Policy>::CleanExpired, this);
+                                      &PitImpl<Policy>::CleanExpired, this); */
 }
 
 template<class Policy>
 void
 PitImpl<Policy>::CleanExpired ()
-{
+{ /*
   NS_LOG_LOGIC ("Cleaning PIT. Total: " << i_time.size ());
   Time now = Simulator::Now ();
 
@@ -295,26 +295,26 @@ PitImpl<Policy>::CleanExpired ()
       NS_LOG_DEBUG ("Size: " << super::getPolicy ().size ());
       NS_LOG_DEBUG ("i_time size: " << i_time.size ());
     }
-  RescheduleCleaning ();
+  RescheduleCleaning (); */
 }
 
 template<class Policy>
 Ptr<Entry>
 PitImpl<Policy>::Lookup (const Data &header)
-{
+{ /*
   /// @todo use predicate to search with exclude filters
   typename super::iterator item = super::longest_prefix_match_if (header.GetName (), EntryIsNotEmpty ());
 
   if (item == super::end ())
     return 0;
   else
-    return item->payload (); // which could also be 0
+    return item->payload (); // which could also be 0 */
 }
 
 template<class Policy>
 Ptr<Entry>
 PitImpl<Policy>::Lookup (const ::ndn::Interest &header)
-{
+{ /*
   // NS_LOG_FUNCTION (header.GetName ());
   NS_ASSERT_MSG (m_fib != 0, "FIB should be set");
   NS_ASSERT_MSG (m_forwardingStrategy != 0, "Forwarding strategy  should be set");
@@ -326,26 +326,26 @@ PitImpl<Policy>::Lookup (const ::ndn::Interest &header)
   if (!reachLast || lastItem == super::end ())
     return 0;
   else
-    return lastItem->payload (); // which could also be 0
+    return lastItem->payload (); // which could also be 0 */
 }
 
 template<class Policy>
 Ptr<Entry>
 PitImpl<Policy>::Find (const Name &prefix)
-{
+{ /*
   typename super::iterator item = super::find_exact (prefix);
 
   if (item == super::end ())
     return 0;
   else
-    return item->payload ();
+    return item->payload (); */
 }
 
 
 template<class Policy>
 Ptr<Entry>
 PitImpl<Policy>::Create (Ptr<const ::ndn::Interest> header)
-{
+{ /*
   NS_LOG_DEBUG (header->GetName ());
   Ptr<fib::Entry> fibEntry = m_fib->LongestPrefixMatch (*header);
   if (fibEntry == 0)
@@ -372,14 +372,14 @@ PitImpl<Policy>::Create (Ptr<const ::ndn::Interest> header)
         }
     }
   else
-    return 0;
+    return 0; */
 }
 
 
 template<class Policy>
 void
 PitImpl<Policy>::MarkErased (Ptr<Entry> item)
-{
+{ /*
   if (this->m_PitEntryPruningTimout.IsZero ())
     {
       super::erase (StaticCast< entry > (item)->to_iterator ());
@@ -387,14 +387,14 @@ PitImpl<Policy>::MarkErased (Ptr<Entry> item)
   else
     {
       item->OffsetLifetime (this->m_PitEntryPruningTimout - item->GetExpireTime () + Simulator::Now ());
-    }
+    } */
 }
 
 
 template<class Policy>
 void
 PitImpl<Policy>::Print (std::ostream& os) const
-{
+{ /*
   // !!! unordered_set imposes "random" order of item in the same level !!!
   typename super::parent_trie::const_recursive_iterator item (super::getTrie ()), end (0);
   for (; item != end; item++)
@@ -402,20 +402,20 @@ PitImpl<Policy>::Print (std::ostream& os) const
       if (item->payload () == 0) continue;
 
       os << item->payload ()->GetPrefix () << "\t" << *item->payload () << "\n";
-    }
+    } */
 }
 
 template<class Policy>
 uint32_t
 PitImpl<Policy>::GetSize () const
 {
-  return super::getPolicy ().size ();
+  //return super::getPolicy ().size ();
 }
 
 template<class Policy>
 Ptr<Entry>
 PitImpl<Policy>::Begin ()
-{
+{ /*
   typename super::parent_trie::recursive_iterator item (super::getTrie ()), end (0);
   for (; item != end; item++)
     {
@@ -426,20 +426,20 @@ PitImpl<Policy>::Begin ()
   if (item == end)
     return End ();
   else
-    return item->payload ();
+    return item->payload (); */
 }
 
 template<class Policy>
 Ptr<Entry>
 PitImpl<Policy>::End ()
 {
-  return 0;
+  //return 0;
 }
 
 template<class Policy>
 Ptr<Entry>
 PitImpl<Policy>::Next (Ptr<Entry> from)
-{
+{ /*
   if (from == 0) return 0;
 
   typename super::parent_trie::recursive_iterator
@@ -455,7 +455,7 @@ PitImpl<Policy>::Next (Ptr<Entry> from)
   if (item == end)
     return End ();
   else
-    return item->payload ();
+    return item->payload (); */
 }
 
 

@@ -39,11 +39,11 @@
 #include "../model/ndn-net-device-face.h"
 #include "../model/ndn-forwarder.h"
 
-#include "ns3/ndn-forwarding-strategy.h"
-#include "ns3/ndn-fib.h"
-#include "ns3/ndn-pit.h"
+//#include "ns3/ndn-forwarding-strategy.h"
+//#include "ns3/ndn-fib.h"
+//#include "ns3/ndn-pit.h"
 #include <ndn-cxx/name.hpp>
-#include "ns3/ndn-content-store.h"
+//#include "ns3/ndn-content-store.h"
 
 #include "ns3/node-list.h"
 //#include "ns3/loopback-net-device.h"
@@ -223,17 +223,17 @@ StackHelper::Install (Ptr<Node> node) const
   Ptr<L3Protocol> ndn = m_ndnFactory.Create<L3Protocol> ();
 
   // Create and aggregate FIB
-  Ptr<Fib> fib = m_fibFactory.Create<Fib> ();
-  ndn->AggregateObject (fib);
+  //Ptr<Fib> fib = m_fibFactory.Create<Fib> ();
+  //ndn->AggregateObject (fib);
 
   // Create and aggregate PIT
-  ndn->AggregateObject (m_pitFactory.Create<Pit> ());
+  //ndn->AggregateObject (m_pitFactory.Create<Pit> ());
 
   // Create and aggregate forwarding strategy
-  ndn->AggregateObject (m_strategyFactory.Create<ForwardingStrategy> ());
+  //ndn->AggregateObject (m_strategyFactory.Create<ForwardingStrategy> ());
 
   // Create and aggregate content store
-  ndn->AggregateObject (m_contentStoreFactory.Create<ContentStore> ());
+  //ndn->AggregateObject (m_contentStoreFactory.Create<ContentStore> ());
 
   // Aggregate L3Protocol on node
   node->AggregateObject (ndn);
@@ -335,12 +335,12 @@ StackHelper::PointToPointNetDeviceCallback (Ptr<Node> node, Ptr<L3Protocol> ndn,
 
   if (m_limitsEnabled)
     {
-      Ptr<Limits> limits = face->GetObject<Limits> ();
-      if (limits == 0)
-        {
+      // Ptr<Limits> limits = face->GetObject<Limits> ();
+      /*if (limits == 0)
+      {
           NS_FATAL_ERROR ("Limits are enabled, but the selected forwarding strategy does not support limits. Please revise your scenario");
           exit (1);
-        }
+      }*/
 
       NS_LOG_INFO ("Limits are enabled");
       Ptr<PointToPointNetDevice> p2p = DynamicCast<PointToPointNetDevice> (device);
@@ -358,11 +358,11 @@ StackHelper::PointToPointNetDeviceCallback (Ptr<Node> node, Ptr<L3Protocol> ndn,
           double maxInterestPackets = 1.0  * dataRate.Get ().GetBitRate () / 8.0 / (m_avgDataSize + m_avgInterestSize);
           // NS_LOG_INFO ("Max packets per second: " << maxInterestPackets);
           // NS_LOG_INFO ("Max burst: " << m_avgRtt.ToDouble (Time::S) * maxInterestPackets);
-          NS_LOG_INFO ("MaxLimit: " << (int)(m_avgRtt.ToDouble (Time::S) * maxInterestPackets));
-
+          //         NS_LOG_INFO ("MaxLimit: " << (int)(m_avgRtt.ToDouble (Time::S) * maxInterestPackets));
+          /*
           // Set max to BDP
           limits->SetLimits (maxInterestPackets, m_avgRtt.ToDouble (Time::S));
-          limits->SetLinkDelay (linkDelay.Get ().ToDouble (Time::S));
+          limits->SetLinkDelay (linkDelay.Get ().ToDouble (Time::S)); */
         }
     }
 
@@ -383,11 +383,12 @@ StackHelper::AddRoute (Ptr<Node> node, const std::string &prefix, Ptr<Face> face
 {
   NS_LOG_LOGIC ("[" << node->GetId () << "]$ route add " << prefix << " via " << *face << " metric " << metric);
 
-  Ptr<Fib>  fib  = node->GetObject<Fib> ();
+  //Ptr<Fib>  fib  = node->GetObject<Fib> ();
 
-  NameValue prefixValue;
-  prefixValue.DeserializeFromString (prefix, MakeNameChecker ());
-  fib->Add (prefixValue.Get (), face, metric);
+  //NameValue prefixValue;
+  //prefixValue.DeserializeFromString (prefix, MakeNameChecker ());
+  ::ndn::Name name(prefix);
+  //fib->Add (name, face, metric);
 }
 
 void

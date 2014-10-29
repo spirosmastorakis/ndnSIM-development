@@ -136,8 +136,9 @@ def build(bld):
         "helper/ndn-face-container.h",
         "helper/ndn-global-routing-helper.h",
         "helper/ndn-link-control-helper.h",
+        "helper/ndn-header-helper.h",
 
-#         "apps/ndn-app.h",
+        "apps/ndn-app.h",
 #         "apps/callback-based-app.h",
 
         "model/ndn-common.h",
@@ -148,13 +149,13 @@ def build(bld):
 
 #         "model/cs/ndn-content-store.h",
 
-         "model/fib/ndn-fib.h",
-         "model/fib/ndn-fib-entry.h",
+#         "model/fib/ndn-fib.h",
+#         "model/fib/ndn-fib-entry.h",
 
-         "model/pit/ndn-pit.h",
-         "model/pit/ndn-pit-entry.h",
-         "model/pit/ndn-pit-entry-incoming-face.h",
-         "model/pit/ndn-pit-entry-outgoing-face.h",
+#         "model/pit/ndn-pit.h",
+#         "model/pit/ndn-pit-entry.h",
+#         "model/pit/ndn-pit-entry-incoming-face.h",
+#         "model/pit/ndn-pit-entry-outgoing-face.h",
 
         # "model/fw/ndn-forwarding-strategy.h",
         # "model/fw/ndn-fw-tag.h",

@@ -28,7 +28,7 @@
 #include "ns3/assert.h"
 #include "ns3/simulator.h"
 
-#include "ns3/ndn-header-helper.h"
+//#include "ns3/ndn-header-helper.h"
 #include "ns3/ndn-app.h"
 
 #include <ndn-cxx/interest.hpp>
@@ -52,12 +52,12 @@ AppFace::GetTypeId ()
 }
 
 AppFace::AppFace (Ptr<App> app)
-  : Face (app->GetNode ())
-  , m_app (app)
+: Face (app->GetNode ())
+, m_app (app)
 {
-  NS_LOG_FUNCTION (this << app);
+  //NS_LOG_FUNCTION (this << app);
 
-  NS_ASSERT (m_app != 0);
+  //NS_ASSERT (m_app != 0);
   SetFlags (Face::APPLICATION);
 }
 
@@ -95,7 +95,7 @@ AppFace::SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
   if (interest->GetNack () > 0)
     m_app->OnNack (interest);
   */
-  m_app->OnInterest (interest);
+  //m_app->OnInterest (interest);
 
   return true;
 }
@@ -110,7 +110,7 @@ AppFace::SendData (::ndn::shared_ptr<const ::ndn::Data> data)
       return false;
     }
 
-  m_app->OnData (data);
+  //m_app->OnData (data);
   return true;
 }
 

@@ -19,14 +19,14 @@
  */
 
 #include "ndn-pit-impl.h"
-
+/*
 #include "../../utils/trie/empty-policy.h"
 #include "../../utils/trie/persistent-policy.h"
 #include "../../utils/trie/random-policy.h"
 #include "../../utils/trie/lru-policy.h"
 #include "../../utils/trie/multi-policy.h"
 #include "../../utils/trie/aggregate-stats-policy.h"
-
+*/
 #include "ns3/log.h"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.pit.PitImpl");
@@ -59,7 +59,7 @@ namespace ndn {
 namespace pit {
 
 using namespace ndnSIM;
-
+/*
 template<>
 uint32_t
 PitImpl<serialized_size_policy_traits>::GetCurrentSize () const
@@ -125,7 +125,7 @@ class Lru : public PitImpl<lru_policy_traits> { };
  * @brief A variant of persistent PIT implementation where size of PIT is based on size of interests in bytes (MaxSize parameter)
  */
 class SerializedSize : public PitImpl<serialized_size_policy_traits> { };
-
+*/
 #endif
 
 } // namespace pit
