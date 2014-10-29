@@ -385,9 +385,10 @@ StackHelper::AddRoute (Ptr<Node> node, const std::string &prefix, Ptr<Face> face
 
   Ptr<Fib>  fib  = node->GetObject<Fib> ();
 
-  NameValue prefixValue;
-  prefixValue.DeserializeFromString (prefix, MakeNameChecker ());
-  fib->Add (prefixValue.Get (), face, metric);
+  //NameValue prefixValue;
+  //prefixValue.DeserializeFromString (prefix, MakeNameChecker ());
+  ::ndn::Name name(prefix);
+  fib->Add (name, face, metric);
 }
 
 void
