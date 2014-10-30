@@ -170,22 +170,22 @@ Face::Receive (Ptr<const Packet> p)
 
   Ptr<Packet> packet = p->Copy (); // give upper layers a rw copy of the packet
   try
-    { /*
+    { 
       HeaderHelper::Type type = HeaderHelper::GetNdnHeaderType (packet);
       switch (type)
         {
         case HeaderHelper::INTEREST_NDNSIM:
-          return ReceiveInterest (Wire::ToInterest (packet, Wire::WIRE_FORMAT_NDNSIM));
+          // return ReceiveInterest (Wire::ToInterest (packet, Wire::WIRE_FORMAT_NDNSIM));
         case HeaderHelper::INTEREST_CCNB:
-          return ReceiveInterest (Wire::ToInterest (packet, Wire::WIRE_FORMAT_CCNB));
+          // return ReceiveInterest (Wire::ToInterest (packet, Wire::WIRE_FORMAT_CCNB));
         case HeaderHelper::CONTENT_OBJECT_NDNSIM:
-          return ReceiveData (Wire::ToData (packet, Wire::WIRE_FORMAT_NDNSIM));
+          // return ReceiveData (Wire::ToData (packet, Wire::WIRE_FORMAT_NDNSIM));
         case HeaderHelper::CONTENT_OBJECT_CCNB:
-          return ReceiveData (Wire::ToData (packet, Wire::WIRE_FORMAT_CCNB));
+          // return ReceiveData (Wire::ToData (packet, Wire::WIRE_FORMAT_CCNB));
         default:
           NS_FATAL_ERROR ("Not supported NDN header");
           return false;
-        } */
+        }
 
       // exception will be thrown if packet is not recognized
     }

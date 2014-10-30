@@ -28,7 +28,7 @@
 #include "ns3/node.h"
 #include "ns3/pointer.h"
 
-// #include "ns3/address.h"
+#include "ns3/address.h"
 #include "ns3/point-to-point-net-device.h"
 #include "ns3/channel.h"
 
@@ -109,11 +109,12 @@ NetDeviceFace::Send (Ptr<Packet> packet)
     }
   
   NS_LOG_FUNCTION (this << packet);
-
+  // to please the syntax highlighter
+  std::string s = "for Ndn ; fragmentation not supported";
   NS_ASSERT_MSG (packet->GetSize () <= m_netDevice->GetMtu (),
                  "Packet size " << packet->GetSize () << " exceeds device MTU "
                  << m_netDevice->GetMtu ()
-                 << " for Ndn; fragmentation not supported");
+                 << s);
 
   bool ok = m_netDevice->Send (packet, m_netDevice->GetBroadcast (),
                                L3Protocol::ETHERNET_FRAME_TYPE);
