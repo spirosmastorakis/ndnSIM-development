@@ -146,26 +146,26 @@ L3Protocol::RemoveFace (Ptr<Face> face)
   NS_LOG_FUNCTION (this << boost::cref (*face));
   // ask face to register in lower-layer stack
   face->UnRegisterProtocolHandlers ();
-  //Ptr<Pit> pit = GetObject<Pit> ();
+  // Ptr<Pit> pit = GetObject<Pit> ();
 
   // just to be on a safe side. Do the process in two steps
-  //std::list< Ptr<pit::Entry> > entriesToRemoves;
-  //for (Ptr<pit::Entry> pitEntry = pit->Begin (); pitEntry != 0; pitEntry = pit->Next (pitEntry))
-    {
-      //pitEntry->RemoveAllReferencesToFace (face);
+  // std::list< Ptr<pit::Entry> > entriesToRemoves;
+  // for (Ptr<pit::Entry> pitEntry = pit->Begin (); pitEntry != 0; pitEntry = pit->Next (pitEntry))
+  //   {
+  //     pitEntry->RemoveAllReferencesToFace (face);
 
-      // If this face is the only for the associated FIB entry, then FIB entry will be removed soon.
-      // Thus, we have to remove the whole PIT entry
-      //if (pitEntry->GetFibEntry ()->m_faces.size () == 1 &&
-        //pitEntry->GetFibEntry ()->m_faces.begin ()->GetFace () == face)
-        {
-          //entriesToRemoves.push_back (pitEntry);
-        }
-    }
-    //BOOST_FOREACH (Ptr<pit::Entry> removedEntry, entriesToRemoves)
-    {
-      //pit->MarkErased (removedEntry);
-    }
+  //     If this face is the only for the associated FIB entry, then FIB entry will be removed soon.
+  //     Thus, we have to remove the whole PIT entry
+  //     if (pitEntry->GetFibEntry ()->m_faces.size () == 1 &&
+  //       pitEntry->GetFibEntry ()->m_faces.begin ()->GetFace () == face)
+  //       {
+  //         entriesToRemoves.push_back (pitEntry);
+  //       }
+  //   }
+  //   BOOST_FOREACH (Ptr<pit::Entry> removedEntry, entriesToRemoves)
+  //   {
+  //     pit->MarkErased (removedEntry);
+  //   }
 
   FaceList::iterator face_it = find (m_faces.begin(), m_faces.end(), face);
   if (face_it == m_faces.end ())
