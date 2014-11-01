@@ -119,7 +119,8 @@ def build(bld):
                                        'utils/**/*.cc',
                                        'helper/**/*.cc',
                                        'helper/**/*.cpp',
-                                       'model/**/*.cpp'
+                                       'model/**/*.cpp',
+                                       'NFD/**/*.cpp'
                                        ])
     module.full_headers = [p.path_from(bld.path) for p in bld.path.ant_glob([
                            'utils/**/*.h',
@@ -127,17 +128,18 @@ def build(bld):
                            'apps/**/*.h',
                            'helper/**/*.h',
                            'helper/**/*.hpp',
-                           'model/**/*.hpp'
+                           'model/**/*.hpp',
+                           'NFD/**/*.hpp'
                            ])]
 
     headers.source = [
+
         "helper/ndn-stack-helper.h",
         "helper/ndn-app-helper.h",
         "helper/ndn-face-container.h",
         "helper/ndn-global-routing-helper.h",
         "helper/ndn-link-control-helper.h",
         "helper/ndn-header-helper.h",
-
         "apps/ndn-app.h",
 #         "apps/callback-based-app.h",
 
@@ -200,7 +202,7 @@ def build(bld):
         module.source.extend (bld.path.ant_glob(['plugins/ip-faces/*.cc']))
         module.full_headers.extend ([p.path_from(bld.path) for p in bld.path.ant_glob(['plugins/ip-faces/**/*.h'])])
 
-    # bld.install_files('${INCLUDEDIR}/%s%s/ns3/ndnSIM' % (wutils.APPNAME, wutils.VERSION), ndnSIM_headers, relative_trick=True)
+    # bld.install_files('${UDEDIR}/%s%s/ns3/ndnSIM' % (wutils.APPNAME, wutils.VERSION), ndnSIM_headers, relative_trick=True)
     # bld.install_files('$PREFIX/include', ndnSIM_headers)
 
     tests = bld.create_ns3_module_test_library('ndnSIM')
