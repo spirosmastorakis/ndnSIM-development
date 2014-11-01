@@ -22,38 +22,31 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "fib-nexthop.hpp"
+#ifndef NFD_DAEMON_FW_STRATEGY_INFO_HPP
+#define NFD_DAEMON_FW_STRATEGY_INFO_HPP
+
+#include "../common.hpp"
 
 namespace nfd {
-namespace fib {
+namespace fw {
 
-NextHop::NextHop(shared_ptr<ns3::ndn::Face> face)
-  : m_face(face), m_cost(0)
+/** \class StrategyInfo
+ *  \brief contains arbitrary information forwarding strategy places on table entries
+ */
+class StrategyInfo
+{
+public:
+  virtual
+  ~StrategyInfo();
+};
+
+
+inline
+StrategyInfo::~StrategyInfo()
 {
 }
 
-NextHop::NextHop(const NextHop& other)
-  : m_face(other.m_face), m_cost(other.m_cost)
-{
-}
-
-shared_ptr<ns3::ndn::Face>
-NextHop::getFace() const
-{
-  return m_face;
-}
-
-void
-NextHop::setCost(uint64_t cost)
-{
-  m_cost = cost;
-}
-
-uint64_t
-NextHop::getCost() const
-{
-  return m_cost;
-}
-
-} // namespace fib
+} // namespace fw
 } // namespace nfd
+
+#endif // NFD_DAEMON_FW_STRATEGY_INFO_HPP

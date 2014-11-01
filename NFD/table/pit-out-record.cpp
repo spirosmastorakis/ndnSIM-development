@@ -22,38 +22,15 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "fib-nexthop.hpp"
+#include "pit-out-record.hpp"
 
 namespace nfd {
-namespace fib {
+namespace pit {
 
-NextHop::NextHop(shared_ptr<ns3::ndn::Face> face)
-  : m_face(face), m_cost(0)
+OutRecord::OutRecord(shared_ptr<ns3::ndn::Face> face)
+  : FaceRecord(face)
 {
 }
 
-NextHop::NextHop(const NextHop& other)
-  : m_face(other.m_face), m_cost(other.m_cost)
-{
-}
-
-shared_ptr<ns3::ndn::Face>
-NextHop::getFace() const
-{
-  return m_face;
-}
-
-void
-NextHop::setCost(uint64_t cost)
-{
-  m_cost = cost;
-}
-
-uint64_t
-NextHop::getCost() const
-{
-  return m_cost;
-}
-
-} // namespace fib
+} // namespace pit
 } // namespace nfd

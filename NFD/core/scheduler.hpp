@@ -22,38 +22,36 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "fib-nexthop.hpp"
+#ifndef NFD_CORE_SCHEDULER_HPP
+#define NFD_CORE_SCHEDULER_HPP
+
+#include "../common.hpp"
+#include <ndn-cxx/util/scheduler.hpp>
 
 namespace nfd {
-namespace fib {
+namespace scheduler {
 
-NextHop::NextHop(shared_ptr<ns3::ndn::Face> face)
-  : m_face(face), m_cost(0)
-{
-}
+using ndn::Scheduler;
 
-NextHop::NextHop(const NextHop& other)
-  : m_face(other.m_face), m_cost(other.m_cost)
-{
-}
+/** \class EventId
+ *  \brief Opaque type (shared_ptr) representing ID of a scheduled event
+ */
+using ndn::EventId;
 
-shared_ptr<ns3::ndn::Face>
-NextHop::getFace() const
-{
-  return m_face;
-}
+/** \brief schedule an event
+ */
+EventId
+schedule(const time::nanoseconds& after, const Scheduler::Event& event);
 
+/** \brief cancel a scheduled event
+ */
 void
-NextHop::setCost(uint64_t cost)
-{
-  m_cost = cost;
-}
+cancel(const EventId& eventId);
 
-uint64_t
-NextHop::getCost() const
-{
-  return m_cost;
-}
+} // namespace scheduler
 
-} // namespace fib
+using scheduler::EventId;
+
 } // namespace nfd
+
+#endif // NFD_CORE_SCHEDULER_HPP

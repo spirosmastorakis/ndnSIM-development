@@ -22,38 +22,33 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "fib-nexthop.hpp"
+#include "global-io.hpp"
+#include "scheduler.hpp"
 
 namespace nfd {
-namespace fib {
 
-NextHop::NextHop(shared_ptr<ns3::ndn::Face> face)
-  : m_face(face), m_cost(0)
-{
-}
+namespace scheduler {
+// defined in scheduler.cpp
+void
+resetGlobalScheduler();
+} // namespace scheduler
 
-NextHop::NextHop(const NextHop& other)
-  : m_face(other.m_face), m_cost(other.m_cost)
-{
-}
+static shared_ptr<boost::asio::io_service> g_ioService;
 
-shared_ptr<ns3::ndn::Face>
-NextHop::getFace() const
+boost::asio::io_service&
+getGlobalIoService()
 {
-  return m_face;
+  if (!static_cast<bool>(g_ioService)) {
+    g_ioService = make_shared<boost::asio::io_service>();
+  }
+  return *g_ioService;
 }
 
 void
-NextHop::setCost(uint64_t cost)
+resetGlobalIoService()
 {
-  m_cost = cost;
+  scheduler::resetGlobalScheduler();
+  g_ioService.reset();
 }
 
-uint64_t
-NextHop::getCost() const
-{
-  return m_cost;
-}
-
-} // namespace fib
 } // namespace nfd
