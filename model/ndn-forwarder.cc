@@ -143,7 +143,7 @@ L3Protocol::AddFace (const Ptr<Face> &face)
 void
 L3Protocol::RemoveFace (Ptr<Face> face)
 {
-  NS_LOG_FUNCTION (this << boost::cref (*face));
+  NS_LOG_FUNCTION (this << std::cref (*face));
   // ask face to register in lower-layer stack
   face->UnRegisterProtocolHandlers ();
   // Ptr<Pit> pit = GetObject<Pit> ();

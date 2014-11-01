@@ -106,6 +106,8 @@ def build(bld):
     module.module = 'ndnSIM'
     module.features += ' ns3fullmoduleheaders'
     module.uselib = 'NDN_CXX BOOST BOOST_IOSTREAMS'
+    module.includes = [".", "./NFD", "./NFD/daemon", "./NFD/core"]
+    module.export_includes = [".", "./NFD", "./NFD/daemon", "./NFD/core"]
 
     headers = bld (features='ns3header')
     headers.module = 'ndnSIM'
@@ -119,7 +121,8 @@ def build(bld):
                                        'utils/**/*.cc',
                                        'helper/**/*.cc',
                                        'helper/**/*.cpp',
-                                       'model/**/*.cpp'
+                                       'model/**/*.cpp',
+                                       'NFD/**/*.cpp',
                                        ])
     module.full_headers = [p.path_from(bld.path) for p in bld.path.ant_glob([
                            'utils/**/*.h',
@@ -127,7 +130,8 @@ def build(bld):
                            'apps/**/*.h',
                            'helper/**/*.h',
                            'helper/**/*.hpp',
-                           'model/**/*.hpp'
+                           'model/**/*.hpp',
+                           'NFD/**/*.hpp',
                            ])]
 
     headers.source = [

@@ -26,7 +26,7 @@
 #ifndef NFD_COMMON_HPP
 #define NFD_COMMON_HPP
 
-#include "config.hpp"
+// #include "config.hpp"
 
 #ifdef WITH_TESTS
 #define VIRTUAL_WITH_TESTS virtual
