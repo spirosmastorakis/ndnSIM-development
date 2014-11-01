@@ -65,15 +65,15 @@ public:
   hasNextHops() const;
 
   bool
-  hasNextHop(shared_ptr<ndn::Face> face) const;
+  hasNextHop(shared_ptr<ns3::ndn::Face> face) const;
 
   /// adds a nexthop
   void
-  addNextHop(shared_ptr<ndn::Face> face, uint64_t cost);
+  addNextHop(shared_ptr<ns3::ndn::Face> face, uint64_t cost);
 
   /// removes a nexthop
   void
-  removeNextHop(shared_ptr<ndn::Face> face);
+  removeNextHop(shared_ptr<ns3::ndn::Face> face);
 
 private:
   /// sorts the nexthop list

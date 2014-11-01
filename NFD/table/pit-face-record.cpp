@@ -22,38 +22,33 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "fib-nexthop.hpp"
+#include "pit-face-record.hpp"
 
 namespace nfd {
-namespace fib {
+namespace pit {
 
-NextHop::NextHop(shared_ptr<ns3::ndn::Face> face)
-  : m_face(face), m_cost(0)
+FaceRecord::FaceRecord(shared_ptr<ns3::ndn::Face> face)
+  : m_face(face)
+  , m_lastNonce(0)
+  , m_lastRenewed(time::steady_clock::TimePoint::min())
+  , m_expiry(time::steady_clock::TimePoint::min())
 {
-}
-
-NextHop::NextHop(const NextHop& other)
-  : m_face(other.m_face), m_cost(other.m_cost)
-{
-}
-
-shared_ptr<ns3::ndn::Face>
-NextHop::getFace() const
-{
-  return m_face;
 }
 
 void
-NextHop::setCost(uint64_t cost)
+FaceRecord::update(const Interest& interest)
 {
-  m_cost = cost;
+  m_lastNonce = interest.getNonce();
+  m_lastRenewed = time::steady_clock::now();
+
+  static const time::milliseconds DEFAULT_INTEREST_LIFETIME = time::milliseconds(4000);
+  time::milliseconds lifetime = interest.getInterestLifetime();
+  if (lifetime < time::milliseconds::zero()) {
+    lifetime = DEFAULT_INTEREST_LIFETIME;
+  }
+  m_expiry = m_lastRenewed + time::milliseconds(lifetime);
 }
 
-uint64_t
-NextHop::getCost() const
-{
-  return m_cost;
-}
 
-} // namespace fib
+} // namespace pit
 } // namespace nfd

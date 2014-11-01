@@ -33,13 +33,13 @@ Entry::Entry(const Name& prefix)
 }
 
 static inline bool
-predicate_NextHop_eq_Face(const NextHop& nexthop, shared_ptr<ndn::Face> face)
+predicate_NextHop_eq_Face(const NextHop& nexthop, shared_ptr<ns3::ndn::Face> face)
 {
   return nexthop.getFace() == face;
 }
 
 bool
-Entry::hasNextHop(shared_ptr<ndn::Face> face) const
+Entry::hasNextHop(shared_ptr<ns3::ndn::Face> face) const
 {
   NextHopList::const_iterator it = std::find_if(m_nextHops.begin(), m_nextHops.end(),
     bind(&predicate_NextHop_eq_Face, _1, face));
@@ -47,7 +47,7 @@ Entry::hasNextHop(shared_ptr<ndn::Face> face) const
 }
 
 void
-Entry::addNextHop(shared_ptr<ndn::Face> face, uint64_t cost)
+Entry::addNextHop(shared_ptr<ns3::ndn::Face> face, uint64_t cost)
 {
   NextHopList::iterator it = std::find_if(m_nextHops.begin(), m_nextHops.end(),
     bind(&predicate_NextHop_eq_Face, _1, face));
@@ -63,7 +63,7 @@ Entry::addNextHop(shared_ptr<ndn::Face> face, uint64_t cost)
 }
 
 void
-Entry::removeNextHop(shared_ptr<ndn::Face> face)
+Entry::removeNextHop(shared_ptr<ns3::ndn::Face> face)
 {
   NextHopList::iterator it = std::find_if(m_nextHops.begin(), m_nextHops.end(),
     bind(&predicate_NextHop_eq_Face, _1, face));

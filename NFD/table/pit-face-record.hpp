@@ -22,41 +22,78 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef NFD_DAEMON_TABLE_FIB_NEXTHOP_HPP
-#define NFD_DAEMON_TABLE_FIB_NEXTHOP_HPP
+#ifndef NFD_DAEMON_TABLE_PIT_FACE_RECORD_HPP
+#define NFD_DAEMON_TABLE_PIT_FACE_RECORD_HPP
 
-#include "../common.hpp"
 #include "../../model/ndn-face.h"
+#include "strategy-info-host.hpp"
 
 namespace nfd {
-namespace fib {
+namespace pit {
 
-/** \class NextHop
- *  \brief represents a nexthop record in FIB entry
+/** \class FaceRecord
+ *  \brief contains information about an Interest
+ *         on an incoming or outgoing face
+ *  \note This is an implementation detail to extract common functionality
+ *        of InRecord and OutRecord
  */
-class NextHop
+class FaceRecord : public StrategyInfoHost
 {
 public:
   explicit
-  NextHop(shared_ptr<ns3::ndn::Face> face);
-
-  NextHop(const NextHop& other);
+  FaceRecord(shared_ptr<ns3::ndn::Face> face);
 
   shared_ptr<ns3::ndn::Face>
   getFace() const;
 
-  void
-  setCost(uint64_t cost);
+  uint32_t
+  getLastNonce() const;
 
-  uint64_t
-  getCost() const;
+  time::steady_clock::TimePoint
+  getLastRenewed() const;
+
+  /** \brief gives the time point this record expires
+   *  \return getLastRenewed() + InterestLifetime
+   */
+  time::steady_clock::TimePoint
+  getExpiry() const;
+
+  /// updates lastNonce, lastRenewed, expiry fields
+  void
+  update(const Interest& interest);
 
 private:
   shared_ptr<ns3::ndn::Face> m_face;
-  uint64_t m_cost;
+  uint32_t m_lastNonce;
+  time::steady_clock::TimePoint m_lastRenewed;
+  time::steady_clock::TimePoint m_expiry;
 };
 
-} // namespace fib
+inline shared_ptr<ns3::ndn::Face>
+FaceRecord::getFace() const
+{
+  return m_face;
+}
+
+inline uint32_t
+FaceRecord::getLastNonce() const
+{
+  return m_lastNonce;
+}
+
+inline time::steady_clock::TimePoint
+FaceRecord::getLastRenewed() const
+{
+  return m_lastRenewed;
+}
+
+inline time::steady_clock::TimePoint
+FaceRecord::getExpiry() const
+{
+  return m_expiry;
+}
+
+} // namespace pit
 } // namespace nfd
 
-#endif // NFD_DAEMON_TABLE_FIB_NEXTHOP_HPP
+#endif // NFD_DAEMON_TABLE_PIT_FACE_RECORD_HPP

@@ -22,38 +22,27 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "fib-nexthop.hpp"
+#ifndef NFD_CORE_GLOBAL_IO_HPP
+#define NFD_CORE_GLOBAL_IO_HPP
+
+#include "../common.hpp"
 
 namespace nfd {
-namespace fib {
 
-NextHop::NextHop(shared_ptr<ns3::ndn::Face> face)
-  : m_face(face), m_cost(0)
-{
-}
+/** \return the global io_service instance
+ */
+boost::asio::io_service&
+getGlobalIoService();
 
-NextHop::NextHop(const NextHop& other)
-  : m_face(other.m_face), m_cost(other.m_cost)
-{
-}
-
-shared_ptr<ns3::ndn::Face>
-NextHop::getFace() const
-{
-  return m_face;
-}
-
+#ifdef WITH_TESTS
+/** \brief delete the global io_service instance
+ *
+ *  It will be recreated at the next invocation of getGlobalIoService.
+ */
 void
-NextHop::setCost(uint64_t cost)
-{
-  m_cost = cost;
-}
+resetGlobalIoService();
+#endif
 
-uint64_t
-NextHop::getCost() const
-{
-  return m_cost;
-}
-
-} // namespace fib
 } // namespace nfd
+
+#endif // NFD_CORE_GLOBAL_IO_HPP
