@@ -59,8 +59,8 @@ Entry::isEmpty() const
 {
   return m_children.empty() &&
          !static_cast<bool>(m_fibEntry)  &&
-         m_pitEntries.empty() /*&&
-         !static_cast<bool>(m_measurementsEntry) &&
+         m_pitEntries.empty() &&
+         !static_cast<bool>(m_measurementsEntry) /* &&
          !static_cast<bool>(m_strategyChoiceEntry) */;
 }
 
@@ -105,21 +105,21 @@ Entry::erasePitEntry(shared_ptr<pit::Entry> pitEntry)
   pitEntry->m_nameTreeEntry.reset();
 }
 
-// void
-// Entry::setMeasurementsEntry(shared_ptr<measurements::Entry> measurementsEntry)
-// {
-//   if (static_cast<bool>(measurementsEntry)) {
-//     BOOST_ASSERT(!static_cast<bool>(measurementsEntry->m_nameTreeEntry));
-//   }
+void
+Entry::setMeasurementsEntry(shared_ptr<measurements::Entry> measurementsEntry)
+{
+  if (static_cast<bool>(measurementsEntry)) {
+    BOOST_ASSERT(!static_cast<bool>(measurementsEntry->m_nameTreeEntry));
+  }
 
-//   if (static_cast<bool>(m_measurementsEntry)) {
-//     m_measurementsEntry->m_nameTreeEntry.reset();
-//   }
-//   m_measurementsEntry = measurementsEntry;
-//   if (static_cast<bool>(m_measurementsEntry)) {
-//     m_measurementsEntry->m_nameTreeEntry = this->shared_from_this();
-//   }
-// }
+  if (static_cast<bool>(m_measurementsEntry)) {
+    m_measurementsEntry->m_nameTreeEntry.reset();
+  }
+  m_measurementsEntry = measurementsEntry;
+  if (static_cast<bool>(m_measurementsEntry)) {
+    m_measurementsEntry->m_nameTreeEntry = this->shared_from_this();
+  }
+}
 
 // void
 // Entry::setStrategyChoiceEntry(shared_ptr<strategy_choice::Entry> strategyChoiceEntry)
