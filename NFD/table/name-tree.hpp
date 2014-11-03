@@ -142,8 +142,8 @@ public: // shortcut access
   get(const pit::Entry& pitEntry) const;
 
   /// get NameTree entry from attached Measurements entry
-  // shared_ptr<name_tree::Entry>
-  // get(const measurements::Entry& measurementsEntry) const;
+  shared_ptr<name_tree::Entry>
+  get(const measurements::Entry& measurementsEntry) const;
 
   /// get NameTree entry from attached StrategyChoice entry
   // shared_ptr<name_tree::Entry>
@@ -313,11 +313,11 @@ NameTree::get(const pit::Entry& pitEntry) const
   return pitEntry.m_nameTreeEntry;
 }
 
-// inline shared_ptr<name_tree::Entry>
-// NameTree::get(const measurements::Entry& measurementsEntry) const
-// {
-//   return measurementsEntry.m_nameTreeEntry;
-// }
+inline shared_ptr<name_tree::Entry>
+NameTree::get(const measurements::Entry& measurementsEntry) const
+{
+  return measurementsEntry.m_nameTreeEntry;
+}
 
 // inline shared_ptr<name_tree::Entry>
 // NameTree::get(const strategy_choice::Entry& strategyChoiceEntry) const

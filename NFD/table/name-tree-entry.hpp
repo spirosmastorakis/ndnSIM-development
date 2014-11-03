@@ -29,7 +29,7 @@
 #include "../common.hpp"
 #include "fib-entry.hpp"
 #include "pit-entry.hpp"
-//#include "table/measurements-entry.hpp"
+#include "measurements-entry.hpp"
 //#include "table/strategy-choice-entry.hpp"
 
 namespace nfd {
@@ -113,11 +113,11 @@ public: // attached table entries
   const std::vector<shared_ptr<pit::Entry> >&
   getPitEntries() const;
 
-  // void
-  // setMeasurementsEntry(shared_ptr<measurements::Entry> measurementsEntry);
+  void
+  setMeasurementsEntry(shared_ptr<measurements::Entry> measurementsEntry);
 
-  // shared_ptr<measurements::Entry>
-  // getMeasurementsEntry() const;
+  shared_ptr<measurements::Entry>
+  getMeasurementsEntry() const;
 
   // void
   // setStrategyChoiceEntry(shared_ptr<strategy_choice::Entry> strategyChoiceEntry);
@@ -135,7 +135,7 @@ private:
   std::vector<shared_ptr<Entry> > m_children; // Children pointers.
   shared_ptr<fib::Entry> m_fibEntry;
   std::vector<shared_ptr<pit::Entry> > m_pitEntries;
-  // shared_ptr<measurements::Entry> m_measurementsEntry;
+  shared_ptr<measurements::Entry> m_measurementsEntry;
   // shared_ptr<strategy_choice::Entry> m_strategyChoiceEntry;
 
   // get the Name Tree Node that is associated with this Name Tree Entry
@@ -192,7 +192,7 @@ Entry::getFibEntry() const
 {
   return m_fibEntry;
 }
-/*
+
 inline bool
 Entry::hasPitEntries() const
 {
@@ -211,12 +211,12 @@ Entry::getMeasurementsEntry() const
   return m_measurementsEntry;
 }
 
-inline shared_ptr<strategy_choice::Entry>
-Entry::getStrategyChoiceEntry() const
-{
-  return m_strategyChoiceEntry;
-}
-*/
+// inline shared_ptr<strategy_choice::Entry>
+// Entry::getStrategyChoiceEntry() const
+// {
+//   return m_strategyChoiceEntry;
+// }
+
 } // namespace name_tree
 } // namespace nfd
 
