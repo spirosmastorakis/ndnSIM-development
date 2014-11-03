@@ -69,6 +69,9 @@ public:
   virtual bool
   SendData (::ndn::shared_ptr<const ::ndn::Data> data);
 
+  virtual bool
+  isLocal() const;
+
 public:
   virtual std::ostream&
   Print (std::ostream &os) const;
@@ -82,6 +85,13 @@ private:
 private:
   Ptr<App> m_app;
 };
+
+inline bool
+AppFace::isLocal() const
+{
+  return true;
+}
+  
 
 } // namespace ndn
 } // namespace ns3

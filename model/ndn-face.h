@@ -248,6 +248,12 @@ public:
   bool
   operator< (const Face &face) const;
 
+  /*
+  *  \brief Return true if this face is the local host, false otherwise.
+  */
+  virtual bool isLocal() const;
+
+
 protected:
   /**
    * @brief Send packet down to the stack (towards app or network)
@@ -326,6 +332,12 @@ inline bool
 Face::operator!= (const Face &face) const
 {
   return !(*this == face);
+}
+
+inline bool
+Face::isLocal() const
+{
+  return false;
 }
 
 } // namespace ndn
