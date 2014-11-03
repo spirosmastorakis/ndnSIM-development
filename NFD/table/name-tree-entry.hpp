@@ -28,7 +28,7 @@
 
 #include "../common.hpp"
 #include "fib-entry.hpp"
-//#include "table/pit-entry.hpp"
+#include "pit-entry.hpp"
 //#include "table/measurements-entry.hpp"
 //#include "table/strategy-choice-entry.hpp"
 
@@ -101,17 +101,17 @@ public: // attached table entries
   shared_ptr<fib::Entry>
   getFibEntry() const;
 
-  // void
-  // insertPitEntry(shared_ptr<pit::Entry> pitEntry);
+  void
+  insertPitEntry(shared_ptr<pit::Entry> pitEntry);
 
-  // void
-  // erasePitEntry(shared_ptr<pit::Entry> pitEntry);
+  void
+  erasePitEntry(shared_ptr<pit::Entry> pitEntry);
 
-  // bool
-  // hasPitEntries() const;
+  bool
+  hasPitEntries() const;
 
-  // const std::vector<shared_ptr<pit::Entry> >&
-  // getPitEntries() const;
+  const std::vector<shared_ptr<pit::Entry> >&
+  getPitEntries() const;
 
   // void
   // setMeasurementsEntry(shared_ptr<measurements::Entry> measurementsEntry);
@@ -134,7 +134,7 @@ private:
   shared_ptr<Entry> m_parent;     // Pointing to the parent entry.
   std::vector<shared_ptr<Entry> > m_children; // Children pointers.
   shared_ptr<fib::Entry> m_fibEntry;
-  // std::vector<shared_ptr<pit::Entry> > m_pitEntries;
+  std::vector<shared_ptr<pit::Entry> > m_pitEntries;
   // shared_ptr<measurements::Entry> m_measurementsEntry;
   // shared_ptr<strategy_choice::Entry> m_strategyChoiceEntry;
 

@@ -24,7 +24,7 @@
  */
 
 #include "fib.hpp"
-// #include "pit-entry.hpp"
+#include "pit-entry.hpp"
 // #include "measurements-entry.hpp"
 
 namespace nfd {
@@ -85,15 +85,15 @@ Fib::findLongestPrefixMatch(shared_ptr<name_tree::Entry> nameTreeEntry) const
   return s_emptyEntry;
 }
 
-// shared_ptr<fib::Entry>
-// Fib::findLongestPrefixMatch(const pit::Entry& pitEntry) const
-// {
-//   shared_ptr<name_tree::Entry> nameTreeEntry = m_nameTree.get(pitEntry);
+shared_ptr<fib::Entry>
+Fib::findLongestPrefixMatch(const pit::Entry& pitEntry) const
+{
+  shared_ptr<name_tree::Entry> nameTreeEntry = m_nameTree.get(pitEntry);
 
-//   BOOST_ASSERT(static_cast<bool>(nameTreeEntry));
+  BOOST_ASSERT(static_cast<bool>(nameTreeEntry));
 
-//   return findLongestPrefixMatch(nameTreeEntry);
-// }
+  return findLongestPrefixMatch(nameTreeEntry);
+}
 
 // shared_ptr<fib::Entry>
 // Fib::findLongestPrefixMatch(const measurements::Entry& measurementsEntry) const

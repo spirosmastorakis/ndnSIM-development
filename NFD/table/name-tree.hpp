@@ -138,8 +138,8 @@ public: // shortcut access
   get(const fib::Entry& fibEntry) const;
 
   /// get NameTree entry from attached PIT entry
-  // shared_ptr<name_tree::Entry>
-  // get(const pit::Entry& pitEntry) const;
+  shared_ptr<name_tree::Entry>
+  get(const pit::Entry& pitEntry) const;
 
   /// get NameTree entry from attached Measurements entry
   // shared_ptr<name_tree::Entry>
@@ -307,11 +307,11 @@ NameTree::get(const fib::Entry& fibEntry) const
   return fibEntry.m_nameTreeEntry;
 }
 
-// inline shared_ptr<name_tree::Entry>
-// NameTree::get(const pit::Entry& pitEntry) const
-// {
-//   return pitEntry.m_nameTreeEntry;
-// }
+inline shared_ptr<name_tree::Entry>
+NameTree::get(const pit::Entry& pitEntry) const
+{
+  return pitEntry.m_nameTreeEntry;
+}
 
 // inline shared_ptr<name_tree::Entry>
 // NameTree::get(const measurements::Entry& measurementsEntry) const
