@@ -58,8 +58,8 @@ bool
 Entry::isEmpty() const
 {
   return m_children.empty() &&
-         !static_cast<bool>(m_fibEntry) /* &&
-         m_pitEntries.empty() &&
+         !static_cast<bool>(m_fibEntry)  &&
+         m_pitEntries.empty() /*&&
          !static_cast<bool>(m_measurementsEntry) &&
          !static_cast<bool>(m_strategyChoiceEntry) */;
 }
@@ -80,30 +80,30 @@ Entry::setFibEntry(shared_ptr<fib::Entry> fibEntry)
   }
 }
 
-// void
-// Entry::insertPitEntry(shared_ptr<pit::Entry> pitEntry)
-// {
-//   BOOST_ASSERT(static_cast<bool>(pitEntry));
-//   BOOST_ASSERT(!static_cast<bool>(pitEntry->m_nameTreeEntry));
+void
+Entry::insertPitEntry(shared_ptr<pit::Entry> pitEntry)
+{
+  BOOST_ASSERT(static_cast<bool>(pitEntry));
+  BOOST_ASSERT(!static_cast<bool>(pitEntry->m_nameTreeEntry));
 
-//   m_pitEntries.push_back(pitEntry);
-//   pitEntry->m_nameTreeEntry = this->shared_from_this();
-// }
+  m_pitEntries.push_back(pitEntry);
+  pitEntry->m_nameTreeEntry = this->shared_from_this();
+}
 
-// void
-// Entry::erasePitEntry(shared_ptr<pit::Entry> pitEntry)
-// {
-//   BOOST_ASSERT(static_cast<bool>(pitEntry));
-//   BOOST_ASSERT(pitEntry->m_nameTreeEntry.get() == this);
+void
+Entry::erasePitEntry(shared_ptr<pit::Entry> pitEntry)
+{
+  BOOST_ASSERT(static_cast<bool>(pitEntry));
+  BOOST_ASSERT(pitEntry->m_nameTreeEntry.get() == this);
 
-//   std::vector<shared_ptr<pit::Entry> >::iterator it =
-//     std::find(m_pitEntries.begin(), m_pitEntries.end(), pitEntry);
-//   BOOST_ASSERT(it != m_pitEntries.end());
+  std::vector<shared_ptr<pit::Entry> >::iterator it =
+    std::find(m_pitEntries.begin(), m_pitEntries.end(), pitEntry);
+  BOOST_ASSERT(it != m_pitEntries.end());
 
-//   *it = m_pitEntries.back();
-//   m_pitEntries.pop_back();
-//   pitEntry->m_nameTreeEntry.reset();
-// }
+  *it = m_pitEntries.back();
+  m_pitEntries.pop_back();
+  pitEntry->m_nameTreeEntry.reset();
+}
 
 // void
 // Entry::setMeasurementsEntry(shared_ptr<measurements::Entry> measurementsEntry)
