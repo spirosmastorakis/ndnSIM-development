@@ -97,8 +97,8 @@ public:
    *        to retransmit sooner than OutRecord expiry, or forward Interest
    *        back to incoming face
    */
-  // bool
-  // violatesScope(const ns3::ndn::Face& face) const;
+  bool
+  violatesScope(const ns3::ndn::Face& face) const;
 
   /** \brief finds where a duplicate Nonce appears
    *  \return OR'ed DuplicateNonceWhere

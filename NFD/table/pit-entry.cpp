@@ -55,19 +55,19 @@ Entry::getOutRecords() const
   return m_outRecords;
 }
 
-// static inline bool
-// predicate_InRecord_isLocal(const InRecord& inRecord)
-// {
-//   return inRecord.getFace()->isLocal();
-// }
+static inline bool
+predicate_InRecord_isLocal(const InRecord& inRecord)
+{
+  return inRecord.getFace()->isLocal();
+}
 
-// bool
-// Entry::hasLocalInRecord() const
-// {
-//   InRecordCollection::const_iterator it = std::find_if(
-//     m_inRecords.begin(), m_inRecords.end(), &predicate_InRecord_isLocal);
-//   return it != m_inRecords.end();
-// }
+bool
+Entry::hasLocalInRecord() const
+{
+  InRecordCollection::const_iterator it = std::find_if(
+    m_inRecords.begin(), m_inRecords.end(), &predicate_InRecord_isLocal);
+  return it != m_inRecords.end();
+}
 
 static inline bool
 predicate_FaceRecord_Face(const FaceRecord& faceRecord, const ns3::ndn::Face* face)
@@ -102,29 +102,29 @@ Entry::canForwardTo(const ns3::ndn::Face& face) const
     return false;
   }
 
-  //return !this->violatesScope(face);
+  return !this->violatesScope(face);
 }
 
-// bool
-// Entry::violatesScope(const ns3::ndn::Face& face) const
-// {
-//   // /localhost scope
-//   bool isViolatingLocalhost = !face.isLocal() &&
-//                               LOCALHOST_NAME.isPrefixOf(this->getName());
-//   if (isViolatingLocalhost) {
-//     return true;
-//   }
+bool
+Entry::violatesScope(const ns3::ndn::Face& face) const
+{
+  // /localhost scope
+  bool isViolatingLocalhost = !face.isLocal() &&
+                              LOCALHOST_NAME.isPrefixOf(this->getName());
+  if (isViolatingLocalhost) {
+    return true;
+  }
 
-//   // /localhop scope
-//   bool isViolatingLocalhop = !face.isLocal() &&
-//                              LOCALHOP_NAME.isPrefixOf(this->getName()) &&
-//                              !this->hasLocalInRecord();
-//   if (isViolatingLocalhop) {
-//     return true;
-//   }
+  // /localhop scope
+  bool isViolatingLocalhop = !face.isLocal() &&
+                             LOCALHOP_NAME.isPrefixOf(this->getName()) &&
+                             !this->hasLocalInRecord();
+  if (isViolatingLocalhop) {
+    return true;
+  }
 
-//   return false;
-// }
+  return false;
+}
 
 int
 Entry::findNonce(uint32_t nonce, const ns3::ndn::Face& face) const
