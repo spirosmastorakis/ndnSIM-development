@@ -26,7 +26,7 @@
 #ifndef NFD_DAEMON_TABLE_PIT_IN_RECORD_HPP
 #define NFD_DAEMON_TABLE_PIT_IN_RECORD_HPP
 
-#include "pit-face-record.hpp"
+#include "ns3/pit-face-record.hpp"
 
 namespace nfd {
 namespace pit {

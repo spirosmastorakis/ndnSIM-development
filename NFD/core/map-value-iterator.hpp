@@ -25,7 +25,7 @@
 #ifndef NFD_CORE_MAP_VALUE_ITERATOR_H
 #define NFD_CORE_MAP_VALUE_ITERATOR_H
 
-#include "../common.hpp"
+#include "ns3/common.hpp"
 #include <boost/iterator/transform_iterator.hpp>
 
 namespace nfd {

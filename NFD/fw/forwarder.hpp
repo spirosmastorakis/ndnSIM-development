@@ -26,16 +26,16 @@
 #ifndef NFD_DAEMON_FW_FORWARDER_HPP
 #define NFD_DAEMON_FW_FORWARDER_HPP
 
-#include "../common.hpp"
-#include "../core/scheduler.hpp"
-#include "forwarder-counters.hpp"
-#include "face-table.hpp"
-#include "../table/fib.hpp"
-#include "../table/pit.hpp"
-#include "../table/cs.hpp"
-#include "../table/measurements.hpp"
-#include "../table/strategy-choice.hpp"
-#include "../table/dead-nonce-list.hpp"
+#include "ns3/common.hpp"
+#include "ns3/scheduler.hpp"
+#include "ns3/forwarder-counters.hpp"
+#include "ns3/face-table.hpp"
+#include "ns3/fib.hpp"
+#include "ns3/pit.hpp"
+#include "ns3/cs.hpp"
+#include "ns3/measurements.hpp"
+#include "ns3/strategy-choice.hpp"
+#include "ns3/dead-nonce-list.hpp"
 
 namespace nfd {
 
@@ -196,7 +196,7 @@ private:
   Pit            m_pit;
   Cs             m_cs;
   Measurements   m_measurements;
-  StrategyChoice m_strategyChoice;
+  //StrategyChoice m_strategyChoice;
   DeadNonceList  m_deadNonceList;
 
   static const Name LOCALHOST_NAME;
@@ -274,7 +274,7 @@ Forwarder::getMeasurements()
 inline StrategyChoice&
 Forwarder::getStrategyChoice()
 {
-  return m_strategyChoice;
+  //return m_strategyChoice;
 }
 
 inline DeadNonceList&
@@ -292,8 +292,8 @@ inline void
 Forwarder::dispatchToStrategy(shared_ptr<pit::Entry> pitEntry, Function trigger)
 #endif
 {
-  fw::Strategy& strategy = m_strategyChoice.findEffectiveStrategy(*pitEntry);
-  trigger(&strategy);
+  //fw::Strategy& strategy = m_strategyChoice.findEffectiveStrategy(*pitEntry);
+  //trigger(&strategy);
 }
 
 } // namespace nfd

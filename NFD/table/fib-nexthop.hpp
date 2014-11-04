@@ -25,8 +25,8 @@
 #ifndef NFD_DAEMON_TABLE_FIB_NEXTHOP_HPP
 #define NFD_DAEMON_TABLE_FIB_NEXTHOP_HPP
 
-#include "../common.hpp"
-#include "../../model/ndn-face.h"
+#include "ns3/common.hpp"
+#include "ns3/ndn-face.h"
 
 namespace nfd {
 namespace fib {

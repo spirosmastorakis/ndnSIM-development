@@ -26,8 +26,8 @@
 #ifndef NFD_DAEMON_FW_STRATEGY_HPP
 #define NFD_DAEMON_FW_STRATEGY_HPP
 
-#include "forwarder.hpp"
-#include "../table/measurements-accessor.hpp"
+#include "ns3/forwarder.hpp"
+#include "ns3/measurements-accessor.hpp"
 
 namespace nfd {
 namespace fw {

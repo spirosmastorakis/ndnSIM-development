@@ -25,7 +25,7 @@
 #ifndef NFD_CORE_GLOBAL_IO_HPP
 #define NFD_CORE_GLOBAL_IO_HPP
 
-#include "../common.hpp"
+#include "ns3/common.hpp"
 
 namespace nfd {
 

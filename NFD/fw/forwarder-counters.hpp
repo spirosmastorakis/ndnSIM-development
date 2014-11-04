@@ -26,7 +26,7 @@
 #ifndef NFD_DAEMON_FW_FORWARDER_COUNTERS_HPP
 #define NFD_DAEMON_FW_FORWARDER_COUNTERS_HPP
 
-#include "../face/face-counters.hpp"
+#include "ns3/face-counters.hpp"
 
 namespace nfd {
 

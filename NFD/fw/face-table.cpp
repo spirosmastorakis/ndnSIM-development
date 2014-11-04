@@ -33,7 +33,7 @@ NFD_LOG_INIT("FaceTable");
 
 FaceTable::FaceTable(Forwarder& forwarder)
   : m_forwarder(forwarder)
-  , m_lastFaceId(FACEID_RESERVED_MAX)
+  , m_lastFaceId(ns3::ndn::FACEID_RESERVED_MAX)
 {
 }
 
@@ -45,33 +45,33 @@ FaceTable::~FaceTable()
 void
 FaceTable::add(shared_ptr<ns3::ndn::Face> face)
 {
-  if (face->getId() != INVALID_FACEID && m_faces.count(face->getId()) > 0) {
+  if (face->getId() != ns3::ndn::INVALID_FACEID && m_faces.count(face->getId()) > 0) {
     NFD_LOG_WARN("Trying to add existing face id=" << face->getId() << " to the face table");
     return;
   }
 
-  FaceId faceId = ++m_lastFaceId;
-  BOOST_ASSERT(faceId > FACEID_RESERVED_MAX);
+  ns3::ndn::FaceId faceId = ++m_lastFaceId;
+  BOOST_ASSERT(faceId > ns3::ndn::FACEID_RESERVED_MAX);
   this->addImpl(face, faceId);
 }
 
 void
 FaceTable::addReserved(shared_ptr<ns3::ndn::Face> face, ns3::ndn::FaceId faceId)
 {
-  BOOST_ASSERT(face->getId() == INVALID_FACEID);
+  BOOST_ASSERT(face->getId() == ns3::ndn::INVALID_FACEID);
   BOOST_ASSERT(m_faces.count(face->getId()) == 0);
-  BOOST_ASSERT(faceId <= FACEID_RESERVED_MAX);
+  BOOST_ASSERT(faceId <= ns3::ndn::FACEID_RESERVED_MAX);
   this->addImpl(face, faceId);
 }
 
 void
-FaceTable::addImpl(shared_ptr<ns3::ndn::Face> face, ns3::ndn::Face faceId)
+FaceTable::addImpl(shared_ptr<ns3::ndn::Face> face, ns3::ndn::FaceId faceId)
 {
   face->setId(faceId);
   m_faces[faceId] = face;
   NFD_LOG_INFO("Added face id=" << faceId << " remote=" << face->getRemoteUri()
                                           << " local=" << face->getLocalUri());
-
+  /*
   face->onReceiveInterest += bind(&Forwarder::onInterest,
                                   &m_forwarder, ref(*face), _1);
   face->onReceiveData     += bind(&Forwarder::onData,
@@ -79,7 +79,7 @@ FaceTable::addImpl(shared_ptr<ns3::ndn::Face> face, ns3::ndn::Face faceId)
   face->onFail            += bind(&FaceTable::remove,
                                   this, face);
 
-  this->onAdd(face);
+  this->onAdd(face); */
 }
 
 void
@@ -87,18 +87,18 @@ FaceTable::remove(shared_ptr<ns3::ndn::Face> face)
 {
   this->onRemove(face);
 
-  FaceId faceId = face->getId();
+  ns3::ndn::FaceId faceId = face->getId();
   m_faces.erase(faceId);
-  face->setId(INVALID_FACEID);
+  face->setId(ns3::ndn::INVALID_FACEID);
   NFD_LOG_INFO("Removed face id=" << faceId << " remote=" << face->getRemoteUri() <<
                                                  " local=" << face->getLocalUri());
 
   // XXX This clears all subscriptions, because EventEmitter
   //     does not support only removing Forwarder's subscription
-  face->onReceiveInterest.clear();
-  face->onReceiveData    .clear();
-  face->onSendInterest   .clear();
-  face->onSendData       .clear();
+  //face->onReceiveInterest.clear();
+  //face->onReceiveData    .clear();
+  //face->onSendInterest   .clear();
+  //face->onSendData       .clear();
   // don't clear onFail because other functions may need to execute
 
   m_forwarder.getFib().removeNextHopFromAllEntries(face);

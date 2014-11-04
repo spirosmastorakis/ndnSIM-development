@@ -26,11 +26,11 @@
 #ifndef NFD_DAEMON_TABLE_DEAD_NONCE_LIST_HPP
 #define NFD_DAEMON_TABLE_DEAD_NONCE_LIST_HPP
 
-#include "../common.hpp"
+#include "ns3/common.hpp"
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/multi_index/hashed_index.hpp>
-#include "../core/scheduler.hpp"
+#include "ns3/scheduler.hpp"
 
 namespace nfd {
 

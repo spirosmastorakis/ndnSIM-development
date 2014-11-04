@@ -25,7 +25,7 @@
 #ifndef NFD_CORE_SCHEDULER_HPP
 #define NFD_CORE_SCHEDULER_HPP
 
-#include "../common.hpp"
+#include "ns3/common.hpp"
 #include <ndn-cxx/util/scheduler.hpp>
 
 namespace nfd {

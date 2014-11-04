@@ -26,8 +26,8 @@
 #ifndef NFD_DAEMON_TABLE_MEASUREMENTS_HPP
 #define NFD_DAEMON_TABLE_MEASUREMENTS_HPP
 
-#include "measurements-entry.hpp"
-#include "name-tree.hpp"
+#include "ns3/measurements-entry.hpp"
+#include "ns3/name-tree.hpp"
 
 namespace nfd {
 

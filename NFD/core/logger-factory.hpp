@@ -25,7 +25,7 @@
 #ifndef NFD_CORE_LOGGER_FACTORY_HPP
 #define NFD_CORE_LOGGER_FACTORY_HPP
 
-#include "../common.hpp"
+#include "ns3/common.hpp"
 #include "config-file.hpp"
 #include "logger.hpp"
 

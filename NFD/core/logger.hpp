@@ -25,7 +25,7 @@
 #ifndef NFD_CORE_LOGGER_HPP
 #define NFD_CORE_LOGGER_HPP
 
-#include "../common.hpp"
+#include "ns3/common.hpp"
 #include <ndn-cxx/util/time.hpp>
 
 /// \todo use when we enable C++11 (see todo in now())
