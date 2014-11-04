@@ -72,6 +72,7 @@ Face::Face (Ptr<Node> node)
   , m_id ((uint32_t)-1)
   , m_metric (0)
   , m_flags (0)
+  , m_idNfd (INVALID_FACEID)
 {
   NS_LOG_FUNCTION (this << node);
 
@@ -90,6 +91,19 @@ Face::Face (const Face &)
 Face& Face::operator= (const Face &)
 {
   return *this;
+}
+
+FaceId
+Face::getId() const
+{
+  return m_idNfd;
+}
+
+// this method is private and should be used only by the FaceTable
+void
+Face::setId(FaceId faceId)
+{
+  m_idNfd = faceId;
 }
 
 Ptr<Node>
@@ -170,7 +184,7 @@ Face::Receive (Ptr<const Packet> p)
 
   Ptr<Packet> packet = p->Copy (); // give upper layers a rw copy of the packet
   try
-    { 
+    {
       HeaderHelper::Type type = HeaderHelper::GetNdnHeaderType (packet);
       switch (type)
         {

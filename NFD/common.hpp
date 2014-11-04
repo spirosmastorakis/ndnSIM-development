@@ -49,6 +49,7 @@
 #include <ndn-cxx/common.hpp>
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
+#include <ndn-cxx/util/event-emitter.hpp>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>
@@ -65,23 +66,28 @@ using std::size_t;
 using boost::noncopyable;
 using boost::scoped_ptr;
 
-using ndn::shared_ptr;
-using ndn::weak_ptr;
-using ndn::enable_shared_from_this;
-using ndn::make_shared;
-using ndn::static_pointer_cast;
-using ndn::dynamic_pointer_cast;
-using ndn::const_pointer_cast;
-using ndn::function;
-using ndn::bind;
-using ndn::ref;
-using ndn::cref;
+using std::shared_ptr;
+using std::unique_ptr;
+using std::weak_ptr;
+using std::bad_weak_ptr;
+using std::make_shared;
+using std::enable_shared_from_this;
+
+using std::static_pointer_cast;
+using std::dynamic_pointer_cast;
+using std::const_pointer_cast;
+
+using std::function;
+using std::bind;
+using std::ref;
+using std::cref;
 
 using ndn::Interest;
 using ndn::Data;
 using ndn::Name;
 using ndn::Exclude;
 using ndn::Block;
+using ndn::util::EventEmitter;
 
 namespace tlv {
 // Don't write "namespace tlv = ndn::tlv", because NFD can add other members into this namespace.
