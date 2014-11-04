@@ -47,6 +47,23 @@ class Node;
 
 namespace ndn {
 
+/** \class FaceId
+ *  \brief identifies a face
+ */
+typedef int FaceId;
+
+/// indicates an invalid FaceId
+const FaceId INVALID_FACEID = -1;
+
+/// identifies the InternalFace used in management
+const FaceId FACEID_INTERNAL_FACE = 1;
+/// identifies a packet comes from the ContentStore, in LocalControlHeader incomingFaceId
+const FaceId FACEID_CONTENT_STORE = 254;
+/// identifies the NullFace that drops every packet
+const FaceId FACEID_NULL = 255;
+/// upper bound of reserved FaceIds
+const FaceId FACEID_RESERVED_MAX = 255;
+
 /**
  * \ingroup ndn
  * \defgroup ndn-face Faces
@@ -82,6 +99,9 @@ public:
    */
   Face (Ptr<Node> node);
   virtual ~Face();
+
+  FaceId
+  getId() const;
 
   /**
    * @brief Get node to which this face is associated
@@ -274,6 +294,9 @@ protected:
   SetFlags (uint32_t flags);
 
 private:
+  void
+  setId(FaceId faceId);
+
   Face (const Face &); ///< \brief Disabled copy constructor
   Face& operator= (const Face &); ///< \brief Disabled copy operator
 
@@ -287,6 +310,7 @@ private:
   uint32_t m_id; ///< \brief id of the interface in NDN stack (per-node uniqueness)
   uint16_t m_metric; ///< \brief metric of the face
   uint32_t m_flags; ///< @brief faces flags (e.g., APPLICATION)
+  FaceId m_idNfd;
 };
 
 std::ostream&

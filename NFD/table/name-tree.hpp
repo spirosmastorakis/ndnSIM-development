@@ -146,8 +146,8 @@ public: // shortcut access
   get(const measurements::Entry& measurementsEntry) const;
 
   /// get NameTree entry from attached StrategyChoice entry
-  // shared_ptr<name_tree::Entry>
-  // get(const strategy_choice::Entry& strategyChoiceEntry) const;
+  shared_ptr<name_tree::Entry>
+  get(const strategy_choice::Entry& strategyChoiceEntry) const;
 
 public: // matching
   /**
@@ -319,11 +319,11 @@ NameTree::get(const measurements::Entry& measurementsEntry) const
   return measurementsEntry.m_nameTreeEntry;
 }
 
-// inline shared_ptr<name_tree::Entry>
-// NameTree::get(const strategy_choice::Entry& strategyChoiceEntry) const
-// {
-//   return strategyChoiceEntry.m_nameTreeEntry;
-// }
+inline shared_ptr<name_tree::Entry>
+NameTree::get(const strategy_choice::Entry& strategyChoiceEntry) const
+{
+  return strategyChoiceEntry.m_nameTreeEntry;
+}
 
 inline NameTree::const_iterator
 NameTree::begin() const
