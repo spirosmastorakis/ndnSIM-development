@@ -26,10 +26,10 @@
 #ifndef NFD_DAEMON_TABLE_PIT_ENTRY_HPP
 #define NFD_DAEMON_TABLE_PIT_ENTRY_HPP
 
-#include "../../model/ndn-face.h"
-#include "pit-in-record.hpp"
-#include "pit-out-record.hpp"
-#include "../core/scheduler.hpp"
+#include "ns3/ndn-face.h"
+#include "ns3/pit-in-record.hpp"
+#include "ns3/pit-out-record.hpp"
+#include "ns3/scheduler.hpp"
 
 namespace nfd {
 

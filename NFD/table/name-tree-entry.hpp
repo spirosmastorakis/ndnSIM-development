@@ -26,11 +26,11 @@
 #ifndef NFD_DAEMON_TABLE_NAME_TREE_ENTRY_HPP
 #define NFD_DAEMON_TABLE_NAME_TREE_ENTRY_HPP
 
-#include "../common.hpp"
-#include "fib-entry.hpp"
-#include "pit-entry.hpp"
-#include "measurements-entry.hpp"
-//#include "table/strategy-choice-entry.hpp"
+#include "ns3/common.hpp"
+#include "ns3/fib-entry.hpp"
+#include "ns3/pit-entry.hpp"
+#include "ns3/measurements-entry.hpp"
+#include "ns3/strategy-choice-entry.hpp"
 
 namespace nfd {
 
@@ -119,11 +119,11 @@ public: // attached table entries
   shared_ptr<measurements::Entry>
   getMeasurementsEntry() const;
 
-  // void
-  // setStrategyChoiceEntry(shared_ptr<strategy_choice::Entry> strategyChoiceEntry);
+  void
+  setStrategyChoiceEntry(shared_ptr<strategy_choice::Entry> strategyChoiceEntry);
 
-  // shared_ptr<strategy_choice::Entry>
-  // getStrategyChoiceEntry() const;
+  shared_ptr<strategy_choice::Entry>
+  getStrategyChoiceEntry() const;
 
 private:
   // Benefits of storing m_hash
@@ -136,7 +136,7 @@ private:
   shared_ptr<fib::Entry> m_fibEntry;
   std::vector<shared_ptr<pit::Entry> > m_pitEntries;
   shared_ptr<measurements::Entry> m_measurementsEntry;
-  // shared_ptr<strategy_choice::Entry> m_strategyChoiceEntry;
+  shared_ptr<strategy_choice::Entry> m_strategyChoiceEntry;
 
   // get the Name Tree Node that is associated with this Name Tree Entry
   Node* m_node;

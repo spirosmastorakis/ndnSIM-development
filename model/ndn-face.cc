@@ -73,6 +73,8 @@ Face::Face (Ptr<Node> node)
   , m_metric (0)
   , m_flags (0)
   , m_idNfd (INVALID_FACEID)
+  , m_remoteUri(0)
+  , m_localUri(0)
 {
   NS_LOG_FUNCTION (this << node);
 

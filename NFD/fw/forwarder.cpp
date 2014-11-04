@@ -26,7 +26,7 @@
 #include "forwarder.hpp"
 #include "../core/logger.hpp"
 #include "../core/random.hpp"
-#include "available-strategies.hpp"
+//#include "available-strategies.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
 
 namespace nfd {
@@ -42,9 +42,9 @@ Forwarder::Forwarder()
   , m_fib(m_nameTree)
   , m_pit(m_nameTree)
   , m_measurements(m_nameTree)
-  , m_strategyChoice(m_nameTree, fw::makeDefaultStrategy(*this))
+    //, m_strategyChoice(m_nameTree, fw::makeDefaultStrategy(*this))
 {
-  fw::installStrategies(*this);
+  //fw::installStrategies(*this);
 }
 
 Forwarder::~Forwarder()
@@ -94,7 +94,7 @@ Forwarder::onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest)
     // CS lookup
     const Data* csMatch = m_cs.find(interest);
     if (csMatch != 0) {
-      const_cast<Data*>(csMatch)->setIncomingFaceId(FACEID_CONTENT_STORE);
+      const_cast<Data*>(csMatch)->setIncomingFaceId(ns3::ndn::FACEID_CONTENT_STORE);
       // XXX should we lookup PIT for other Interests that also match csMatch?
 
       // set PIT straggler timer
@@ -107,7 +107,7 @@ Forwarder::onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest)
   }
 
   // insert InRecord
-  pitEntry->insertOrUpdateInRecord(inFace.shared_from_this(), interest);
+  //pitEntry->insertOrUpdateInRecord(inFace.shared_from_this(), interest);
 
   // set PIT unsatisfy timer
   this->setUnsatisfyTimer(pitEntry);
@@ -116,8 +116,8 @@ Forwarder::onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest)
   shared_ptr<fib::Entry> fibEntry = m_fib.findLongestPrefixMatch(*pitEntry);
 
   // dispatch to strategy
-  this->dispatchToStrategy(pitEntry, bind(&Strategy::afterReceiveInterest, _1,
-                                          cref(inFace), cref(interest), fibEntry, pitEntry));
+  /*  this->dispatchToStrategy(pitEntry, bind(&Strategy::afterReceiveInterest, _1,
+                                          cref(inFace), cref(interest), fibEntry, pitEntry)); */
 }
 
 void
@@ -160,7 +160,7 @@ void
 Forwarder::onOutgoingInterest(shared_ptr<pit::Entry> pitEntry, ns3::ndn::Face& outFace,
                               bool wantNewNonce)
 {
-  if (outFace.getId() == INVALID_FACEID) {
+  if (outFace.getId() == ns3::ndn::INVALID_FACEID) {
     NFD_LOG_WARN("onOutgoingInterest face=invalid interest=" << pitEntry->getName());
     return;
   }
@@ -189,10 +189,10 @@ Forwarder::onOutgoingInterest(shared_ptr<pit::Entry> pitEntry, ns3::ndn::Face& o
   }
 
   // insert OutRecord
-  pitEntry->insertOrUpdateOutRecord(outFace.shared_from_this(), *interest);
+  //pitEntry->insertOrUpdateOutRecord(outFace.shared_from_this(), *interest);
 
   // send Interest
-  outFace.sendInterest(*interest);
+  //outFace.sendInterest(*interest);
   ++m_counters.getNOutInterests();
 }
 
@@ -219,8 +219,8 @@ Forwarder::onInterestUnsatisfied(shared_ptr<pit::Entry> pitEntry)
   NFD_LOG_DEBUG("onInterestUnsatisfied interest=" << pitEntry->getName());
 
   // invoke PIT unsatisfied callback
-  this->dispatchToStrategy(pitEntry, bind(&Strategy::beforeExpirePendingInterest, _1,
-                                          pitEntry));
+  /*this->dispatchToStrategy(pitEntry, bind(&Strategy::beforeExpirePendingInterest, _1,
+                                          pitEntry)); */
 
   // goto Interest Finalize pipeline
   this->onInterestFinalize(pitEntry, false);
@@ -270,7 +270,7 @@ Forwarder::onIncomingData(ns3::ndn::Face& inFace, const Data& data)
   // CS insert
   m_cs.insert(data);
 
-  std::set<shared_ptr<Face> > pendingDownstreams;
+  std::set<shared_ptr<ns3::ndn::Face> > pendingDownstreams;
   // foreach PitEntry
   for (pit::DataMatchResult::iterator it = pitMatches->begin();
        it != pitMatches->end(); ++it) {
@@ -290,24 +290,24 @@ Forwarder::onIncomingData(ns3::ndn::Face& inFace, const Data& data)
     }
 
     // invoke PIT satisfy callback
-    this->dispatchToStrategy(pitEntry, bind(&Strategy::beforeSatisfyInterest, _1,
-                                            pitEntry, cref(inFace), cref(data)));
+    /*    this->dispatchToStrategy(pitEntry, bind(&Strategy::beforeSatisfyInterest, _1,
+                                            pitEntry, cref(inFace), cref(data)));*/
 
     // Dead Nonce List insert if necessary (for OutRecord of inFace)
     this->insertDeadNonceList(*pitEntry, true, data.getFreshnessPeriod(), &inFace);
 
     // mark PIT satisfied
     pitEntry->deleteInRecords();
-    pitEntry->deleteOutRecord(inFace.shared_from_this());
+    //pitEntry->deleteOutRecord(inFace.shared_from_this());
 
     // set PIT straggler timer
     this->setStragglerTimer(pitEntry, true, data.getFreshnessPeriod());
   }
 
   // foreach pending downstream
-  for (std::set<shared_ptr<Face> >::iterator it = pendingDownstreams.begin();
+  for (std::set<shared_ptr<ns3::ndn::Face> >::iterator it = pendingDownstreams.begin();
       it != pendingDownstreams.end(); ++it) {
-    shared_ptr<Face> pendingDownstream = *it;
+    shared_ptr<ns3::ndn::Face> pendingDownstream = *it;
     if (pendingDownstream.get() == &inFace) {
       continue;
     }
@@ -334,7 +334,7 @@ Forwarder::onDataUnsolicited(ns3::ndn::Face& inFace, const Data& data)
 void
 Forwarder::onOutgoingData(const Data& data, ns3::ndn::Face& outFace)
 {
-  if (outFace.getId() == INVALID_FACEID) {
+  if (outFace.getId() == ns3::ndn::INVALID_FACEID) {
     NFD_LOG_WARN("onOutgoingData face=invalid data=" << data.getName());
     return;
   }
@@ -353,7 +353,7 @@ Forwarder::onOutgoingData(const Data& data, ns3::ndn::Face& outFace)
   // TODO traffic manager
 
   // send Data
-  outFace.sendData(data);
+  //outFace.sendData(data);
   ++m_counters.getNOutDatas();
 }
 
@@ -410,7 +410,7 @@ insertNonceToDnl(DeadNonceList& dnl, const pit::Entry& pitEntry,
 void
 Forwarder::insertDeadNonceList(pit::Entry& pitEntry, bool isSatisfied,
                                const time::milliseconds& dataFreshnessPeriod,
-                               Face* upstream)
+                               ns3::ndn::Face* upstream)
 {
   // need Dead Nonce List insert?
   bool needDnl = false;
@@ -435,13 +435,13 @@ Forwarder::insertDeadNonceList(pit::Entry& pitEntry, bool isSatisfied,
     std::for_each(outRecords.begin(), outRecords.end(),
                   bind(&insertNonceToDnl, ref(m_deadNonceList), cref(pitEntry), _1));
   }
-  else {
+  else { /*
     // insert outgoing Nonce of a specific face
     pit::OutRecordCollection::const_iterator outRecord =
       pitEntry.getOutRecord(upstream->shared_from_this());
     if (outRecord != pitEntry.getOutRecords().end()) {
       m_deadNonceList.add(pitEntry.getName(), outRecord->getLastNonce());
-    }
+    } */
   }
 }
 

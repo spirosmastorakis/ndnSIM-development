@@ -26,8 +26,8 @@
 #ifndef NFD_DAEMON_TABLE_STRATEGY_CHOICE_HPP
 #define NFD_DAEMON_TABLE_STRATEGY_CHOICE_HPP
 
-#include "strategy-choice-entry.hpp"
-#include "name-tree.hpp"
+#include "ns3/strategy-choice-entry.hpp"
+#include "ns3/name-tree.hpp"
 
 namespace nfd {
 

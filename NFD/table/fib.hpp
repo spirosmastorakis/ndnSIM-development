@@ -26,8 +26,8 @@
 #ifndef NFD_DAEMON_TABLE_FIB_HPP
 #define NFD_DAEMON_TABLE_FIB_HPP
 
-#include "fib-entry.hpp"
-#include "name-tree.hpp"
+#include "ns3/fib-entry.hpp"
+#include "ns3/name-tree.hpp"
 
 namespace nfd {
 

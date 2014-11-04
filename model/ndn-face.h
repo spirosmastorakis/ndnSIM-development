@@ -32,6 +32,7 @@
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/common.hpp>
 #include <ndn-cxx/interest.hpp>
+#include "ns3/ndnSIM/NFD/core/face-uri.hpp"
 
 namespace ndn {
 
@@ -102,6 +103,21 @@ public:
 
   FaceId
   getId() const;
+
+  void
+  setId(FaceId faceId);
+
+  inline const nfd::FaceUri&
+  getRemoteUri() const
+  {
+    return m_remoteUri;
+  }
+
+  inline const nfd::FaceUri&
+  getLocalUri() const
+  {
+    return m_localUri;
+  }
 
   /**
    * @brief Get node to which this face is associated
@@ -294,9 +310,6 @@ protected:
   SetFlags (uint32_t flags);
 
 private:
-  void
-  setId(FaceId faceId);
-
   Face (const Face &); ///< \brief Disabled copy constructor
   Face& operator= (const Face &); ///< \brief Disabled copy operator
 
@@ -311,6 +324,8 @@ private:
   uint16_t m_metric; ///< \brief metric of the face
   uint32_t m_flags; ///< @brief faces flags (e.g., APPLICATION)
   FaceId m_idNfd;
+  nfd::FaceUri m_remoteUri;
+  nfd::FaceUri m_localUri;
 };
 
 std::ostream&
