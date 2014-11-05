@@ -353,7 +353,7 @@ Forwarder::onOutgoingData(const Data& data, ns3::ndn::Face& outFace)
   // TODO traffic manager
 
   // send Data - SendData method of ns3::ndn::Face, hope that it works...
-  //outFace.SendData(shared_ptr<const Data>(data));
+  outFace.SendData(make_shared<Data>(data));
   ++m_counters.getNOutDatas();
 }
 

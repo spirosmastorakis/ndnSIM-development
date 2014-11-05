@@ -211,11 +211,11 @@ Entry::getMeasurementsEntry() const
   return m_measurementsEntry;
 }
 
-// inline shared_ptr<strategy_choice::Entry>
-// Entry::getStrategyChoiceEntry() const
-// {
-//   return m_strategyChoiceEntry;
-// }
+inline shared_ptr<strategy_choice::Entry>
+Entry::getStrategyChoiceEntry() const
+{
+  return m_strategyChoiceEntry;
+}
 
 } // namespace name_tree
 } // namespace nfd

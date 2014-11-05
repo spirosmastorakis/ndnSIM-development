@@ -95,15 +95,15 @@ Fib::findLongestPrefixMatch(const pit::Entry& pitEntry) const
   return findLongestPrefixMatch(nameTreeEntry);
 }
 
-// shared_ptr<fib::Entry>
-// Fib::findLongestPrefixMatch(const measurements::Entry& measurementsEntry) const
-// {
-//   shared_ptr<name_tree::Entry> nameTreeEntry = m_nameTree.get(measurementsEntry);
+shared_ptr<fib::Entry>
+Fib::findLongestPrefixMatch(const measurements::Entry& measurementsEntry) const
+{
+  shared_ptr<name_tree::Entry> nameTreeEntry = m_nameTree.get(measurementsEntry);
 
-//   BOOST_ASSERT(static_cast<bool>(nameTreeEntry));
+  BOOST_ASSERT(static_cast<bool>(nameTreeEntry));
 
-//   return findLongestPrefixMatch(nameTreeEntry);
-// }
+ return findLongestPrefixMatch(nameTreeEntry);
+}
 
 shared_ptr<fib::Entry>
 Fib::findExactMatch(const Name& prefix) const

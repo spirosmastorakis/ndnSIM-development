@@ -82,7 +82,7 @@ const FaceId FACEID_RESERVED_MAX = 255;
  * \see ndn::AppFace, ndn::NetDeviceFace
  */
 class Face :
-    public Object //, public enable_shared_from_this<Face>
+    public Object//, public enable_shared_from_this<Face>
 {
 public:
   static TypeId
@@ -101,7 +101,10 @@ public:
    * \brief Default constructor
    */
   Face (Ptr<Node> node);
+
   virtual ~Face();
+
+  Face (const Face &); ///< \brief copy constructor
 
   FaceId
   getId() const;
@@ -318,7 +321,7 @@ protected:
   SetFlags (uint32_t flags);
 
 private:
-  Face (const Face &); ///< \brief Disabled copy constructor
+  //Face (const Face &); ///< \brief Disabled copy constructor
   Face& operator= (const Face &); ///< \brief Disabled copy operator
 
 protected:

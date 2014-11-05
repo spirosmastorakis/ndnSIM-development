@@ -274,7 +274,7 @@ Forwarder::getMeasurements()
 inline StrategyChoice&
 Forwarder::getStrategyChoice()
 {
-  //return m_strategyChoice;
+  return m_strategyChoice;
 }
 
 inline DeadNonceList&
@@ -292,8 +292,8 @@ inline void
 Forwarder::dispatchToStrategy(shared_ptr<pit::Entry> pitEntry, Function trigger)
 #endif
 {
-  //fw::Strategy& strategy = m_strategyChoice.findEffectiveStrategy(*pitEntry);
-  //trigger(&strategy);
+  fw::Strategy& strategy = m_strategyChoice.findEffectiveStrategy(*pitEntry);
+  trigger(&strategy);
 }
 
 } // namespace nfd

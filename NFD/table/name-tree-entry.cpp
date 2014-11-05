@@ -60,8 +60,8 @@ Entry::isEmpty() const
   return m_children.empty() &&
          !static_cast<bool>(m_fibEntry)  &&
          m_pitEntries.empty() &&
-         !static_cast<bool>(m_measurementsEntry) /* &&
-         !static_cast<bool>(m_strategyChoiceEntry) */;
+         !static_cast<bool>(m_measurementsEntry) &&
+         !static_cast<bool>(m_strategyChoiceEntry);
 }
 
 void
@@ -121,21 +121,21 @@ Entry::setMeasurementsEntry(shared_ptr<measurements::Entry> measurementsEntry)
   }
 }
 
-// void
-// Entry::setStrategyChoiceEntry(shared_ptr<strategy_choice::Entry> strategyChoiceEntry)
-// {
-//   if (static_cast<bool>(strategyChoiceEntry)) {
-//     BOOST_ASSERT(!static_cast<bool>(strategyChoiceEntry->m_nameTreeEntry));
-//   }
+void
+Entry::setStrategyChoiceEntry(shared_ptr<strategy_choice::Entry> strategyChoiceEntry)
+{
+  if (static_cast<bool>(strategyChoiceEntry)) {
+    BOOST_ASSERT(!static_cast<bool>(strategyChoiceEntry->m_nameTreeEntry));
+  }
 
-//   if (static_cast<bool>(m_strategyChoiceEntry)) {
-//     m_strategyChoiceEntry->m_nameTreeEntry.reset();
-//   }
-//   m_strategyChoiceEntry = strategyChoiceEntry;
-//   if (static_cast<bool>(m_strategyChoiceEntry)) {
-//     m_strategyChoiceEntry->m_nameTreeEntry = this->shared_from_this();
-//   }
-// }
+  if (static_cast<bool>(m_strategyChoiceEntry)) {
+    m_strategyChoiceEntry->m_nameTreeEntry.reset();
+  }
+  m_strategyChoiceEntry = strategyChoiceEntry;
+  if (static_cast<bool>(m_strategyChoiceEntry)) {
+    m_strategyChoiceEntry->m_nameTreeEntry = this->shared_from_this();
+  }
+}
 
 } // namespace name_tree
 } // namespace nfd
