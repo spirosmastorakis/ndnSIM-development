@@ -21,36 +21,39 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
- **/
+ */
 
-#include "ns3/strategy-choice-entry.hpp"
-#include "ns3/logger.hpp"
-#include "ns3/strategy.hpp"
-
-NFD_LOG_INIT("StrategyChoiceEntry");
+#include "ns3/measurements-accessor.hpp"
 
 namespace nfd {
-namespace strategy_choice {
 
-Entry::Entry(const Name& prefix)
-  : m_prefix(prefix)
+using fw::Strategy;
+
+MeasurementsAccessor::MeasurementsAccessor(Measurements& measurements,
+                                           StrategyChoice& strategyChoice,
+                                           Strategy* strategy)
+  : m_measurements(measurements)
+  , m_strategyChoice(strategyChoice)
+  , m_strategy(strategy)
 {
 }
 
-const Name&
-Entry::getStrategyName() const
+MeasurementsAccessor::~MeasurementsAccessor()
 {
-  return m_strategy->getName();
 }
 
-void
-Entry::setStrategy(shared_ptr<fw::Strategy> strategy)
+shared_ptr<measurements::Entry>
+MeasurementsAccessor::filter(const shared_ptr<measurements::Entry>& entry)
 {
-  BOOST_ASSERT(static_cast<bool>(strategy));
-  m_strategy = strategy;
+  if (!static_cast<bool>(entry)) {
+    return entry;
+  }
 
-  NFD_LOG_INFO("Set strategy " << strategy->getName() << " for " << m_prefix << " prefix");
+  Strategy& effectiveStrategy = m_strategyChoice.findEffectiveStrategy(*entry);
+  if (&effectiveStrategy == m_strategy) {
+    return entry;
+  }
+  return shared_ptr<measurements::Entry>();
 }
 
-} // namespace strategy_choice
 } // namespace nfd

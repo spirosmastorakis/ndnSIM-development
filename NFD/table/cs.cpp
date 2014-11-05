@@ -27,9 +27,9 @@
  * \author Alexander Afanasyev <http://lasr.cs.ucla.edu/afanasyev/index.html>
  */
 
-#include "cs.hpp"
-#include "../core/logger.hpp"
-#include "../core/random.hpp"
+#include "ns3/cs.hpp"
+#include "ns3/logger.hpp"
+#include "ns3/random.hpp"
 
 #include <ndn-cxx/util/crypto.hpp>
 #include <ndn-cxx/security/signature-sha256-with-rsa.hpp>

@@ -21,36 +21,46 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
- **/
+ */
 
-#include "ns3/strategy-choice-entry.hpp"
-#include "ns3/logger.hpp"
+#ifndef NFD_DAEMON_FW_BEST_ROUTE_STRATEGY_HPP
+#define NFD_DAEMON_FW_BEST_ROUTE_STRATEGY_HPP
+
 #include "ns3/strategy.hpp"
 
-NFD_LOG_INIT("StrategyChoiceEntry");
-
 namespace nfd {
-namespace strategy_choice {
+namespace fw {
 
-Entry::Entry(const Name& prefix)
-  : m_prefix(prefix)
+/** \brief Best Route strategy version 1
+ *
+ *  This strategy forwards a new Interest to the lowest-cost nexthop
+ *  that is not same as the downstream, and does not violate scope.
+ *  Subsequent similar Interests or consumer retransmissions are suppressed
+ *  until after InterestLifetime expiry.
+ *
+ *  \deprecated This strategy is superceded by Best Route strategy version 2,
+ *              which allows consumer retransmissions. This version is kept for
+ *              comparison purposes and is not recommended for general usage.
+ */
+class BestRouteStrategy : public Strategy
 {
-}
+public:
+  BestRouteStrategy(Forwarder& forwarder, const Name& name = STRATEGY_NAME);
 
-const Name&
-Entry::getStrategyName() const
-{
-  return m_strategy->getName();
-}
+  virtual
+  ~BestRouteStrategy();
 
-void
-Entry::setStrategy(shared_ptr<fw::Strategy> strategy)
-{
-  BOOST_ASSERT(static_cast<bool>(strategy));
-  m_strategy = strategy;
+  virtual void
+  afterReceiveInterest(const ns3::ndn::Face& inFace,
+                       const Interest& interest,
+                       shared_ptr<fib::Entry> fibEntry,
+                       shared_ptr<pit::Entry> pitEntry);
 
-  NFD_LOG_INFO("Set strategy " << strategy->getName() << " for " << m_prefix << " prefix");
-}
+public:
+  static const Name STRATEGY_NAME;
+};
 
-} // namespace strategy_choice
+} // namespace fw
 } // namespace nfd
+
+#endif // NFD_DAEMON_FW_BEST_ROUTE_STRATEGY_HPP

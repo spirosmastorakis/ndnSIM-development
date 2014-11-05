@@ -21,36 +21,43 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
- **/
+ */
 
-#include "ns3/strategy-choice-entry.hpp"
-#include "ns3/logger.hpp"
-#include "ns3/strategy.hpp"
-
-NFD_LOG_INIT("StrategyChoiceEntry");
+#include "ns3/broadcast-strategy.hpp"
 
 namespace nfd {
-namespace strategy_choice {
+namespace fw {
 
-Entry::Entry(const Name& prefix)
-  : m_prefix(prefix)
+const Name BroadcastStrategy::STRATEGY_NAME("ndn:/localhost/nfd/strategy/broadcast/%FD%01");
+
+BroadcastStrategy::BroadcastStrategy(Forwarder& forwarder, const Name& name)
+  : Strategy(forwarder, name)
 {
 }
 
-const Name&
-Entry::getStrategyName() const
+BroadcastStrategy::~BroadcastStrategy()
 {
-  return m_strategy->getName();
 }
 
 void
-Entry::setStrategy(shared_ptr<fw::Strategy> strategy)
+BroadcastStrategy::afterReceiveInterest(const ns3::ndn::Face& inFace,
+                   const Interest& interest,
+                   shared_ptr<fib::Entry> fibEntry,
+                   shared_ptr<pit::Entry> pitEntry)
 {
-  BOOST_ASSERT(static_cast<bool>(strategy));
-  m_strategy = strategy;
+  const fib::NextHopList& nexthops = fibEntry->getNextHops();
 
-  NFD_LOG_INFO("Set strategy " << strategy->getName() << " for " << m_prefix << " prefix");
+  for (fib::NextHopList::const_iterator it = nexthops.begin(); it != nexthops.end(); ++it) {
+    shared_ptr<ns3::ndn::Face> outFace = it->getFace();
+    if (pitEntry->canForwardTo(*outFace)) {
+      this->sendInterest(pitEntry, outFace);
+    }
+  }
+
+  if (!pitEntry->hasUnexpiredOutRecords()) {
+    this->rejectPendingInterest(pitEntry);
+  }
 }
 
-} // namespace strategy_choice
+} // namespace fw
 } // namespace nfd

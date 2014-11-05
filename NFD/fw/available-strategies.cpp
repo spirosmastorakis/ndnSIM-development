@@ -21,36 +21,42 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
- **/
+ */
 
-#include "ns3/strategy-choice-entry.hpp"
-#include "ns3/logger.hpp"
-#include "ns3/strategy.hpp"
-
-NFD_LOG_INIT("StrategyChoiceEntry");
+#include "ns3/best-route-strategy.hpp"
+#include "ns3/broadcast-strategy.hpp"
+#include "ns3/client-control-strategy.hpp"
+#include "ns3/ncc-strategy.hpp"
+#include "ns3/best-route-strategy2.hpp"
 
 namespace nfd {
-namespace strategy_choice {
+namespace fw {
 
-Entry::Entry(const Name& prefix)
-  : m_prefix(prefix)
+shared_ptr<Strategy>
+makeDefaultStrategy(Forwarder& forwarder)
 {
+  return make_shared<BestRouteStrategy2>(ref(forwarder));
 }
 
-const Name&
-Entry::getStrategyName() const
+template<typename S>
+inline void
+installStrategy(Forwarder& forwarder)
 {
-  return m_strategy->getName();
+  StrategyChoice& strategyChoice = forwarder.getStrategyChoice();
+  if (!strategyChoice.hasStrategy(S::STRATEGY_NAME)) {
+    strategyChoice.install(make_shared<S>(ref(forwarder)));
+  }
 }
 
 void
-Entry::setStrategy(shared_ptr<fw::Strategy> strategy)
+installStrategies(Forwarder& forwarder)
 {
-  BOOST_ASSERT(static_cast<bool>(strategy));
-  m_strategy = strategy;
-
-  NFD_LOG_INFO("Set strategy " << strategy->getName() << " for " << m_prefix << " prefix");
+  installStrategy<BestRouteStrategy>(forwarder);
+  installStrategy<BroadcastStrategy>(forwarder);
+  installStrategy<ClientControlStrategy>(forwarder);
+  installStrategy<NccStrategy>(forwarder);
+  installStrategy<BestRouteStrategy2>(forwarder);
 }
 
-} // namespace strategy_choice
+} // namespace fw
 } // namespace nfd

@@ -21,36 +21,41 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
- **/
+ */
 
-#include "ns3/strategy-choice-entry.hpp"
-#include "ns3/logger.hpp"
+#ifndef NFD_DAEMON_FW_BEST_ROUTE_STRATEGY2_HPP
+#define NFD_DAEMON_FW_BEST_ROUTE_STRATEGY2_HPP
+
 #include "ns3/strategy.hpp"
 
-NFD_LOG_INIT("StrategyChoiceEntry");
-
 namespace nfd {
-namespace strategy_choice {
+namespace fw {
 
-Entry::Entry(const Name& prefix)
-  : m_prefix(prefix)
+/** \brief Best Route strategy version 2
+ *
+ *  This strategy forwards a new Interest to the lowest-cost nexthop (except downstream).
+ *  After that, it recognizes consumer retransmission:
+ *  if a similar Interest arrives from any downstream after MIN_RETRANSMISSION_INTERVAL,
+ *  the strategy forwards the Interest again to the lowest-cost nexthop (except downstream)
+ *  that is not previously used. If all nexthops have been used, the strategy starts over.
+ */
+class BestRouteStrategy2 : public Strategy
 {
-}
+public:
+  BestRouteStrategy2(Forwarder& forwarder, const Name& name = STRATEGY_NAME);
 
-const Name&
-Entry::getStrategyName() const
-{
-  return m_strategy->getName();
-}
+  virtual void
+  afterReceiveInterest(const ns3::ndn::Face& inFace,
+                       const Interest& interest,
+                       shared_ptr<fib::Entry> fibEntry,
+                       shared_ptr<pit::Entry> pitEntry);
 
-void
-Entry::setStrategy(shared_ptr<fw::Strategy> strategy)
-{
-  BOOST_ASSERT(static_cast<bool>(strategy));
-  m_strategy = strategy;
+public:
+  static const Name STRATEGY_NAME;
+  static const time::milliseconds MIN_RETRANSMISSION_INTERVAL;
+};
 
-  NFD_LOG_INFO("Set strategy " << strategy->getName() << " for " << m_prefix << " prefix");
-}
-
-} // namespace strategy_choice
+} // namespace fw
 } // namespace nfd
+
+#endif // NFD_DAEMON_FW_BEST_ROUTE_STRATEGY2_HPP
