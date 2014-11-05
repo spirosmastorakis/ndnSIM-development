@@ -23,7 +23,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "pit.hpp"
+#include "ns3/pit.hpp"
 
 namespace nfd {
 

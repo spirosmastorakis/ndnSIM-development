@@ -22,7 +22,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "measurements-entry.hpp"
+#include "ns3/measurements-entry.hpp"
 
 namespace nfd {
 namespace measurements {

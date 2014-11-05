@@ -23,7 +23,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "name-tree-entry.hpp"
+#include "ns3/name-tree-entry.hpp"
 
 namespace nfd {
 namespace name_tree {
@@ -139,4 +139,3 @@ Entry::setMeasurementsEntry(shared_ptr<measurements::Entry> measurementsEntry)
 
 } // namespace name_tree
 } // namespace nfd
-

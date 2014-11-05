@@ -23,7 +23,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "random.hpp"
+#include "ns3/random.hpp"
 
 namespace nfd {
 

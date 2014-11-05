@@ -23,10 +23,10 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "forwarder.hpp"
-#include "../core/logger.hpp"
-#include "../core/random.hpp"
-//#include "available-strategies.hpp"
+#include "ns3/forwarder.hpp"
+#include "ns3/logger.hpp"
+#include "ns3/random.hpp"
+#include "ns3/available-strategies.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
 
 namespace nfd {
@@ -42,9 +42,9 @@ Forwarder::Forwarder()
   , m_fib(m_nameTree)
   , m_pit(m_nameTree)
   , m_measurements(m_nameTree)
-    //, m_strategyChoice(m_nameTree, fw::makeDefaultStrategy(*this))
+  , m_strategyChoice(m_nameTree, fw::makeDefaultStrategy(*this))
 {
-  //fw::installStrategies(*this);
+  fw::installStrategies(*this);
 }
 
 Forwarder::~Forwarder()
@@ -116,8 +116,8 @@ Forwarder::onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest)
   shared_ptr<fib::Entry> fibEntry = m_fib.findLongestPrefixMatch(*pitEntry);
 
   // dispatch to strategy
-  /*  this->dispatchToStrategy(pitEntry, bind(&Strategy::afterReceiveInterest, _1,
-                                          cref(inFace), cref(interest), fibEntry, pitEntry)); */
+  this->dispatchToStrategy(pitEntry, bind(&Strategy::afterReceiveInterest, _1,
+                                          cref(inFace), cref(interest), fibEntry, pitEntry));
 }
 
 void
@@ -191,8 +191,8 @@ Forwarder::onOutgoingInterest(shared_ptr<pit::Entry> pitEntry, ns3::ndn::Face& o
   // insert OutRecord
   //pitEntry->insertOrUpdateOutRecord(outFace.shared_from_this(), *interest);
 
-  // send Interest
-  //outFace.sendInterest(*interest);
+  // send Interest - SendInterest method of ns3::ndn::Face class, hope it works...
+  outFace.SendInterest(interest);
   ++m_counters.getNOutInterests();
 }
 
@@ -219,8 +219,8 @@ Forwarder::onInterestUnsatisfied(shared_ptr<pit::Entry> pitEntry)
   NFD_LOG_DEBUG("onInterestUnsatisfied interest=" << pitEntry->getName());
 
   // invoke PIT unsatisfied callback
-  /*this->dispatchToStrategy(pitEntry, bind(&Strategy::beforeExpirePendingInterest, _1,
-                                          pitEntry)); */
+  this->dispatchToStrategy(pitEntry, bind(&Strategy::beforeExpirePendingInterest, _1,
+                                          pitEntry));
 
   // goto Interest Finalize pipeline
   this->onInterestFinalize(pitEntry, false);
@@ -290,8 +290,8 @@ Forwarder::onIncomingData(ns3::ndn::Face& inFace, const Data& data)
     }
 
     // invoke PIT satisfy callback
-    /*    this->dispatchToStrategy(pitEntry, bind(&Strategy::beforeSatisfyInterest, _1,
-                                            pitEntry, cref(inFace), cref(data)));*/
+    this->dispatchToStrategy(pitEntry, bind(&Strategy::beforeSatisfyInterest, _1,
+                                            pitEntry, cref(inFace), cref(data)));
 
     // Dead Nonce List insert if necessary (for OutRecord of inFace)
     this->insertDeadNonceList(*pitEntry, true, data.getFreshnessPeriod(), &inFace);
@@ -352,8 +352,8 @@ Forwarder::onOutgoingData(const Data& data, ns3::ndn::Face& outFace)
 
   // TODO traffic manager
 
-  // send Data
-  //outFace.sendData(data);
+  // send Data - SendData method of ns3::ndn::Face, hope that it works...
+  //outFace.SendData(shared_ptr<const Data>(data));
   ++m_counters.getNOutDatas();
 }
 

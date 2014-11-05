@@ -22,15 +22,37 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/pit-out-record.hpp"
+#ifndef NFD_DAEMON_FW_BROADCAST_STRATEGY_HPP
+#define NFD_DAEMON_FW_BROADCAST_STRATEGY_HPP
+
+#include "ns3/strategy.hpp"
 
 namespace nfd {
-namespace pit {
+namespace fw {
 
-OutRecord::OutRecord(shared_ptr<ns3::ndn::Face> face)
-  : FaceRecord(face)
+/** \class BroadcastStrategy
+ *  \brief a forwarding strategy that forwards Interest
+ *         to all nexthops
+ */
+class BroadcastStrategy : public Strategy
 {
-}
+public:
+  BroadcastStrategy(Forwarder& forwarder, const Name& name = STRATEGY_NAME);
 
-} // namespace pit
+  virtual
+  ~BroadcastStrategy();
+
+  virtual void
+  afterReceiveInterest(const ns3::ndn::Face& inFace,
+                       const Interest& interest,
+                       shared_ptr<fib::Entry> fibEntry,
+                       shared_ptr<pit::Entry> pitEntry);
+
+public:
+  static const Name STRATEGY_NAME;
+};
+
+} // namespace fw
 } // namespace nfd
+
+#endif // NFD_DAEMON_FW_BROADCAST_STRATEGY_HPP

@@ -196,7 +196,7 @@ private:
   Pit            m_pit;
   Cs             m_cs;
   Measurements   m_measurements;
-  //StrategyChoice m_strategyChoice;
+  StrategyChoice m_strategyChoice;
   DeadNonceList  m_deadNonceList;
 
   static const Name LOCALHOST_NAME;

@@ -23,9 +23,9 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "face-table.hpp"
-#include "forwarder.hpp"
-#include "../core/logger.hpp"
+#include "ns3/face-table.hpp"
+#include "ns3/forwarder.hpp"
+#include "ns3/logger.hpp"
 
 namespace nfd {
 

@@ -27,8 +27,8 @@
  * \author Alexander Afanasyev <http://lasr.cs.ucla.edu/afanasyev/index.html>
  */
 
-#include "cs-entry.hpp"
-#include "../core/logger.hpp"
+#include "ns3/cs-entry.hpp"
+#include "ns3/logger.hpp"
 
 namespace nfd {
 namespace cs {

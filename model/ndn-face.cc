@@ -101,7 +101,6 @@ Face::getId() const
   return m_idNfd;
 }
 
-// this method is private and should be used only by the FaceTable
 void
 Face::setId(FaceId faceId)
 {

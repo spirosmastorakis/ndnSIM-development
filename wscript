@@ -205,6 +205,13 @@ def build(bld):
         "NFD/fw/forwarder.hpp",
         "NFD/fw/strategy-info.hpp",
         "NFD/fw/strategy.hpp",
+        "NFD/fw/available-strategies.hpp",
+        "NFD/fw/best-route-strategy.hpp",
+        "NFD/fw/best-route-strategy2.hpp",
+        "NFD/fw/broadcast-strategy.hpp",
+        "NFD/fw/client-control-strategy.hpp",
+        "NFD/fw/ncc-strategy.hpp",
+        "NFD/fw/rtt-estimator.hpp"
 
 #         "utils/tracers/ipv4-app-tracer.h",
 #         "utils/tracers/ipv4-l3-tracer.h",

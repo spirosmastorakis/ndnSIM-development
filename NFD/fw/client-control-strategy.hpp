@@ -22,15 +22,36 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/pit-out-record.hpp"
+#ifndef NFD_DAEMON_FW_CLIENT_CONTROL_STRATEGY_HPP
+#define NFD_DAEMON_FW_CLIENT_CONTROL_STRATEGY_HPP
+
+#include "ns3/best-route-strategy.hpp"
 
 namespace nfd {
-namespace pit {
+namespace fw {
 
-OutRecord::OutRecord(shared_ptr<ns3::ndn::Face> face)
-  : FaceRecord(face)
+/** \brief a forwarding strategy that forwards Interests
+ *         according to NextHopFaceId field in LocalControlHeader
+ */
+class ClientControlStrategy : public BestRouteStrategy
 {
-}
+public:
+  ClientControlStrategy(Forwarder& forwarder, const Name& name = STRATEGY_NAME);
 
-} // namespace pit
+  virtual
+  ~ClientControlStrategy();
+
+  virtual void
+  afterReceiveInterest(const ns3::ndn::Face& inFace,
+                       const Interest& interest,
+                       shared_ptr<fib::Entry> fibEntry,
+                       shared_ptr<pit::Entry> pitEntry);
+
+public:
+  static const Name STRATEGY_NAME;
+};
+
+} // namespace fw
 } // namespace nfd
+
+#endif // NFD_DAEMON_FW_CLIENT_CONTROL_STRATEGY_HPP

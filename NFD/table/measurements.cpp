@@ -23,10 +23,10 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "measurements.hpp"
-#include "name-tree.hpp"
-#include "pit-entry.hpp"
-#include "fib-entry.hpp"
+#include "ns3/measurements.hpp"
+#include "ns3/name-tree.hpp"
+#include "ns3/pit-entry.hpp"
+#include "ns3/fib-entry.hpp"
 
 namespace nfd {
 

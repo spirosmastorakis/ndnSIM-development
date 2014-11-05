@@ -24,9 +24,9 @@
 
 // Name Tree (Name Prefix Hash Table)
 
-#include "name-tree.hpp"
-#include "../core/logger.hpp"
-#include "../core/city-hash.hpp"
+#include "ns3/name-tree.hpp"
+#include "ns3/logger.hpp"
+#include "ns3/city-hash.hpp"
 
 namespace nfd {
 

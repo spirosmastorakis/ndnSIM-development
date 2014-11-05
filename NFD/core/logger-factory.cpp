@@ -22,7 +22,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "logger-factory.hpp"
+#include "ns3/logger-factory.hpp"
 
 namespace nfd {
 

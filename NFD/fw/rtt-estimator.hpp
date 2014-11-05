@@ -5,7 +5,8 @@
  *                     Colorado State University,
  *                     University Pierre & Marie Curie, Sorbonne University,
  *                     Washington University in St. Louis,
- *                     Beijing Institute of Technology
+ *                     Beijing Institute of Technology,
+ *                     The University of Memphis
  *
  * This file is part of NFD (Named Data Networking Forwarding Daemon).
  * See AUTHORS.md for complete list of NFD authors and contributors.
@@ -22,33 +23,61 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/pit-face-record.hpp"
+#ifndef NFD_DAEMON_FW_RTT_ESTIMATOR_HPP
+#define NFD_DAEMON_FW_RTT_ESTIMATOR_HPP
+
+#include "ns3/common.hpp"
 
 namespace nfd {
-namespace pit {
 
-FaceRecord::FaceRecord(shared_ptr<ns3::ndn::Face> face)
-  : m_face(face)
-  , m_lastNonce(0)
-  , m_lastRenewed(time::steady_clock::TimePoint::min())
-  , m_expiry(time::steady_clock::TimePoint::min())
+/**
+ * \brief implements the Mean-Deviation RTT estimator
+ *
+ * reference: ns3::RttMeanDeviation
+ *
+ * This RttEstimator algorithm is designed for TCP, which is a continuous stream.
+ * NDN Interest-Data traffic is not always a continuous stream,
+ * so NDN may need a different RttEstimator.
+ * The design of a more suitable RttEstimator is a research question.
+ */
+class RttEstimator
 {
-}
+public:
+  typedef time::microseconds Duration;
 
-void
-FaceRecord::update(const Interest& interest)
-{
-  m_lastNonce = interest.getNonce();
-  m_lastRenewed = time::steady_clock::now();
-
-  static const time::milliseconds DEFAULT_INTEREST_LIFETIME = time::milliseconds(4000);
-  time::milliseconds lifetime = interest.getInterestLifetime();
-  if (lifetime < time::milliseconds::zero()) {
-    lifetime = DEFAULT_INTEREST_LIFETIME;
+  static Duration
+  getInitialRtt(void)
+  {
+    return time::seconds(1);
   }
-  m_expiry = m_lastRenewed + time::milliseconds(lifetime);
-}
 
+  RttEstimator(uint16_t maxMultiplier = 16,
+               Duration minRto = time::milliseconds(1),
+               double gain = 0.1);
 
-} // namespace pit
+  void
+  addMeasurement(Duration measure);
+
+  void
+  incrementMultiplier();
+
+  void
+  doubleMultiplier();
+
+  Duration
+  computeRto() const;
+
+private:
+  uint16_t m_maxMultiplier;
+  double m_minRto;
+
+  double m_rtt;
+  double m_gain;
+  double m_variance;
+  uint16_t m_multiplier;
+  uint32_t m_nSamples;
+};
+
 } // namespace nfd
+
+#endif // NFD_DAEMON_FW_RTT_ESTIMATOR_HPP

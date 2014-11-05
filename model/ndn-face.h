@@ -34,6 +34,8 @@
 #include <ndn-cxx/interest.hpp>
 #include "ns3/ndnSIM/NFD/core/face-uri.hpp"
 
+using std::enable_shared_from_this;
+
 namespace ndn {
 
 class Data;
@@ -80,7 +82,7 @@ const FaceId FACEID_RESERVED_MAX = 255;
  * \see ndn::AppFace, ndn::NetDeviceFace
  */
 class Face :
-    public Object
+    public Object //, public enable_shared_from_this<Face>
 {
 public:
   static TypeId
@@ -106,7 +108,13 @@ public:
 
   void
   setId(FaceId faceId);
-
+  /*
+  ::ndn::shared_ptr<Face>
+  shared_from_this()
+  {
+    return shared_from_this();
+  }
+  */
   inline const nfd::FaceUri&
   getRemoteUri() const
   {

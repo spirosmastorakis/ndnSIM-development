@@ -23,7 +23,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "pit-entry.hpp"
+#include "ns3/pit-entry.hpp"
 #include <algorithm>
 
 namespace nfd {
@@ -234,4 +234,3 @@ Entry::hasUnexpiredOutRecords() const
 
 } // namespace pit
 } // namespace nfd
-

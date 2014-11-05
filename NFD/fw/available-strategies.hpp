@@ -22,15 +22,21 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/pit-out-record.hpp"
+#ifndef NFD_DAEMON_FW_AVAILABLE_STRATEGIES_HPP
+#define NFD_DAEMON_FW_AVAILABLE_STRATEGIES_HPP
+
+#include "ns3/strategy.hpp"
 
 namespace nfd {
-namespace pit {
+namespace fw {
 
-OutRecord::OutRecord(shared_ptr<ns3::ndn::Face> face)
-  : FaceRecord(face)
-{
-}
+shared_ptr<Strategy>
+makeDefaultStrategy(Forwarder& forwarder);
 
-} // namespace pit
+void
+installStrategies(Forwarder& forwarder);
+
+} // namespace fw
 } // namespace nfd
+
+#endif // NFD_DAEMON_FW_AVAILABLE_STRATEGIES_HPP

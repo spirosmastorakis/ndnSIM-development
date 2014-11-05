@@ -5,7 +5,8 @@
  *                     Colorado State University,
  *                     University Pierre & Marie Curie, Sorbonne University,
  *                     Washington University in St. Louis,
- *                     Beijing Institute of Technology
+ *                     Beijing Institute of Technology,
+ *                     The University of Memphis
  *
  * This file is part of NFD (Named Data Networking Forwarding Daemon).
  * See AUTHORS.md for complete list of NFD authors and contributors.
@@ -22,40 +23,57 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/scheduler.hpp"
-#include "ns3/global-io.hpp"
+#include "ns3/rtt-estimator.hpp"
 
 namespace nfd {
-namespace scheduler {
 
-static shared_ptr<Scheduler> g_scheduler;
-
-inline Scheduler&
-getGlobalScheduler()
+RttEstimator::RttEstimator(uint16_t maxMultiplier, Duration minRto, double gain)
+  : m_maxMultiplier(maxMultiplier)
+  , m_minRto(minRto.count())
+  , m_rtt(RttEstimator::getInitialRtt().count())
+  , m_gain(gain)
+  , m_variance(0)
+  , m_multiplier(1)
+  , m_nSamples(0)
 {
-  if (!static_cast<bool>(g_scheduler)) {
-    g_scheduler = make_shared<Scheduler>(ref(getGlobalIoService()));
+}
+
+void
+RttEstimator::addMeasurement(Duration measure)
+{
+  double m = static_cast<double>(measure.count());
+  if (m_nSamples > 0) {
+    double err = m - m_rtt;
+    double gErr = err * m_gain;
+    m_rtt += gErr;
+    double difference = std::abs(err) - m_variance;
+    m_variance += difference * m_gain;
+  } else {
+    m_rtt = m;
+    m_variance = m;
   }
-  return *g_scheduler;
-}
-
-EventId
-schedule(const time::nanoseconds& after, const Scheduler::Event& event)
-{
-  return getGlobalScheduler().scheduleEvent(after, event);
+  ++m_nSamples;
+  m_multiplier = 1;
 }
 
 void
-cancel(const EventId& eventId)
+RttEstimator::incrementMultiplier()
 {
-  getGlobalScheduler().cancelEvent(eventId);
+  m_multiplier = std::min(static_cast<uint16_t>(m_multiplier + 1), m_maxMultiplier);
 }
 
 void
-resetGlobalScheduler()
+RttEstimator::doubleMultiplier()
 {
-  g_scheduler.reset();
+  m_multiplier = std::min(static_cast<uint16_t>(m_multiplier * 2), m_maxMultiplier);
 }
 
-} // namespace scheduler
+RttEstimator::Duration
+RttEstimator::computeRto() const
+{
+  double rto = std::max(m_minRto, m_rtt + 4 * m_variance);
+  rto *= m_multiplier;
+  return Duration(static_cast<Duration::rep>(rto));
+}
+
 } // namespace nfd
