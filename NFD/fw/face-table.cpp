@@ -78,8 +78,8 @@ FaceTable::addImpl(shared_ptr<ns3::ndn::Face> face, ns3::ndn::FaceId faceId)
                                   &m_forwarder, ref(*face), _1);
   face->onFail            += bind(&FaceTable::remove,
                                   this, face);
-
-  this->onAdd(face); */
+  */
+  this->onAdd(face);
 }
 
 void
