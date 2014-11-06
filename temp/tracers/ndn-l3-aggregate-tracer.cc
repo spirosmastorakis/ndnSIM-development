@@ -28,7 +28,7 @@
 #include "ns3/ndn-face.h"
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
-#include "ns3/ndn-pit-entry.h"
+#include "ns3/pit-entry.hpp"
 
 #include "ns3/simulator.h"
 #include "ns3/node-list.h"
@@ -318,9 +318,9 @@ void
 L3AggregateTracer::OutInterests  (::ndn::shared_ptr<const ::ndn::Interest> interest, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_outInterests ++;
-  if (interest->wire ())
+  if (interest->hasWire ())
     {
-      m_stats[face].get<1> ().m_outInterests += interest->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_outInterests += interest->wireEncode ().size ();
     }
 }
 
@@ -328,9 +328,9 @@ void
 L3AggregateTracer::InInterests   (::ndn::shared_ptr<const ::ndn::Interest> interest, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_inInterests ++;
-  if (interest->GetWire ())
+  if (interest->hasWire ())
     {
-      m_stats[face].get<1> ().m_inInterests += interest->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_inInterests += interest->wireEncode ().size ();
     }
 }
 
@@ -338,9 +338,9 @@ void
 L3AggregateTracer::DropInterests (::ndn::shared_ptr<const ::ndn::Interest> interest, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_dropInterests ++;
-  if (interest->GetWire ())
+  if (interest->hasWire ())
     {
-      m_stats[face].get<1> ().m_dropInterests += interest->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_dropInterests += interest->wireEncode ().size ();
     }
 }
 
@@ -381,9 +381,9 @@ L3AggregateTracer::OutData  (::ndn::shared_ptr<const ::ndn::Data> data,
                              bool fromCache, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_outData ++;
-  if (data->GetWire ())
+  if (data->hasWire ())
     {
-      m_stats[face].get<1> ().m_outData += data->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_outData += data->wireEncode ().size ();
     }
 }
 
@@ -392,9 +392,9 @@ L3AggregateTracer::InData   (::ndn::shared_ptr<const ::ndn::Data> data,
                              Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_inData ++;
-  if (data->GetWire ())
+  if (data->hasWire ())
     {
-      m_stats[face].get<1> ().m_inData += data->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_inData += data->wireEncode ().size ();
     }
 }
 
@@ -403,9 +403,9 @@ L3AggregateTracer::DropData (::ndn::shared_ptr<const ::ndn::Data> data,
                              Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_dropData ++;
-  if (data->GetWire ())
+  if (data->hasWire ())
     {
-      m_stats[face].get<1> ().m_dropData += data->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_dropData += data->wireEncode ().size ();
     }
 }
 

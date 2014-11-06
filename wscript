@@ -143,7 +143,7 @@ def build(bld):
         "helper/ndn-header-helper.h",
 
         "apps/ndn-app.h",
-#         "apps/callback-based-app.h",
+        "apps/callback-based-app.h",
 
         "model/ndn-common.h",
         "model/ndn-forwarder.h",

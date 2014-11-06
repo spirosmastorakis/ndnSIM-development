@@ -44,12 +44,12 @@ App::GetTypeId (void)
     .SetGroupName ("Ndn")
     .SetParent<Application> ()
     .AddConstructor<App> ()
-    /*
+
     .AddTraceSource ("ReceivedInterests", "ReceivedInterests",
                     MakeTraceSourceAccessor (&App::m_receivedInterests))
 
-    .AddTraceSource ("ReceivedNacks", "ReceivedNacks",
-                    MakeTraceSourceAccessor (&App::m_receivedNacks))
+    //.AddTraceSource ("ReceivedNacks", "ReceivedNacks",
+    //MakeTraceSourceAccessor (&App::m_receivedNacks))
 
     .AddTraceSource ("ReceivedDatas", "ReceivedDatas",
                     MakeTraceSourceAccessor (&App::m_receivedDatas))
@@ -58,7 +58,7 @@ App::GetTypeId (void)
                     MakeTraceSourceAccessor (&App::m_transmittedInterests))
 
     .AddTraceSource ("TransmittedDatas", "TransmittedDatas",
-                    MakeTraceSourceAccessor (&App::m_transmittedDatas)) */
+                    MakeTraceSourceAccessor (&App::m_transmittedDatas))
     ;
   return tid;
 }
@@ -96,8 +96,8 @@ App::GetId () const
 void
 App::OnInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
 {
-  //NS_LOG_FUNCTION (this << interest);
-  //m_receivedInterests (interest, this, m_face);
+  NS_LOG_FUNCTION (this << interest);
+  m_receivedInterests (interest, this, m_face);
 }
 /*
 void
@@ -110,35 +110,35 @@ App::OnNack (::ndn::shared_ptr<const ::ndn::Interest> interest)
 void
 App::OnData (::ndn::shared_ptr<const ::ndn::Data> contentObject)
 {
-  //NS_LOG_FUNCTION (this << contentObject);
-  //m_receivedDatas (contentObject, this, m_face);
+  NS_LOG_FUNCTION (this << contentObject);
+  m_receivedDatas (contentObject, this, m_face);
 }
 
 // Application Methods
 void
 App::StartApplication () // Called at time specified by Start
 {
-  //NS_LOG_FUNCTION_NOARGS ();
+  NS_LOG_FUNCTION_NOARGS ();
 
-  //NS_ASSERT (m_active != true);
-  //m_active = true;
+  NS_ASSERT (m_active != true);
+  m_active = true;
 
-  //NS_ASSERT_MSG (GetNode ()->GetObject<L3Protocol> () != 0,
-  //"Ndn stack should be installed on the node " << GetNode ());
+  NS_ASSERT_MSG (GetNode ()->GetObject<L3Protocol> () != 0,
+  "Ndn stack should be installed on the node " << GetNode ());
 
   // step 1. Create a face
-  //m_face = CreateObject<AppFace> (/*Ptr<App> (this)*/this);
+  m_face = CreateObject<AppFace> (/*Ptr<App> (this)*/this);
 
   // step 2. Add face to the Ndn stack
-  //GetNode ()->GetObject<L3Protocol> ()->AddFace (m_face);
+  GetNode ()->GetObject<L3Protocol> ()->AddFace (m_face);
 
   // step 3. Enable face
-  //m_face->SetUp (true);
+  m_face->SetUp (true);
 }
 
 void
 App::StopApplication () // Called at time specified by Stop
-{ /*
+{
   NS_LOG_FUNCTION_NOARGS ();
 
   if (!m_active) return; //don't assert here, just return
@@ -161,10 +161,10 @@ App::StopApplication () // Called at time specified by Stop
                     << m_face->GetReferenceCount () << " references");
 
     }
-  // NS_ASSERT_MSG (m_face->GetReferenceCount ()==2,
-  //               "At this point, nobody else should have referenced this face, but we have "
-  //               << m_face->GetReferenceCount () << " references");
-  m_face = 0; */
+   NS_ASSERT_MSG (m_face->GetReferenceCount ()==2,
+                "At this point, nobody else should have referenced this face, but we have "
+                 << m_face->GetReferenceCount () << " references");
+  m_face = 0;
 }
 
 } // namespace ndn

@@ -109,10 +109,10 @@ L3Protocol::DoDispose (void)
 {
   NS_LOG_FUNCTION (this);
 
-  // for (FaceList::iterator i = m_faces.begin (); i != m_faces.end (); ++i)
-  //   {
-  //     *i = 0;
-  //   }
+  for (FaceList::iterator i = m_faces.begin (); i != m_faces.end (); ++i)
+  {
+    *i = 0;
+  }
   m_faces.clear ();
   m_node = 0;
 
