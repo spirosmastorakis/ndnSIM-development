@@ -205,6 +205,8 @@ def build(bld):
         "NFD/core/segment-publisher.hpp",
 
         "NFD/daemon/face/face-counters.hpp",
+        "NFD/daemon/face/channel.hpp",
+        "NFD/daemon/face/protocol-factory.hpp",
 
         "NFD/daemon/fw/face-table.hpp",
         "NFD/daemon/fw/forwarder-counters.hpp",
@@ -218,6 +220,10 @@ def build(bld):
         "NFD/daemon/fw/client-control-strategy.hpp",
         "NFD/daemon/fw/ncc-strategy.hpp",
         "NFD/daemon/fw/rtt-estimator.hpp",
+
+        "NFD/daemon/mgmt/app-face.hpp",
+        "NFD/daemon/mgmt/channel-status-publisher.hpp",
+        "NFD/daemon/mgmt/command-validator.hpp",
 
         "NFD/rib/face-entry.hpp",
         "NFD/rib/fib-update.hpp",
