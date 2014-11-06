@@ -31,7 +31,7 @@
 #include "ns3/ndn-face.h"
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
-#include "ns3/ndn-pit-entry.h"
+#include "ns3/pit-entry.hpp"
 
 #include <fstream>
 #include <boost/lexical_cast.hpp>
@@ -335,9 +335,9 @@ void
 L3RateTracer::OutInterests  (::ndn::shared_ptr<const ::ndn::Interest> interest, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_outInterests ++;
-  if (interest->GetWire ())
+  if (interest->hasWire ())
     {
-      m_stats[face].get<1> ().m_outInterests += interest->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_outInterests += interest->wireEncode ().size ();
     }
 }
 
@@ -345,9 +345,9 @@ void
 L3RateTracer::InInterests   (::ndn::shared_ptr<const ::ndn::Interest> interest, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_inInterests ++;
-  if (interest->GetWire ())
+  if (interest->hasWire ())
     {
-      m_stats[face].get<1> ().m_inInterests += interest->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_inInterests += interest->wireEncode ().size ();
     }
 }
 
@@ -355,9 +355,9 @@ void
 L3RateTracer::DropInterests (::ndn::shared_ptr<const ::ndn::Interest> interest, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_dropInterests ++;
-  if (interest->GetWire ())
+  if (interest->hasWire ())
     {
-      m_stats[face].get<1> ().m_dropInterests += interest->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_dropInterests += interest->wireEncode ().size ();
     }
 }
 /*
@@ -396,9 +396,9 @@ L3RateTracer::OutData  (::ndn::shared_ptr<const ::ndn::Data> data,
                         bool fromCache, Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_outData ++;
-  if (data->GetWire ())
+  if (data->hasWire ())
     {
-      m_stats[face].get<1> ().m_outData += data->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_outData += data->wireEncode ().size ();
     }
 }
 
@@ -407,9 +407,9 @@ L3RateTracer::InData   (::ndn::shared_ptr<const ::ndn::Data> data,
                         Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_inData ++;
-  if (data->GetWire ())
+  if (data->hasWire ())
     {
-      m_stats[face].get<1> ().m_inData += data->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_inData += data->wireEncode ().size ();
     }
 }
 
@@ -418,9 +418,9 @@ L3RateTracer::DropData (::ndn::shared_ptr<const ::ndn::Data> data,
                         Ptr<const Face> face)
 {
   m_stats[face].get<0> ().m_dropData ++;
-  if (data->GetWire ())
+  if (data->hasWire ())
     {
-      m_stats[face].get<1> ().m_dropData += data->GetWire ()->GetSize ();
+      m_stats[face].get<1> ().m_dropData += data->wireEncode ().size ();
     }
 }
 
@@ -430,14 +430,14 @@ L3RateTracer::SatisfiedInterests (Ptr<const pit::Entry> entry)
   m_stats[0].get<0> ().m_satisfiedInterests ++;
   // no "size" stats
 
-  for (pit::Entry::in_container::const_iterator i = entry->GetIncoming ().begin ();
+  for (::nfd::pit::Entry::in_container::const_iterator i = entry->GetIncoming ().begin ();
        i != entry->GetIncoming ().end ();
        i++)
     {
       m_stats[i->m_face].get<0> ().m_satisfiedInterests ++;
 }
 
-  for (pit::Entry::out_container::const_iterator i = entry->GetOutgoing ().begin ();
+  for (::nfd::pit::Entry::out_container::const_iterator i = entry->GetOutgoing ().begin ();
        i != entry->GetOutgoing ().end ();
        i++)
     {
