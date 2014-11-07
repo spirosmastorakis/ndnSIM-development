@@ -314,8 +314,8 @@ DatagramFace<T, U>::closeSocket()
 
   // ensure that the Face object is alive at least until all pending
   // handlers are dispatched
-  /*io.post(bind(&DatagramFace<T, U>::keepFaceAliveUntilAllHandlersExecuted,
-               this, this->shared_from_this())); */
+  io.post(bind(&DatagramFace<T, U>::keepFaceAliveUntilAllHandlersExecuted,
+               this, this->shared_from_this()));
 }
 
 template<class T, class U>

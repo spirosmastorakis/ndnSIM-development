@@ -359,7 +359,7 @@ StreamFace<T, U>::shutdownSocket()
   boost::asio::io_service& io = m_socket->get_io_service();
   // ensure that the Face object is alive at least until all pending
   // handlers are dispatched
-  //io.post(bind(&StreamFace<T, U>::deferredClose, this, this->shared_from_this()));
+  io.post(bind(&StreamFace<T, U>::deferredClose, this, this->shared_from_this()));
 
   // Some bug or feature of Boost.Asio (see http://redmine.named-data.net/issues/1856):
   //
