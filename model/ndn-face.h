@@ -32,7 +32,11 @@
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/common.hpp>
 #include <ndn-cxx/interest.hpp>
-#include "ns3/ndnSIM/NFD/core/face-uri.hpp"
+#include <ndn-cxx/management/nfd-face-traits.hpp>
+#include <ndn-cxx/management/nfd-face-event-notification.hpp>
+#include <ndn-cxx/management/nfd-face-status.hpp>
+#include "ns3/face-uri.hpp"
+#include "ns3/face-counters.hpp"
 
 using std::enable_shared_from_this;
 
@@ -67,6 +71,9 @@ const FaceId FACEID_NULL = 255;
 /// upper bound of reserved FaceIds
 const FaceId FACEID_RESERVED_MAX = 255;
 
+/// pratical limit of packet size in octets
+const size_t MAX_NDN_PACKET_SIZE = 8800;
+
 /**
  * \ingroup ndn
  * \defgroup ndn-face Faces
@@ -85,6 +92,16 @@ class Face :
     public Object//, public enable_shared_from_this<Face>
 {
 public:
+  class Error : public std::runtime_error
+  {
+  public:
+    explicit
+    Error(const std::string& what)
+      : std::runtime_error(what)
+    {
+    }
+  };
+
   static TypeId
   GetTypeId ();
 
@@ -102,33 +119,101 @@ public:
    */
   Face (Ptr<Node> node);
 
+  Face (const Face &); ///< \brief copy constructor
+
+  Face (const nfd::FaceUri& remoteUri, const nfd::FaceUri& localUri, bool isLocal = false);
+
   virtual ~Face();
 
-  Face (const Face &); ///< \brief copy constructor
+  /// fires when an Interest is received
+  nfd::EventEmitter<::ndn::Interest> onReceiveInterest;
+
+  /// fires when a Data is received
+  nfd::EventEmitter<::ndn::Data> onReceiveData;
+
+  /// fires when an Interest is sent out
+  nfd::EventEmitter<::ndn::Interest> onSendInterest;
+
+  /// fires when a Data is sent out
+  nfd::EventEmitter<::ndn::Data> onSendData;
+
+  /// fires when face disconnects or fails to perform properly
+  nfd::EventEmitter<std::string/*reason*/> onFail;
 
   FaceId
   getId() const;
 
   void
   setId(FaceId faceId);
-  /*
-  ::ndn::shared_ptr<Face>
-  shared_from_this()
-  {
-    return shared_from_this();
-  }
-  */
-  inline const nfd::FaceUri&
-  getRemoteUri() const
-  {
-    return m_remoteUri;
-  }
 
-  inline const nfd::FaceUri&
-  getLocalUri() const
-  {
-    return m_localUri;
-  }
+  /** \return FaceTraits data structure filled with the current FaceTraits status
+   */
+  template<typename FaceTraits>
+  void
+  copyStatusTo(FaceTraits& traits) const;
+
+  /** \brief Set the description
+   *
+   *  This is typically invoked by mgmt on set description command
+   */
+  virtual void
+  setDescription(const std::string& description);
+
+  /// Get the description
+  virtual const std::string&
+  getDescription() const;
+
+  /** \brief Get whether packets sent this Face may reach multiple peers
+   *
+   *  In this base class this property is always false.
+   */
+  virtual bool
+  isMultiAccess() const;
+
+  /** \brief Get whether underlying communication is up
+   *
+   *  In this base class this property is always true.
+   */
+  virtual bool
+  isUp() const;
+
+  /** \brief Get whether face is created on demand or explicitly via FaceManagement protocol
+   */
+  bool
+  isOnDemand() const;
+
+  const nfd::FaceCounters&
+  getCounters() const;
+
+  /** \return a FaceUri that represents the remote endpoint
+   */
+  const nfd::FaceUri&
+  getRemoteUri() const;
+
+  /** \return a FaceUri that represents the local endpoint (NFD side)
+   */
+  const nfd::FaceUri&
+  getLocalUri() const;
+
+  // this is a non-virtual method
+  bool
+  decodeAndDispatchInput(const ::ndn::Block& element);
+
+  nfd::FaceCounters&
+  getMutableCounters();
+
+  void
+  setOnDemand(bool isOnDemand);
+
+  /** \brief fail the face and raise onFail event if it's UP; otherwise do nothing
+   */
+  void
+  fail(const std::string& reason);
+
+  /** \return FaceStatus data structure filled with the current Face status
+   */
+  virtual ::ndn::nfd::FaceStatus
+  getFaceStatus() const;
 
   /**
    * @brief Get node to which this face is associated
@@ -298,8 +383,8 @@ public:
   /*
   *  \brief Return true if this face is the local host, false otherwise.
   */
-  virtual bool isLocal() const;
-
+  virtual bool
+  isLocal() const;
 
 protected:
   /**
@@ -337,58 +422,103 @@ private:
   FaceId m_idNfd;
   nfd::FaceUri m_remoteUri;
   nfd::FaceUri m_localUri;
+  bool m_isLocal;
+  nfd::FaceCounters m_counters;
+  std::string m_description;
+  bool m_isOnDemand;
+  bool m_isFailed;
+
+  // allow setting FaceId
+  friend class FaceTable;
+
 };
 
-std::ostream&
-operator<< (std::ostream& os, const Face &face);
+  std::ostream&
+  operator<< (std::ostream& os, const Face &face);
 
-inline bool
-Face::IsUp (void) const
-{
-  return m_ifup;
-}
+  inline bool
+  Face::isLocal() const
+  {
+    return m_isLocal;
+  }
 
-inline void
-Face::SetUp (bool up/* = true*/)
-{
-  m_ifup = up;
-}
+  inline bool
+  Face::isOnDemand() const
+  {
+    return m_isOnDemand;
+  }
 
-inline uint32_t
-Face::GetFlags () const
-{
-  return m_flags;
-}
+  inline const nfd::FaceUri&
+  Face::getRemoteUri() const
+  {
+    return m_remoteUri;
+  }
 
-inline bool
-operator < (const Ptr<Face> &lhs, const Ptr<Face> &rhs)
-{
-  return *lhs < *rhs;
-}
+  inline const nfd::FaceUri&
+  Face::getLocalUri() const
+  {
+    return m_localUri;
+  }
 
-void
-Face::SetId (uint32_t id)
-{
-  m_id = id;
-}
+  inline const nfd::FaceCounters&
+  Face::getCounters() const
+  {
+    return m_counters;
+  }
 
-uint32_t
-Face::GetId () const
-{
-  return m_id;
-}
+  inline nfd::FaceCounters&
+  Face::getMutableCounters()
+  {
+    return m_counters;
+  }
 
-inline bool
-Face::operator!= (const Face &face) const
-{
-  return !(*this == face);
-}
+  inline void
+  Face::setOnDemand(bool isOnDemand)
+  {
+    m_isOnDemand = isOnDemand;
+  }
 
-inline bool
-Face::isLocal() const
-{
-  return false;
-}
+  inline bool
+  Face::IsUp (void) const
+  {
+    return m_ifup;
+  }
+
+  inline void
+  Face::SetUp (bool up/* = true*/)
+  {
+    m_ifup = up;
+  }
+
+  inline uint32_t
+  Face::GetFlags () const
+  {
+    return m_flags;
+  }
+
+  inline bool
+  operator < (const Ptr<Face> &lhs, const Ptr<Face> &rhs)
+  {
+    return *lhs < *rhs;
+  }
+
+  void
+  Face::SetId (uint32_t id)
+  {
+    m_id = id;
+  }
+
+  uint32_t
+  Face::GetId () const
+  {
+    return m_id;
+  }
+
+  inline bool
+  Face::operator!= (const Face &face) const
+  {
+    return !(*this == face);
+  }
 
 } // namespace ndn
 } // namespace ns3
