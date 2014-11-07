@@ -107,7 +107,7 @@ Forwarder::onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest)
   }
 
   // insert InRecord
-  //pitEntry->insertOrUpdateInRecord(inFace.shared_from_this(), interest);
+  pitEntry->insertOrUpdateInRecord(inFace.shared_from_this(), interest);
 
   // set PIT unsatisfy timer
   this->setUnsatisfyTimer(pitEntry);
@@ -189,7 +189,7 @@ Forwarder::onOutgoingInterest(shared_ptr<pit::Entry> pitEntry, ns3::ndn::Face& o
   }
 
   // insert OutRecord
-  //pitEntry->insertOrUpdateOutRecord(outFace.shared_from_this(), *interest);
+  pitEntry->insertOrUpdateOutRecord(outFace.shared_from_this(), *interest);
 
   // send Interest - SendInterest method of ns3::ndn::Face class, hope it works...
   outFace.SendInterest(interest);
@@ -298,7 +298,7 @@ Forwarder::onIncomingData(ns3::ndn::Face& inFace, const Data& data)
 
     // mark PIT satisfied
     pitEntry->deleteInRecords();
-    //pitEntry->deleteOutRecord(inFace.shared_from_this());
+    pitEntry->deleteOutRecord(inFace.shared_from_this());
 
     // set PIT straggler timer
     this->setStragglerTimer(pitEntry, true, data.getFreshnessPeriod());
@@ -435,13 +435,13 @@ Forwarder::insertDeadNonceList(pit::Entry& pitEntry, bool isSatisfied,
     std::for_each(outRecords.begin(), outRecords.end(),
                   bind(&insertNonceToDnl, ref(m_deadNonceList), cref(pitEntry), _1));
   }
-  else { /*
+  else {
     // insert outgoing Nonce of a specific face
     pit::OutRecordCollection::const_iterator outRecord =
       pitEntry.getOutRecord(upstream->shared_from_this());
     if (outRecord != pitEntry.getOutRecords().end()) {
       m_deadNonceList.add(pitEntry.getName(), outRecord->getLastNonce());
-    } */
+    }
   }
 }
 

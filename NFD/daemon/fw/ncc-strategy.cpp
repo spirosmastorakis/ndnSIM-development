@@ -273,7 +273,7 @@ NccStrategy::MeasurementsEntryInfo::getBestFace(void) {
 void
 NccStrategy::MeasurementsEntryInfo::updateBestFace(const ns3::ndn::Face& face) {
   if (this->bestFace.expired()) {
-    //this->bestFace = shared_ptr<const_cast<ns3::ndn::Face&>> shared_from_this();
+    this->bestFace = const_cast<ns3::ndn::Face&>(face).shared_from_this();
     return;
   }
   shared_ptr<ns3::ndn::Face> bestFace = this->bestFace.lock();
@@ -282,7 +282,7 @@ NccStrategy::MeasurementsEntryInfo::updateBestFace(const ns3::ndn::Face& face) {
   }
   else {
     this->previousFace = this->bestFace;
-    //this->bestFace = const_cast<ns3::ndn::Face&>(face).shared_from_this();
+    this->bestFace = const_cast<ns3::ndn::Face&>(face).shared_from_this();
   }
 }
 
