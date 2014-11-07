@@ -38,6 +38,9 @@ def configure(conf):
     conf.check_cfg(package='libndn-cxx', args=['--cflags', '--libs'],
                    uselib_store='NDN_CXX', mandatory=True)
 
+    ##conf.check_cxx(function_name='pcap_set_immediate_mode', header_name='pcap/pcap.h',
+                       ##cxxflags='-Wno-error', use='LIBPCAP', mandatory=False)
+
     if not conf.env['LIB_BOOST']:
         conf.report_optional_feature("ndnSIM", "ndnSIM", False,
                                      "Required boost libraries not found")
@@ -101,6 +104,10 @@ def build(bld):
 
     if 'mobility' in bld.env['NDN_plugins']:
         deps.append ('mobility')
+
+    ##if bld.env['HAVE_LIBPCAP']:
+        ##nfd_objects.source += bld.path.ant_glob('daemon/face/ethernet-*.cpp')
+        ##nfd_objects.use += ' LIBPCAP'
 
     module = bld.create_ns3_module ('ndnSIM', deps)
     module.module = 'ndnSIM'
@@ -212,6 +219,13 @@ def build(bld):
         "NFD/daemon/face/tcp-channel.hpp",
         "NFD/daemon/face/tcp-face.hpp",
         "NFD/daemon/face/tcp-factory.hpp",
+        "NFD/daemon/face/udp-channel.hpp",
+        "NFD/daemon/face/udp-factory.hpp",
+        "NFD/daemon/face/multicast-udp-face.hpp",
+        "NFD/daemon/face/datagram-face.hpp",
+        "NFD/daemon/face/udp-face.hpp",
+        #"NFD/daemon/face/ethernet-face.hpp",
+        #"NFD/daemon/face/ethernet-factory.hpp",
 
         "NFD/daemon/fw/face-table.hpp",
         "NFD/daemon/fw/forwarder-counters.hpp",
