@@ -71,14 +71,13 @@ FaceTable::addImpl(shared_ptr<ns3::ndn::Face> face, ns3::ndn::FaceId faceId)
   m_faces[faceId] = face;
   NFD_LOG_INFO("Added face id=" << faceId << " remote=" << face->getRemoteUri()
                                           << " local=" << face->getLocalUri());
-  /*
+
   face->onReceiveInterest += bind(&Forwarder::onInterest,
                                   &m_forwarder, ref(*face), _1);
   face->onReceiveData     += bind(&Forwarder::onData,
                                   &m_forwarder, ref(*face), _1);
   face->onFail            += bind(&FaceTable::remove,
                                   this, face);
-  */
   this->onAdd(face);
 }
 
@@ -95,10 +94,10 @@ FaceTable::remove(shared_ptr<ns3::ndn::Face> face)
 
   // XXX This clears all subscriptions, because EventEmitter
   //     does not support only removing Forwarder's subscription
-  //face->onReceiveInterest.clear();
-  //face->onReceiveData    .clear();
-  //face->onSendInterest   .clear();
-  //face->onSendData       .clear();
+  face->onReceiveInterest.clear();
+  face->onReceiveData    .clear();
+  face->onSendInterest   .clear();
+  face->onSendData       .clear();
   // don't clear onFail because other functions may need to execute
 
   m_forwarder.getFib().removeNextHopFromAllEntries(face);
