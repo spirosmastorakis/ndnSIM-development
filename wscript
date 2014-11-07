@@ -201,12 +201,17 @@ def build(bld):
         "NFD/core/network-interface.hpp",
         "NFD/core/notification-stream.hpp",
         "NFD/core/privilege-helper.hpp",
-        "NFD/core/resovler.hpp",
+        "NFD/core/resolver.hpp",
         "NFD/core/segment-publisher.hpp",
 
         "NFD/daemon/face/face-counters.hpp",
         "NFD/daemon/face/channel.hpp",
         "NFD/daemon/face/protocol-factory.hpp",
+        "NFD/daemon/face/local-face.hpp",
+        "NFD/daemon/face/stream-face.hpp",
+        "NFD/daemon/face/tcp-channel.hpp",
+        "NFD/daemon/face/tcp-face.hpp",
+        "NFD/daemon/face/tcp-factory.hpp",
 
         "NFD/daemon/fw/face-table.hpp",
         "NFD/daemon/fw/forwarder-counters.hpp",
