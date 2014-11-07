@@ -206,45 +206,11 @@ Face::Face (Ptr<Node> node)
   , m_id ((uint32_t)-1)
   , m_metric (0)
   , m_flags (0)
-    /*
-  , m_idNfd (INVALID_FACEID)
-  , m_remoteUri(0)
-  , m_localUri(0)
-  , m_isLocal(false) //only App face should be local */
 {
   NS_LOG_FUNCTION (this << node);
 
   NS_ASSERT_MSG (node != 0, "node cannot be NULL. Check the code");
 }
-/*
-Face::Face (nfd::FaceUri remoteUri, nfd::FaceUri localUri, bool isLocal)
-  : m_node (0) // TO DO: Do we need to know the node number?
-  , m_upstreamInterestHandler (MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Interest> > ())
-  , m_upstreamDataHandler (MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Data> > ())
-  , m_ifup (false)
-  , m_id ((uint32_t)-1)
-  , m_metric (0)
-  , m_flags (0)
-  , m_idNfd (INVALID_FACEID)
-  , m_remoteUri(0)
-  , m_localUri(0)
-  , m_isLocal(isLocal)
-{
-  onReceiveInterest += [this](const ::ndn::Interest&) { ++m_counters.getNInInterests(); };
-  onReceiveData     += [this](const ::ndn::Data&) {     ++m_counters.getNInDatas(); };
-  onSendInterest    += [this](const ::ndn::Interest&) { ++m_counters.getNOutInterests(); };
-  onSendData        += [this](const ::ndn::Data&) {     ++m_counters.getNOutDatas(); };
-}
-
-Face::Face (const Face &)
-{
-  onReceiveInterest += [this](const ::ndn::Interest&) { ++m_counters.getNInInterests(); };
-  onReceiveData     += [this](const ::ndn::Data&) {     ++m_counters.getNInDatas(); };
-  onSendInterest    += [this](const ::ndn::Interest&) { ++m_counters.getNOutInterests(); };
-  onSendData        += [this](const ::ndn::Data&) {     ++m_counters.getNOutDatas(); };
-}
-
-*/
 Face::~Face ()
 {
   NS_LOG_FUNCTION_NOARGS ();

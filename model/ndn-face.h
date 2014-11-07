@@ -89,7 +89,7 @@ const size_t MAX_NDN_PACKET_SIZE = 8800;
  * \see ndn::AppFace, ndn::NetDeviceFace
  */
 class Face :
-    public Object//, public enable_shared_from_this<Face>
+    public Object, public enable_shared_from_this<Face>
 {
 public:
   class Error : public std::runtime_error
@@ -102,6 +102,17 @@ public:
     }
   };
 
+  /**
+   * \brief Default constructor
+   */
+  Face (Ptr<Node> node);
+
+  Face (const Face &); ///< \brief copy constructor
+
+  Face (const nfd::FaceUri& remoteUri, const nfd::FaceUri& localUri, bool isLocal = false);
+
+  virtual ~Face();
+
   static TypeId
   GetTypeId ();
 
@@ -113,17 +124,6 @@ public:
    */
   typedef Callback<void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Interest> > InterestHandler;
   typedef Callback<void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Data> > DataHandler;
-
-  /**
-   * \brief Default constructor
-   */
-  Face (Ptr<Node> node);
-
-  Face (const Face &); ///< \brief copy constructor
-
-  Face (const nfd::FaceUri& remoteUri, const nfd::FaceUri& localUri, bool isLocal = false);
-
-  virtual ~Face();
 
   /// fires when an Interest is received
   nfd::EventEmitter<::ndn::Interest> onReceiveInterest;
