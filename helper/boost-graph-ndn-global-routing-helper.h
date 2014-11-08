@@ -44,7 +44,7 @@ public:
   typedef ns3::Ptr< ns3::ndn::GlobalRouter > Vertice;
   typedef uint16_t edge_property_type;
   typedef uint32_t vertex_property_type;
-  
+
   NdnGlobalRouterGraph ()
   {
     for (ns3::NodeList::Iterator node = ns3::NodeList::Begin (); node != ns3::NodeList::End (); node++)
@@ -67,7 +67,7 @@ public:
   {
     return m_vertices;
   }
-  
+
 public:
   std::list< Vertice > m_vertices;
 };
@@ -138,13 +138,13 @@ num_vertices(const NdnGlobalRouterGraph &g)
 {
   return g.GetVertices ().size ();
 }
-  
+
 
 inline
 std::pair< graph_traits< NdnGlobalRouterGraph >::out_edge_iterator,
-	   graph_traits< NdnGlobalRouterGraph >::out_edge_iterator >  
+	   graph_traits< NdnGlobalRouterGraph >::out_edge_iterator >
 out_edges(
-	  graph_traits< NdnGlobalRouterGraph >::vertex_descriptor u, 
+	  graph_traits< NdnGlobalRouterGraph >::vertex_descriptor u,
 	  const NdnGlobalRouterGraph& g)
 {
   return std::make_pair(u->GetIncidencies ().begin (),
@@ -154,7 +154,7 @@ out_edges(
 inline
 graph_traits< NdnGlobalRouterGraph >::degree_size_type
 out_degree(
-	  graph_traits< NdnGlobalRouterGraph >::vertex_descriptor u, 
+	  graph_traits< NdnGlobalRouterGraph >::vertex_descriptor u,
 	  const NdnGlobalRouterGraph& g)
 {
   return u->GetIncidencies ().size ();
@@ -168,7 +168,7 @@ struct EdgeWeights
 {
   EdgeWeights (const NdnGlobalRouterGraph &graph)
   : m_graph (graph)
-  { 
+  {
   }
 
 private:
@@ -180,7 +180,7 @@ struct VertexIds
 {
   VertexIds (const NdnGlobalRouterGraph &graph)
   : m_graph (graph)
-  { 
+  {
   }
 
 private:
@@ -233,7 +233,7 @@ struct WeightCompare :
   {
     return a.get<1> () < b;
   }
-  
+
   bool
   operator () (uint32_t a,
                uint32_t b) const
@@ -259,12 +259,12 @@ struct WeightCombine :
                property_traits< EdgeWeights >::reference b) const
   {
     if (a.get<0> () == 0)
-      return make_tuple (b.get<0> (), a.get<1> () + b.get<1> (), a.get<2> () + b.get<2> ());
+      return boost::make_tuple (b.get<0> (), a.get<1> () + b.get<1> (), a.get<2> () + b.get<2> ());
     else
-      return make_tuple (a.get<0> (), a.get<1> () + b.get<1> (), a.get<2> () + b.get<2> ());
+      return boost::make_tuple (a.get<0> (), a.get<1> () + b.get<1> (), a.get<2> () + b.get<2> ());
   }
 };
-  
+
 template<>
 struct property_traits< VertexIds >
 {

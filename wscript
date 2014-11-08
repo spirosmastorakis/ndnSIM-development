@@ -224,6 +224,12 @@ def build(bld):
         "NFD/daemon/face/multicast-udp-face.hpp",
         "NFD/daemon/face/datagram-face.hpp",
         "NFD/daemon/face/udp-face.hpp",
+        "NFD/daemon/face/ndnlp-tlv.hpp",
+        "NFD/daemon/face/ndnlp-parse.hpp",
+        "NFD/daemon/face/ndnlp-partial-message-store.hpp",
+        "NFD/daemon/face/ndnlp-sequence-generator.hpp",
+        "NFD/daemon/face/ndnlp-slicer.hpp",
+        "NFD/daemon/face/null-face.hpp",
         #"NFD/daemon/face/ethernet-face.hpp",
         #"NFD/daemon/face/ethernet-factory.hpp",
 
@@ -243,6 +249,9 @@ def build(bld):
         "NFD/daemon/mgmt/app-face.hpp",
         "NFD/daemon/mgmt/channel-status-publisher.hpp",
         "NFD/daemon/mgmt/command-validator.hpp",
+        "NFD/daemon/mgmt/internal-face.hpp",
+        "NFD/daemon/mgmt/manager-base.hpp",
+        "NFD/daemon/mgmt/face-status-publisher.hpp",
 
         "NFD/rib/face-entry.hpp",
         "NFD/rib/fib-update.hpp",
