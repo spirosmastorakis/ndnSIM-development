@@ -7,7 +7,6 @@
 #
 # Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
 #
-
 import os
 from waflib import Logs, Utils, Options, TaskGen, Task
 from waflib.Errors import WafError
@@ -252,6 +251,14 @@ def build(bld):
         "NFD/daemon/mgmt/internal-face.hpp",
         "NFD/daemon/mgmt/manager-base.hpp",
         "NFD/daemon/mgmt/face-status-publisher.hpp",
+        "NFD/daemon/mgmt/face-manager.hpp",
+        "NFD/daemon/mgmt/fib-enumeration-publisher.hpp",
+        "NFD/daemon/mgmt/fib-manager.hpp",
+        "NFD/daemon/mgmt/general-config-section.hpp",
+        "NFD/daemon/mgmt/status-server.hpp",
+        "NFD/daemon/mgmt/strategy-choice-manager.hpp",
+        "NFD/daemon/mgmt/strategy-choice-publisher.hpp",
+        "NFD/daemon/mgmt/tables-config-section.hpp",
 
         "NFD/rib/face-entry.hpp",
         "NFD/rib/fib-update.hpp",
