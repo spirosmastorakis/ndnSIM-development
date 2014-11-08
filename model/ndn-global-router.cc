@@ -84,7 +84,7 @@ GlobalRouter::AddLocalPrefix (::ndn::shared_ptr< ::ndn::Name > prefix)
 void
 GlobalRouter::AddIncidency (Ptr< Face > face, Ptr< GlobalRouter > gr)
 {
-  m_incidencies.push_back (make_tuple (this, face, gr));
+  m_incidencies.push_back (boost::make_tuple (this, face, gr));
 }
 
 GlobalRouter::IncidencyList &
