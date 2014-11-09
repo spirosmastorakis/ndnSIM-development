@@ -25,8 +25,8 @@
 #ifndef NFD_DAEMON_FACE_NDNLP_PARTIAL_MESSAGE_STORE_HPP
 #define NFD_DAEMON_FACE_NDNLP_PARTIAL_MESSAGE_STORE_HPP
 
-#include "ns3/ndnlp-parse.hpp"
-#include "ns3/scheduler.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/ndnlp-parse.hpp"
+#include "ns3/ndnSIM/NFD/core/scheduler.hpp"
 
 namespace nfd {
 namespace ndnlp {

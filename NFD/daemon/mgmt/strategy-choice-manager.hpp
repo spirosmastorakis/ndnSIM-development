@@ -26,10 +26,10 @@
 #ifndef NFD_DAEMON_MGMT_STRATEGY_CHOICE_MANAGER_HPP
 #define NFD_DAEMON_MGMT_STRATEGY_CHOICE_MANAGER_HPP
 
-#include "ns3/manager-base.hpp"
-#include "ns3/strategy-choice-publisher.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/manager-base.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/strategy-choice-publisher.hpp"
 
-#include <ndn-cxx/management/nfd-control-parameters.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-parameters.hpp"
 
 namespace nfd {
 

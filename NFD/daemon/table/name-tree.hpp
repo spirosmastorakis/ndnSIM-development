@@ -26,8 +26,8 @@
 #ifndef NFD_DAEMON_TABLE_NAME_TREE_HPP
 #define NFD_DAEMON_TABLE_NAME_TREE_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/name-tree-entry.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/name-tree-entry.hpp"
 
 namespace nfd {
 namespace name_tree {

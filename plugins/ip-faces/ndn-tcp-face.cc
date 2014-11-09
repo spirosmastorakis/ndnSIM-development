@@ -30,7 +30,7 @@
 #include "ns3/pointer.h"
 #include "ns3/tcp-socket-factory.h"
 
-#include <ndn-cxx/name.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
 
 using namespace std;
 

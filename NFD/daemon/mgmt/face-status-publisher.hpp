@@ -26,9 +26,9 @@
 #ifndef NFD_DAEMON_MGMT_FACE_STATUS_PUBLISHER_HPP
 #define NFD_DAEMON_MGMT_FACE_STATUS_PUBLISHER_HPP
 
-#include "ns3/segment-publisher.hpp"
-#include "ns3/app-face.hpp"
-#include "ns3/ndn-face.h"
+#include "ns3/ndnSIM/NFD/core/segment-publisher.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/app-face.hpp"
+#include "ns3/ndnSIM/model/ndn-face.h"
 
 using ns3::ndn::Face;
 

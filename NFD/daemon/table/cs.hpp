@@ -30,8 +30,8 @@
 #ifndef NFD_DAEMON_TABLE_CS_HPP
 #define NFD_DAEMON_TABLE_CS_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/cs-entry.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/cs-entry.hpp"
 
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index_container.hpp>

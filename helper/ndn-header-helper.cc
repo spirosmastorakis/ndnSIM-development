@@ -25,8 +25,8 @@
 #include "ns3/header.h"
 #include "ns3/object.h"
 
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/interest.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/data.hpp"
 #include <iomanip>
 
 NS_LOG_COMPONENT_DEFINE ("ndn.HeaderHelper");

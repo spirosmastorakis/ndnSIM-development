@@ -25,7 +25,7 @@
 #ifndef NFD_DAEMON_FW_BROADCAST_STRATEGY_HPP
 #define NFD_DAEMON_FW_BROADCAST_STRATEGY_HPP
 
-#include "ns3/strategy.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/strategy.hpp"
 
 namespace nfd {
 namespace fw {

@@ -25,8 +25,8 @@
 #ifndef NFD_DAEMON_TABLE_PIT_HPP
 #define NFD_DAEMON_TABLE_PIT_HPP
 
-#include "ns3/name-tree.hpp"
-#include "ns3/pit-entry.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/name-tree.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/pit-entry.hpp"
 
 namespace nfd {
 namespace pit {

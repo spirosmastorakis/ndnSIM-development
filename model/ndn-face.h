@@ -29,14 +29,14 @@
 #include "ns3/nstime.h"
 #include "ns3/type-id.h"
 #include "ns3/traced-callback.h"
-#include <ndn-cxx/name.hpp>
-#include <ndn-cxx/common.hpp>
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/management/nfd-face-traits.hpp>
-#include <ndn-cxx/management/nfd-face-event-notification.hpp>
-#include <ndn-cxx/management/nfd-face-status.hpp>
-#include "ns3/face-uri.hpp"
-#include "ns3/face-counters.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/common.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/interest.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-face-traits.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-face-event-notification.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-face-status.hpp"
+#include "ns3/ndnSIM/NFD/core/face-uri.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/face-counters.hpp"
 
 using std::enable_shared_from_this;
 

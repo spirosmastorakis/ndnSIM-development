@@ -22,7 +22,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/ndnlp-parse.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/ndnlp-parse.hpp"
 
 namespace nfd {
 namespace ndnlp {

@@ -23,12 +23,15 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/rib-status-publisher.hpp"
-#include "ns3/rib.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/rib/rib-status-publisher.hpp"
+#include "ns3/ndnSIM/NFD/rib/rib.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
-#include <ndn-cxx/management/nfd-rib-entry.hpp>
-#include <ndn-cxx/face.hpp>
+#include "ns3/ndnSIM/model/ndn-face.h"
+
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-rib-entry.hpp"
+
+using ns3::ndn::Face;
 
 namespace nfd {
 namespace rib {

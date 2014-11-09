@@ -23,11 +23,11 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/strategy-choice-publisher.hpp"
-#include "ns3/logger.hpp"
-#include "ns3/strategy-choice.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/strategy-choice-publisher.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/strategy-choice.hpp"
 
-#include <ndn-cxx/management/nfd-strategy-choice.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-strategy-choice.hpp"
 
 namespace nfd {
 

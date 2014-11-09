@@ -26,11 +26,11 @@
 #ifndef NFD_DAEMON_TABLE_NAME_TREE_ENTRY_HPP
 #define NFD_DAEMON_TABLE_NAME_TREE_ENTRY_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/fib-entry.hpp"
-#include "ns3/pit-entry.hpp"
-#include "ns3/measurements-entry.hpp"
-#include "ns3/strategy-choice-entry.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/fib-entry.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/pit-entry.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/measurements-entry.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/strategy-choice-entry.hpp"
 
 namespace nfd {
 

@@ -25,7 +25,7 @@
 #ifndef NFD_CORE_PRIVILEGE_HELPER_HPP
 #define NFD_CORE_PRIVILEGE_HELPER_HPP
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
 #include <unistd.h>
 

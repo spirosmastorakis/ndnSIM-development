@@ -23,8 +23,8 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/manager-base.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/manager-base.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
 namespace nfd {
 

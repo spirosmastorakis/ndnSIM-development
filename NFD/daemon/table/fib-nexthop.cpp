@@ -22,7 +22,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "fib-nexthop.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/fib-nexthop.hpp"
 
 namespace nfd {
 namespace fib {

@@ -23,11 +23,11 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/face-uri.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/core/face-uri.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
 #ifdef HAVE_LIBPCAP
-#include "ns3/ethernet.hpp"
+#include "ns3/ndnSIM/NFD/core/ethernet.hpp"
 #endif // HAVE_LIBPCAP
 
 #include <boost/regex.hpp>

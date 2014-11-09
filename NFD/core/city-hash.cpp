@@ -28,7 +28,7 @@
 // compromising on hash quality.
 
 //#include "config.h"
-#include "city-hash.hpp"
+#include "ns3/ndnSIM/NFD/core/city-hash.hpp"
 #include <algorithm>
 #include <string.h>  // for memcpy and memset
 

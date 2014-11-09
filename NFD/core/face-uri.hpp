@@ -25,7 +25,7 @@
 #ifndef NFD_CORE_FACE_URI_H
 #define NFD_CORE_FACE_URI_H
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
 namespace nfd {
 

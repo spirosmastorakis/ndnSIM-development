@@ -22,7 +22,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/ndnlp-sequence-generator.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/ndnlp-sequence-generator.hpp"
 
 namespace nfd {
 namespace ndnlp {

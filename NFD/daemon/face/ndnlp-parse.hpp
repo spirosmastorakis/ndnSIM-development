@@ -25,8 +25,8 @@
 #ifndef NFD_DAEMON_FACE_NDNLP_PARSE_HPP
 #define NFD_DAEMON_FACE_NDNLP_PARSE_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/ndnlp-tlv.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/ndnlp-tlv.hpp"
 
 namespace nfd {
 namespace ndnlp {

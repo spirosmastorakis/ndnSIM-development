@@ -26,13 +26,13 @@
 #ifndef NFD_MGMT_TABLES_CONFIG_SECTION_HPP
 #define NFD_MGMT_TABLES_CONFIG_SECTION_HPP
 
-#include "ns3/fib.hpp"
-#include "ns3/pit.hpp"
-#include "ns3/cs.hpp"
-#include "ns3/measurements.hpp"
-#include "ns3/strategy-choice.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/pit.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/cs.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/measurements.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/strategy-choice.hpp"
 
-#include "ns3/config-file.hpp"
+#include "ns3/ndnSIM/NFD/core/config-file.hpp"
 
 namespace nfd {
 

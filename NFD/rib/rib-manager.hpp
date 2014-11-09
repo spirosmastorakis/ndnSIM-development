@@ -26,16 +26,16 @@
 #ifndef NFD_RIB_RIB_MANAGER_HPP
 #define NFD_RIB_RIB_MANAGER_HPP
 
-#include "ns3/rib.hpp"
-#include "ns3/config-file.hpp"
-#include "ns3/rib-status-publisher.hpp"
+#include "ns3/ndnSIM/NFD/rib/rib.hpp"
+#include "ns3/ndnSIM/NFD/core/config-file.hpp"
+#include "ns3/ndnSIM/NFD/rib/rib-status-publisher.hpp"
 
-#include <ndn-cxx/security/validator-config.hpp>
-#include <ndn-cxx/management/nfd-face-monitor.hpp>
-#include <ndn-cxx/management/nfd-controller.hpp>
-#include <ndn-cxx/management/nfd-control-command.hpp>
-#include <ndn-cxx/management/nfd-control-response.hpp>
-#include <ndn-cxx/management/nfd-control-parameters.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/security/validator-config.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-face-monitor.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-controller.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-command.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-response.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-parameters.hpp"
 
 namespace nfd {
 namespace rib {

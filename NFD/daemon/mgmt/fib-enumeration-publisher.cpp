@@ -22,11 +22,11 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/fib-enumeration-publisher.hpp"
-#include "ns3/logger.hpp"
-#include "ns3/fib.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/fib-enumeration-publisher.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
 
-#include <ndn-cxx/management/nfd-fib-entry.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-fib-entry.hpp"
 
 namespace nfd {
 

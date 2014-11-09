@@ -26,7 +26,7 @@
 #ifndef NFD_RIB_RIB_ENTRY_HPP
 #define NFD_RIB_RIB_ENTRY_HPP
 
-#include "ns3/face-entry.hpp"
+#include "ns3/ndnSIM/NFD/rib/face-entry.hpp"
 
 namespace nfd {
 namespace rib {

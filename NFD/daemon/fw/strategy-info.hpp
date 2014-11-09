@@ -25,7 +25,7 @@
 #ifndef NFD_DAEMON_FW_STRATEGY_INFO_HPP
 #define NFD_DAEMON_FW_STRATEGY_INFO_HPP
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
 namespace nfd {
 namespace fw {

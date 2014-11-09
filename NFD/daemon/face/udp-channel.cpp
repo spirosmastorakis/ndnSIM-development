@@ -23,9 +23,9 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/udp-channel.hpp"
-#include "ns3/global-io.hpp"
-#include "ns3/face-uri.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/udp-channel.hpp"
+#include "ns3/ndnSIM/NFD/core/global-io.hpp"
+#include "ns3/ndnSIM/NFD/core/face-uri.hpp"
 
 namespace nfd {
 

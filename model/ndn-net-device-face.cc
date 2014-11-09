@@ -32,7 +32,7 @@
 #include "ns3/point-to-point-net-device.h"
 #include "ns3/channel.h"
 
-#include <ndn-cxx/name.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.NetDeviceFace");
 
@@ -107,7 +107,7 @@ NetDeviceFace::Send (Ptr<Packet> packet)
     {
       return false;
     }
-  
+
   NS_LOG_FUNCTION (this << packet);
   // to please the syntax highlighter
   std::string s = "for Ndn ; fragmentation not supported";
@@ -158,4 +158,3 @@ NetDeviceFace::Print (std::ostream& os) const
 
 } // namespace ndnsim
 } // namespace ns3
-

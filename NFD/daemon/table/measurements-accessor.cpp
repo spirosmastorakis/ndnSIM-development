@@ -23,7 +23,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/measurements-accessor.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/measurements-accessor.hpp"
 
 namespace nfd {
 

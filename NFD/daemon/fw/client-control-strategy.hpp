@@ -25,7 +25,7 @@
 #ifndef NFD_DAEMON_FW_CLIENT_CONTROL_STRATEGY_HPP
 #define NFD_DAEMON_FW_CLIENT_CONTROL_STRATEGY_HPP
 
-#include "ns3/best-route-strategy.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/best-route-strategy.hpp"
 
 namespace nfd {
 namespace fw {

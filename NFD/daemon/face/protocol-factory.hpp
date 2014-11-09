@@ -26,8 +26,8 @@
 #ifndef NFD_DAEMON_FACE_PROTOCOL_FACTORY_HPP
 #define NFD_DAEMON_FACE_PROTOCOL_FACTORY_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/face-uri.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/core/face-uri.hpp"
 
 namespace ns3 {
 

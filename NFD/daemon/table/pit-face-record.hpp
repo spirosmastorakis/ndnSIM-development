@@ -25,8 +25,8 @@
 #ifndef NFD_DAEMON_TABLE_PIT_FACE_RECORD_HPP
 #define NFD_DAEMON_TABLE_PIT_FACE_RECORD_HPP
 
-#include "ns3/ndn-face.h"
-#include "ns3/strategy-info-host.hpp"
+#include "ns3/ndnSIM/model/ndn-face.h"
+#include "ns3/ndnSIM/NFD/daemon/table/strategy-info-host.hpp"
 
 namespace nfd {
 namespace pit {

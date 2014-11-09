@@ -26,7 +26,7 @@
 #ifndef NFD_DAEMON_FW_RTT_ESTIMATOR_HPP
 #define NFD_DAEMON_FW_RTT_ESTIMATOR_HPP
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
 namespace nfd {
 

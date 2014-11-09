@@ -25,7 +25,7 @@
 #ifndef NFD_DAEMON_TABLE_FIB_ENTRY_HPP
 #define NFD_DAEMON_TABLE_FIB_ENTRY_HPP
 
-#include "ns3/fib-nexthop.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/fib-nexthop.hpp"
 
 namespace nfd {
 

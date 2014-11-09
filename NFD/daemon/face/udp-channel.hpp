@@ -26,9 +26,9 @@
 #ifndef NFD_DAEMON_FACE_UDP_CHANNEL_HPP
 #define NFD_DAEMON_FACE_UDP_CHANNEL_HPP
 
-#include "ns3/channel.hpp"
-#include "ns3/global-io.hpp"
-#include "ns3/udp-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/channel.hpp"
+#include "ns3/ndnSIM/NFD/core/global-io.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/udp-face.hpp"
 
 namespace nfd {
 

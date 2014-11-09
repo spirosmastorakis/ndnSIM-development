@@ -22,7 +22,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/strategy-info-host.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/strategy-info-host.hpp"
 
 namespace nfd {
 

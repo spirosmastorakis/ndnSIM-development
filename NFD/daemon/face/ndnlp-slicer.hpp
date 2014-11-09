@@ -25,8 +25,8 @@
 #ifndef NFD_DAEMON_FACE_NDNLP_SLICER_HPP
 #define NFD_DAEMON_FACE_NDNLP_SLICER_HPP
 
-#include "ns3/ndnlp-tlv.hpp"
-#include "ns3/ndnlp-sequence-generator.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/ndnlp-tlv.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/ndnlp-sequence-generator.hpp"
 
 namespace nfd {
 namespace ndnlp {

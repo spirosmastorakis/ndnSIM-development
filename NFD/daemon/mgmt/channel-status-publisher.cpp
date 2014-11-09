@@ -23,13 +23,13 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/channel-status-publisher.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/channel-status-publisher.hpp"
 
-#include "ns3/logger.hpp"
-#include "ns3/protocol-factory.hpp"
-#include "ns3/channel.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/protocol-factory.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/channel.hpp"
 
-#include <ndn-cxx/management/nfd-channel-status.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-channel-status.hpp"
 
 namespace nfd {
 

@@ -22,8 +22,8 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/network-interface.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/core/network-interface.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
 #include <boost/foreach.hpp>
 

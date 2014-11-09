@@ -23,10 +23,10 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/forwarder.hpp"
-#include "ns3/logger.hpp"
-#include "ns3/random.hpp"
-#include "ns3/available-strategies.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/forwarder.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
+#include "ns3/ndnSIM/NFD/core/random.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/available-strategies.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
 
 namespace nfd {

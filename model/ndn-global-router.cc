@@ -22,7 +22,7 @@
 
 #include "ns3/ndn-forwarder.h"
 #include "ns3/ndn-face.h"
-#include <ndn-cxx/name.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
 
 #include "ns3/channel.h"
 

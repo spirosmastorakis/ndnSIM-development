@@ -26,10 +26,10 @@
 #ifndef NFD_CORE_SEGMENT_PUBLISHER_HPP
 #define NFD_CORE_SEGMENT_PUBLISHER_HPP
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
-#include <ndn-cxx/encoding/encoding-buffer.hpp>
-#include <ndn-cxx/security/key-chain.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/encoding/encoding-buffer.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/security/key-chain.hpp"
 
 namespace nfd {
 

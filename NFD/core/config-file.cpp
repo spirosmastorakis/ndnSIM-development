@@ -22,8 +22,8 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/config-file.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/core/config-file.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
 #include <boost/property_tree/info_parser.hpp>
 #include <fstream>

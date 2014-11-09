@@ -26,8 +26,8 @@
 #ifndef NFD_DAEMON_FW_FACE_TABLE_HPP
 #define NFD_DAEMON_FW_FACE_TABLE_HPP
 
-#include "ns3/ndn-face.h"
-#include "ns3/map-value-iterator.hpp"
+#include "ns3/ndnSIM/model/ndn-face.h"
+#include "ns3/ndnSIM/NFD/core/map-value-iterator.hpp"
 
 namespace nfd
 {

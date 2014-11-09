@@ -25,9 +25,9 @@
 #ifndef NFD_DAEMON_FACE_TCP_CHANNEL_HPP
 #define NFD_DAEMON_FACE_TCP_CHANNEL_HPP
 
-#include "ns3/channel.hpp"
-#include "ns3/tcp-face.hpp"
-#include "ns3/scheduler.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/channel.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/tcp-face.hpp"
+#include "ns3/ndnSIM/NFD/core/scheduler.hpp"
 
 namespace nfd {
 

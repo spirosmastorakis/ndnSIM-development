@@ -23,8 +23,8 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "fib.hpp"
-#include "pit-entry.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/pit-entry.hpp"
 // #include "measurements-entry.hpp"
 
 namespace nfd {

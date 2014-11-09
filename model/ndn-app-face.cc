@@ -31,8 +31,8 @@
 #include "ns3/ndn-header-helper.h"
 #include "ns3/ndn-app.h"
 
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/interest.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/data.hpp"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.AppFace");
 

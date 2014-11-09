@@ -23,7 +23,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/fib-update.hpp"
+#include "ns3/ndnSIM/NFD/rib/fib-update.hpp"
 
 namespace nfd {
 namespace rib {

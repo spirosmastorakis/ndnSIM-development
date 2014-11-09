@@ -23,11 +23,11 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/best-route-strategy.hpp"
-#include "ns3/broadcast-strategy.hpp"
-#include "ns3/client-control-strategy.hpp"
-#include "ns3/ncc-strategy.hpp"
-#include "ns3/best-route-strategy2.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/best-route-strategy.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/broadcast-strategy.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/client-control-strategy.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/ncc-strategy.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/best-route-strategy2.hpp"
 
 namespace nfd {
 namespace fw {

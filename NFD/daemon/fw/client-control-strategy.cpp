@@ -23,8 +23,8 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/client-control-strategy.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/client-control-strategy.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
 namespace nfd {
 namespace fw {

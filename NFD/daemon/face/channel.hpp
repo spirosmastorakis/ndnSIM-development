@@ -25,7 +25,7 @@
 #ifndef NFD_DAEMON_FACE_CHANNEL_HPP
 #define NFD_DAEMON_FACE_CHANNEL_HPP
 
-#include "ns3/ndn-face.h"
+#include "ns3/ndnSIM/model/ndn-face.h"
 
 namespace nfd {
 

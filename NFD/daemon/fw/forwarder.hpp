@@ -26,16 +26,16 @@
 #ifndef NFD_DAEMON_FW_FORWARDER_HPP
 #define NFD_DAEMON_FW_FORWARDER_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/scheduler.hpp"
-#include "ns3/forwarder-counters.hpp"
-#include "ns3/face-table.hpp"
-#include "ns3/fib.hpp"
-#include "ns3/pit.hpp"
-#include "ns3/cs.hpp"
-#include "ns3/measurements.hpp"
-#include "ns3/strategy-choice.hpp"
-#include "ns3/dead-nonce-list.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/core/scheduler.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/forwarder-counters.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/face-table.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/pit.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/cs.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/measurements.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/strategy-choice.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/dead-nonce-list.hpp"
 
 namespace nfd {
 

@@ -23,9 +23,9 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/dead-nonce-list.hpp"
-#include "ns3/city-hash.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/dead-nonce-list.hpp"
+#include "ns3/ndnSIM/NFD/core/city-hash.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
 NFD_LOG_INIT("DeadNonceList");
 

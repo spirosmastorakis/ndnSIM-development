@@ -26,8 +26,8 @@
 #ifndef NFD_RIB_RIB_STATUS_PUBLISHER_HPP
 #define NFD_RIB_RIB_STATUS_PUBLISHER_HPP
 
-#include "ns3/segment-publisher.hpp"
-#include <ndn-cxx/face.hpp>
+#include "ns3/ndnSIM/NFD/core/segment-publisher.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/face.hpp"
 
 namespace nfd {
 namespace rib {
