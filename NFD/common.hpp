@@ -46,10 +46,10 @@
 #include <queue>
 #include <vector>
 
-#include <ndn-cxx/common.hpp>
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
-#include <ndn-cxx/util/event-emitter.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/common.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/interest.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/data.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/util/event-emitter.hpp"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>

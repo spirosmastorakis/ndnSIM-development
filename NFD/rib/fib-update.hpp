@@ -26,7 +26,7 @@
 #ifndef NFD_RIB_FIB_UPDATE_HPP
 #define NFD_RIB_FIB_UPDATE_HPP
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
 namespace nfd {
 namespace rib {

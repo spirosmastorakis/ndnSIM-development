@@ -25,7 +25,7 @@
 #ifndef NFD_DAEMON_TABLE_STRATEGY_INFO_HOST_HPP
 #define NFD_DAEMON_TABLE_STRATEGY_INFO_HOST_HPP
 
-#include "ns3/strategy-info.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/strategy-info.hpp"
 
 namespace nfd {
 

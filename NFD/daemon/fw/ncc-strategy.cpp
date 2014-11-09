@@ -23,8 +23,8 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/ncc-strategy.hpp"
-#include "ns3/random.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/ncc-strategy.hpp"
+#include "ns3/ndnSIM/NFD/core/random.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
 
 namespace nfd {

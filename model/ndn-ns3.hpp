@@ -4,9 +4,9 @@
 #include "ns3/packet.h"
 #include "ndn-header.hpp"
 #include "ndn-trailer.hpp"
-#include <ndn-cxx/encoding/block.hpp>
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/encoding/block.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/interest.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/data.hpp"
 
 namespace ndn {
 

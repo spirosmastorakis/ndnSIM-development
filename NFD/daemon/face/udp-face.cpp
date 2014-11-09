@@ -23,7 +23,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/udp-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/udp-face.hpp"
 
 #ifdef __linux__
 #include <netinet/in.h> // for IP_MTU_DISCOVER and IP_PMTUDISC_DONT

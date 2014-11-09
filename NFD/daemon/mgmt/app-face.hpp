@@ -26,9 +26,9 @@
 #ifndef NFD_DAEMON_MGMT_APP_FACE_HPP
 #define NFD_DAEMON_MGMT_APP_FACE_HPP
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
-#include <ndn-cxx/security/key-chain.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/security/key-chain.hpp"
 
 namespace nfd {
 

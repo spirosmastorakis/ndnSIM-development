@@ -22,8 +22,8 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/privilege-helper.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/core/privilege-helper.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
 #include <pwd.h>
 #include <grp.h>

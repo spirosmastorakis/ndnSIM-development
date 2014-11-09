@@ -23,9 +23,9 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/strategy-choice-entry.hpp"
-#include "ns3/logger.hpp"
-#include "ns3/strategy.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/strategy-choice-entry.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/strategy.hpp"
 
 NFD_LOG_INIT("StrategyChoiceEntry");
 

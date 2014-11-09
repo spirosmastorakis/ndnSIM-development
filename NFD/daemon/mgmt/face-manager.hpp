@@ -26,15 +26,15 @@
 #ifndef NFD_DAEMON_MGMT_FACE_MANAGER_HPP
 #define NFD_DAEMON_MGMT_FACE_MANAGER_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/notification-stream.hpp"
-#include "ns3/local-face.hpp"
-#include "ns3/manager-base.hpp"
-#include "ns3/face-status-publisher.hpp"
-#include "ns3/channel-status-publisher.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/core/notification-stream.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/local-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/manager-base.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/face-status-publisher.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/channel-status-publisher.hpp"
 
-#include <ndn-cxx/management/nfd-control-parameters.hpp>
-#include <ndn-cxx/management/nfd-control-response.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-parameters.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-response.hpp"
 
 namespace ns3 {
 

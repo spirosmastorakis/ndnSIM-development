@@ -26,7 +26,7 @@
 #ifndef NFD_DAEMON_FACE_NULL_FACE_HPP
 #define NFD_DAEMON_FACE_NULL_FACE_HPP
 
-#include "ns3/ndn-face.h"
+#include "ns3/ndnSIM/model/ndn-face.h"
 
 using ns3::ndn::Face;
 

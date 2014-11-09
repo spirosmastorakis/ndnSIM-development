@@ -26,7 +26,7 @@
 #ifndef NFD_DAEMON_FACE_MULTICAST_UDP_FACE_HPP
 #define NFD_DAEMON_FACE_MULTICAST_UDP_FACE_HPP
 
-#include "ns3/datagram-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/datagram-face.hpp"
 
 namespace nfd {
 

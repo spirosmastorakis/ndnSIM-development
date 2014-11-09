@@ -26,7 +26,7 @@
 
 #include <list>
 #include <boost/tuple/tuple.hpp>
-#include <ndn-cxx/common.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/common.hpp"
 
 namespace ndn {
 namespace name {

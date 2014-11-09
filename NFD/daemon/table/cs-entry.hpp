@@ -30,7 +30,7 @@
 #ifndef NFD_DAEMON_TABLE_CS_ENTRY_HPP
 #define NFD_DAEMON_TABLE_CS_ENTRY_HPP
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
 namespace nfd {
 namespace cs {

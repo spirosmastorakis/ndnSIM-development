@@ -23,8 +23,8 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/best-route-strategy2.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/best-route-strategy2.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
 namespace nfd {
 namespace fw {

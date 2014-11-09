@@ -22,12 +22,12 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/general-config-section.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/general-config-section.hpp"
 
-#include "ns3/common.hpp"
-#include "ns3/logger.hpp"
-#include "ns3/privilege-helper.hpp"
-#include "ns3/config-file.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
+#include "ns3/ndnSIM/NFD/core/privilege-helper.hpp"
+#include "ns3/ndnSIM/NFD/core/config-file.hpp"
 
 namespace nfd {
 

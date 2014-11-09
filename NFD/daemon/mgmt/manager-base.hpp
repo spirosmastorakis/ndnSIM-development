@@ -26,14 +26,14 @@
 #ifndef NFD_DAEMON_MGMT_MANAGER_BASE_HPP
 #define NFD_DAEMON_MGMT_MANAGER_BASE_HPP
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
-#include "ns3/command-validator.hpp"
-#include "ns3/internal-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/command-validator.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/internal-face.hpp"
 
-#include <ndn-cxx/management/nfd-control-command.hpp>
-#include <ndn-cxx/management/nfd-control-response.hpp>
-#include <ndn-cxx/management/nfd-control-parameters.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-command.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-response.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-parameters.hpp"
 
 namespace nfd {
 

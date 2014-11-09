@@ -23,10 +23,10 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/udp-factory.hpp"
-#include "ns3/global-io.hpp"
-#include "ns3/resolver.hpp"
-#include "ns3/network-interface.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/udp-factory.hpp"
+#include "ns3/ndnSIM/NFD/core/global-io.hpp"
+#include "ns3/ndnSIM/NFD/core/resolver.hpp"
+#include "ns3/ndnSIM/NFD/core/network-interface.hpp"
 
 #if defined(__linux__)
 #include <sys/socket.h>

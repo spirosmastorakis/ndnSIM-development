@@ -26,7 +26,7 @@
 #ifndef NFD_DAEMON_FACE_FACE_COUNTERS_HPP
 #define NFD_DAEMON_FACE_FACE_COUNTERS_HPP
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
 namespace nfd {
 

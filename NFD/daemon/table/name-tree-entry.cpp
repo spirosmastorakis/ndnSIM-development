@@ -23,7 +23,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/name-tree-entry.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/name-tree-entry.hpp"
 
 namespace nfd {
 namespace name_tree {

@@ -23,11 +23,11 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/rib-entry.hpp"
+#include "ns3/ndnSIM/NFD/rib/rib-entry.hpp"
 
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
-#include <ndn-cxx/management/nfd-control-command.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-command.hpp"
 
 NFD_LOG_INIT("RibEntry");
 

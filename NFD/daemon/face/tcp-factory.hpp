@@ -26,8 +26,8 @@
 #ifndef NFD_DAEMON_FACE_TCP_FACTORY_HPP
 #define NFD_DAEMON_FACE_TCP_FACTORY_HPP
 
-#include "ns3/protocol-factory.hpp"
-#include "ns3/tcp-channel.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/protocol-factory.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/tcp-channel.hpp"
 
 namespace nfd {
 

@@ -25,9 +25,9 @@
 #ifndef NFD_CORE_LOGGER_FACTORY_HPP
 #define NFD_CORE_LOGGER_FACTORY_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/config-file.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/core/config-file.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
 namespace nfd {
 

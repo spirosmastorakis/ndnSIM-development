@@ -26,8 +26,8 @@
 #ifndef NFD_RIB_FACE_ENTRY_HPP
 #define NFD_RIB_FACE_ENTRY_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/scheduler.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/core/scheduler.hpp"
 
 namespace nfd {
 namespace rib {

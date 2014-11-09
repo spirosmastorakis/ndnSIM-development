@@ -26,8 +26,8 @@
 #ifndef NFD_DAEMON_MGMT_FIB_ENUMERATION_PUBLISHER_HPP
 #define NFD_DAEMON_MGMT_FIB_ENUMERATION_PUBLISHER_HPP
 
-#include "ns3/segment-publisher.hpp"
-#include "ns3/app-face.hpp"
+#include "ns3/ndnSIM/NFD/core/segment-publisher.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/app-face.hpp"
 
 namespace nfd {
 

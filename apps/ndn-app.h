@@ -21,7 +21,7 @@
 #ifndef NDN_APP_H
 #define NDN_APP_H
 
-#include <ndn-cxx/common.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/common.hpp"
 #include "ns3/application.h"
 #include "ns3/ptr.h"
 #include "ns3/callback.h"

@@ -23,8 +23,8 @@
 #include "ns3/assert.h"
 #include "ns3/packet.h"
 
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/interest.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/data.hpp"
 #include "ns3/ndn-forwarder.h"
 //#include "ns3/ndn-fib.h"
 #include "ns3/ndn-app-face.h"

@@ -22,8 +22,8 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/scheduler.hpp"
-#include "ns3/global-io.hpp"
+#include "ns3/ndnSIM/NFD/core/scheduler.hpp"
+#include "ns3/ndnSIM/NFD/core/global-io.hpp"
 
 namespace nfd {
 namespace scheduler {

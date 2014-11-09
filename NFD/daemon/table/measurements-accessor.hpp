@@ -26,8 +26,8 @@
 #ifndef NFD_DAEMON_TABLE_MEASUREMENTS_ACCESSOR_HPP
 #define NFD_DAEMON_TABLE_MEASUREMENTS_ACCESSOR_HPP
 
-#include "ns3/measurements.hpp"
-#include "ns3/strategy-choice.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/measurements.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/strategy-choice.hpp"
 
 namespace nfd {
 

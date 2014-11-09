@@ -26,9 +26,9 @@
 #ifndef NFD_DAEMON_FACE_UDP_FACTORY_HPP
 #define NFD_DAEMON_FACE_UDP_FACTORY_HPP
 
-#include "ns3/protocol-factory.hpp"
-#include "ns3/udp-channel.hpp"
-#include "ns3/multicast-udp-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/protocol-factory.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/udp-channel.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/multicast-udp-face.hpp"
 
 
 namespace nfd {

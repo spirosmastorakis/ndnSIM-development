@@ -22,7 +22,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "tcp-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/tcp-face.hpp"
 
 namespace nfd {
 

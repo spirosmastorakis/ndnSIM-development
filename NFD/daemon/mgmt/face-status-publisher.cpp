@@ -22,11 +22,11 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/face-status-publisher.hpp"
-#include "ns3/logger.hpp"
-#include "ns3/face-table.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/face-status-publisher.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/face-table.hpp"
 
-#include <ndn-cxx/management/nfd-face-status.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-face-status.hpp"
 
 namespace nfd {
 

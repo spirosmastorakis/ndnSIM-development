@@ -23,7 +23,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/multicast-udp-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/multicast-udp-face.hpp"
 
 namespace nfd {
 

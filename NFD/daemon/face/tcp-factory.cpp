@@ -23,10 +23,10 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/tcp-factory.hpp"
-#include "ns3/resolver.hpp"
-#include "ns3/logger.hpp"
-#include "ns3/network-interface.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/tcp-factory.hpp"
+#include "ns3/ndnSIM/NFD/core/resolver.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
+#include "ns3/ndnSIM/NFD/core/network-interface.hpp"
 
 NFD_LOG_INIT("TcpFactory");
 

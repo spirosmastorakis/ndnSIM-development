@@ -25,7 +25,7 @@
 #ifndef NFD_CORE_CONFIG_FILE_HPP
 #define NFD_CORE_CONFIG_FILE_HPP
 
-#include "ns3/common.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 

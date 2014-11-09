@@ -25,8 +25,8 @@
 #ifndef NFD_CORE_NETWORK_INTERFACE_HPP
 #define NFD_CORE_NETWORK_INTERFACE_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/ethernet.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/core/ethernet.hpp"
 
 #include <net/if.h>
 

@@ -23,8 +23,8 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/status-server.hpp"
-#include "ns3/forwarder.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/status-server.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/forwarder.hpp"
 
 namespace nfd {
 

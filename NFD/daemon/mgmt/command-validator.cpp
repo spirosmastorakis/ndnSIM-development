@@ -22,11 +22,11 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "ns3/command-validator.hpp"
-#include "ns3/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/command-validator.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
 
-#include <ndn-cxx/util/io.hpp>
-#include <ndn-cxx/security/identity-certificate.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/util/io.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/security/identity-certificate.hpp"
 
 #include <boost/filesystem.hpp>
 #include <fstream>

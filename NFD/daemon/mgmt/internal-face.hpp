@@ -26,10 +26,10 @@
 #ifndef NFD_DAEMON_MGMT_INTERNAL_FACE_HPP
 #define NFD_DAEMON_MGMT_INTERNAL_FACE_HPP
 
-#include "ns3/ndn-face.h"
-#include "ns3/app-face.hpp"
+#include "ns3/ndnSIM/model/ndn-face.h"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/app-face.hpp"
 
-#include "command-validator.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/command-validator.hpp"
 
 using ns3::ndn::Face;
 

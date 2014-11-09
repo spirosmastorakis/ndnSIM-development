@@ -23,7 +23,7 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/null-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/null-face.hpp"
 
 namespace nfd {
 

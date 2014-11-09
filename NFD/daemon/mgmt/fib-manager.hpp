@@ -26,9 +26,9 @@
 #ifndef NFD_DAEMON_MGMT_FIB_MANAGER_HPP
 #define NFD_DAEMON_MGMT_FIB_MANAGER_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/manager-base.hpp"
-#include "ns3/fib-enumeration-publisher.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/manager-base.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/fib-enumeration-publisher.hpp"
 
 namespace ns3 {
 

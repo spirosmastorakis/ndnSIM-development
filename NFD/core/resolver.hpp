@@ -25,9 +25,9 @@
 #ifndef NFD_CORE_RESOLVER_H
 #define NFD_CORE_RESOLVER_H
 
-#include "ns3/common.hpp"
-#include "ns3/global-io.hpp"
-#include "ns3/scheduler.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/core/global-io.hpp"
+#include "ns3/ndnSIM/NFD/core/scheduler.hpp"
 
 namespace nfd {
 namespace resolver {

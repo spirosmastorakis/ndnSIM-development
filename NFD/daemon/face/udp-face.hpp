@@ -25,8 +25,8 @@
 #ifndef NFD_DAEMON_FACE_UDP_FACE_HPP
 #define NFD_DAEMON_FACE_UDP_FACE_HPP
 
-#include "ns3/datagram-face.hpp"
-#include "ns3/scheduler.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/datagram-face.hpp"
+#include "ns3/ndnSIM/NFD/core/scheduler.hpp"
 
 namespace nfd {
 

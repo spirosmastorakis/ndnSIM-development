@@ -23,15 +23,15 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/fib-manager.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/fib-manager.hpp"
 
-#include "ns3/logger.hpp"
-#include "ns3/fib.hpp"
-#include "ns3/forwarder.hpp"
-#include "ns3/internal-face.hpp"
-#include "ns3/app-face.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/forwarder.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/internal-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/app-face.hpp"
 
-#include <ndn-cxx/encoding/tlv.hpp>
+#include "ns3/ndnSIM/ndn-cxx/src/encoding/tlv.hpp"
 
 namespace nfd {
 

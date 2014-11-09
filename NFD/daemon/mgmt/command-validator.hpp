@@ -25,9 +25,9 @@
 #ifndef NFD_DAEMON_MGMT_COMMAND_VALIDATOR_HPP
 #define NFD_DAEMON_MGMT_COMMAND_VALIDATOR_HPP
 
-#include "ns3/common.hpp"
-#include "ns3/config-file.hpp"
-#include <ndn-cxx/util/command-interest-validator.hpp>
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/core/config-file.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/util/command-interest-validator.hpp"
 
 namespace nfd {
 

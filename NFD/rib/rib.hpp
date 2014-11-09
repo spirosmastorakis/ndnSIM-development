@@ -26,11 +26,11 @@
 #ifndef NFD_RIB_RIB_HPP
 #define NFD_RIB_RIB_HPP
 
-#include "ns3/rib-entry.hpp"
-#include "ns3/fib-update.hpp"
-#include "ns3/common.hpp"
-#include "ns3/rib-entry.hpp"
-#include <ndn-cxx/management/nfd-control-command.hpp>
+#include "ns3/ndnSIM/NFD/rib/rib-entry.hpp"
+#include "ns3/ndnSIM/NFD/rib/fib-update.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/rib/rib-entry.hpp"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-command.hpp"
 
 namespace nfd {
 namespace rib {

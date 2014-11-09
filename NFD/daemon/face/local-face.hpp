@@ -25,18 +25,10 @@
 #ifndef NFD_DAEMON_FACE_LOCAL_FACE_HPP
 #define NFD_DAEMON_FACE_LOCAL_FACE_HPP
 
-#include "ns3/ndn-face.h"
-#include <ndn-cxx/management/nfd-control-parameters.hpp>
-
-//namespace ns3 {
-
-//namespace ndn {
+#include "ns3/ndnSIM/model/ndn-face.h"
+#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-parameters.hpp"
 
 using ns3::ndn::Face;
-
-//} // namespace ndn
-
-//} // namespace ns3
 
 namespace nfd {
 

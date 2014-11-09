@@ -25,7 +25,7 @@
 #ifndef NFD_DAEMON_FACE_TCP_FACE_HPP
 #define NFD_DAEMON_FACE_TCP_FACE_HPP
 
-#include "ns3/stream-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/stream-face.hpp"
 
 namespace nfd {
 
