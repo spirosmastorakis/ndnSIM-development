@@ -24,8 +24,8 @@ Convert::FromPacket(ns3::Ptr<ns3::Packet> packet)
 {
   Buffer buffer(packet->GetSize());
   packet->CopyData(buffer.buf(), packet->GetSize());
-  Block block = *(new Block(buffer.buf(), packet->GetSize()));
-  return block;
+  Block *block = new Block(buffer.buf(), packet->GetSize());
+  return *block;
 }
 
 void
