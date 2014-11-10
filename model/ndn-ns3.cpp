@@ -1,20 +1,26 @@
 #include "ndn-ns3.hpp"
 
-namespace ndn {
+#include "ndn-header.hpp"
+#include "ndn-trailer.hpp"
 
-Convert::Convert()
-{
-}
+#include <ndn-cxx/encoding/block.hpp>
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
+
+namespace ndn {
 
 void
 Convert::ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
 {
-  uint32_t m_type = block->type();
-  if (m_type == 0x05)
-    InterestToPacket(block, packet);
-  else
-    if (m_type == 0x06)
+  uint32_t type = block->type();
+  if (type == 0x05)
+    {
+        InterestToPacket(block, packet);
+    }
+  else if (type == 0x06)
+    {
       DataToPacket(block, packet);
+    }
     else
       throw UnknownHeaderException();
 }
@@ -24,40 +30,53 @@ Convert::FromPacket(ns3::Ptr<ns3::Packet> packet)
 {
   Buffer buffer(packet->GetSize());
   packet->CopyData(buffer.buf(), packet->GetSize());
-  Block block = *(new Block(buffer.buf(), packet->GetSize()));
-  return block;
+  Block *block = new Block(buffer.buf(), packet->GetSize());
+  return *block;
 }
+
 
 void
 Convert::InterestToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
 {
+  size_t   headerLength;
+  uint8_t *headerBuffer;
+
+
   block->parse();
-  m_headerLength = block->size();
-  m_headerBuffer = const_cast<uint8_t*>(block->wire());
-  NdnHeader::NdnHeader ndnHeader(m_headerBuffer, m_headerLength);
+  headerLength = block->size();
+  headerBuffer = const_cast<uint8_t*>(block->wire());
+  NdnHeader ndnHeader(headerBuffer, headerLength);
   ndnHeader.AddNdnHeader(packet, ndnHeader);
 }
 
 void
 Convert::DataToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
 {
+  size_t   headerLength;
+  size_t   trailerLength;
+  uint8_t  *headerBuffer, *trailerBuffer;
+
   block->parse();
 
-  m_headerLength = block->size();
-  m_headerLength -= block->get(tlv::SignatureInfo).size();
-  m_headerLength -= block->get(tlv::SignatureValue).size();
-  m_headerLength -= block->get(tlv::Content).size();
+  headerLength = block->size();
+  headerLength -= block->get(tlv::SignatureInfo).size();
+  headerLength -= block->get(tlv::SignatureValue).size();
+  headerLength -= block->get(tlv::Content).size();
 
-  m_trailerLength = block->get(tlv::SignatureInfo).size() + block->get(tlv::SignatureValue).size();
+  trailerLength = block->get(tlv::SignatureInfo).size() + block->get(tlv::SignatureValue).size();
 
-  m_buffer = const_cast<uint8_t*>(block->wire());
-  memcpy((void*)&m_headerBuffer, (void*)&m_buffer, m_headerLength);
-  memcpy((void*)&m_trailerBuffer, (void*)&m_headerBuffer[int((block->get(tlv::Content).size())+m_headerLength)], m_trailerLength);
+  headerBuffer  = new uint8_t[headerLength];
+  trailerBuffer = new uint8_t[trailerLength];
 
-  NdnHeader::NdnHeader ndnHeader(m_headerBuffer, m_headerLength);
-  NdnTrailer ndnTrailer(m_trailerBuffer, m_trailerLength);
+  memcpy((void *) headerBuffer, (const void *) block->wire(), headerLength);
+  memcpy((void *) trailerBuffer, (const void *) (headerBuffer + block->get(tlv::Content).size() + headerLength), trailerLength);
+
+  NdnHeader ndnHeader(headerBuffer, headerLength);
+  NdnTrailer ndnTrailer(trailerBuffer, trailerLength);
   ndnHeader.AddNdnHeader(packet , ndnHeader);
   ndnTrailer.AddNdnTrailer(packet, ndnTrailer);
+  delete [] headerBuffer;
+  delete [] trailerBuffer;
 }
 
 }
