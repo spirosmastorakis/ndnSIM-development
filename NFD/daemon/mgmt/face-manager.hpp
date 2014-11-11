@@ -36,15 +36,7 @@
 #include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-parameters.hpp"
 #include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-response.hpp"
 
-namespace ns3 {
-
-namespace ndn {
-
-class Face;
-
-} // namespace ndn
-
-} // namespace ns3
+using ns3::ndn::Face;
 
 namespace nfd {
 
@@ -70,7 +62,7 @@ public:
    */
 
   FaceManager(FaceTable& faceTable,
-              shared_ptr<InternalFace> face,
+              std::shared_ptr<InternalFace> face,
               ndn::KeyChain& keyChain);
 
   virtual
