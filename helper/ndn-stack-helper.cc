@@ -18,6 +18,8 @@
  * Author:  Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  *          Ilya Moiseenko <iliamo@cs.ucla.edu>
  */
+#include "ndn-stack-helper.h"
+#include "../model/ndn-net-device-face.h"
 
 #include "ns3/assert.h"
 #include "ns3/log.h"
@@ -36,7 +38,7 @@
 #include "ns3/point-to-point-helper.h"
 #include "ns3/callback.h"
 
-#include "../model/ndn-net-device-face.h"
+
 #include "../model/ndn-forwarder.h"
 
 //#include "ns3/ndn-forwarding-strategy.h"
@@ -51,7 +53,7 @@
 #include "ns3/data-rate.h"
 
 #include "ndn-face-container.h"
-#include "ndn-stack-helper.h"
+
 
 #include <limits>
 #include <map>
@@ -219,24 +221,9 @@ StackHelper::Install (Ptr<Node> node) const
       return 0;
     }
 
-  // Create L3Protocol
+  // Create (assume L3Protocol creates fib)   
   Ptr<L3Protocol> ndn = m_ndnFactory.Create<L3Protocol> ();
 
-  // Create and aggregate FIB
-  //Ptr<Fib> fib = m_fibFactory.Create<Fib> ();
-  //ndn->AggregateObject (fib);
-
-  // Create and aggregate PIT
-  //ndn->AggregateObject (m_pitFactory.Create<Pit> ());
-
-  // Create and aggregate forwarding strategy
-  //ndn->AggregateObject (m_strategyFactory.Create<ForwardingStrategy> ());
-
-  // Create and aggregate content store
-  //ndn->AggregateObject (m_contentStoreFactory.Create<ContentStore> ());
-
-  // Aggregate L3Protocol on node
-  node->AggregateObject (ndn);
 
   for (uint32_t index=0; index < node->GetNDevices (); index++)
     {

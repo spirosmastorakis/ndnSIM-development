@@ -27,6 +27,9 @@
 #include "ns3/object-factory.h"
 #include "ns3/nstime.h"
 
+
+#include "ns3/node-container.h"
+
 namespace ns3 {
 
 class Node;
