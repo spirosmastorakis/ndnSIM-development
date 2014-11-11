@@ -176,6 +176,17 @@ public:
   EnableLimits (bool enable = true, Time avgRtt=Seconds(0.1), uint32_t avgData=1100, uint32_t avgInterest=40);
 
   /**
+   * \brief Initialize NFD
+   *
+   * This method will initialize NFD
+   *
+   * /returns an error code in case of an error or 0 when initialization
+   * is successful
+   */
+  int
+  NFDinit () const;
+
+   /**
    * \brief Install Ndn stack on the node
    *
    * This method will assert if called on a node that already has Ndn object
@@ -306,6 +317,7 @@ private:
   ObjectFactory m_pitFactory;
   ObjectFactory m_fibFactory;
 
+  std::string m_config;
   bool     m_limitsEnabled;
   Time     m_avgRtt;
   uint32_t m_avgDataSize;
