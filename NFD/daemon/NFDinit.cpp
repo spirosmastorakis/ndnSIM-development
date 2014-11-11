@@ -26,46 +26,19 @@
 #include <getopt.h>
 #include <boost/filesystem.hpp>
 
-//#include "version.hpp"
-#include "ns3/ndnSIM/NFD/core/logger.hpp"
-#include "ns3/ndnSIM/NFD/core/global-io.hpp"
-#include "ns3/ndnSIM/NFD/core/privilege-helper.hpp"
-#include "ns3/ndnSIM/NFD/daemon/fw/forwarder.hpp"
-#include "ns3/ndnSIM/NFD/daemon/face/null-face.hpp"
-#include "ns3/ndnSIM/NFD/daemon/mgmt/internal-face.hpp"
-#include "ns3/ndnSIM/NFD/daemon/mgmt/fib-manager.hpp"
-#include "ns3/ndnSIM/NFD/daemon/mgmt/face-manager.hpp"
-#include "ns3/ndnSIM/NFD/daemon/mgmt/strategy-choice-manager.hpp"
-#include "ns3/ndnSIM/NFD/daemon/mgmt/status-server.hpp"
-#include "ns3/ndnSIM/NFD/core/config-file.hpp"
-#include "ns3/ndnSIM/NFD/daemon/mgmt/general-config-section.hpp"
-#include "ns3/ndnSIM/NFD/daemon/mgmt/tables-config-section.hpp"
-
-using ns3::ndn::Face;
+#include "ns3/ndnSIM/NFD/daemon/NFDinit.hpp"
 
 namespace nfd {
 
 NFD_LOG_INIT("NFD");
 
-struct ProgramOptions
-{
-  bool showUsage;
-  bool showVersion;
-  bool showModules;
-  std::string config;
-};
-
-class Nfd : noncopyable
-{
-public:
-  explicit
-  Nfd(const std::string& configFile)
+  Nfd::Nfd(const std::string& configFile)
     : m_configFile(configFile)
     , m_originalStreamBuf(0)
   {
   }
 
-  ~Nfd()
+  Nfd::~Nfd()
   {
     if (static_cast<bool>(m_originalStreamBuf)) {
       std::clog.rdbuf(m_originalStreamBuf);
@@ -73,7 +46,7 @@ public:
   }
 
   void
-  initialize()
+  Nfd::initialize()
   {
     initializeLogging();
 
@@ -90,7 +63,7 @@ public:
 
 
   void
-  initializeLogging()
+  Nfd::initializeLogging()
   {
     ConfigFile config(&ConfigFile::ignoreUnknownSection);
     LoggerFactory::getInstance().setConfigFile(config);
@@ -99,33 +72,29 @@ public:
     config.parse(m_configFile, false);
   }
 
-  class IgnoreRibAndLogSections
+  void
+  Nfd::IgnoreRibAndLogSections::operator()(const std::string& filename,
+             const std::string& sectionName,
+             const ConfigSection& section,
+             bool isDryRun)
+
   {
-  public:
-    void
-    operator()(const std::string& filename,
-               const std::string& sectionName,
-               const ConfigSection& section,
-               bool isDryRun)
+    // Ignore "log" and sections beginning with "rib_" (intended for rib manager),
+    // but raise an error if we're missing a handler for an NFD section.
 
-    {
-      // Ignore "log" and sections beginning with "rib_" (intended for rib manager),
-      // but raise an error if we're missing a handler for an NFD section.
-
-      if (sectionName.find("rib") == 0 || sectionName == "log")
-        {
-          // do nothing
-        }
-      else
-        {
-          // missing NFD section
-          ConfigFile::throwErrorOnUnknownSection(filename, sectionName, section, isDryRun);
-        }
-    }
-  };
+    if (sectionName.find("rib") == 0 || sectionName == "log")
+      {
+        // do nothing
+      }
+    else
+      {
+        // missing NFD section
+        ConfigFile::throwErrorOnUnknownSection(filename, sectionName, section, isDryRun);
+      }
+  }
 
   void
-  initializeManagement()
+  Nfd::initializeManagement()
   {
     m_internalFace = make_shared<InternalFace>();
 
@@ -146,7 +115,7 @@ public:
                                                ref(*m_forwarder),
                                                ndn::ref(m_keyChain));
 
-    ConfigFile config((IgnoreRibAndLogSections()));
+    ConfigFile config((Nfd::IgnoreRibAndLogSections()));
     general::setConfigFile(config);
 
     TablesConfigSection tablesConfig(m_forwarder->getCs(),
@@ -173,8 +142,8 @@ public:
     entry->addNextHop(m_internalFace, 0);
   }
 
-  static void
-  printUsage(std::ostream& os, const std::string& programName)
+  void
+  Nfd::printUsage(std::ostream& os, const std::string& programName)
   {
     os << "Usage: \n"
        << "  " << programName << " [options]\n"
@@ -191,8 +160,8 @@ public:
       ;
   }
 
-  static void
-  printModules(std::ostream& os)
+  void
+  Nfd::printModules(std::ostream& os)
   {
     using namespace std;
 
@@ -205,8 +174,8 @@ public:
       }
   }
 
-  static bool
-  parseCommandLine(int argc, char** argv, ProgramOptions& options)
+  bool
+  Nfd::parseCommandLine(int argc, char** argv, ProgramOptions& options)
   {
     options.showUsage = false;
     options.showVersion = false;
@@ -251,7 +220,7 @@ public:
   }
 
   void
-  terminate(const boost::system::error_code& error,
+  Nfd::terminate(const boost::system::error_code& error,
             int signalNo,
             boost::asio::signal_set& signalSet)
   {
@@ -271,7 +240,7 @@ public:
   }
 
   void
-  reload(const boost::system::error_code& error,
+  Nfd::reload(const boost::system::error_code& error,
          int signalNo,
          boost::asio::signal_set& signalSet)
   {
@@ -289,7 +258,7 @@ public:
     /// \todo Reopen log file
 
     // Other stuff
-    ConfigFile config((IgnoreRibAndLogSections()));
+    ConfigFile config((Nfd::IgnoreRibAndLogSections()));
 
     general::setConfigFile(config);
 
@@ -311,100 +280,4 @@ public:
     signalSet.async_wait(bind(&Nfd::reload, this, _1, _2, ref(signalSet)));
   }
 
-private:
-  std::string m_configFile;
-
-  shared_ptr<Forwarder> m_forwarder;
-
-  shared_ptr<InternalFace>          m_internalFace;
-  shared_ptr<FibManager>            m_fibManager;
-  shared_ptr<FaceManager>           m_faceManager;
-  shared_ptr<StrategyChoiceManager> m_strategyChoiceManager;
-  shared_ptr<StatusServer>          m_statusServer;
-
-  shared_ptr<std::ofstream>         m_logFile;
-  std::basic_streambuf<char>*       m_originalStreamBuf;
-  ndn::KeyChain                     m_keyChain;
-};
-
 } // namespace nfd
-
-int
-main(int argc, char** argv)
-{
-  using namespace nfd;
-
-  ProgramOptions options;
-  bool isCommandLineValid = Nfd::parseCommandLine(argc, argv, options);
-  if (!isCommandLineValid) {
-    Nfd::printUsage(std::cerr, argv[0]);
-    return 1;
-  }
-
-  if (options.showUsage) {
-    Nfd::printUsage(std::cout, argv[0]);
-    return 0;
-  }
-  /*
-  if (options.showVersion) {
-    std::cout << NFD_VERSION_BUILD_STRING << std::endl;
-    return 0;
-  }
-  */
-  if (options.showModules) {
-    Nfd::printModules(std::cout);
-    return 0;
-  }
-
-  Nfd nfdInstance(options.config);
-
-  try {
-    nfdInstance.initialize();
-  }
-  catch (boost::filesystem::filesystem_error& e) {
-    if (e.code() == boost::system::errc::permission_denied) {
-      NFD_LOG_FATAL("Permissions denied for " << e.path1() << ". " <<
-                    argv[0] << " should be run as superuser");
-    }
-    else {
-      NFD_LOG_FATAL(e.what());
-    }
-    return 1;
-  }
-  catch (const std::exception& e) {
-    NFD_LOG_FATAL(e.what());
-    return 2;
-  }
-  catch (const PrivilegeHelper::Error& e) {
-    // PrivilegeHelper::Errors do not inherit from std::exception
-    // and represent seteuid/gid failures
-
-    NFD_LOG_FATAL(e.what());
-    return 3;
-  }
-
-  boost::asio::signal_set terminationSignalSet(getGlobalIoService());
-  terminationSignalSet.add(SIGINT);
-  terminationSignalSet.add(SIGTERM);
-  terminationSignalSet.async_wait(bind(&Nfd::terminate, &nfdInstance, _1, _2,
-                                       ref(terminationSignalSet)));
-
-  boost::asio::signal_set reloadSignalSet(getGlobalIoService());
-  reloadSignalSet.add(SIGHUP);
-  reloadSignalSet.async_wait(bind(&Nfd::reload, &nfdInstance, _1, _2,
-                                  ref(reloadSignalSet)));
-
-  try {
-    getGlobalIoService().run();
-  }
-  catch (const std::exception& e) {
-    NFD_LOG_FATAL(e.what());
-    return 4;
-  }
-  catch (const PrivilegeHelper::Error& e) {
-    NFD_LOG_FATAL(e.what());
-    return 5;
-  }
-
-  return 0;
-}

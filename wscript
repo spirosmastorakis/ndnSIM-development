@@ -205,12 +205,14 @@ def build(bld):
         "NFD/core/map-value-iterator.hpp",
         "NFD/core/random.hpp",
         "NFD/core/scheduler.hpp",
-        "NFD/core/ethernet.hpp",
+        #"NFD/core/ethernet.hpp",
         "NFD/core/network-interface.hpp",
         "NFD/core/notification-stream.hpp",
         "NFD/core/privilege-helper.hpp",
         "NFD/core/resolver.hpp",
         "NFD/core/segment-publisher.hpp",
+
+        "NFD/daemon/NFDinit.hpp",
 
         "NFD/daemon/face/face-counters.hpp",
         "NFD/daemon/face/channel.hpp",
