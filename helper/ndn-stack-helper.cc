@@ -38,6 +38,7 @@
 #include "ns3/point-to-point-helper.h"
 #include "ns3/callback.h"
 
+#include "ns3/ndnSIM/NFD/daemon/NFDinit.hpp"
 
 #include "../model/ndn-forwarder.h"
 
@@ -54,11 +55,13 @@
 
 #include "ndn-face-container.h"
 
-
 #include <limits>
 #include <map>
+#include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
+
+NFD_LOG_INIT("NFD");
 
 NS_LOG_COMPONENT_DEFINE ("ndn.StackHelper");
 
@@ -221,9 +224,10 @@ StackHelper::Install (Ptr<Node> node) const
       return 0;
     }
 
-  // Create (assume L3Protocol creates fib)   
   Ptr<L3Protocol> ndn = m_ndnFactory.Create<L3Protocol> ();
 
+  // NFD initialization
+  NFDinit ();
 
   for (uint32_t index=0; index < node->GetNDevices (); index++)
     {
@@ -263,6 +267,63 @@ StackHelper::Install (Ptr<Node> node) const
     }
 
   return faces;
+}
+
+int
+StackHelper::NFDinit () const
+{
+  //TO DO: Dynamically choose the config file
+  ::nfd::Nfd nfdInstance(m_config);
+
+  try {
+    nfdInstance.initialize();
+  }
+  catch (boost::filesystem::filesystem_error& e) {
+    if (e.code() == boost::system::errc::permission_denied) {
+      NFD_LOG_FATAL("Permissions denied for " << e.path1() << " should be run as superuser");
+    }
+    else {
+      NFD_LOG_FATAL(e.what());
+    }
+    return 1;
+  }
+  catch (const std::exception& e) {
+    NFD_LOG_FATAL(e.what());
+    return 2;
+  }
+  catch (const nfd::PrivilegeHelper::Error& e) {
+    // PrivilegeHelper::Errors do not inherit from std::exception
+    // and represent seteuid/gid failures
+
+    NFD_LOG_FATAL(e.what());
+    return 3;
+  }
+
+  boost::asio::signal_set terminationSignalSet(nfd::getGlobalIoService());
+  terminationSignalSet.add(SIGINT);
+  terminationSignalSet.add(SIGTERM);
+  terminationSignalSet.async_wait(bind(&nfd::Nfd::terminate, &nfdInstance, _1, _2,
+                                       ::nfd::ref(terminationSignalSet)));
+
+  boost::asio::signal_set reloadSignalSet(nfd::getGlobalIoService());
+  reloadSignalSet.add(SIGHUP);
+  reloadSignalSet.async_wait(bind(&nfd::Nfd::reload, &nfdInstance, _1, _2,
+                                  ::nfd::ref(reloadSignalSet)));
+
+  try {
+    nfd::getGlobalIoService().run();
+  }
+  catch (const std::exception& e) {
+    NFD_LOG_FATAL(e.what());
+    return 4;
+  }
+  catch (const nfd::PrivilegeHelper::Error& e) {
+    NFD_LOG_FATAL(e.what());
+    return 5;
+  }
+
+  return 0;
+
 }
 
 void
