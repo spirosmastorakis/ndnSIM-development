@@ -76,6 +76,11 @@ NetDeviceFace& NetDeviceFace::operator= (const NetDeviceFace &)
   return *this;
 }
 
+void
+NetDeviceFace::close ()
+{
+}
+
 Ptr<NetDevice>
 NetDeviceFace::GetNetDevice () const
 {

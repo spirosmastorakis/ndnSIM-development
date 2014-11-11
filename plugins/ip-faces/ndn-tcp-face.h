@@ -30,7 +30,7 @@
 
 namespace ns3 {
 namespace ndn {
-  
+
 /**
  * \ingroup ndn-face
  * \brief Implementation of TCP/IP NDN face
@@ -42,7 +42,7 @@ class TcpFace : public Face
 public:
   static TypeId
   GetTypeId ();
-  
+
   /**
    * \brief Constructor
    *
@@ -53,6 +53,9 @@ public:
 
   void
   OnTcpConnectionClosed (Ptr<Socket> socket);
+
+  virtual void
+  close();
 
   Ipv4Address
   GetAddress () const;
@@ -76,13 +79,13 @@ public:
 
   virtual std::ostream&
   Print (std::ostream &os) const;
-  
+
 protected:
   // also from ndn::Face
   virtual bool
   Send (Ptr<Packet> p);
 
-private:  
+private:
   TcpFace (const TcpFace &); ///< \brief Disabled copy constructor
   TcpFace& operator= (const TcpFace &); ///< \brief Disabled copy operator
 

@@ -29,7 +29,7 @@
 
 namespace ns3 {
 namespace ndn {
-  
+
 /**
  * \ingroup ndn-face
  * \brief Implementation of UDP/IP NDN face
@@ -41,7 +41,7 @@ class UdpFace : public Face
 public:
   static TypeId
   GetTypeId ();
-  
+
   /**
    * \brief Constructor
    *
@@ -49,6 +49,9 @@ public:
    */
   UdpFace (Ptr<Node> node, Ptr<Socket> socket, Ipv4Address address);
   virtual ~UdpFace();
+
+  virtual void
+  close();
 
   Ipv4Address
   GetAddress () const;
@@ -66,7 +69,7 @@ protected:
   virtual bool
   Send (Ptr<Packet> p);
 
-private:  
+private:
   UdpFace (const UdpFace &); ///< \brief Disabled copy constructor
   UdpFace& operator= (const UdpFace &); ///< \brief Disabled copy operator
 

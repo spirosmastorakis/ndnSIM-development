@@ -82,6 +82,11 @@ AppFace::operator= (const AppFace &)
   return *((AppFace*)0);
 }
 
+void
+AppFace::close ()
+{
+}
+
 bool
 AppFace::SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
 {
