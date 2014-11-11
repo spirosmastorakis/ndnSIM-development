@@ -134,9 +134,9 @@ public:
                                            m_internalFace,
                                            ndn::ref(m_keyChain));
 
-    /* m_faceManager = make_shared<FaceManager>(ref(m_forwarder->getFaceTable()),
+    m_faceManager = make_shared<FaceManager>(ref(m_forwarder->getFaceTable()),
                                              m_internalFace,
-                                             ndn::ref(m_keyChain)); */
+                                             ndn::ref(m_keyChain));
 
     m_strategyChoiceManager = make_shared<StrategyChoiceManager>(ref(m_forwarder->getStrategyChoice()),
                                          m_internalFace,
