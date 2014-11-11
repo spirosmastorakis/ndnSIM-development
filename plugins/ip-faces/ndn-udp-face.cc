@@ -71,6 +71,11 @@ UdpFace& UdpFace::operator= (const UdpFace &)
   return *this;
 }
 
+void
+UdpFace::close ()
+{
+}
+
 bool
 UdpFace::ReceiveFromUdp (Ptr<const Packet> p)
 {

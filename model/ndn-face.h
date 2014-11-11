@@ -140,6 +140,14 @@ public:
   /// fires when face disconnects or fails to perform properly
   nfd::EventEmitter<std::string/*reason*/> onFail;
 
+  /** \brief Close the face
+   *
+   *  This terminates all communication on the face and cause
+   *  onFail() method event to be invoked
+   */
+  virtual void
+  close() = 0;
+
   FaceId
   getId() const;
 

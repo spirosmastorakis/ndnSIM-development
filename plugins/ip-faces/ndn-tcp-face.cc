@@ -144,6 +144,11 @@ TcpFace& TcpFace::operator= (const TcpFace &)
 }
 
 void
+TcpFace::close ()
+{
+}
+
+void
 TcpFace::RegisterProtocolHandlers (const InterestHandler &interestHandler, const DataHandler &dataHandler)
 {
   NS_LOG_FUNCTION (this);

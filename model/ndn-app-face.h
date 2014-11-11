@@ -61,6 +61,9 @@ public:
   AppFace (Ptr<App> app);
   virtual ~AppFace();
 
+  virtual void
+  close();
+
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from Face
   virtual bool
@@ -91,7 +94,7 @@ AppFace::isLocal() const
 {
   return true;
 }
-  
+
 
 } // namespace ndn
 } // namespace ns3

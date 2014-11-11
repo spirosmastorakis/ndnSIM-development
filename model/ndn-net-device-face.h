@@ -26,7 +26,7 @@
 
 namespace ns3 {
 namespace ndn {
-  
+
 /**
  * \ingroup ndn-face
  * \brief Implementation of layer-2 (Ethernet) Ndn face
@@ -63,8 +63,11 @@ public:
   RegisterProtocolHandlers (const InterestHandler &interestHandler, const DataHandler &dataHandler);
 
   virtual void
+  close ();
+
+  virtual void
   UnRegisterProtocolHandlers ();
-  
+
 protected:
   virtual bool
   Send (Ptr<Packet> p);
