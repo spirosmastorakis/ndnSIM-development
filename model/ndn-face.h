@@ -107,8 +107,6 @@ public:
    */
   Face (Ptr<Node> node);
 
-  Face (const Face &); ///< \brief copy constructor
-
   Face (const nfd::FaceUri& remoteUri, const nfd::FaceUri& localUri, bool isLocal = false);
 
   virtual ~Face();
@@ -146,7 +144,7 @@ public:
    *  onFail() method event to be invoked
    */
   virtual void
-  close() = 0;
+  close();
 
   FaceId
   getId() const;

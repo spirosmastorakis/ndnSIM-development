@@ -153,6 +153,11 @@ Face::fail(const std::string& reason)
   this->onFail.clear();
 }
 
+void
+Face::close ()
+{
+}
+
 template<typename FaceTraits>
 void
 Face::copyStatusTo(FaceTraits& traits) const
