@@ -212,8 +212,6 @@ def build(bld):
         "NFD/core/resolver.hpp",
         "NFD/core/segment-publisher.hpp",
 
-        "NFD/daemon/NFDinit.hpp",
-
         "NFD/daemon/face/face-counters.hpp",
         "NFD/daemon/face/channel.hpp",
         "NFD/daemon/face/protocol-factory.hpp",
