@@ -32,16 +32,20 @@
 #include "ns3/simulator.h"
 #include "ns3/random-variable.h"
 
-//#include "ns3/ndn-pit.h"
 #include "ns3/ndnSIM/ndn-cxx/src/interest.hpp"
 #include "ns3/ndnSIM/ndn-cxx/src/data.hpp"
 
 #include "ns3/ndn-face.h"
-//#include "ns3/ndn-forwarding-strategy.h"
 
-#include "ndn-net-device-face.h"
+#include "ns3/ndn-net-device-face.h"
 
+#include <getopt.h>
+#include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
+
+using nfd::NullFace;
+using nfd::FaceUri;
+using nfd::TablesConfigSection;
 
 NS_LOG_COMPONENT_DEFINE ("ndn.L3Protocol");
 
@@ -79,6 +83,63 @@ L3Protocol::~L3Protocol ()
   NS_LOG_FUNCTION (this);
 }
 
+void
+L3Protocol::initialize()
+{
+  m_forwarder = make_shared<Forwarder>();
+
+  initializeManagement();
+
+  m_forwarder->getFaceTable().addReserved(make_shared<NullFace>(), ns3::ndn::FACEID_NULL);
+  m_forwarder->getFaceTable().addReserved(make_shared<NullFace>(FaceUri("contentstore://")), ns3::ndn::FACEID_CONTENT_STORE);
+
+  nfd::PrivilegeHelper::drop();
+}
+
+void
+L3Protocol::initializeManagement()
+{
+  m_internalFace = make_shared<InternalFace>();
+
+  m_fibManager = make_shared<FibManager>(ref(m_forwarder->getFib()),
+                                         bind(&Forwarder::getFace, m_forwarder.get(), _1),
+                                         m_internalFace,
+                                         ::ndn::ref(m_keyChain));
+
+  m_faceManager = make_shared<FaceManager>(ref(m_forwarder->getFaceTable()),
+                                           m_internalFace,
+                                           ::ndn::ref(m_keyChain));
+
+  m_strategyChoiceManager = make_shared<StrategyChoiceManager>(ref(m_forwarder->getStrategyChoice()),
+                                                               m_internalFace,
+                                                               ::ndn::ref(m_keyChain));
+
+  m_statusServer = make_shared<StatusServer>(m_internalFace,
+                                             ref(*m_forwarder),
+                                             ::ndn::ref(m_keyChain));
+
+  TablesConfigSection tablesConfig(m_forwarder->getCs(),
+                                   m_forwarder->getPit(),
+                                   m_forwarder->getFib(),
+                                   m_forwarder->getStrategyChoice(),
+                                   m_forwarder->getMeasurements());
+
+  // Alex do we need this codeline?
+  m_forwarder->getFaceTable().addReserved(m_internalFace, ns3::ndn::FACEID_INTERNAL_FACE);
+
+  tablesConfig.ensureTablesAreConfigured();
+
+  // add FIB entry for NFD Management Protocol
+  shared_ptr< ::nfd::fib::Entry> entry = m_forwarder->getFib().insert("/localhost/nfd").first;
+  entry->addNextHop(m_internalFace, 0);
+}
+
+shared_ptr<Forwarder>
+L3Protocol::GetForwarder ()
+{
+  return m_forwarder;
+}
+
 /*
  * This method is called by AddAgregate and completes the aggregation
  * by setting the node in the ndn stack
@@ -100,8 +161,8 @@ L3Protocol::NotifyNewAggregate ()
     {
       m_forwardingStrategy = GetObject<ForwardingStrategy> ();
     }
-
-  Object::NotifyNewAggregate ();*/
+     */
+  Object::NotifyNewAggregate ();
 }
 
 void
