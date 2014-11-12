@@ -26,9 +26,15 @@
 #include "ns3/ptr.h"
 #include "ns3/object-factory.h"
 #include "ns3/nstime.h"
-
-
 #include "ns3/node-container.h"
+
+#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
+
+#include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
+
+#include "ns3/ndnSIM/helper/ndn-face-container.h"
+#include "ns3/ndnSIM/model/ndn-net-device-face.h"
+#include "ns3/ndnSIM/model/ndn-forwarder.h"
 
 namespace ns3 {
 
@@ -180,11 +186,9 @@ public:
    *
    * This method will initialize NFD
    *
-   * /returns an error code in case of an error or 0 when initialization
-   * is successful
    */
-  int
-  NFDinit () const;
+  void
+  NFDinit (Ptr<Node> node) const;
 
    /**
    * \brief Install Ndn stack on the node
@@ -317,7 +321,6 @@ private:
   ObjectFactory m_pitFactory;
   ObjectFactory m_fibFactory;
 
-  std::string m_config;
   bool     m_limitsEnabled;
   Time     m_avgRtt;
   uint32_t m_avgDataSize;

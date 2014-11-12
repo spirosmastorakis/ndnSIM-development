@@ -102,6 +102,15 @@ public:
     }
   };
 
+  /**
+   * \brief Default constructor
+   */
+  Face (Ptr<Node> node);
+
+  Face (const nfd::FaceUri& remoteUri, const nfd::FaceUri& localUri, bool isLocal = false);
+
+  virtual ~Face();
+
   static TypeId
   GetTypeId ();
 
@@ -146,7 +155,7 @@ public:
    *  onFail() method event to be invoked
    */
   virtual void
-  close() = 0;
+  close();
 
   FaceId
   getId() const;
