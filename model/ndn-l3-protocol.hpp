@@ -30,6 +30,14 @@
 #include "ns3/ptr.h"
 #include "ns3/net-device.h"
 #include "ns3/nstime.h"
+#include "ns3/traced-callback.h"
+
+#include "ns3/ndnSIM/NFD/daemon/fw/forwarder.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/internal-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/fib-manager.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/face-manager.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/strategy-choice-manager.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/status-server.hpp"
 
 namespace ns3 {
 
@@ -38,6 +46,13 @@ class Node;
 class Header;
 
 namespace ndn {
+
+using nfd::Forwarder;
+using nfd::InternalFace;
+using nfd::FaceManager;
+using nfd::FibManager;
+using nfd::StrategyChoiceManager;
+using nfd::StatusServer;
 
 /**
  * \defgroup ndn ndnSIM: NDN simulation module
@@ -81,6 +96,43 @@ public:
   virtual ~L3Protocol();
 
   /**
+   * \brief Initialize NFD instance
+   *
+   */
+  void
+  initialize();
+
+  /**
+   * \brief Initialized NFD management
+   *
+   */
+  void
+  initializeManagement();
+
+  shared_ptr<FibManager>
+  GetFibManager();
+
+  void
+  SetFibManager(shared_ptr<FibManager> fibManager);
+
+  shared_ptr<StrategyChoiceManager>
+  GetStrategyChoiceManager();
+
+  void
+  SetStrategyChoiceManager(shared_ptr<StrategyChoiceManager> strategyChoiceManager);
+
+  /**
+   * \brief Get the forwarder (NFD) instance
+   *
+   * \returns pointer to the NFD instance
+   */
+  shared_ptr<Forwarder>
+  GetForwarder();
+
+  void
+  SetForwarder(shared_ptr<Forwarder> forwarder);
+
+  /**
    * \brief Add face to Ndn stack
    *
    * \param face smart pointer to NdnFace-derived object
@@ -89,24 +141,24 @@ public:
    *
    * \see NdnLocalFace, NdnNetDeviceFace, NdnUdpFace
    */
-  virtual uint32_t
-  AddFace(const shared_ptr<Face>& face);
+  virtual nfd::FaceId
+  AddFace(shared_ptr<Face> face);
 
-  /**
-   * \brief Get current number of faces added to Ndn stack
-   *
-   * \returns the number of faces
-   */
-  virtual uint32_t
-  GetNFaces() const;
+  // /**
+  //  * \brief Get current number of faces added to Ndn stack
+  //  *
+  //  * \returns the number of faces
+  //  */
+  // virtual uint32_t
+  // GetNFaces() const;
 
-  /**
-   * \brief Get face by face index
-   * \param face The face number (number in face list)
-   * \returns The NdnFace associated with the Ndn face number.
-   */
-  virtual shared_ptr<Face>
-  GetFace(uint32_t face) const;
+  // /**
+  //  * \brief Get face by face index
+  //  * \param face The face number (number in face list)
+  //  * \returns The NdnFace associated with the Ndn face number.
+  //  */
+  // virtual shared_ptr<Face>
+  // GetFace(uint32_t face) const;
 
   /**
    * \brief Get face by face ID
@@ -114,19 +166,25 @@ public:
    * \returns The NdnFace associated with the Ndn face number.
    */
   virtual shared_ptr<Face>
-  GetFaceById(uint32_t face) const;
+  GetFaceById(nfd::FaceId face) const;
 
-  /**
-   * \brief Remove face from ndn stack (remove callbacks)
-   */
-  virtual void
-  RemoveFace(shared_ptr<Face> face);
+  // /**
+  //  * \brief Remove face from ndn stack (remove callbacks)
+  //  */
+  // virtual void
+  // RemoveFace(shared_ptr<Face> face);
 
   /**
    * \brief Get face for NetDevice
    */
   virtual shared_ptr<Face>
   GetFaceByNetDevice(Ptr<NetDevice> netDevice) const;
+
+  shared_ptr<Forwarder>
+  getForwarder()
+  {
+    return m_forwarder;
+  }
 
 protected:
   virtual void
@@ -148,7 +206,24 @@ private:
   operator=(const L3Protocol&); ///< copy operator is disabled
 
 private:
+  shared_ptr<Forwarder> m_forwarder;
+
+  shared_ptr<InternalFace> m_internalFace;
+  shared_ptr<FibManager> m_fibManager;
+  shared_ptr<FaceManager> m_faceManager;
+  shared_ptr<StrategyChoiceManager> m_strategyChoiceManager;
+  shared_ptr<StatusServer> m_statusServer;
+
+  // These objects are aggregated, but for optimization, get them here
   Ptr<Node> m_node; ///< \brief node on which ndn stack is installed
+
+  TracedCallback<const Interest&, const Face&>
+    m_inInterests; ///< @brief trace of incoming Interests
+  TracedCallback<const Interest&, const Face&>
+    m_outInterests; ///< @brief Transmitted interests trace
+
+  TracedCallback<const Data&, const Face&> m_outData; ///< @brief trace of outgoing Data
+  TracedCallback<const Data&, const Face&> m_inData;  ///< @brief trace of incoming Data
 };
 
 } // namespace ndn
