@@ -28,6 +28,28 @@
 #include "ns3/net-device.h"
 #include "ns3/nstime.h"
 
+#include "ns3/ndnSIM/NFD/core/global-io.hpp"
+#include "ns3/ndnSIM/NFD/core/privilege-helper.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/forwarder.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/null-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/internal-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/fib-manager.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/face-manager.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/strategy-choice-manager.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/status-server.hpp"
+#include "ns3/ndnSIM/NFD/core/config-file.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/general-config-section.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/tables-config-section.hpp"
+
+using nfd::Forwarder;
+using nfd::InternalFace;
+using nfd::FaceManager;
+using nfd::FibManager;
+using nfd::StrategyChoiceManager;
+using nfd::StatusServer;
+using nfd::shared_ptr;
+using nfd::make_shared;
+
 namespace ns3 {
 
 class Packet;
@@ -83,6 +105,28 @@ public:
    */
   L3Protocol();
   virtual ~L3Protocol ();
+
+  /**
+   * \brief Initialize NFD instance
+   *
+   */
+  void
+  initialize();
+
+  /**
+   * \brief Initialized NFD management
+   *
+   */
+  void
+  initializeManagement();
+
+  /**
+   * \brief Get the forwarder (NFD) instance
+   *
+   * \returns pointer to the NFD instance
+   */
+  shared_ptr<Forwarder>
+  GetForwarder ();
 
   /**
    * \brief Add face to Ndn stack
@@ -146,8 +190,20 @@ private:
   L3Protocol &operator = (const L3Protocol &); ///< copy operator is disabled
 
 private:
-  uint32_t m_faceCounter; ///< \brief counter of faces. Increased every time a new face is added to the stack
-  FaceList m_faces; ///< \brief list of faces that belongs to ndn stack on this node
+  uint32_t                          m_faceCounter; ///< \brief counter of faces. Increased every time a new face is added to the stack
+  FaceList                          m_faces; ///< \brief list of faces that belongs to ndn stack on this node
+  shared_ptr<Forwarder>             m_forwarder;
+
+  shared_ptr<InternalFace>          m_internalFace;
+  shared_ptr<FibManager>            m_fibManager;
+  shared_ptr<FaceManager>           m_faceManager;
+  shared_ptr<StrategyChoiceManager> m_strategyChoiceManager;
+  shared_ptr<StatusServer>          m_statusServer;
+
+  shared_ptr<std::ofstream>         m_logFile;
+  std::basic_streambuf<char>*       m_originalStreamBuf;
+  ::ndn::KeyChain                   m_keyChain;
+
 
   // These objects are aggregated, but for optimization, get them here
   Ptr<Node> m_node; ///< \brief node on which ndn stack is installed
