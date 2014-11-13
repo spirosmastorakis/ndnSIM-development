@@ -124,7 +124,7 @@ L3Protocol::initializeManagement()
                                    m_forwarder->getStrategyChoice(),
                                    m_forwarder->getMeasurements());
 
-  // Alex do we need this codeline?
+  // Alex do we need this?
   m_forwarder->getFaceTable().addReserved(m_internalFace, ns3::ndn::FACEID_INTERNAL_FACE);
 
   tablesConfig.ensureTablesAreConfigured();
@@ -190,14 +190,12 @@ L3Protocol::AddFace (const Ptr<Face> &face)
 
   face->SetId (m_faceCounter); // sets a unique ID of the face. This ID serves only informational purposes
 
-  // ask face to register in lower-layer stack
-  //face->RegisterProtocolHandlers (MakeCallback (&ForwardingStrategy::OnInterest, m_forwardingStrategy),
-  //MakeCallback (&ForwardingStrategy::OnData, m_forwardingStrategy));
+  // I think that it is correct....
+  m_forwarder->addFace (face->shared_from_this ());
 
   m_faces.push_back (face);
   m_faceCounter++;
 
-  //m_forwardingStrategy->AddFace (face); // notify that face is added
   return face->GetId ();
 }
 
@@ -205,28 +203,9 @@ void
 L3Protocol::RemoveFace (Ptr<Face> face)
 {
   NS_LOG_FUNCTION (this << ::ndn::cref (*face));
-  // ask face to register in lower-layer stack
-  face->UnRegisterProtocolHandlers ();
-  // Ptr<Pit> pit = GetObject<Pit> ();
 
-  // just to be on a safe side. Do the process in two steps
-  // std::list< Ptr<pit::Entry> > entriesToRemoves;
-  // for (Ptr<pit::Entry> pitEntry = pit->Begin (); pitEntry != 0; pitEntry = pit->Next (pitEntry))
-  //   {
-  //     pitEntry->RemoveAllReferencesToFace (face);
-
-  //     If this face is the only for the associated FIB entry, then FIB entry will be removed soon.
-  //     Thus, we have to remove the whole PIT entry
-  //     if (pitEntry->GetFibEntry ()->m_faces.size () == 1 &&
-  //       pitEntry->GetFibEntry ()->m_faces.begin ()->GetFace () == face)
-  //       {
-  //         entriesToRemoves.push_back (pitEntry);
-  //       }
-  //   }
-  //   BOOST_FOREACH (Ptr<pit::Entry> removedEntry, entriesToRemoves)
-  //   {
-  //     pit->MarkErased (removedEntry);
-  //   }
+  // Just call the fail method. This should do the work for us and remove face from FIB and PIT
+  face->fail ("Remove Face");
 
   FaceList::iterator face_it = find (m_faces.begin(), m_faces.end(), face);
   if (face_it == m_faces.end ())
@@ -234,9 +213,6 @@ L3Protocol::RemoveFace (Ptr<Face> face)
       return;
     }
   m_faces.erase (face_it);
-
-  //GetObject<Fib> ()->RemoveFromAll (face);
-  //m_forwardingStrategy->RemoveFace (face); // notify that face is removed
 }
 
 Ptr<Face>

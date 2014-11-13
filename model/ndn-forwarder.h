@@ -40,6 +40,9 @@
 #include "ns3/ndnSIM/NFD/core/config-file.hpp"
 #include "ns3/ndnSIM/NFD/daemon/mgmt/general-config-section.hpp"
 #include "ns3/ndnSIM/NFD/daemon/mgmt/tables-config-section.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/pit.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/pit-entry.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/name-tree.hpp"
 
 using nfd::Forwarder;
 using nfd::InternalFace;
