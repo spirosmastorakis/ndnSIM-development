@@ -9,11 +9,11 @@ Convert::Convert()
 void
 Convert::ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
 {
-  uint32_t m_type = block->type();
-  if (m_type == 0x05)
+  uint32_t type = block->type();
+  if (type == 0x05)
     InterestToPacket(block, packet);
   else
-    if (m_type == 0x06)
+    if (type == 0x06)
       DataToPacket(block, packet);
     else
       throw UnknownHeaderException();
