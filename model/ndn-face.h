@@ -38,6 +38,8 @@
 #include "ns3/face-uri.hpp"
 #include "ns3/face-counters.hpp"
 
+#include "ns3/ndnSIM/model/ndn-ns3.hpp"
+
 using std::enable_shared_from_this;
 
 namespace ndn {
