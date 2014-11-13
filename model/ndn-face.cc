@@ -31,6 +31,7 @@
 #include "ns3/simulator.h"
 #include "ns3/random-variable.h"
 #include "ns3/pointer.h"
+#include "ns3/ptr.h"
 
 #include "ns3/ndn-header-helper.h"
 #include "ns3/ndnSIM/utils/ndn-fw-hop-count-tag.h"
@@ -260,6 +261,12 @@ Face::SendInterest ( ::ndn::shared_ptr<const ::ndn::Interest> interest)
     {
       return false;
     }
+  // I assume that this should work...
+  ::ndn::Convert::Convert convert;
+  Ptr<Packet> packet = Create <Packet> ();
+  ::ndn::Block block = interest->wireEncode ();
+  convert.InterestToPacket (::ndn::make_shared <::ndn::Block> (block), packet);
+  return Send (packet);
 
   //return Send (Wire::FromInterest (interest));
 }
@@ -273,6 +280,12 @@ Face::SendData (::ndn::shared_ptr<const ::ndn::Data> data)
     {
       return false;
     }
+  // I assume that this should work..
+  ::ndn::Convert::Convert convert;
+  Ptr<Packet> packet = Create <Packet> ();
+  ::ndn::Block block = data->wireEncode ();
+  convert.InterestToPacket (::ndn::make_shared <::ndn::Block> (block), packet);
+  return Send (packet);
 
   //return Send (Wire::FromData (data));
 }
@@ -305,23 +318,21 @@ Face::Receive (Ptr<const Packet> p)
   Ptr<Packet> packet = p->Copy (); // give upper layers a rw copy of the packet
   try
     {
-      HeaderHelper::Type type = HeaderHelper::GetNdnHeaderType (packet);
-      switch (type)
-        {
-        case HeaderHelper::INTEREST_NDNSIM:
-          // return ReceiveInterest (Wire::ToInterest (packet, Wire::WIRE_FORMAT_NDNSIM));
-        case HeaderHelper::INTEREST_CCNB:
-          // return ReceiveInterest (Wire::ToInterest (packet, Wire::WIRE_FORMAT_CCNB));
-        case HeaderHelper::CONTENT_OBJECT_NDNSIM:
-          // return ReceiveData (Wire::ToData (packet, Wire::WIRE_FORMAT_NDNSIM));
-        case HeaderHelper::CONTENT_OBJECT_CCNB:
-          // return ReceiveData (Wire::ToData (packet, Wire::WIRE_FORMAT_CCNB));
-        default:
-          NS_FATAL_ERROR ("Not supported NDN header");
-          return false;
-        }
-
-      // exception will be thrown if packet is not recognized
+      //Let's see..
+      ::ndn::Convert::Convert convert;
+      ::ndn::Block block = convert.FromPacket (packet);
+      uint32_t type = block.type();
+      if (type == 0x05) {
+        ::ndn::Interest interest;
+        interest.wireDecode (block);
+        ReceiveInterest (::ndn::make_shared <::ndn::Interest> (interest));
+      }
+     else
+       if (type == 0x06) {
+         ::ndn::Data data;
+         data.wireDecode (block);
+         ReceiveData (::ndn::make_shared <::ndn::Data> (data));
+       }
     }
   catch (UnknownHeaderException)
     {
