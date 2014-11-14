@@ -190,6 +190,12 @@ Fib::const_iterator::operator*() const
   return *(m_nameTreeIterator->getFibEntry());
 }
 
+static inline bool
+predicate_NameTreeEntry_hasFibEntry(const name_tree::Entry& entry)
+{
+  return static_cast<bool>(entry.getFibEntry());
+}
+
 inline shared_ptr<fib::Entry>
 Fib::const_iterator::operator->() const
 {

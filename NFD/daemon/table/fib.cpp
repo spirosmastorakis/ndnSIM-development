@@ -41,12 +41,6 @@ Fib::~Fib()
 {
 }
 
-static inline bool
-predicate_NameTreeEntry_hasFibEntry(const name_tree::Entry& entry)
-{
-  return static_cast<bool>(entry.getFibEntry());
-}
-
 std::pair<shared_ptr<fib::Entry>, bool>
 Fib::insert(const Name& prefix)
 {
