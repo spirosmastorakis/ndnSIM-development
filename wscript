@@ -314,6 +314,7 @@ def build(bld):
         "ndn-cxx/src/util/regex.hpp",
         "ndn-cxx/src/util/segment-fetcher.hpp",
         "ndn-cxx/src/util/string-helper.hpp",
+        "ndn-cxx/src/util/time-custom-clock.hpp",
 
         "ndn-cxx/src/util/regex/regex-backref-manager.hpp",
         "ndn-cxx/src/util/regex/regex-backref-matcher.hpp",
@@ -408,7 +409,7 @@ def build(bld):
 #         "utils/tracers/l2-tracer.h",
 #         "utils/tracers/ndn-app-delay-tracer.h",
 #         "utils/tracers/ndn-cs-tracer.h",
-#         "utils/tracers/ndn-l3-aggregate-tracer.h",
+        #"utils/tracers/ndn-l3-aggregate-tracer.h",
 #         "utils/tracers/ndn-l3-tracer.h",
 #         "utils/tracers/ndn-l3-rate-tracer.h",
         ]
