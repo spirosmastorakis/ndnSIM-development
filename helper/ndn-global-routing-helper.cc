@@ -30,8 +30,10 @@
 #include "../model/ndn-net-device-face.h"
 #include "../model/ndn-global-router.h"
 #include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
-//#include "ns3/ndn-fib.h"
+#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/forwarder.hpp"
 
+#include "ns3/object.h"
 #include "ns3/node.h"
 #include "ns3/node-container.h"
 #include "ns3/net-device.h"
@@ -276,14 +278,27 @@ GlobalRoutingHelper::CalculateRoutes (bool invalidatedRoutes/* = true*/)
 			       );
 
       // NS_LOG_DEBUG (predecessors.size () << ", " << distances.size ());
-      /*
-      Ptr<Fib>  fib  = source->GetObject<Fib> ();
+
+      Ptr<L3Protocol> L3protocol = (*node)->GetObject<L3Protocol> ();
+      ::nfd::shared_ptr<Forwarder> forwarder = L3protocol->GetForwarder();
+      //::nfd:Fib fib = forwarder->getFib();
+
       if (invalidatedRoutes)
         {
-          fib->InvalidateAll ();
+          std::vector<::nfd::fib::NextHop> NextHopList;
+          for (::nfd::NameTree::const_iterator it = forwarder->getNameTree().fullEnumerate(
+            &(nfd::predicate_NameTreeEntry_hasFibEntry)); it != forwarder->getNameTree().end();) {
+            NextHopList.clear ();
+            ::nfd::shared_ptr<::nfd::fib::Entry> entry = it->getFibEntry();
+            ++it;
+            NextHopList = entry->getNextHops();
+            for (int i = 0; i < NextHopList.size (); i++) {
+              NextHopList[i].setCost(std::numeric_limits<uint64_t>::max ());
+            }
+          }
+
         }
-      NS_ASSERT (fib != 0);
-*/
+
       NS_LOG_DEBUG ("Reachability from Node: " << source->GetObject<Node> ()->GetId ());
       for (DistancesMap::iterator i = distances.begin ();
 	   i != distances.end ();
