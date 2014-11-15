@@ -32,7 +32,7 @@
 #include "ns3/point-to-point-net-device.h"
 #include "ns3/channel.h"
 
-#include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
+#include <ndn-cxx/name.hpp>
 
 NS_LOG_COMPONENT_DEFINE ("ndn.NetDeviceFace");
 

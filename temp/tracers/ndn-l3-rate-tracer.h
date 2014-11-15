@@ -123,13 +123,13 @@ public:
 protected:
   // from L3Tracer
   virtual void
-  OutInterests  (::ndn::shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
+  OutInterests  (shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
 
   virtual void
-  InInterests   (::ndn::shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
+  InInterests   (shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
 
   virtual void
-  DropInterests (::ndn::shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
+  DropInterests (shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
   /*
   virtual void
   OutNacks  (Ptr<const Interest>, Ptr<const Face>);
@@ -141,13 +141,13 @@ protected:
   DropNacks (Ptr<const Interest>, Ptr<const Face>);
   */
   virtual void
-  OutData  (::ndn::shared_ptr<const ::ndn::Data>, bool fromCache, Ptr<const Face>);
+  OutData  (shared_ptr<const ::ndn::Data>, bool fromCache, Ptr<const Face>);
 
   virtual void
-  InData   (::ndn::shared_ptr<const ::ndn::Data>, Ptr<const Face>);
+  InData   (shared_ptr<const ::ndn::Data>, Ptr<const Face>);
 
   virtual void
-  DropData (::ndn::shared_ptr<const ::ndn::Data>, Ptr<const Face>);
+  DropData (shared_ptr<const ::ndn::Data>, Ptr<const Face>);
 
   virtual void
   SatisfiedInterests (Ptr<const pit::Entry>);

@@ -29,6 +29,8 @@
 
 namespace nfd {
 
+using ::ndn::util::FaceUri;
+
 class Channel : noncopyable
 {
 public:

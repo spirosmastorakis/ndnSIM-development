@@ -27,7 +27,7 @@
 #include "ns3/ndnSIM/NFD/core/logger.hpp"
 #include "ns3/ndnSIM/NFD/daemon/table/strategy-choice.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-strategy-choice.hpp"
+#include <ndn-cxx/management/nfd-strategy-choice.hpp>
 
 namespace nfd {
 

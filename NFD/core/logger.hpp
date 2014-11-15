@@ -26,7 +26,7 @@
 #define NFD_CORE_LOGGER_HPP
 
 #include "ns3/ndnSIM/NFD/common.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/util/time.hpp"
+#include <ndn-cxx/util/time.hpp>
 
 /// \todo use when we enable C++11 (see todo in now())
 // #include <cinttypes>

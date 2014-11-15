@@ -29,7 +29,7 @@
 #include "ns3/ndnSIM/NFD/daemon/face/protocol-factory.hpp"
 #include "ns3/ndnSIM/NFD/daemon/face/channel.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-channel-status.hpp"
+#include <ndn-cxx/management/nfd-channel-status.hpp>
 
 namespace nfd {
 

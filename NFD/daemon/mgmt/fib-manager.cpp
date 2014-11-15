@@ -31,7 +31,7 @@
 #include "ns3/ndnSIM/NFD/daemon/mgmt/internal-face.hpp"
 #include "ns3/ndnSIM/NFD/daemon/mgmt/app-face.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/encoding/tlv.hpp"
+#include <ndn-cxx/encoding/tlv.hpp>
 
 namespace nfd {
 

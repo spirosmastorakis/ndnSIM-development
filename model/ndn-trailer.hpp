@@ -1,8 +1,8 @@
 #ifndef NDN_TRAILER_HPP
 #define NDN_TRAILER_HPP
 
-#include "ns3/ndnSIM/ndn-cxx/src/data.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/encoding/block.hpp"
+#include <ndn-cxx/data.hpp>
+#include <ndn-cxx/encoding/block.hpp>
 #include "ns3/packet.h"
 
 namespace ndn {

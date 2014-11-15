@@ -33,12 +33,9 @@
 #include "ns3/pointer.h"
 #include "ns3/ptr.h"
 
-#include "ns3/ndn-header-helper.h"
 #include "ns3/ndnSIM/utils/ndn-fw-hop-count-tag.h"
 
 #include <boost/ref.hpp>
-
-#include "ns3/logger.hpp"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.Face");
 
@@ -62,7 +59,7 @@ Face::GetTypeId ()
   return tid;
 }
 
-Face::Face(const nfd::FaceUri& remoteUri, const nfd::FaceUri& localUri, bool isLocal)
+Face::Face(const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal)
   : m_idNfd(INVALID_FACEID)
   , m_remoteUri(remoteUri)
   , m_localUri(localUri)
@@ -334,7 +331,7 @@ Face::Receive (Ptr<const Packet> p)
          ReceiveData (::ndn::make_shared <::ndn::Data> (data));
        }
     }
-  catch (UnknownHeaderException)
+  catch (::ndn::UnknownHeaderException)
     {
       NS_FATAL_ERROR ("Unknown NDN header. Should not happen");
       return false;

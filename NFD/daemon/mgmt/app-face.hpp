@@ -28,7 +28,7 @@
 
 #include "ns3/ndnSIM/NFD/common.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/security/key-chain.hpp"
+#include <ndn-cxx/security/key-chain.hpp>
 
 namespace nfd {
 

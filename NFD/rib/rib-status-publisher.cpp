@@ -29,7 +29,7 @@
 
 #include "ns3/ndnSIM/model/ndn-face.h"
 
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-rib-entry.hpp"
+#include <ndn-cxx/management/nfd-rib-entry.hpp>
 
 using ns3::ndn::Face;
 

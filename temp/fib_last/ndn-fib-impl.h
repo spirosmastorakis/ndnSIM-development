@@ -46,7 +46,7 @@ public: /*
     ndnSIM::counting_policy_traits
     > trie;
 
-  EntryImpl (Ptr<Fib> fib, const ::ndn::shared_ptr<const ::ndn::Name> &prefix)
+  EntryImpl (Ptr<Fib> fib, const shared_ptr<const ::ndn::Name> &prefix)
     : Entry (fib, prefix)
     , item_ (0)
   {
@@ -101,10 +101,10 @@ public: /*
   Add (const ::ndn::Name &prefix, Ptr<Face> face, int32_t metric);
 
   virtual Ptr<Entry>
-  Add (const ::ndn::shared_ptr<const ::ndn::Name> &prefix, Ptr<Face> face, int32_t metric);
+  Add (const shared_ptr<const ::ndn::Name> &prefix, Ptr<Face> face, int32_t metric);
 
   virtual void
-  Remove (const ::ndn::shared_ptr<const ::ndn::Name> &prefix);
+  Remove (const shared_ptr<const ::ndn::Name> &prefix);
 
   virtual void
   InvalidateAll ();
