@@ -28,7 +28,6 @@
 #include "ns3/net-device.h"
 #include "ns3/nstime.h"
 
-#include "ns3/ndnSIM/NFD/core/global-io.hpp"
 #include "ns3/ndnSIM/NFD/core/privilege-helper.hpp"
 #include "ns3/ndnSIM/NFD/daemon/fw/forwarder.hpp"
 #include "ns3/ndnSIM/NFD/daemon/face/null-face.hpp"

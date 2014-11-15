@@ -24,7 +24,6 @@
  */
 
 #include "ns3/ndnSIM/NFD/rib/rib-manager.hpp"
-#include "ns3/ndnSIM/NFD/core/global-io.hpp"
 #include "ns3/ndnSIM/NFD/core/logger.hpp"
 #include "ns3/ndnSIM/NFD/core/scheduler.hpp"
 #include <ndn-cxx/management/nfd-face-status.hpp>
