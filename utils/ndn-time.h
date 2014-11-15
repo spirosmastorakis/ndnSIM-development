@@ -1,32 +1,30 @@
-#ifndef NDN_TIME_HPP
-#define NDN_TIME_HPP
+#ifndef NDN_TIME_H
+#define NDN_TIME_H
 
-#include "ns3/ndnSIM/ndn-cxx/src/util/time-custom-clock.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/util/time.hpp"
+#include <ndn-cxx/util/time-custom-clock.hpp>
+#include <ndn-cxx/util/time.hpp>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
+
+#include "ns3/simulator.h"
 
 using ndn::time::CustomClock;
 using ndn::time::system_clock;
 using ndn::time::steady_clock;
 
+namespace ns3 {
+
 namespace ndn {
 
-namespace time {
-
-template < >
-class CustomClock <system_clock>
+class CustomSystemClock : public CustomClock<system_clock>
 {
 public:
-  CustomClock ();
+  CustomSystemClock ();
 
-  ~CustomClock ();
+  ~CustomSystemClock ();
 
   system_clock::time_point
-  getNow() const
-  {
-    return  (ns3::Simulator::Now ().GetMilliSeconds ());
-  }
+  getNow() const;
 
   std::string
   getSince() const;
@@ -36,13 +34,12 @@ public:
 
 };
 
-template < >
-class CustomClock <steady_clock>
+class CustomSteadyClock : public CustomClock<steady_clock>
 {
 public:
-  CustomClock ();
+  CustomSteadyClock ();
 
-  ~CustomClock ();
+  ~CustomSteadyClock ();
 
   steady_clock::time_point
   getNow() const;
@@ -55,9 +52,8 @@ public:
 
 };
 
-
-} // namespace time
-
 } // namespace ndn
+
+} // namespace ns3
 
 #endif // NDN_TIME_HPP
