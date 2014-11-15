@@ -28,7 +28,6 @@
 #include "ns3/assert.h"
 #include "ns3/simulator.h"
 
-#include "ns3/ndn-header-helper.h"
 #include "ns3/ndn-app.h"
 
 #include <ndn-cxx/interest.hpp>

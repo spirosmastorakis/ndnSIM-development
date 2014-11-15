@@ -30,7 +30,7 @@
 
 #include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
+#include <ndn-cxx/name.hpp>
 
 #include "ns3/ndnSIM/helper/ndn-face-container.h"
 #include "ns3/ndnSIM/model/ndn-net-device-face.h"

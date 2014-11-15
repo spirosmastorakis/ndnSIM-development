@@ -28,10 +28,13 @@
 
 #include "face/face.hpp"
 #include "app-face.hpp"
+#include <ndn-cxx/util/face-uri.hpp>
 
 #include "command-validator.hpp"
 
 namespace nfd {
+
+using ndn::util::FaceUri;
 
 class InternalFace : public Face, public AppFace
 {

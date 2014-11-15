@@ -2,8 +2,10 @@
 #define NDN_NS3_HPP
 
 #include "ns3/packet.h"
+
 #include "ndn-header.hpp"
 #include "ndn-trailer.hpp"
+
 #include <ndn-cxx/encoding/block.hpp>
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>

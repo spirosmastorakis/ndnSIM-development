@@ -30,6 +30,8 @@
 
 namespace nfd {
 
+using ndn::util::FaceUri;
+
 /**
  * \brief a Face that has no underlying transport and drops every packet
  */

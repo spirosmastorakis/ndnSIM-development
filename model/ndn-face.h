@@ -29,25 +29,17 @@
 #include "ns3/nstime.h"
 #include "ns3/type-id.h"
 #include "ns3/traced-callback.h"
+
 #include <ndn-cxx/name.hpp>
-#include <ndn-cxx/common.hpp>
 #include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 #include <ndn-cxx/management/nfd-face-traits.hpp>
 #include <ndn-cxx/management/nfd-face-event-notification.hpp>
 #include <ndn-cxx/management/nfd-face-status.hpp>
-#include "ns3/face-uri.hpp"
-#include "ns3/face-counters.hpp"
+#include <ndn-cxx/util/face-uri.hpp>
 
+#include "ns3/ndnSIM/NFD/daemon/face/face-counters.hpp"
 #include "ns3/ndnSIM/model/ndn-ns3.hpp"
-
-using std::enable_shared_from_this;
-
-namespace ndn {
-
-class Data;
-class Interest;
-
-}
 
 namespace ns3 {
 
@@ -55,6 +47,8 @@ class Packet;
 class Node;
 
 namespace ndn {
+
+using ::ndn::util::FaceUri;
 
 /** \class FaceId
  *  \brief identifies a face
@@ -91,7 +85,7 @@ const size_t MAX_NDN_PACKET_SIZE = 8800;
  * \see ndn::AppFace, ndn::NetDeviceFace
  */
 class Face :
-    public Object//, public enable_shared_from_this<Face>
+    public Object, public std::enable_shared_from_this<Face>
 {
 public:
   class Error : public std::runtime_error
@@ -109,7 +103,7 @@ public:
    */
   Face (Ptr<Node> node);
 
-  Face (const nfd::FaceUri& remoteUri, const nfd::FaceUri& localUri, bool isLocal = false);
+  Face (const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal = false);
 
   virtual ~Face();
 
@@ -122,8 +116,8 @@ public:
    * \param face Face from which packet has been received
    * \param packet Original packet
    */
-  typedef Callback<void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Interest> > InterestHandler;
-  typedef Callback<void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Data> > DataHandler;
+  typedef Callback<void, Ptr<Face>, shared_ptr< ::ndn::Interest> > InterestHandler;
+  typedef Callback<void, Ptr<Face>, shared_ptr< ::ndn::Data> > DataHandler;
 
   /**
    * \brief Default constructor
@@ -206,12 +200,12 @@ public:
 
   /** \return a FaceUri that represents the remote endpoint
    */
-  const nfd::FaceUri&
+  const FaceUri&
   getRemoteUri() const;
 
   /** \return a FaceUri that represents the local endpoint (NFD side)
    */
-  const nfd::FaceUri&
+  const FaceUri&
   getLocalUri() const;
 
   // this is a non-virtual method
@@ -266,7 +260,7 @@ public:
    * @returns true if interest is considered to be send out (enqueued)
    */
   virtual bool
-  SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest);
+  SendInterest (shared_ptr<const ::ndn::Interest> interest);
 
   /**
    * @brief Send out Dat packet through the face
@@ -276,7 +270,7 @@ public:
    * @returns true if Data packet is considered to be send out (enqueued)
    */
   virtual bool
-  SendData (::ndn::shared_ptr<const ::ndn::Data> data);
+  SendData (shared_ptr<const ::ndn::Data> data);
 
   /**
    * \brief Receive interest from application or another node and forward it up to the NDN stack
@@ -284,7 +278,7 @@ public:
    * By default it is called from inside Receive method, but can be used directly, if appropriate
    */
   virtual bool
-  ReceiveInterest (::ndn::shared_ptr< ::ndn::Interest> interest);
+  ReceiveInterest (shared_ptr< ::ndn::Interest> interest);
 
   /**
    * \brief Receive Data packet from application or another node and forward it up to the NDN stack
@@ -292,7 +286,7 @@ public:
    * By default it is called from inside Receive method, but can be used directly, if appropriate
    */
   virtual bool
-  ReceiveData (::ndn::shared_ptr< ::ndn::Data> data);
+  ReceiveData (shared_ptr< ::ndn::Data> data);
   ////////////////////////////////////////////////////////////////////
 
   /**
@@ -439,8 +433,8 @@ private:
   uint16_t m_metric; ///< \brief metric of the face
   uint32_t m_flags; ///< @brief faces flags (e.g., APPLICATION)
   FaceId m_idNfd;
-  nfd::FaceUri m_remoteUri;
-  nfd::FaceUri m_localUri;
+  FaceUri m_remoteUri;
+  FaceUri m_localUri;
   bool m_isLocal;
   nfd::FaceCounters m_counters;
   std::string m_description;
@@ -467,13 +461,13 @@ private:
     return m_isOnDemand;
   }
 
-  inline const nfd::FaceUri&
+  inline const FaceUri&
   Face::getRemoteUri() const
   {
     return m_remoteUri;
   }
 
-  inline const nfd::FaceUri&
+  inline const FaceUri&
   Face::getLocalUri() const
   {
     return m_localUri;

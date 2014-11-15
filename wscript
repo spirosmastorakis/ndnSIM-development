@@ -130,8 +130,6 @@ def build(bld):
     if bld.env.ENABLE_EXAMPLES:
         bld.recurse ('examples')
 
-    bld.recurse ('tools')
-
 @TaskGen.feature('ns3fullmoduleheaders')
 @TaskGen.after_method('process_rule')
 def apply_ns3fullmoduleheaders(self):

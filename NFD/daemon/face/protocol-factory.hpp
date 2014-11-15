@@ -31,7 +31,8 @@
 
 namespace nfd {
 
-class Face;
+using ndn::util::FaceUri;
+
 class Channel;
 
 /**

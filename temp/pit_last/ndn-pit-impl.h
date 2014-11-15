@@ -90,7 +90,7 @@ public: /*
   Find (const ::ndn::Name &prefix);
 
   virtual Ptr<Entry>
-  Create (::ndn::shared_ptr<const ::ndn::Interest> header);
+  Create (shared_ptr<const ::ndn::Interest> header);
 
   virtual void
   MarkErased (Ptr<Entry> entry);

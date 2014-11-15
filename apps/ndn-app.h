@@ -21,26 +21,18 @@
 #ifndef NDN_APP_H
 #define NDN_APP_H
 
-#include <ndn-cxx/common.hpp>
 #include "ns3/application.h"
 #include "ns3/ptr.h"
 #include "ns3/callback.h"
 #include "ns3/traced-callback.h"
 
-namespace ndn {
-
-class Interest;
-class Data;
-
-}
+#include "ns3/ndn-face.h"
 
 namespace ns3 {
 
 class Packet;
 
 namespace ndn {
-
-class Face;
 
 /**
  * \ingroup ndn
@@ -52,7 +44,7 @@ class Face;
  *
  * The class implements virtual calls onInterest, onNack, and onData
  */
-class App: public Application
+class App : public Application
 {
 public:
   static TypeId GetTypeId ();
@@ -76,7 +68,7 @@ public:
    *                 may be useful to get packet tags
    */
   virtual void
-  OnInterest (::ndn::shared_ptr<const ::ndn::Interest> interest);
+  OnInterest (shared_ptr<const ::ndn::Interest> interest);
 
   /**
    * @brief Method that will be called every time new NACK arrives
@@ -91,7 +83,7 @@ public:
    * @param payload payload (potentially virtual) of the Data packet (may include packet tags of original packet)
    */
   virtual void
-  OnData (::ndn::shared_ptr<const ::ndn::Data> contentObject);
+  OnData (shared_ptr<const ::ndn::Data> contentObject);
 
 protected:
   /**
@@ -111,20 +103,20 @@ protected:
   bool m_active;  ///< @brief Flag to indicate that application is active (set by StartApplication and StopApplication)
   Ptr<Face> m_face;   ///< @brief automatically created application face through which application communicates
 
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Interest>,
+  TracedCallback< shared_ptr<const ::ndn::Interest>,
                  Ptr<App>, Ptr<Face> > m_receivedInterests; ///< @brief App-level trace of received Interests
   /*
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Interest>,
+  TracedCallback< shared_ptr<const ::ndn::Interest>,
                  Ptr<App>, Ptr<Face> > m_receivedNacks; ///< @brief App-level trace of received NACKs
   */
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Data>,
+  TracedCallback< shared_ptr<const ::ndn::Data>,
                  Ptr<App>, Ptr<Face> > m_receivedDatas; ///< @brief App-level trace of received Data
 
 
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Interest>,
+  TracedCallback< shared_ptr<const ::ndn::Interest>,
                  Ptr<App>, Ptr<Face> > m_transmittedInterests; ///< @brief App-level trace of transmitted Interests
 
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Data>,
+  TracedCallback< shared_ptr<const ::ndn::Data>,
                  Ptr<App>, Ptr<Face> > m_transmittedDatas; ///< @brief App-level trace of transmitted Data
 };
 

@@ -99,7 +99,7 @@ public:
    * @param metric	Routing metric
    */
   virtual Ptr<fib::Entry>
-  Add (const ::ndn::shared_ptr<const ::ndn::Name> &prefix, Ptr<Face> face, int32_t metric) = 0;
+  Add (const shared_ptr<const ::ndn::Name> &prefix, Ptr<Face> face, int32_t metric) = 0;
 
   /**
    * @brief Remove FIB entry
@@ -110,7 +110,7 @@ public:
    * @param name	Smart pointer to prefix
    */
   virtual void
-  Remove (const ::ndn::shared_ptr<const ::ndn::Name> &prefix) = 0;
+  Remove (const shared_ptr<const ::ndn::Name> &prefix) = 0;
 
   /**
    * @brief Invalidate all FIB entries

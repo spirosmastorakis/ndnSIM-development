@@ -95,13 +95,13 @@ protected:
   Connect ();
 
   virtual void
-  OutInterests  (::ndn::shared_ptr<const ::ndn::Interest>, Ptr<const Face>) = 0;
+  OutInterests  (shared_ptr<const ::ndn::Interest>, Ptr<const Face>) = 0;
 
   virtual void
-  InInterests   (::ndn::shared_ptr<const ::ndn::Interest>, Ptr<const Face>) = 0;
+  InInterests   (shared_ptr<const ::ndn::Interest>, Ptr<const Face>) = 0;
 
   virtual void
-  DropInterests (::ndn::shared_ptr<const ::ndn::Interest>, Ptr<const Face>) = 0;
+  DropInterests (shared_ptr<const ::ndn::Interest>, Ptr<const Face>) = 0;
 
   /*
   virtual void
@@ -115,13 +115,13 @@ protected:
   */
 
   virtual void
-  OutData  (::ndn::shared_ptr<const ::ndn::Data>, bool fromCache, Ptr<const Face>) = 0;
+  OutData  (shared_ptr<const ::ndn::Data>, bool fromCache, Ptr<const Face>) = 0;
 
   virtual void
-  InData   (::ndn::shared_ptr<const ::ndn::Data>, Ptr<const Face>) = 0;
+  InData   (shared_ptr<const ::ndn::Data>, Ptr<const Face>) = 0;
 
   virtual void
-  DropData (::ndn::shared_ptr<const ::ndn::Data>, Ptr<const Face>) = 0;
+  DropData (shared_ptr<const ::ndn::Data>, Ptr<const Face>) = 0;
 
   virtual void
   SatisfiedInterests (Ptr<const pit::Entry>) = 0;

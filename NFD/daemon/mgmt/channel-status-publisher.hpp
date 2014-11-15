@@ -29,9 +29,9 @@
 #include "core/segment-publisher.hpp"
 #include "mgmt/app-face.hpp"
 
-namespace nfd {
+#include "ns3/ndnSIM/NFD/daemon/face/protocol-factory.hpp"
 
-class ProtocolFactory;
+namespace nfd {
 
 class ChannelStatusPublisher : public SegmentPublisher<AppFace>
 {
