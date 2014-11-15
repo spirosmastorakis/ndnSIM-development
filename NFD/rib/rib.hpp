@@ -30,7 +30,8 @@
 #include "ns3/ndnSIM/NFD/rib/fib-update.hpp"
 #include "ns3/ndnSIM/NFD/common.hpp"
 #include "ns3/ndnSIM/NFD/rib/rib-entry.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-command.hpp"
+
+#include <ndn-cxx/management/nfd-control-command.hpp>
 
 namespace nfd {
 namespace rib {

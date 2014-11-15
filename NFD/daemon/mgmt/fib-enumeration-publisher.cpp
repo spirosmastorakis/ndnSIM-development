@@ -26,7 +26,7 @@
 #include "ns3/ndnSIM/NFD/core/logger.hpp"
 #include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-fib-entry.hpp"
+#include <ndn-cxx/management/nfd-fib-entry.hpp>
 
 namespace nfd {
 

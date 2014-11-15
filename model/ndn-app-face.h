@@ -67,10 +67,10 @@ public:
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from Face
   virtual bool
-  SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest);
+  SendInterest (shared_ptr<const ::ndn::Interest> interest);
 
   virtual bool
-  SendData (::ndn::shared_ptr<const ::ndn::Data> data);
+  SendData (shared_ptr<const ::ndn::Data> data);
 
   virtual bool
   isLocal() const;

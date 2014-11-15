@@ -27,7 +27,7 @@
 #define NFD_DAEMON_MGMT_STATUS_SERVER_HPP
 
 #include "ns3/ndnSIM/NFD/daemon/mgmt/app-face.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-forwarder-status.hpp"
+#include <ndn-cxx/management/nfd-forwarder-status.hpp>
 
 namespace nfd {
 

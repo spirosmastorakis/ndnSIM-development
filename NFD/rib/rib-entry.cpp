@@ -27,7 +27,7 @@
 
 #include "ns3/ndnSIM/NFD/core/logger.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-command.hpp"
+#include <ndn-cxx/management/nfd-control-command.hpp>
 
 NFD_LOG_INIT("RibEntry");
 

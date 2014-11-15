@@ -87,7 +87,7 @@ protected:
   virtual bool
   CanSendOutInterest (Ptr<Face> inFace,
                       Ptr<Face> outFace,
-                      ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                      shared_ptr<const ::ndn::Interest> interest,
                       Ptr<pit::Entry> pitEntry);
 
   /// \copydoc ForwardingStrategy::WillSatisfyPendingInterest
@@ -133,7 +133,7 @@ template<class Parent>
 bool
 PerOutFaceLimits<Parent>::CanSendOutInterest (Ptr<Face> inFace,
                                               Ptr<Face> outFace,
-                                              ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                                              shared_ptr<const ::ndn::Interest> interest,
                                               Ptr<pit::Entry> pitEntry)
 {
   NS_LOG_FUNCTION (this << pitEntry->GetPrefix ());

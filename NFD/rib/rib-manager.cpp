@@ -27,7 +27,7 @@
 #include "ns3/ndnSIM/NFD/core/global-io.hpp"
 #include "ns3/ndnSIM/NFD/core/logger.hpp"
 #include "ns3/ndnSIM/NFD/core/scheduler.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-face-status.hpp"
+#include <ndn-cxx/management/nfd-face-status.hpp>
 
 namespace nfd {
 namespace rib {

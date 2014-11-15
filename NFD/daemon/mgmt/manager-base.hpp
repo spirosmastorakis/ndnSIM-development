@@ -31,9 +31,9 @@
 #include "ns3/ndnSIM/NFD/daemon/mgmt/command-validator.hpp"
 #include "ns3/ndnSIM/NFD/daemon/mgmt/internal-face.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-command.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-response.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-parameters.hpp"
+#include <ndn-cxx/management/nfd-control-command.hpp>
+#include <ndn-cxx/management/nfd-control-response.hpp>
+#include <ndn-cxx/management/nfd-control-parameters.hpp>
 
 namespace nfd {
 

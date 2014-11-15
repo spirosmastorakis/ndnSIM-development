@@ -27,19 +27,11 @@
 #define NFD_DAEMON_FACE_PROTOCOL_FACTORY_HPP
 
 #include "ns3/ndnSIM/NFD/common.hpp"
-#include "ns3/ndnSIM/NFD/core/face-uri.hpp"
-
-namespace ns3 {
-
-namespace ndn {
-
-class Face;
-
-}
-
-}
+#include "ns3/ndn-face.h"
 
 namespace nfd {
+
+using ndn::util::FaceUri;
 
 class Channel;
 

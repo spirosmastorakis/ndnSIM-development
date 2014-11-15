@@ -28,7 +28,7 @@
 #include "ns3/pointer.h"
 #include "ns3/udp-socket-factory.h"
 
-#include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
+#include <ndn-cxx/name.hpp>
 
 using namespace std;
 

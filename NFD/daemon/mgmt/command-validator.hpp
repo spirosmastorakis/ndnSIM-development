@@ -27,7 +27,7 @@
 
 #include "ns3/ndnSIM/NFD/common.hpp"
 #include "ns3/ndnSIM/NFD/core/config-file.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/util/command-interest-validator.hpp"
+#include <ndn-cxx/util/command-interest-validator.hpp>
 
 namespace nfd {
 

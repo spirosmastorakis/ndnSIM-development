@@ -31,8 +31,8 @@
 #include "ns3/ndnSIM/NFD/core/logger.hpp"
 #include "ns3/ndnSIM/NFD/core/random.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/util/crypto.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/security/signature-sha256-with-rsa.hpp"
+#include <ndn-cxx/util/crypto.hpp>
+#include <ndn-cxx/security/signature-sha256-with-rsa.hpp>
 
 #include <boost/random/bernoulli_distribution.hpp>
 

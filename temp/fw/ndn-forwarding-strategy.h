@@ -90,7 +90,7 @@ public:
    */
   virtual void
   OnInterest (Ptr<Face> face,
-              ::ndn::shared_ptr< ::ndn::Interest> interest);
+              shared_ptr< ::ndn::Interest> interest);
 
   /**
    * \brief Actual processing of incoming Ndn content objects
@@ -101,7 +101,7 @@ public:
    */
   virtual void
   OnData (Ptr<Face> face,
-          ::ndn::shared_ptr< ::ndn::Data> data);
+          shared_ptr< ::ndn::Data> data);
 
   /**
    * @brief Event fired just before PIT entry is removed by timeout
@@ -158,7 +158,7 @@ protected:
    */
   virtual void
   DidCreatePitEntry (Ptr<Face> inFace,
-                     ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                     shared_ptr<const ::ndn::Interest> interest,
                      Ptr<pit::Entry> pitEntry);
 
   /**
@@ -172,7 +172,7 @@ protected:
    */
   virtual void
   FailedToCreatePitEntry (Ptr<Face> inFace,
-                          ::ndn::shared_ptr<const ::ndn::Interest> interest);
+                          shared_ptr<const ::ndn::Interest> interest);
 
   /**
    * @brief An event that is fired every time a duplicated Interest is received
@@ -187,7 +187,7 @@ protected:
    */
   virtual void
   DidReceiveDuplicateInterest (Ptr<Face> inFace,
-                               ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                               shared_ptr<const ::ndn::Interest> interest,
                                Ptr<pit::Entry> pitEntry);
 
   /**
@@ -203,7 +203,7 @@ protected:
    */
   virtual void
   DidSuppressSimilarInterest (Ptr<Face> inFace,
-                              ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                              shared_ptr<const ::ndn::Interest> interest,
                               Ptr<pit::Entry> pitEntry);
 
   /**
@@ -219,7 +219,7 @@ protected:
    */
   virtual void
   DidForwardSimilarInterest (Ptr<Face> inFace,
-                             ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                             shared_ptr<const ::ndn::Interest> interest,
                              Ptr<pit::Entry> pitEntry);
 
   /**
@@ -236,7 +236,7 @@ protected:
    */
   virtual void
   DidExhaustForwardingOptions (Ptr<Face> inFace,
-                               ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                               shared_ptr<const ::ndn::Interest> interest,
                                Ptr<pit::Entry> pitEntry);
 
   /**
@@ -254,7 +254,7 @@ protected:
    */
   virtual bool
   DetectRetransmittedInterest (Ptr<Face> inFace,
-                               ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                               shared_ptr<const ::ndn::Interest> interest,
                                Ptr<pit::Entry> pitEntry);
 
   /**
@@ -280,7 +280,7 @@ protected:
    */
   virtual void
   SatisfyPendingInterest (Ptr<Face> inFace, // 0 allowed (from cache)
-                          ::ndn::shared_ptr<const ::ndn::Data> data,
+                          shared_ptr<const ::ndn::Data> data,
                           Ptr<pit::Entry> pitEntry);
 
   /**
@@ -294,7 +294,7 @@ protected:
   virtual void
   DidSendOutData (Ptr<Face> inFace,
                   Ptr<Face> outFace,
-                  ::ndn::shared_ptr<const ::ndn::Data> data,
+                  shared_ptr<const ::ndn::Data> data,
                   Ptr<pit::Entry> pitEntry);
 
   /**
@@ -306,7 +306,7 @@ protected:
    */
   virtual void
   DidReceiveSolicitedData (Ptr<Face> inFace,
-                           ::ndn::shared_ptr<const ::ndn::Data> data,
+                           shared_ptr<const ::ndn::Data> data,
                            bool didCreateCacheEntry);
 
   /**
@@ -321,7 +321,7 @@ protected:
    */
   virtual void
   DidReceiveUnsolicitedData (Ptr<Face> inFace,
-                             ::ndn::shared_ptr<const ::ndn::Data> data,
+                             shared_ptr<const ::ndn::Data> data,
                              bool didCreateCacheEntry);
 
   /**
@@ -338,7 +338,7 @@ protected:
    */
   virtual bool
   ShouldSuppressIncomingInterest (Ptr<Face> inFace,
-                                  ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                                  shared_ptr<const ::ndn::Interest> interest,
                                   Ptr<pit::Entry> pitEntry);
 
   /**
@@ -359,7 +359,7 @@ protected:
   virtual bool
   CanSendOutInterest (Ptr<Face> inFace,
                       Ptr<Face> outFace,
-                      ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                      shared_ptr<const ::ndn::Interest> interest,
                       Ptr<pit::Entry> pitEntry);
 
   /**
@@ -377,7 +377,7 @@ protected:
   virtual bool
   TrySendOutInterest (Ptr<Face> inFace,
                       Ptr<Face> outFace,
-                      ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                      shared_ptr<const ::ndn::Interest> interest,
                       Ptr<pit::Entry> pitEntry);
 
   /**
@@ -391,7 +391,7 @@ protected:
   virtual void
   DidSendOutInterest (Ptr<Face> inFace,
                       Ptr<Face> outFace,
-                      ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                      shared_ptr<const ::ndn::Interest> interest,
                       Ptr<pit::Entry> pitEntry);
 
   /**
@@ -408,7 +408,7 @@ protected:
    */
   virtual void
   PropagateInterest (Ptr<Face> inFace,
-                     ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                     shared_ptr<const ::ndn::Interest> interest,
                      Ptr<pit::Entry> pitEntry);
 
   /**
@@ -431,7 +431,7 @@ protected:
    */
   virtual bool
   DoPropagateInterest (Ptr<Face> inFace,
-                       ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                       shared_ptr<const ::ndn::Interest> interest,
                        Ptr<pit::Entry> pitEntry) = 0;
 
 protected:
@@ -448,27 +448,27 @@ protected:
   bool m_cacheUnsolicitedData;
   bool m_detectRetransmissions;
 
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Interest>,
+  TracedCallback< shared_ptr<const ::ndn::Interest>,
                  Ptr<const Face> > m_outInterests; ///< @brief Transmitted interests trace
 
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Interest>,
+  TracedCallback< shared_ptr<const ::ndn::Interest>,
                  Ptr<const Face> > m_inInterests; ///< @brief trace of incoming Interests
 
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Interest>,
+  TracedCallback< shared_ptr<const ::ndn::Interest>,
                  Ptr<const Face> > m_dropInterests; ///< @brief trace of dropped Interests
 
   ////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////
 
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Data>,
+  TracedCallback< shared_ptr<const ::ndn::Data>,
                  bool /*from cache*/,
                  Ptr<const Face> > m_outData; ///< @brief trace of outgoing Data
 
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Data>,
+  TracedCallback< shared_ptr<const ::ndn::Data>,
                  Ptr<const Face> > m_inData; ///< @brief trace of incoming Data
 
-  TracedCallback< ::ndn::shared_ptr<const ::ndn::Data>,
+  TracedCallback< shared_ptr<const ::ndn::Data>,
                   Ptr<const Face> > m_dropData;  ///< @brief trace of dropped Data
 
   ////////////////////////////////////////////////////////////////////

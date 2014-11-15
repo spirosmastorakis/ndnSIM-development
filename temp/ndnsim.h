@@ -75,15 +75,15 @@ class Interest : public Header
 {
 public:
   Interest ();
-  Interest (::ndn::shared_ptr< ::ndn::Interest> interest);
+  Interest (shared_ptr< ::ndn::Interest> interest);
 
-  ::ndn::shared_ptr< ::ndn::Interest>
+  shared_ptr< ::ndn::Interest>
   GetInterest ();
 
   static Ptr<Packet>
-  ToWire (::ndn::shared_ptr<const ::ndn::Interest> interest);
+  ToWire (shared_ptr<const ::ndn::Interest> interest);
 
-  static ::ndn::shared_ptr< ::ndn::Interest>
+  static shared_ptr< ::ndn::Interest>
   FromWire (Ptr<Packet> packet);
 
   // from Header
@@ -95,7 +95,7 @@ public:
   virtual uint32_t Deserialize (Buffer::Iterator start);
 
 private:
-  ::ndn::shared_ptr< ::ndn::Interest> m_interest;
+  shared_ptr< ::ndn::Interest> m_interest;
 };
 
 /**
@@ -136,15 +136,15 @@ class Data : public Header
 {
 public:
   Data ();
-  Data (::ndn::shared_ptr< ::ndn::Data> data);
+  Data (shared_ptr< ::ndn::Data> data);
 
-  ::ndn::shared_ptr< ::ndn::Data>
+  shared_ptr< ::ndn::Data>
   GetData ();
 
   static Ptr<Packet>
-  ToWire (::ndn::shared_ptr<const ::ndn::Data> data);
+  ToWire (shared_ptr<const ::ndn::Data> data);
 
-  static ::ndn::shared_ptr< ::ndn::Data>
+  static shared_ptr< ::ndn::Data>
   FromWire (Ptr<Packet> packet);
 
   // from Header
@@ -156,7 +156,7 @@ public:
   virtual uint32_t Deserialize (Buffer::Iterator start);
 
 private:
-  ::ndn::shared_ptr< ::ndn::Data> m_data;
+  shared_ptr< ::ndn::Data> m_data;
 };
 
 } // ndnSIM

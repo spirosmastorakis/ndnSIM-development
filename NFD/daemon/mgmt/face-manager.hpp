@@ -33,8 +33,8 @@
 #include "ns3/ndnSIM/NFD/daemon/mgmt/face-status-publisher.hpp"
 #include "ns3/ndnSIM/NFD/daemon/mgmt/channel-status-publisher.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-parameters.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-response.hpp"
+#include <ndn-cxx/management/nfd-control-parameters.hpp>
+#include <ndn-cxx/management/nfd-control-response.hpp>
 
 using ns3::ndn::Face;
 
@@ -137,25 +137,6 @@ PROTECTED_WITH_TESTS_ELSE_PRIVATE:
 private:
   void
   onConfig(const ConfigSection& configSection, bool isDryRun, const std::string& filename);
-
-  void
-  processSectionUnix(const ConfigSection& configSection, bool isDryRun);
-
-  void
-  processSectionTcp(const ConfigSection& configSection, bool isDryRun);
-
-  void
-  processSectionUdp(const ConfigSection& configSection,
-                    bool isDryRun,
-                    const std::list<shared_ptr<NetworkInterfaceInfo> >& nicList);
-
-  void
-  processSectionEther(const ConfigSection& configSection,
-                      bool isDryRun,
-                      const std::list<shared_ptr<NetworkInterfaceInfo> >& nicList);
-
-  void
-  processSectionWebSocket(const ConfigSection& configSection, bool isDryRun);
 
   /** \brief parse a config option that can be either "yes" or "no"
    *  \throw ConfigFile::Error value is neither "yes" nor "no"

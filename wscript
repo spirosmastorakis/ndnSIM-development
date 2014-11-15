@@ -77,6 +77,7 @@ def build(bld):
     module.module = 'ndnSIM'
     module.features += ' ns3fullmoduleheaders'
     module.uselib = 'NDN_CXX BOOST'
+    module.include = "model"
 
     headers = bld (features='ns3header')
     headers.module = 'ndnSIM'
@@ -109,9 +110,7 @@ def build(bld):
         "helper/ndn-stack-helper.h",
         "helper/ndn-app-helper.h",
         "helper/ndn-face-container.h",
-        "helper/ndn-global-routing-helper.h",
         "helper/ndn-link-control-helper.h",
-        "helper/ndn-header-helper.h",
         "apps/ndn-app.h",
         "apps/callback-based-app.h",
 
@@ -120,6 +119,10 @@ def build(bld):
         "model/ndn-face.h",
         "model/ndn-app-face.h",
         "model/ndn-net-device-face.h",
+        
+        "model/ndn-ns3.hpp",
+        "model/ndn-header.hpp",
+        "model/ndn-trailer.hpp",
     ]
 
     tests = bld.create_ns3_module_test_library('ndnSIM')
@@ -127,8 +130,6 @@ def build(bld):
 
     if bld.env.ENABLE_EXAMPLES:
         bld.recurse ('examples')
-
-    bld.recurse ('tools')
 
 @TaskGen.feature('ns3fullmoduleheaders')
 @TaskGen.after_method('process_rule')

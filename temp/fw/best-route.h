@@ -58,7 +58,7 @@ public:
   // from super
   virtual bool
   DoPropagateInterest (Ptr<Face> incomingFace,
-                       ::ndn::shared_ptr<const ::ndn::Interest> interest,
+                       shared_ptr<const ::ndn::Interest> interest,
                        Ptr<pit::Entry> pitEntry);
 protected:
   static LogComponent g_log;

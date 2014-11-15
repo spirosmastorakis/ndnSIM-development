@@ -29,7 +29,7 @@
 #include "ns3/ndnSIM/NFD/daemon/mgmt/manager-base.hpp"
 #include "ns3/ndnSIM/NFD/daemon/mgmt/strategy-choice-publisher.hpp"
 
-#include "ns3/ndnSIM/ndn-cxx/src/management/nfd-control-parameters.hpp"
+#include <ndn-cxx/management/nfd-control-parameters.hpp>
 
 namespace nfd {
 
