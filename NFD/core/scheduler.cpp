@@ -73,8 +73,10 @@ EventId
 schedule(const time::nanoseconds& after, const std::function<void()>& event)
 {
   ns3::EventId id = ns3::Simulator::Schedule(ns3::NanoSeconds(after.count()),
-                                             &ns3::FunctionWrapper::run,
-                                             ns3::FunctionWrapper(event)
+                                             &std::function<void()>::operator(),
+                                             event
+                                             // &ns3::FunctionWrapper::run,
+                                             // ns3::FunctionWrapper(event)
                                              );
   return std::make_shared<ns3::EventId>(id);
 }
