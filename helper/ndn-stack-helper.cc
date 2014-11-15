@@ -258,8 +258,6 @@ StackHelper::NFDinit (Ptr<Node> node) const
 {
   Ptr<L3Protocol> L3protocol = node->GetObject<L3Protocol> ();
   L3protocol->initialize();
-
-  nfd::getGlobalIoService().run();
 }
 
 void
