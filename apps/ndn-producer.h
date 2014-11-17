@@ -25,8 +25,8 @@
 #include "ndn-app.h"
 
 #include "ns3/ptr.h"
-#include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/data.hpp"
+#include <ndn-cxx/name.hpp>
+#include <ndn-cxx/data.hpp>
 
 namespace ns3 {
 namespace ndn {
