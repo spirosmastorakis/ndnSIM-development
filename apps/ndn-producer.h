@@ -27,6 +27,7 @@
 #include "ns3/ptr.h"
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/data.hpp>
+#include <ndn-cxx/util/time.hpp>
 
 namespace ns3 {
 namespace ndn {
@@ -63,7 +64,7 @@ private:
   ::ndn::Name m_prefix;
   ::ndn::Name m_postfix;
   uint32_t m_virtualPayloadSize;
-  Time m_freshness;
+  ::ndn::time::milliseconds m_freshness;
 
   uint32_t m_signature;
   ::ndn::Name m_keyLocator;

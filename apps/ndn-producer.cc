@@ -36,6 +36,9 @@
 #include <boost/ref.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/bind.hpp>
+
+#include <memory>
+
 namespace ll = boost::lambda;
 
 NS_LOG_COMPONENT_DEFINE ("ndn.Producer");
@@ -64,10 +67,10 @@ Producer::GetTypeId (void)
                    UintegerValue (1024),
                    MakeUintegerAccessor (&Producer::m_virtualPayloadSize),
                    MakeUintegerChecker<uint32_t> ())
-    .AddAttribute ("Freshness", "Freshness of data packets, if 0, then unlimited freshness",
-                   TimeValue (Seconds (0)),
-                   MakeTimeAccessor (&Producer::m_freshness),
-                   MakeTimeChecker ())
+    // .AddAttribute ("Freshness", "Freshness of data packets, if 0, then unlimited freshness",
+    //                TimeValue (Seconds (0)),
+    //                MakeTimeAccessor (&Producer::m_freshness),
+    //                MakeTimeChecker ())
     .AddAttribute ("Signature", "Fake signature, 0 valid signature (default), other values application-specific",
                    UintegerValue (0),
                    MakeUintegerAccessor (&Producer::m_signature),
@@ -127,31 +130,31 @@ Producer::OnInterest (shared_ptr<const ::ndn::Interest> interest)
 
   if (!m_active) return;
 
-  //shared_ptr<Data> data =
-     //FromPacket(Create<Packet> (m_virtualPayloadSize));
-  // shared_ptr<::ndn::Name> dataName = Create<ndn::Name> (interest->GetName ());
-  // dataName->append (m_postfix);
-  // data->SetName (dataName);
-  // data->SetFreshness (m_freshness);
+  // FIXME
+  shared_ptr<::ndn::Data> data(new ::ndn::Data(::ndn::Convert::FromPacket(Create<Packet> (m_virtualPayloadSize))));
+  shared_ptr<::ndn::Name> dataName(new ::ndn::Name(interest->getName ()));
+  dataName->append (m_postfix);
+  data->setName (*dataName);
+  data->setFreshnessPeriod (m_freshness);
   // data->SetTimestamp (Simulator::Now());
 
-  // data->SetSignature (m_signature);
+  // data->setSignature (m_signature);
   if (m_keyLocator.size () > 0)
     {
   //     data->SetKeyLocator (Create<::ndn::Name> (m_keyLocator));
     }
 
-  // NS_LOG_INFO ("node("<< GetNode()->GetId() <<") respodning with Data: " << data->GetName ());
+  NS_LOG_INFO ("node("<< GetNode()->GetId() <<") respodning with Data: " << data->getName ());
 
   // // Echo back FwHopCountTag if exists
-  // FwHopCountTag hopCountTag;
+  FwHopCountTag hopCountTag;
   // if (interest->GetPayload ()->PeekPacketTag (hopCountTag))
   //   {
   //     data->GetPayload ()->AddPacketTag (hopCountTag);
   //   }
 
-  // m_face->ReceiveData (data);
-  // m_transmittedDatas (data, this, m_face);
+  m_face->ReceiveData (data);
+  m_transmittedDatas (data, this, m_face);
 }
 
 } // namespace ndn
