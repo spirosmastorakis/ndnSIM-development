@@ -4,8 +4,14 @@
 #include "ns3/packet.h"
 #include <memory>
 
+#include "ndn-header.hpp"
+#include "ndn-trailer.hpp"
+
+#include <ndn-cxx/encoding/block.hpp>
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
+
 namespace ndn {
-using std::shared_ptr;
 
 class Block;
 
@@ -13,8 +19,6 @@ class UnknownHeaderException {};
 
 class Convert
 {
-
-
 public:
 
   static void

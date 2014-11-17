@@ -1,12 +1,5 @@
 #include "ndn-ns3.hpp"
 
-#include "ndn-header.hpp"
-#include "ndn-trailer.hpp"
-
-#include <ndn-cxx/encoding/block.hpp>
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
-
 namespace ndn {
 
 void
