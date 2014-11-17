@@ -1,5 +1,12 @@
 #include "ndn-ns3.hpp"
 
+#include "ndn-header.hpp"
+#include "ndn-trailer.hpp"
+
+#include <ndn-cxx/encoding/block.hpp>
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
+
 namespace ndn {
 
 void
@@ -47,7 +54,7 @@ Convert::DataToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
 {
   size_t   headerLength;
   size_t   trailerLength;
-  uint8_t *buffer, *headerBuffer, *trailerBuffer;
+  uint8_t  *headerBuffer, *trailerBuffer;
 
   block->parse();
 
@@ -58,12 +65,11 @@ Convert::DataToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
 
   trailerLength = block->get(tlv::SignatureInfo).size() + block->get(tlv::SignatureValue).size();
 
-  buffer = const_cast<uint8_t *>(block->wire());
   headerBuffer  = new uint8_t[headerLength];
   trailerBuffer = new uint8_t[trailerLength];
 
-  memcpy((void *) headerBuffer, (void *) buffer, headerLength);
-  memcpy((void *) trailerBuffer, (void *) headerBuffer[int((block->get(tlv::Content).size())+headerLength)], trailerLength);
+  memcpy((void *) headerBuffer, (const void *) block->wire(), headerLength);
+  memcpy((void *) trailerBuffer, (const void *) (headerBuffer + block->get(tlv::Content).size() + headerLength), trailerLength);
 
   NdnHeader ndnHeader(headerBuffer, headerLength);
   NdnTrailer ndnTrailer(trailerBuffer, trailerLength);
