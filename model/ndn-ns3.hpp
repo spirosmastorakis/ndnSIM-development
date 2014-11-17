@@ -2,7 +2,6 @@
 #define NDN_NS3_HPP
 
 #include "ns3/packet.h"
-#include <memory>
 
 #include "ndn-header.hpp"
 #include "ndn-trailer.hpp"
@@ -19,6 +18,7 @@ class UnknownHeaderException {};
 
 class Convert
 {
+
 public:
 
   static void
