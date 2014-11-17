@@ -22,8 +22,6 @@
 #include "ns3/object.h"
 #include "ndn-producer.h"
 #include "ns3/log.h"
-#include "ns3/ndnSIM/ndn-cxx/src/name.hpp"
-#include "ns3/ndnSIM/ndn-cxx/src/data.hpp"
 #include "ns3/string.h"
 #include "ns3/uinteger.h"
 #include "ns3/packet.h"
