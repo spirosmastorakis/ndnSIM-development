@@ -10,7 +10,7 @@
 namespace ndn {
 
 void
-Convert::ToPacket(std::shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
+Convert::ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
 {
   uint32_t type = block->type();
   if (type == 0x05)
@@ -36,7 +36,7 @@ Convert::FromPacket(ns3::Ptr<ns3::Packet> packet)
 
 
 void
-Convert::InterestToPacket(std::shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
+Convert::InterestToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
 {
   size_t   headerLength;
   uint8_t *headerBuffer;
@@ -50,7 +50,7 @@ Convert::InterestToPacket(std::shared_ptr<Block> block, ns3::Ptr<ns3::Packet> pa
 }
 
 void
-Convert::DataToPacket(std::shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
+Convert::DataToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
 {
   size_t   headerLength;
   size_t   trailerLength;
