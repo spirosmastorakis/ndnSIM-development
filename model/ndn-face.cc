@@ -259,10 +259,10 @@ Face::SendInterest ( ::ndn::shared_ptr<const ::ndn::Interest> interest)
       return false;
     }
   // I assume that this should work...
-  ::ndn::Convert::Convert convert;
+
   Ptr<Packet> packet = Create <Packet> ();
   ::ndn::Block block = interest->wireEncode ();
-  convert.InterestToPacket (::ndn::make_shared <::ndn::Block> (block), packet);
+  ::ndn::Convert::Convert::InterestToPacket (::ndn::make_shared <::ndn::Block> (block), packet);
   return Send (packet);
 
   //return Send (Wire::FromInterest (interest));
@@ -278,10 +278,10 @@ Face::SendData (::ndn::shared_ptr<const ::ndn::Data> data)
       return false;
     }
   // I assume that this should work..
-  ::ndn::Convert::Convert convert;
+
   Ptr<Packet> packet = Create <Packet> ();
   ::ndn::Block block = data->wireEncode ();
-  convert.InterestToPacket (::ndn::make_shared <::ndn::Block> (block), packet);
+  ::ndn::Convert::Convert::InterestToPacket (::ndn::make_shared <::ndn::Block> (block), packet);
   return Send (packet);
 
   //return Send (Wire::FromData (data));
@@ -316,8 +316,8 @@ Face::Receive (Ptr<const Packet> p)
   try
     {
       //Let's see..
-      ::ndn::Convert::Convert convert;
-      ::ndn::Block block = convert.FromPacket (packet);
+
+      ::ndn::Block block = ::ndn::Convert::Convert::FromPacket (packet);
       uint32_t type = block.type();
       if (type == 0x05) {
         ::ndn::Interest interest;
