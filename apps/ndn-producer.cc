@@ -47,9 +47,6 @@ NS_LOG_COMPONENT_DEFINE ("ndn.Producer");
 namespace ns3 {
 namespace ndn {
 
-using std::shared_ptr;
-using namespace ::ndn;
-
 NS_OBJECT_ENSURE_REGISTERED (Producer);
 
 TypeId
@@ -137,7 +134,7 @@ Producer::OnInterest (shared_ptr<const Interest> interest)
   shared_ptr<Data> data(new Data(Convert::FromPacket
                                  (Create<Packet> (m_virtualPayloadSize))));
 
-  shared_ptr<::ndn::Name> dataName(new ::ndn::Name(interest->getName ()));
+  shared_ptr<Name> dataName(new Name(interest->getName ()));
 
   dataName->append (m_postfix);
   CustomSystemClock clock;

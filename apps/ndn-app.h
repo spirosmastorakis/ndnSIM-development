@@ -26,6 +26,7 @@
 #include "ns3/callback.h"
 #include "ns3/traced-callback.h"
 
+#include "ns3/ndn-common.h"
 #include "ns3/ndn-face.h"
 
 namespace ns3 {
@@ -68,7 +69,7 @@ public:
    *                 may be useful to get packet tags
    */
   virtual void
-  OnInterest (shared_ptr<const ::ndn::Interest> interest);
+  OnInterest (shared_ptr<const Interest> interest);
 
   /**
    * @brief Method that will be called every time new NACK arrives
@@ -83,7 +84,7 @@ public:
    * @param payload payload (potentially virtual) of the Data packet (may include packet tags of original packet)
    */
   virtual void
-  OnData (shared_ptr<const ::ndn::Data> contentObject);
+  OnData (shared_ptr<const Data> contentObject);
 
 protected:
   /**
@@ -103,20 +104,20 @@ protected:
   bool m_active;  ///< @brief Flag to indicate that application is active (set by StartApplication and StopApplication)
   Ptr<Face> m_face;   ///< @brief automatically created application face through which application communicates
 
-  TracedCallback< shared_ptr<const ::ndn::Interest>,
+  TracedCallback< shared_ptr<const Interest>,
                  Ptr<App>, Ptr<Face> > m_receivedInterests; ///< @brief App-level trace of received Interests
   /*
   TracedCallback< shared_ptr<const ::ndn::Interest>,
                  Ptr<App>, Ptr<Face> > m_receivedNacks; ///< @brief App-level trace of received NACKs
   */
-  TracedCallback< shared_ptr<const ::ndn::Data>,
+  TracedCallback< shared_ptr<const Data>,
                  Ptr<App>, Ptr<Face> > m_receivedDatas; ///< @brief App-level trace of received Data
 
 
-  TracedCallback< shared_ptr<const ::ndn::Interest>,
+  TracedCallback< shared_ptr<const Interest>,
                  Ptr<App>, Ptr<Face> > m_transmittedInterests; ///< @brief App-level trace of transmitted Interests
 
-  TracedCallback< shared_ptr<const ::ndn::Data>,
+  TracedCallback< shared_ptr<const Data>,
                  Ptr<App>, Ptr<Face> > m_transmittedDatas; ///< @brief App-level trace of transmitted Data
 };
 
