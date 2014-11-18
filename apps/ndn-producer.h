@@ -23,8 +23,8 @@
 #define NDN_PRODUCER_H
 
 #include "ndn-app.h"
-#include "ns3/ndnSIM/utils/ndn-name.h"
-#include "ns3/ndnSIM/utils/ndn-time.h"
+#include "ns3/ndn-name.h"
+#include "ns3/ndn-time.h"
 
 #include "ns3/ptr.h"
 #include <ndn-cxx/name.hpp>
