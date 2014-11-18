@@ -23,11 +23,13 @@
 #define NDN_PRODUCER_H
 
 #include "ndn-app.h"
+#include "ns3/ndnSIM/utils/ndn-name.h"
 
 #include "ns3/ptr.h"
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/data.hpp>
 #include <ndn-cxx/util/time.hpp>
+#include <ndn-cxx/name-component.hpp>
 
 namespace ns3 {
 namespace ndn {
@@ -50,7 +52,7 @@ public:
   Producer ();
 
   // inherited from NdnApp
-  virtual void OnInterest (shared_ptr<const ::ndn::Interest> interest);
+  virtual void OnInterest (::ndn::shared_ptr<const ::ndn::Interest> interest);
 
 protected:
   // inherited from Application base class.
@@ -61,13 +63,13 @@ protected:
   StopApplication ();     // Called at time specified by Stop
 
 private:
-  ::ndn::Name m_prefix;
-  ::ndn::Name m_postfix;
+  Name m_prefix;
+  Name m_postfix;
   uint32_t m_virtualPayloadSize;
-  ::ndn::time::milliseconds m_freshness;
+  Time m_freshness;
 
   uint32_t m_signature;
-  ::ndn::Name m_keyLocator;
+  Name m_keyLocator;
 };
 
 } // namespace ndn
