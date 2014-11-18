@@ -25,14 +25,18 @@
 #include "ndn-face.h"
 #include "ns3/traced-callback.h"
 
+namespace ndn {
+
+class Interest;
+class Data;
+
+} // namespace ndn
+
 namespace ns3 {
 
 class Packet;
 
 namespace ndn {
-
-class Interest;
-class Data;
 
 typedef ::ndn::Interest InterestHeader;
 typedef ::ndn::Data DataHeader;
