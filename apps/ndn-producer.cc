@@ -47,6 +47,9 @@ NS_LOG_COMPONENT_DEFINE ("ndn.Producer");
 namespace ns3 {
 namespace ndn {
 
+using std::shared_ptr;
+using namespace ::ndn;
+
 NS_OBJECT_ENSURE_REGISTERED (Producer);
 
 TypeId
@@ -123,7 +126,7 @@ Producer::StopApplication ()
 
 
 void
-Producer::OnInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
+Producer::OnInterest (shared_ptr<const Interest> interest)
 {
   App::OnInterest (interest); // tracing inside
 
@@ -131,29 +134,26 @@ Producer::OnInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
 
   if (!m_active) return;
 
-  ::ndn::shared_ptr<::ndn::Data> data(new ::ndn::Data(::ndn::Convert::FromPacket
-                                                      (Create<Packet> (m_virtualPayloadSize))));
+  shared_ptr<Data> data(new Data(Convert::FromPacket
+                                 (Create<Packet> (m_virtualPayloadSize))));
 
-  ::ndn::shared_ptr<::ndn::Name> dataName(new ::ndn::Name(interest->getName ()));
-  //::ndn::Name postfix = ::ndn::Name (m_postfix.toUri ());
+  shared_ptr<::ndn::Name> dataName(new ::ndn::Name(interest->getName ()));
 
   dataName->append (m_postfix);
+  CustomSystemClock clock;
+  dataName->appendTimestamp (clock.getNow ());
   data->setName (*dataName);
 
   ::ndn::time::milliseconds freshness (m_freshness.GetMilliSeconds ());
   data->setFreshnessPeriod (freshness);
 
-  uint64_t value = uint64_t (Simulator::Now().GetMilliSeconds ());
-  ::ndn::Name::Component::Component component;
-  data->setFinalBlockId (component.fromNumberWithMarker(uint8_t (0xFC), value));
-
-  ::ndn::Block signatureValue = ::ndn::Block (&m_signature, sizeof(m_signature));
-  ::ndn::Signature signature;
+  Block signatureValue = Block (&m_signature, sizeof(m_signature));
+  Signature signature;
   signature.setValue (signatureValue);
 
   if (m_keyLocator.size () > 0) {
-    ::ndn::SignatureInfo::SignatureInfo signatureInfo;
-    ::ndn::KeyLocator keyLocator;
+    SignatureInfo signatureInfo;
+    KeyLocator keyLocator;
     keyLocator.setName (m_keyLocator);
     signatureInfo.setKeyLocator (keyLocator);
     signature.setInfo (signatureInfo);

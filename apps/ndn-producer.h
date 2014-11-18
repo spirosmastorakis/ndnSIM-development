@@ -24,15 +24,18 @@
 
 #include "ndn-app.h"
 #include "ns3/ndnSIM/utils/ndn-name.h"
+#include "ns3/ndnSIM/utils/ndn-time.h"
 
 #include "ns3/ptr.h"
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/data.hpp>
 #include <ndn-cxx/util/time.hpp>
-#include <ndn-cxx/name-component.hpp>
 
 namespace ns3 {
 namespace ndn {
+
+using std::shared_ptr;
+using ::ndn::Interest;
 
 /**
  * @ingroup ndn-apps
@@ -52,7 +55,7 @@ public:
   Producer ();
 
   // inherited from NdnApp
-  virtual void OnInterest (::ndn::shared_ptr<const ::ndn::Interest> interest);
+  virtual void OnInterest (shared_ptr<const Interest> interest);
 
 protected:
   // inherited from Application base class.
