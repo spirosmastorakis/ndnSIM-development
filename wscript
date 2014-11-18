@@ -90,6 +90,7 @@ def build(bld):
                                        'apps/*.cc',
                                        'utils/**/*.cc',
                                        'helper/**/*.cc',
+                                       'ndn.cxx/**/*.cc',
                                        'helper/**/*.cpp',
                                        'model/**/*.cpp',
                                        'NFD/**/*.cpp',
@@ -100,6 +101,7 @@ def build(bld):
                            'model/**/*.h',
                            'apps/**/*.h',
                            'helper/**/*.h',
+                           'ndn.cxx/**/*.h',
                            'helper/**/*.hpp',
                            'model/**/*.hpp',
                            'NFD/**/*.hpp',
@@ -119,10 +121,16 @@ def build(bld):
         "model/ndn-face.h",
         "model/ndn-app-face.h",
         "model/ndn-net-device-face.h",
-        
+
         "model/ndn-ns3.hpp",
         "model/ndn-header.hpp",
         "model/ndn-trailer.hpp",
+
+        "utils/ndn-time.h",
+        "utils/ndn-name.h",
+        "utils/ndn-rtt-estimator.h",
+        "utils/ndn-rtt-mean-deviation.h",
+        "utils/ndn-fw-hop-count-tag.h"
     ]
 
     tests = bld.create_ns3_module_test_library('ndnSIM')
