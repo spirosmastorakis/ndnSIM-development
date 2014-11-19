@@ -113,6 +113,7 @@ def build(bld):
         "helper/ndn-app-helper.h",
         "helper/ndn-face-container.h",
         "helper/ndn-link-control-helper.h",
+        "helper/ndn-global-routing-helper.h",
         "apps/ndn-app.h",
         "apps/callback-based-app.h",
 
@@ -127,7 +128,6 @@ def build(bld):
         "model/ndn-trailer.hpp",
 
         "utils/ndn-time.h",
-        "utils/ndn-name.h",
         "utils/ndn-rtt-estimator.h",
         "utils/ndn-rtt-mean-deviation.h",
         "utils/ndn-fw-hop-count-tag.h"
