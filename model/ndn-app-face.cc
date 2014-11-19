@@ -27,9 +27,13 @@
 #include "ns3/node.h"
 #include "ns3/assert.h"
 #include "ns3/simulator.h"
+#include "ns3/attribute.h"
+#include "ns3/attribute-helper.h"
+#include "ns3/ndn-common.h"
 
 #include "ns3/ndn-app.h"
 
+#include <ndn-cxx/name.hpp>
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
 
@@ -37,6 +41,8 @@ NS_LOG_COMPONENT_DEFINE ("ndn.AppFace");
 
 namespace ns3 {
 namespace ndn {
+
+ATTRIBUTE_HELPER_CPP (Name);
 
 NS_OBJECT_ENSURE_REGISTERED (AppFace);
 
@@ -87,7 +93,7 @@ AppFace::close ()
 }
 
 bool
-AppFace::SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
+AppFace::SendInterest (shared_ptr<const Interest> interest)
 {
   NS_LOG_FUNCTION (this << interest);
 
@@ -102,7 +108,7 @@ AppFace::SendInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
 }
 
 bool
-AppFace::SendData (::ndn::shared_ptr<const ::ndn::Data> data)
+AppFace::SendData (shared_ptr<const Data> data)
 {
   NS_LOG_FUNCTION (this << data);
 

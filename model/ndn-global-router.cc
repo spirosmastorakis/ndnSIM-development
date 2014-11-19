@@ -27,10 +27,10 @@
 
 using namespace boost;
 
-using ::ndn::Name;
-
 namespace ns3 {
 namespace ndn {
+
+using std::shared_ptr;
 
 uint32_t GlobalRouter::m_idCounter = 0;
 
@@ -75,7 +75,7 @@ GlobalRouter::GetL3Protocol () const
 }
 
 void
-GlobalRouter::AddLocalPrefix (::ndn::shared_ptr< ::ndn::Name > prefix)
+GlobalRouter::AddLocalPrefix (shared_ptr< Name > prefix)
 {
   m_localPrefixes.push_back (prefix);
 }

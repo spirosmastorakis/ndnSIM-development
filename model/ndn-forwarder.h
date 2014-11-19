@@ -49,8 +49,6 @@ using nfd::FaceManager;
 using nfd::FibManager;
 using nfd::StrategyChoiceManager;
 using nfd::StatusServer;
-using nfd::shared_ptr;
-using nfd::make_shared;
 
 namespace ns3 {
 

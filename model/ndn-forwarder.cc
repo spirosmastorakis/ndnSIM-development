@@ -32,9 +32,6 @@
 #include "ns3/simulator.h"
 #include "ns3/random-variable.h"
 
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
-
 #include "ns3/ndn-face.h"
 
 #include "ns3/ndn-net-device-face.h"
@@ -130,7 +127,7 @@ L3Protocol::initializeManagement()
   tablesConfig.ensureTablesAreConfigured();
 
   // add FIB entry for NFD Management Protocol
-  shared_ptr< ::nfd::fib::Entry> entry = m_forwarder->getFib().insert("/localhost/nfd").first;
+  shared_ptr<::nfd::fib::Entry> entry = m_forwarder->getFib().insert("/localhost/nfd").first;
   entry->addNextHop(m_internalFace, 0);
 }
 

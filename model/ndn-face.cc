@@ -33,7 +33,7 @@
 #include "ns3/pointer.h"
 #include "ns3/ptr.h"
 
-#include "ns3/ndnSIM/utils/ndn-fw-hop-count-tag.h"
+#include "ns3/ndn-fw-hop-count-tag.h"
 
 #include <boost/ref.hpp>
 
@@ -41,6 +41,10 @@ NS_LOG_COMPONENT_DEFINE ("ndn.Face");
 
 namespace ns3 {
 namespace ndn {
+
+using ::ndn::util::FaceUri;
+using ::ndn::nfd::FaceEventNotification;
+using ::ndn::nfd::FaceStatus;
 
 NS_OBJECT_ENSURE_REGISTERED (Face);
 
@@ -67,10 +71,10 @@ Face::Face(const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal)
   , m_isOnDemand(false)
   , m_isFailed(false)
 {
-  onReceiveInterest += [this](const ::ndn::Interest&) { ++m_counters.getNInInterests(); };
-  onReceiveData     += [this](const ::ndn::Data&) {     ++m_counters.getNInDatas(); };
-  onSendInterest    += [this](const ::ndn::Interest&) { ++m_counters.getNOutInterests(); };
-  onSendData        += [this](const ::ndn::Data&) {     ++m_counters.getNOutDatas(); };
+  onReceiveInterest += [this](const Interest&) { ++m_counters.getNInInterests(); };
+  onReceiveData     += [this](const Data&) {     ++m_counters.getNInDatas(); };
+  onSendInterest    += [this](const Interest&) { ++m_counters.getNOutInterests(); };
+  onSendData        += [this](const Data&) {     ++m_counters.getNOutDatas(); };
 }
 
 FaceId
@@ -111,20 +115,20 @@ Face::isUp() const
 }
 
 bool
-Face::decodeAndDispatchInput(const ::ndn::Block& element)
+Face::decodeAndDispatchInput(const Block& element)
 {
   try {
     /// \todo Ensure lazy field decoding process
 
     if (element.type() == ::ndn::tlv::Interest)
       {
-        ::ndn::shared_ptr< ::ndn::Interest> i = ::ndn::make_shared< ::ndn::Interest>();
+        shared_ptr<Interest> i = make_shared<Interest>();
         i->wireDecode(element);
         this->onReceiveInterest(*i);
       }
     else if (element.type() == ::ndn::tlv::Data)
       {
-        ::ndn::shared_ptr< ::ndn::Data> d = ::ndn::make_shared< ::ndn::Data>();
+        shared_ptr<Data> d = make_shared<Data>();
         d->wireDecode(element);
         this->onReceiveData(*d);
       }
@@ -180,15 +184,15 @@ Face::copyStatusTo(FaceTraits& traits) const
 }
 
 template void
-Face::copyStatusTo< ::ndn::nfd::FaceStatus>(::ndn::nfd::FaceStatus&) const;
+Face::copyStatusTo<FaceStatus>(FaceStatus&) const;
 
 template void
-Face::copyStatusTo< ::ndn::nfd::FaceEventNotification>(::ndn::nfd::FaceEventNotification&) const;
+Face::copyStatusTo<FaceEventNotification>(FaceEventNotification&) const;
 
-::ndn::nfd::FaceStatus
+FaceStatus
 Face::getFaceStatus() const
 {
-  ::ndn::nfd::FaceStatus status;
+  FaceStatus status;
   copyStatusTo(status);
 
   this->getCounters().copyTo(status);
@@ -203,8 +207,8 @@ Face::getFaceStatus() const
  */
 Face::Face (Ptr<Node> node)
   : m_node (node)
-  , m_upstreamInterestHandler (MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Interest> > ())
-  , m_upstreamDataHandler (MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Data> > ())
+  , m_upstreamInterestHandler (MakeNullCallback< void, Ptr<Face>, shared_ptr<Interest> > ())
+  , m_upstreamDataHandler (MakeNullCallback< void, Ptr<Face>, shared_ptr<Data> > ())
   , m_ifup (false)
   , m_id ((uint32_t)-1)
   , m_metric (0)
@@ -244,13 +248,13 @@ Face::UnRegisterProtocolHandlers ()
 {
   NS_LOG_FUNCTION_NOARGS ();
 
-  m_upstreamInterestHandler = MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Interest> > ();
-  m_upstreamDataHandler = MakeNullCallback< void, Ptr<Face>, ::ndn::shared_ptr< ::ndn::Data> > ();
+  m_upstreamInterestHandler = MakeNullCallback< void, Ptr<Face>, shared_ptr<Interest> > ();
+  m_upstreamDataHandler = MakeNullCallback< void, Ptr<Face>, shared_ptr<Data> > ();
 }
 
 
 bool
-Face::SendInterest ( ::ndn::shared_ptr<const ::ndn::Interest> interest)
+Face::SendInterest (shared_ptr<const Interest> interest)
 {
   NS_LOG_FUNCTION (this << boost::cref (*this) << interest->getName ());
 
@@ -261,15 +265,15 @@ Face::SendInterest ( ::ndn::shared_ptr<const ::ndn::Interest> interest)
   // I assume that this should work...
 
   Ptr<Packet> packet = Create <Packet> ();
-  ::ndn::Block block = interest->wireEncode ();
-  ::ndn::Convert::Convert::InterestToPacket (::ndn::make_shared <::ndn::Block> (block), packet);
+  Block block = interest->wireEncode ();
+  Convert::Convert::InterestToPacket (make_shared <Block> (block), packet);
   return Send (packet);
 
   //return Send (Wire::FromInterest (interest));
 }
 
 bool
-Face::SendData (::ndn::shared_ptr<const ::ndn::Data> data)
+Face::SendData (shared_ptr<const Data> data)
 {
   NS_LOG_FUNCTION (this << data);
 
@@ -280,8 +284,8 @@ Face::SendData (::ndn::shared_ptr<const ::ndn::Data> data)
   // I assume that this should work..
 
   Ptr<Packet> packet = Create <Packet> ();
-  ::ndn::Block block = data->wireEncode ();
-  ::ndn::Convert::Convert::InterestToPacket (::ndn::make_shared <::ndn::Block> (block), packet);
+  Block block = data->wireEncode ();
+  Convert::Convert::InterestToPacket (make_shared <Block> (block), packet);
   return Send (packet);
 
   //return Send (Wire::FromData (data));
@@ -317,18 +321,18 @@ Face::Receive (Ptr<const Packet> p)
     {
       //Let's see..
 
-      ::ndn::Block block = ::ndn::Convert::Convert::FromPacket (packet);
+      Block block = Convert::Convert::FromPacket (packet);
       uint32_t type = block.type();
       if (type == 0x05) {
-        ::ndn::Interest interest;
+        Interest interest;
         interest.wireDecode (block);
-        ReceiveInterest (::ndn::make_shared <::ndn::Interest> (interest));
+        ReceiveInterest (make_shared <Interest> (interest));
       }
      else
        if (type == 0x06) {
-         ::ndn::Data data;
+         Data data;
          data.wireDecode (block);
-         ReceiveData (::ndn::make_shared <::ndn::Data> (data));
+         ReceiveData (make_shared <Data> (data));
        }
     }
   catch (::ndn::UnknownHeaderException)
@@ -341,7 +345,7 @@ Face::Receive (Ptr<const Packet> p)
 }
 
 bool
-Face::ReceiveInterest (::ndn::shared_ptr< ::ndn::Interest> interest)
+Face::ReceiveInterest (shared_ptr<Interest> interest)
 {
   if (!IsUp ())
     {
@@ -354,7 +358,7 @@ Face::ReceiveInterest (::ndn::shared_ptr< ::ndn::Interest> interest)
 }
 
 bool
-Face::ReceiveData (::ndn::shared_ptr< ::ndn::Data> data)
+Face::ReceiveData (shared_ptr<Data> data)
 {
   if (!IsUp ())
     {
