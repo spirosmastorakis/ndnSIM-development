@@ -54,11 +54,11 @@ StackHelper::StackHelper ()
   : m_limitsEnabled (false)
   , m_needSetDefaultRoutes (false)
 {
-  m_ndnFactory.         SetTypeId ("ns3::ndn::L3Protocol");
-  m_strategyFactory.    SetTypeId ("ns3::ndn::fw::Flooding");
-  m_contentStoreFactory.SetTypeId ("ns3::ndn::cs::Lru");
-  m_fibFactory.         SetTypeId ("ns3::ndn::fib::Default");
-  m_pitFactory.         SetTypeId ("ns3::ndn::pit::Persistent");
+  // m_ndnFactory.         SetTypeId ("ns3::ndn::L3Protocol");
+  // m_strategyFactory.    SetTypeId ("ns3::ndn::fw::Flooding");
+  // m_contentStoreFactory.SetTypeId ("ns3::ndn::cs::Lru");
+  // m_fibFactory.         SetTypeId ("ns3::ndn::fib::Default");
+  // m_pitFactory.         SetTypeId ("ns3::ndn::pit::Persistent");
 
   m_netDeviceCallbacks.push_back (std::make_pair (PointToPointNetDevice::GetTypeId (), MakeCallback (&StackHelper::PointToPointNetDeviceCallback, this)));
   // default callback will be fired if non of others callbacks fit or did the job
@@ -367,10 +367,10 @@ StackHelper::AddRoute (Ptr<Node> node, const std::string &prefix, Ptr<Face> face
   //Get L3Protocol object
   Ptr<L3Protocol> L3protocol = node->GetObject<L3Protocol> ();
   //Get the forwarder instance
-  ::nfd::shared_ptr<Forwarder> m_forwarder = L3protocol->GetForwarder();
+  shared_ptr<Forwarder> m_forwarder = L3protocol->GetForwarder();
   //add the appropriate fib entry to the NFD fib table
-  ::ndn::Name name(prefix);
-  ::nfd::shared_ptr<::nfd::fib::Entry> m_entry = m_forwarder->getFib().insert(prefix).first;
+  Name name(prefix);
+  shared_ptr<::nfd::fib::Entry> m_entry = m_forwarder->getFib().insert(prefix).first;
   m_entry->addNextHop(face->shared_from_this(), metric);
 }
 

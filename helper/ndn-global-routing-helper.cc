@@ -48,8 +48,10 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
 #include <boost/concept/assert.hpp>
-// #include <boost/graph/graph_concepts.hpp>
-// #include <boost/graph/adjacency_list.hpp>
+
+#include "ns3/ndnSIM/NFD/daemon/table/fib-entry.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/fib-nexthop.hpp"
+
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
 #include "boost-graph-ndn-global-routing-helper.h"
@@ -63,6 +65,9 @@ using namespace boost;
 
 namespace ns3 {
 namespace ndn {
+
+using std::shared_ptr;
+using std::make_shared;
 
 void
 GlobalRoutingHelper::Install (Ptr<Node> node)
@@ -196,7 +201,7 @@ GlobalRoutingHelper::AddOrigin (const std::string &prefix, Ptr<Node> node)
   NS_ASSERT_MSG (gr != 0,
 		 "GlobalRouter is not installed on the node");
 
-  ::ndn::shared_ptr< ::ndn::Name> name = ::ndn::make_shared< ::ndn::Name> (prefix);
+  shared_ptr<Name> name = make_shared<Name> (prefix);
   gr->AddLocalPrefix (name);
 }
 
@@ -280,14 +285,15 @@ GlobalRoutingHelper::CalculateRoutes (bool invalidatedRoutes/* = true*/)
       // NS_LOG_DEBUG (predecessors.size () << ", " << distances.size ());
 
       Ptr<L3Protocol> L3protocol = (*node)->GetObject<L3Protocol> ();
-      ::nfd::shared_ptr<Forwarder> forwarder = L3protocol->GetForwarder();
+      shared_ptr<Forwarder> forwarder = L3protocol->GetForwarder();
 
       if (invalidatedRoutes) {
         std::vector<::nfd::fib::NextHop> NextHopList;
-        for (::nfd::NameTree::const_iterator it = forwarder->getNameTree().fullEnumerate(
-        &(nfd::predicate_NameTreeEntry_hasFibEntry)); it != forwarder->getNameTree().end();) {
+        for (::nfd::NameTree::const_iterator it = forwarder->getNameTree().fullEnumerate
+               (&(nfd::predicate_NameTreeEntry_hasFibEntry)); it != forwarder->getNameTree()
+               .end();) {
           NextHopList.clear ();
-          ::nfd::shared_ptr<::nfd::fib::Entry> entry = it->getFibEntry();
+          shared_ptr<::nfd::fib::Entry> entry = it->getFibEntry();
           ++it;
           NextHopList = entry->getNextHops();
           for (int i = 0; i < NextHopList.size (); i++) {
@@ -313,7 +319,7 @@ GlobalRoutingHelper::CalculateRoutes (bool invalidatedRoutes/* = true*/)
 		}
 	      else
 		{
-                  BOOST_FOREACH (const ::ndn::shared_ptr<const ::ndn::Name> &prefix, i->first->GetLocalPrefixes ())
+                  BOOST_FOREACH (const shared_ptr<const Name> &prefix, i->first->GetLocalPrefixes ())
                     {
                       NS_LOG_DEBUG (" prefix " << prefix << " reachable via face " << *i->second.get<0> ()
                                     << " with distance " << i->second.get<1> ()
@@ -365,14 +371,15 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes (bool invalidatedRoutes/* = true
 	}
 
       Ptr<L3Protocol> L3protocol = (*node)->GetObject<L3Protocol> ();
-      ::nfd::shared_ptr<Forwarder> forwarder = L3protocol->GetForwarder();
+      shared_ptr<Forwarder> forwarder = L3protocol->GetForwarder();
 
       if (invalidatedRoutes) {
         std::vector<::nfd::fib::NextHop> NextHopList;
-        for (::nfd::NameTree::const_iterator it = forwarder->getNameTree().fullEnumerate(
-        &(nfd::predicate_NameTreeEntry_hasFibEntry)); it != forwarder->getNameTree().end();) {
+        for (nfd::NameTree::const_iterator it = forwarder->getNameTree().fullEnumerate
+               (&(nfd::predicate_NameTreeEntry_hasFibEntry)); it != forwarder->getNameTree()
+               .end();) {
           NextHopList.clear ();
-          ::nfd::shared_ptr<::nfd::fib::Entry> entry = it->getFibEntry();
+          shared_ptr<::nfd::fib::Entry> entry = it->getFibEntry();
           ++it;
           NextHopList = entry->getNextHops();
           for (int i = 0; i < NextHopList.size (); i++) {
@@ -383,7 +390,8 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes (bool invalidatedRoutes/* = true
       //NS_ASSERT (fib != 0);
 
       NS_LOG_DEBUG ("===========");
-      NS_LOG_DEBUG ("Reachability from Node: " << source->GetObject<Node> ()->GetId () << " (" << Names::FindName (source->GetObject<Node> ()) << ")");
+      NS_LOG_DEBUG ("Reachability from Node: " << source->GetObject<Node> ()->GetId () << " ("
+                    << Names::FindName (source->GetObject<Node> ()) << ")");
 
       Ptr<L3Protocol> l3 = source->GetObject<L3Protocol> ();
       NS_ASSERT (l3 != 0);
@@ -393,7 +401,8 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes (bool invalidatedRoutes/* = true
       for (uint32_t faceId = 0; faceId < l3->GetNFaces (); faceId++)
         {
           originalMetric[faceId] = l3->GetFace (faceId)->GetMetric ();
-          l3->GetFace (faceId)->SetMetric (std::numeric_limits<uint16_t>::max ()-1); // value std::numeric_limits<uint16_t>::max () MUST NOT be used (reserved)
+          l3->GetFace (faceId)->SetMetric (std::numeric_limits<uint16_t>::max ()-1);
+          // value std::numeric_limits<uint16_t>::max () MUST NOT be used (reserved)
         }
 
       for (uint32_t enabledFaceId = 0; enabledFaceId < l3->GetNFaces (); enabledFaceId++)
@@ -439,7 +448,7 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes (bool invalidatedRoutes/* = true
                     }
                   else
                     {
-                      BOOST_FOREACH (const ::ndn::shared_ptr<const ::ndn::Name> &prefix, i->first->GetLocalPrefixes ())
+                      BOOST_FOREACH (const shared_ptr<const Name> &prefix, i->first->GetLocalPrefixes ())
                         {
                           NS_LOG_DEBUG (" prefix " << *prefix << " reachable via face " << *i->second.get<0> ()
                                         << " with distance " << i->second.get<1> ()
