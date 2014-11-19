@@ -28,11 +28,7 @@
 #include "ns3/data-rate.h"
 #include "ns3/ndn-rtt-estimator.h"
 #include "ns3/ndn-fw-hop-count-tag.h"
-#include "ns3/ndn-name.h"
-
-#include <ndn-cxx/data.hpp>
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/name.hpp>
+#include "ns3/ndn-common.h"
 
 #include <set>
 #include <map>
@@ -44,9 +40,6 @@
 
 namespace ns3 {
 namespace ndn {
-
-using std::shared_ptr;
-using namespace ::ndn;
 
 /**
  * @ingroup ndn-apps

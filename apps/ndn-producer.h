@@ -23,19 +23,14 @@
 #define NDN_PRODUCER_H
 
 #include "ndn-app.h"
-#include "ns3/ndn-name.h"
+#include "ns3/ndn-common.h"
 #include "ns3/ndn-time.h"
 
 #include "ns3/ptr.h"
-#include <ndn-cxx/name.hpp>
-#include <ndn-cxx/data.hpp>
 #include <ndn-cxx/util/time.hpp>
 
 namespace ns3 {
 namespace ndn {
-
-using std::shared_ptr;
-using ::ndn::Interest;
 
 /**
  * @ingroup ndn-apps

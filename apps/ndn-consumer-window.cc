@@ -28,16 +28,10 @@
 #include "ns3/uinteger.h"
 #include "ns3/double.h"
 
-#include <ndn-cxx/data.hpp>
-#include <ndn-cxx/interest.hpp>
-
 NS_LOG_COMPONENT_DEFINE ("ndn.ConsumerWindow");
 
 namespace ns3 {
 namespace ndn {
-
-using std::shared_ptr;
-using namespace ::ndn;
 
 NS_OBJECT_ENSURE_REGISTERED (ConsumerWindow);
 

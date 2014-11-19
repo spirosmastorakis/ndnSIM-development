@@ -40,9 +40,6 @@ NS_LOG_COMPONENT_DEFINE ("ndn.Consumer");
 namespace ns3 {
 namespace ndn {
 
-using namespace ::ndn;
-using std::shared_ptr;
-
 NS_OBJECT_ENSURE_REGISTERED (Consumer);
 
 TypeId
@@ -192,7 +189,7 @@ Consumer::SendPacket ()
     }
 
   //
-  shared_ptr<::ndn::Name> nameWithSequence = make_shared<::ndn::Name> (m_interestName);
+  shared_ptr<Name> nameWithSequence = make_shared<Name> (m_interestName);
   nameWithSequence->appendSequenceNumber (seq);
   //
 

@@ -28,9 +28,6 @@
 namespace ns3 {
 namespace ndn {
 
-using std::shared_ptr;
-using namespace ::ndn;
-
 /**
  * @ingroup ndn-apps
  * \brief Ndn application for sending out Interest packets (window-based)

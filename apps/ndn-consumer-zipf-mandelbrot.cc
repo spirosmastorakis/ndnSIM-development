@@ -22,9 +22,6 @@
 
 #include "ns3/ndn-app-face.h"
 
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
-
 #include "ns3/ndnSIM/utils/ndn-fw-hop-count-tag.h"
 
 #include <math.h>
@@ -34,9 +31,6 @@ NS_LOG_COMPONENT_DEFINE ("ndn.ConsumerZipfMandelbrot");
 
 namespace ns3 {
 namespace ndn {
-
-using std::shared_ptr;
-using namespace ::ndn;
 
 NS_OBJECT_ENSURE_REGISTERED (ConsumerZipfMandelbrot);
 
@@ -179,7 +173,7 @@ ConsumerZipfMandelbrot::SendPacket() {
   // std::cout << Simulator::Now ().ToDouble (Time::S) << "s -> " << seq << "\n";
 
   //
-  shared_ptr<::ndn::Name> nameWithSequence = make_shared<::ndn::Name> (m_interestName);
+  shared_ptr<Name> nameWithSequence = make_shared<Name> (m_interestName);
   nameWithSequence->appendSequenceNumber (seq);
   //
 

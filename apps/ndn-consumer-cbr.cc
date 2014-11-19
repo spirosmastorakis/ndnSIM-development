@@ -31,8 +31,6 @@
 #include "ns3/double.h"
 
 #include "ns3/ndn-app-face.h"
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
 
 NS_LOG_COMPONENT_DEFINE ("ndn.ConsumerCbr");
 

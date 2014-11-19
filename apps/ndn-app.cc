@@ -23,12 +23,8 @@
 #include "ns3/assert.h"
 #include "ns3/packet.h"
 
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
 #include "ns3/ndn-forwarder.h"
-//#include "ns3/ndn-fib.h"
 #include "ns3/ndn-app-face.h"
-//#include "ns3/ndn-forwarding-strategy.h"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.App");
 
@@ -94,7 +90,7 @@ App::GetId () const
 }
 
 void
-App::OnInterest (::ndn::shared_ptr<const ::ndn::Interest> interest)
+App::OnInterest (shared_ptr<const Interest> interest)
 {
   NS_LOG_FUNCTION (this << interest);
   m_receivedInterests (interest, this, m_face);
@@ -108,7 +104,7 @@ App::OnNack (::ndn::shared_ptr<const ::ndn::Interest> interest)
 }
 */
 void
-App::OnData (::ndn::shared_ptr<const ::ndn::Data> contentObject)
+App::OnData (shared_ptr<const Data> contentObject)
 {
   NS_LOG_FUNCTION (this << contentObject);
   m_receivedDatas (contentObject, this, m_face);
