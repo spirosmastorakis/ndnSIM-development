@@ -23,10 +23,10 @@
 
 #include "ns3/object.h"
 #include "ns3/ptr.h"
+#include "ns3/ndn-common.h"
 
 #include <list>
 #include <boost/tuple/tuple.hpp>
-#include <ndn-cxx/name.hpp>
 
 namespace ns3 {
 
@@ -36,6 +36,8 @@ namespace ndn {
 
 class L3Protocol;
 class Face;
+
+using std::shared_ptr;
 
 /**
  * @ingroup ndn
@@ -55,7 +57,7 @@ public:
   /**
    * @brief List of locally exported prefixes
    */
-  typedef std::list< ::ndn::shared_ptr< ::ndn::Name> > LocalPrefixList;
+  typedef std::list< shared_ptr< Name> > LocalPrefixList;
 
   /**
    * \brief Interface ID
@@ -87,7 +89,7 @@ public:
    * @param prefix Prefix
    */
   void
-  AddLocalPrefix ( ::ndn::shared_ptr< ::ndn::Name > prefix);
+  AddLocalPrefix (shared_ptr< Name > prefix);
 
   /**
    * @brief Add edge to the node

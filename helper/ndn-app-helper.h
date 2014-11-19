@@ -25,6 +25,7 @@
 #include "ns3/attribute.h"
 #include "ns3/node-container.h"
 #include "ns3/application-container.h"
+#include "ns3/ndn-common.h"
 #include "ns3/ptr.h"
 
 namespace ns3 {
@@ -36,7 +37,7 @@ namespace ndn {
  * on a set of nodes.
  */
 class AppHelper
-{        
+{
 public:
 
   /**
@@ -51,7 +52,7 @@ public:
    */
   void
   SetPrefix (const std::string &prefix);
-  
+
   /**
    * \brief Helper function used to set the underlying application attributes.
    *
@@ -59,39 +60,39 @@ public:
    * \param value the value of the application attribute to set
    */
   void SetAttribute (std::string name, const AttributeValue &value);
-        
+
   /**
    * Install an ns3::NdnConsumer on each node of the input container
    * configured with all the attributes set with SetAttribute.
    *
-   * \param c NodeContainer of the set of nodes on which an NdnConsumer 
+   * \param c NodeContainer of the set of nodes on which an NdnConsumer
    * will be installed.
    * \returns Container of Ptr to the applications installed.
    */
   ApplicationContainer Install (NodeContainer c);
-        
+
   /**
-   * Install an ns3::NdnConsumer on the node configured with all the 
+   * Install an ns3::NdnConsumer on the node configured with all the
    * attributes set with SetAttribute.
    *
    * \param node The node on which an NdnConsumer will be installed.
    * \returns Container of Ptr to the applications installed.
    */
   ApplicationContainer Install (Ptr<Node> node);
-        
+
   /**
-   * Install an ns3::NdnConsumer on the node configured with all the 
+   * Install an ns3Consumer on the node configured with all the
    * attributes set with SetAttribute.
    *
    * \param nodeName The node on which an NdnConsumer will be installed.
    * \returns Container of Ptr to the applications installed.
    */
   ApplicationContainer Install (std::string nodeName);
-        
+
 private:
   /**
    * \internal
-   * Install an ns3::NdnConsumer on the node configured with all the 
+   * Install an ns3::NdnConsumer on the node configured with all the
    * attributes set with SetAttribute.
    *
    * \param node The node on which an NdnConsumer will be installed.
@@ -105,4 +106,3 @@ private:
 } // namespace ns3
 
 #endif // NDN_APP_HELPER_H
-

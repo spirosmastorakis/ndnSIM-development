@@ -24,13 +24,10 @@
 
 #include "ndn-face.h"
 #include "ns3/traced-callback.h"
+#include "ns3/attribute.h"
+#include "ns3/attribute-helper.h"
 
-namespace ndn {
-
-class Interest;
-class Data;
-
-} // namespace ndn
+#include "ns3/ndn-common.h"
 
 namespace ns3 {
 
@@ -38,8 +35,8 @@ class Packet;
 
 namespace ndn {
 
-typedef ::ndn::Interest InterestHeader;
-typedef ::ndn::Data DataHeader;
+typedef Interest InterestHeader;
+typedef Data DataHeader;
 
 class App;
 
@@ -71,10 +68,10 @@ public:
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from Face
   virtual bool
-  SendInterest (shared_ptr<const ::ndn::Interest> interest);
+  SendInterest (shared_ptr<const Interest> interest);
 
   virtual bool
-  SendData (shared_ptr<const ::ndn::Data> data);
+  SendData (shared_ptr<const Data> data);
 
   virtual bool
   isLocal() const;
@@ -99,6 +96,7 @@ AppFace::isLocal() const
   return true;
 }
 
+ATTRIBUTE_HELPER_HEADER (Name);
 
 } // namespace ndn
 } // namespace ns3

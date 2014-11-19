@@ -28,13 +28,10 @@
 #include "ns3/nstime.h"
 #include "ns3/node-container.h"
 
-#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
-
-#include <ndn-cxx/name.hpp>
-
-#include "ns3/ndnSIM/helper/ndn-face-container.h"
-#include "ns3/ndnSIM/model/ndn-net-device-face.h"
-#include "ns3/ndnSIM/model/ndn-forwarder.h"
+#include "ns3/ndn-common.h"
+#include "ns3/ndn-face-container.h"
+#include "ns3/ndn-net-device-face.h"
+#include "ns3/ndn-forwarder.h"
 
 namespace ns3 {
 

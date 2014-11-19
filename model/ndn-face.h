@@ -49,6 +49,8 @@ class Node;
 namespace ndn {
 
 using ::ndn::util::FaceUri;
+using ::ndn::nfd::FaceEventNotification;
+using ::ndn::nfd::FaceStatus;
 
 /** \class FaceId
  *  \brief identifies a face
@@ -116,8 +118,8 @@ public:
    * \param face Face from which packet has been received
    * \param packet Original packet
    */
-  typedef Callback<void, Ptr<Face>, shared_ptr< ::ndn::Interest> > InterestHandler;
-  typedef Callback<void, Ptr<Face>, shared_ptr< ::ndn::Data> > DataHandler;
+  typedef Callback<void, Ptr<Face>, shared_ptr<Interest> > InterestHandler;
+  typedef Callback<void, Ptr<Face>, shared_ptr<Data> > DataHandler;
 
   /**
    * \brief Default constructor
@@ -131,16 +133,16 @@ public:
   virtual ~Face();
 
   /// fires when an Interest is received
-  nfd::EventEmitter<::ndn::Interest> onReceiveInterest;
+  nfd::EventEmitter<Interest> onReceiveInterest;
 
   /// fires when a Data is received
-  nfd::EventEmitter<::ndn::Data> onReceiveData;
+  nfd::EventEmitter<Data> onReceiveData;
 
   /// fires when an Interest is sent out
-  nfd::EventEmitter<::ndn::Interest> onSendInterest;
+  nfd::EventEmitter<Interest> onSendInterest;
 
   /// fires when a Data is sent out
-  nfd::EventEmitter<::ndn::Data> onSendData;
+  nfd::EventEmitter<Data> onSendData;
 
   /// fires when face disconnects or fails to perform properly
   nfd::EventEmitter<std::string/*reason*/> onFail;
@@ -210,7 +212,7 @@ public:
 
   // this is a non-virtual method
   bool
-  decodeAndDispatchInput(const ::ndn::Block& element);
+  decodeAndDispatchInput(const Block& element);
 
   nfd::FaceCounters&
   getMutableCounters();
@@ -225,7 +227,7 @@ public:
 
   /** \return FaceStatus data structure filled with the current Face status
    */
-  virtual ::ndn::nfd::FaceStatus
+  virtual FaceStatus
   getFaceStatus() const;
 
   /**
@@ -260,7 +262,7 @@ public:
    * @returns true if interest is considered to be send out (enqueued)
    */
   virtual bool
-  SendInterest (shared_ptr<const ::ndn::Interest> interest);
+  SendInterest (shared_ptr<const Interest> interest);
 
   /**
    * @brief Send out Dat packet through the face
@@ -270,7 +272,7 @@ public:
    * @returns true if Data packet is considered to be send out (enqueued)
    */
   virtual bool
-  SendData (shared_ptr<const ::ndn::Data> data);
+  SendData (shared_ptr<const Data> data);
 
   /**
    * \brief Receive interest from application or another node and forward it up to the NDN stack
@@ -278,7 +280,7 @@ public:
    * By default it is called from inside Receive method, but can be used directly, if appropriate
    */
   virtual bool
-  ReceiveInterest (shared_ptr< ::ndn::Interest> interest);
+  ReceiveInterest (shared_ptr<Interest> interest);
 
   /**
    * \brief Receive Data packet from application or another node and forward it up to the NDN stack
@@ -286,7 +288,7 @@ public:
    * By default it is called from inside Receive method, but can be used directly, if appropriate
    */
   virtual bool
-  ReceiveData (shared_ptr< ::ndn::Data> data);
+  ReceiveData (shared_ptr<Data> data);
   ////////////////////////////////////////////////////////////////////
 
   /**
