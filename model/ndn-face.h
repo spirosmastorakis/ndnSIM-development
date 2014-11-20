@@ -85,6 +85,7 @@ const size_t MAX_NDN_PACKET_SIZE = 8800;
  *
  * \see ndn::AppFace, ndn::NetDeviceFace
  */
+
 class Face :
     public Object, public std::enable_shared_from_this<Face>
 {
@@ -225,22 +226,6 @@ public:
   GetNode () const;
 
   ////////////////////////////////////////////////////////////////////
-
-  /**
-   * \brief Register callback to call when new packet arrives on the face
-   *
-   * This method should call protocol-dependent registration function
-   */
-  virtual void
-  RegisterProtocolHandlers (const InterestHandler &interestHandler, const DataHandler &dataHandler);
-
-  /**
-   * \brief Un-Register callback to call when new packet arrives on the face
-   *
-   * This method should call protocol-dependent registration function
-   */
-  virtual void
-  UnRegisterProtocolHandlers ();
 
   /**
    * @brief Send out interest through the face
@@ -416,8 +401,6 @@ protected:
   Ptr<Node> m_node; ///< \brief Smart pointer to Node
 
 private:
-  InterestHandler m_upstreamInterestHandler;
-  DataHandler m_upstreamDataHandler;
   bool m_ifup;
   uint32_t m_id; ///< \brief id of the interface in NDN stack (per-node uniqueness)
   uint16_t m_metric; ///< \brief metric of the face
