@@ -71,6 +71,7 @@ Face::Face(const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal)
   , m_isOnDemand(false)
   , m_isFailed(false)
 {
+  // GetNode();
   onReceiveInterest += [this](const Interest&) { ++m_counters.getNInInterests(); };
   onReceiveData     += [this](const Data&) {     ++m_counters.getNInDatas(); };
   onSendInterest    += [this](const Interest&) { ++m_counters.getNOutInterests(); };
@@ -206,9 +207,10 @@ Face::getFaceStatus() const
  * invoke SetUp on them once an Ndn address and mask have been set.
  */
 Face::Face (Ptr<Node> node)
-  : m_node (node)
-  , m_upstreamInterestHandler (MakeNullCallback< void, Ptr<Face>, shared_ptr<Interest> > ())
-  , m_upstreamDataHandler (MakeNullCallback< void, Ptr<Face>, shared_ptr<Data> > ())
+  : m_idNfd(INVALID_FACEID)
+  , m_remoteUri("ns3://face")
+  , m_localUri("ns3://face")
+  , m_node (node)
   , m_ifup (false)
   , m_id ((uint32_t)-1)
   , m_metric (0)
@@ -267,25 +269,6 @@ Face::GetNode () const
 {
   return m_node;
 }
-
-void
-Face::RegisterProtocolHandlers (const InterestHandler &interestHandler, const DataHandler &dataHandler)
-{
-  NS_LOG_FUNCTION_NOARGS ();
-
-  m_upstreamInterestHandler = interestHandler;
-  m_upstreamDataHandler = dataHandler;
-}
-
-void
-Face::UnRegisterProtocolHandlers ()
-{
-  NS_LOG_FUNCTION_NOARGS ();
-
-  m_upstreamInterestHandler = MakeNullCallback< void, Ptr<Face>, shared_ptr<Interest> > ();
-  m_upstreamDataHandler = MakeNullCallback< void, Ptr<Face>, shared_ptr<Data> > ();
-}
-
 
 bool
 Face::SendInterest (shared_ptr<const Interest> interest)
@@ -349,25 +332,25 @@ Face::Receive (Ptr<const Packet> p)
       // no tracing here. If we were off while receiving, we shouldn't even know that something was there
       return false;
     }
-
   Ptr<Packet> packet = p->Copy (); // give upper layers a rw copy of the packet
   try
     {
       //Let's see..
-
       Block block = Convert::Convert::FromPacket (packet);
-      uint32_t type = block.type();
-      if (type == 0x05) {
-        Interest interest;
-        interest.wireDecode (block);
-        ReceiveInterest (make_shared <Interest> (interest));
-      }
-     else
-       if (type == 0x06) {
-         Data data;
-         data.wireDecode (block);
-         ReceiveData (make_shared <Data> (data));
-       }
+      decodeAndDispatchInput(block);
+
+     //  uint32_t type = block.type();
+     //  if (type == 0x05) {
+     //    Interest interest;
+     //    interest.wireDecode (block);
+     //    ReceiveInterest (make_shared <Interest> (interest));
+     //  }
+     // else
+     //   if (type == 0x06) {
+     //     Data data;
+     //     data.wireDecode (block);
+     //     ReceiveData (make_shared <Data> (data));
+     //   }
     }
   catch (::ndn::UnknownHeaderException)
     {
@@ -387,7 +370,7 @@ Face::ReceiveInterest (shared_ptr<Interest> interest)
       return false;
     }
 
-  m_upstreamInterestHandler (this, interest);
+  // m_upstreamInterestHandler (this, interest);
   return true;
 }
 
@@ -400,7 +383,7 @@ Face::ReceiveData (shared_ptr<Data> data)
       return false;
     }
 
-  m_upstreamDataHandler (this, data);
+  // m_upstreamDataHandler (this, data);
   return true;
 }
 
