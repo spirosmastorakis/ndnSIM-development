@@ -70,7 +70,7 @@ App::~App ()
 }
 
 void
-App::DoDispose (void)
+App::DoDispose ()
 {
   NS_LOG_FUNCTION_NOARGS ();
 
