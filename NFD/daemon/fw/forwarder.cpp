@@ -418,7 +418,7 @@ Forwarder::insertDeadNonceList(pit::Entry& pitEntry, bool isSatisfied,
     bool hasFreshnessPeriod = dataFreshnessPeriod >= time::milliseconds::zero();
     // Data never becomes stale if it doesn't have FreshnessPeriod field
     needDnl = static_cast<bool>(pitEntry.getInterest().getMustBeFresh()) &&
-              (hasFreshnessPeriod && dataFreshnessPeriod < m_deadNonceList.getLifetime());
+      (hasFreshnessPeriod && dataFreshnessPeriod < m_deadNonceList.getLifetime());
   }
   else {
     needDnl = true;
