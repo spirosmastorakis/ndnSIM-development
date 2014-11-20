@@ -24,6 +24,8 @@
 #include "ns3/ndnSIM-module.h"
 
 using namespace ns3;
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
 
 /**
  * This scenario simulates a very simple network topology:
@@ -45,7 +47,7 @@ using namespace ns3;
  *     NS_LOG=ndn.Consumer:ndn.Producer ./waf --run=ndn-simple
  */
 
-int 
+int
 main (int argc, char *argv[])
 {
   // setting default parameters for PointToPoint links and channels
@@ -67,28 +69,26 @@ main (int argc, char *argv[])
   p2p.Install (nodes.Get (1), nodes.Get (2));
 
   // Install NDN stack on all nodes
-  ndn::StackHelper ndnHelper;
+  StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (true);
   ndnHelper.InstallAll ();
-
   // Installing applications
 
   // Consumer
-  ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+  AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   // Consumer will request /prefix/0, /prefix/1, ...
   consumerHelper.SetPrefix ("/prefix");
   consumerHelper.SetAttribute ("Frequency", StringValue ("10")); // 10 interests a second
   consumerHelper.Install (nodes.Get (0)); // first node
 
   // Producer
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
+  AppHelper producerHelper ("ns3::ndn::Producer");
   // Producer will reply to all requests starting with /prefix
   producerHelper.SetPrefix ("/prefix");
   producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
   producerHelper.Install (nodes.Get (2)); // last node
 
   Simulator::Stop (Seconds (20.0));
-
   Simulator::Run ();
   Simulator::Destroy ();
 
