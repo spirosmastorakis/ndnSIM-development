@@ -54,7 +54,7 @@ StackHelper::StackHelper ()
   : m_limitsEnabled (false)
   , m_needSetDefaultRoutes (false)
 {
-  // m_ndnFactory.         SetTypeId ("ns3::ndn::L3Protocol");
+  m_ndnFactory.         SetTypeId ("ns3::ndn::L3Protocol");
   // m_strategyFactory.    SetTypeId ("ns3::ndn::fw::Flooding");
   // m_contentStoreFactory.SetTypeId ("ns3::ndn::cs::Lru");
   // m_fibFactory.         SetTypeId ("ns3::ndn::fib::Default");
@@ -318,11 +318,11 @@ StackHelper::PointToPointNetDeviceCallback (Ptr<Node> node, Ptr<L3Protocol> ndn,
   if (m_limitsEnabled)
     {
       // Ptr<Limits> limits = face->GetObject<Limits> ();
-      /*if (limits == 0)
-      {
-          NS_FATAL_ERROR ("Limits are enabled, but the selected forwarding strategy does not support limits. Please revise your scenario");
-          exit (1);
-      }*/
+      // if (limits == 0)
+      // {
+      //     NS_FATAL_ERROR ("Limits are enabled, but the selected forwarding strategy does not support limits. Please revise your scenario");
+      //     exit (1);
+      // }
 
       NS_LOG_INFO ("Limits are enabled");
       Ptr<PointToPointNetDevice> p2p = DynamicCast<PointToPointNetDevice> (device);
@@ -341,10 +341,10 @@ StackHelper::PointToPointNetDeviceCallback (Ptr<Node> node, Ptr<L3Protocol> ndn,
           // NS_LOG_INFO ("Max packets per second: " << maxInterestPackets);
           // NS_LOG_INFO ("Max burst: " << m_avgRtt.ToDouble (Time::S) * maxInterestPackets);
           //         NS_LOG_INFO ("MaxLimit: " << (int)(m_avgRtt.ToDouble (Time::S) * maxInterestPackets));
-          /*
-          // Set max to BDP
-          limits->SetLimits (maxInterestPackets, m_avgRtt.ToDouble (Time::S));
-          limits->SetLinkDelay (linkDelay.Get ().ToDouble (Time::S)); */
+
+          // // Set max to BDP
+          // limits->SetLimits (maxInterestPackets, m_avgRtt.ToDouble (Time::S));
+          // limits->SetLinkDelay (linkDelay.Get ().ToDouble (Time::S));
         }
     }
 
