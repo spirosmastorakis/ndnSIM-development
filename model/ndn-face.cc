@@ -249,7 +249,7 @@ Face::SendInterest (shared_ptr<const Interest> interest)
 
   Ptr<Packet> packet = Create <Packet> ();
   Block block = interest->wireEncode ();
-  Convert::Convert::InterestToPacket (make_shared <Block> (block), packet);
+  Convert::InterestToPacket (make_shared <Block> (block), packet);
   return Send (packet);
 
   //return Send (Wire::FromInterest (interest));
@@ -268,7 +268,7 @@ Face::SendData (shared_ptr<const Data> data)
 
   Ptr<Packet> packet = Create <Packet> ();
   Block block = data->wireEncode ();
-  Convert::Convert::InterestToPacket (make_shared <Block> (block), packet);
+  Convert::InterestToPacket (make_shared <Block> (block), packet);
   return Send (packet);
 
   //return Send (Wire::FromData (data));
@@ -302,7 +302,7 @@ Face::Receive (Ptr<const Packet> p)
   try
     {
       //Let's see..
-      Block block = Convert::Convert::FromPacket (packet);
+      Block block = Convert::FromPacket (packet);
       decodeAndDispatchInput(block);
 
      //  uint32_t type = block.type();
@@ -337,6 +337,11 @@ Face::ReceiveInterest (shared_ptr<Interest> interest)
     }
 
   // m_upstreamInterestHandler (this, interest);
+  // Block block = interest->wireEncode();
+  // Ptr<Packet> packet = Create<Packet> ();
+  // Convert::InterestToPacket (make_shared<Block> (block), packet);
+  // Receive (packet);
+  // SendInterest (interest);
   return true;
 }
 

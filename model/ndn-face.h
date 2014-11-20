@@ -174,6 +174,16 @@ public:
   virtual bool
   isMultiAccess() const;
 
+  virtual void
+  RegisterProtocolHandlers ()
+  {
+  };
+
+  virtual void
+  UnRegisterProtocolHandlers ()
+  {
+  };
+
   /** \brief Get whether underlying communication is up
    *
    *  In this base class this property is always true.

@@ -202,6 +202,8 @@ L3Protocol::AddFace (const Ptr<Face> &face)
 
   m_forwarder->addFace (sharedFace);
 
+  face->RegisterProtocolHandlers ();
+
   m_faces.push_back (face);
   m_faceCounter++;
 
@@ -212,6 +214,8 @@ void
 L3Protocol::RemoveFace (Ptr<Face> face)
 {
   NS_LOG_FUNCTION (this << ::ndn::cref (*face));
+
+  face->UnRegisterProtocolHandlers ();
 
   // Just call the fail method. This should do the work for us and remove face from FIB and PIT
   face->fail ("Remove Face");
