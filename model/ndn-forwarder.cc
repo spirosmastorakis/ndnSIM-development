@@ -70,7 +70,7 @@ L3Protocol::GetTypeId (void)
 }
 
 L3Protocol::L3Protocol ()
-: m_faceCounter (0)
+  : m_faceCounter (0)
 {
   NS_LOG_FUNCTION (this);
 }
@@ -101,19 +101,19 @@ L3Protocol::initializeManagement()
   m_fibManager = make_shared<FibManager>(ref(m_forwarder->getFib()),
                                          bind(&Forwarder::getFace, m_forwarder.get(), _1),
                                          m_internalFace,
-                                         ::ndn::ref(m_keyChain));
+                                         ref(m_keyChain));
 
   m_faceManager = make_shared<FaceManager>(ref(m_forwarder->getFaceTable()),
                                            m_internalFace,
-                                           ::ndn::ref(m_keyChain));
+                                           ref(m_keyChain));
 
   m_strategyChoiceManager = make_shared<StrategyChoiceManager>(ref(m_forwarder->getStrategyChoice()),
                                                                m_internalFace,
-                                                               ::ndn::ref(m_keyChain));
+                                                               ref(m_keyChain));
 
   m_statusServer = make_shared<StatusServer>(m_internalFace,
                                              ref(*m_forwarder),
-                                             ::ndn::ref(m_keyChain));
+                                             ref(m_keyChain));
 
   TablesConfigSection tablesConfig(m_forwarder->getCs(),
                                    m_forwarder->getPit(),
@@ -175,7 +175,7 @@ L3Protocol::DoDispose (void)
   m_node = 0;
 
   // Force delete on objects
-  //m_forwardingStrategy = 0; // there is a reference to PIT stored in here
+  // m_forwardingStrategy = 0; // there is a reference to PIT stored in here
 
   Object::DoDispose ();
 }
@@ -190,7 +190,12 @@ L3Protocol::AddFace (const Ptr<Face> &face)
 {
   NS_LOG_FUNCTION (this << &face);
 
+  std::cerr << "ID: " << face->getId() << std::endl;
+
   face->SetId (m_faceCounter); // sets a unique ID of the face. This ID serves only informational purposes
+
+  // face->RegisterProtocolHandlers (MakeCallback (&(::nfd::Forwarder::onIncomingInterest) ),
+  //                                 MakeCallback (&(::nfd::Forwarder::onIncomingData)));
 
   shared_ptr<Face> sharedFace = shared_ptr<Face>(GetPointer(face),
                                                  bind(&faceNullDeleter, face));
