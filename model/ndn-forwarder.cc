@@ -180,6 +180,11 @@ L3Protocol::DoDispose (void)
   Object::DoDispose ();
 }
 
+static void
+faceNullDeleter(const Ptr<Face>& face)
+{
+}
+
 uint32_t
 L3Protocol::AddFace (const Ptr<Face> &face)
 {
@@ -187,8 +192,10 @@ L3Protocol::AddFace (const Ptr<Face> &face)
 
   face->SetId (m_faceCounter); // sets a unique ID of the face. This ID serves only informational purposes
 
-  // I think that it is correct....
-  m_forwarder->addFace (face->shared_from_this ());
+  shared_ptr<Face> sharedFace = shared_ptr<Face>(GetPointer(face),
+                                                 bind(&faceNullDeleter, face));
+
+  m_forwarder->addFace (sharedFace);
 
   m_faces.push_back (face);
   m_faceCounter++;
