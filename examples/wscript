@@ -1,12 +1,12 @@
 ## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
-# 
+#
 # Copyright (c) 2011-2013, Regents of the University of California
 #                          Alexander Afanasyev
-# 
+#
 # GNU 3.0 license, See the LICENSE file for more information
-# 
+#
 # Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
-# 
+#
 
 def build(bld):
     # This may be necessary for visualizer to work
@@ -14,7 +14,7 @@ def build(bld):
 
     obj = bld.create_ns3_program('ndn-simple', all_modules)
     obj.source = 'ndn-simple.cc'
-
+    '''
     obj = bld.create_ns3_program('ndn-csma', all_modules)
     obj.source = 'ndn-csma.cc'
 
@@ -23,7 +23,6 @@ def build(bld):
 
     obj = bld.create_ns3_program('ndn-zipf-mandelbrot', all_modules)
     obj.source = 'ndn-zipf-mandelbrot.cc'
-
 
     obj = bld.create_ns3_program('ndn-simple-with-content-freshness', all_modules)
     obj.source = ['ndn-simple-with-content-freshness.cc',
@@ -106,3 +105,4 @@ def build(bld):
     if 'ns3-wifi' in bld.env['NS3_ENABLED_MODULES']:
         obj = bld.create_ns3_program('ndn-simple-wifi', all_modules)
         obj.source = 'ndn-simple-wifi.cc'
+'''
