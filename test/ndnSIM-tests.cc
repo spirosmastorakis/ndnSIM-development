@@ -21,10 +21,7 @@
 
 #include "ns3/test.h"
 
-#include "ndnSIM-serialization.h"
-#include "ndnSIM-pit.h"
-#include "ndnSIM-fib-entry.h"
-#include "ndnSIM-api.h"
+#include "ndnSIM-ndn-ns3.h"
 
 namespace ns3
 {
@@ -37,11 +34,8 @@ public:
   {
     SetDataDir (NS_TEST_SOURCEDIR);
 
-    AddTestCase (new InterestSerializationTest (), TestCase::QUICK);
-    AddTestCase (new DataSerializationTest (), TestCase::QUICK);
-    AddTestCase (new FibEntryTest (), TestCase::QUICK);
-    AddTestCase (new PitTest (), TestCase::QUICK);
-    AddTestCase (new ApiTest (), TestCase::QUICK);
+    AddTestCase (new NdnNs3Test(), TestCase::QUICK);
+
   }
 };
 
