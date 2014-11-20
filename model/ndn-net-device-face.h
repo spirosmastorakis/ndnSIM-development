@@ -60,7 +60,7 @@ public:
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from NdnFace
   virtual void
-  RegisterProtocolHandlers (const InterestHandler &interestHandler, const DataHandler &dataHandler);
+  RegisterProtocolHandlers ();
 
   virtual void
   close ();
