@@ -26,33 +26,6 @@
 
 namespace ns3 {
 
-struct FunctionWrapper
-{
-  FunctionWrapper(const std::function<void()>& func)
-    : m_func(func)
-  {
-  }
-
-  void
-  run()
-  {
-    m_func();
-  }
-
-private:
-  std::function<void()> m_func;
-};
-
-template<>
-struct EventMemberImplObjTraits<FunctionWrapper>
-{
-  static FunctionWrapper&
-  GetReference(FunctionWrapper& p)
-  {
-    return p;
-  }
-};
-
 template<>
 struct EventMemberImplObjTraits< std::function<void()> >
 {
@@ -84,7 +57,9 @@ schedule(const time::nanoseconds& after, const std::function<void()>& event)
 void
 cancel(const EventId& eventId)
 {
-  ns3::Simulator::Remove(*eventId);
+  if (eventId != nullptr) {
+    ns3::Simulator::Remove(*eventId);
+  }
 }
 
 } // namespace scheduler
