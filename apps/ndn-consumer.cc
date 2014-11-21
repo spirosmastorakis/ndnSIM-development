@@ -197,6 +197,7 @@ Consumer::SendPacket ()
   interest->setNonce               (m_rand.GetValue ());
   interest->setName                (*nameWithSequence);
   ::ndn::time::milliseconds interestLifeTime (m_interestLifeTime.GetMilliSeconds ());
+
   interest->setInterestLifetime    (interestLifeTime);
 
   // NS_LOG_INFO ("Requesting Interest: \n" << *interest);
@@ -208,7 +209,7 @@ Consumer::SendPacket ()
   // interest->GetPayload ()->AddPacketTag (hopCountTag);
 
   m_transmittedInterests (interest, this, m_face);
-  m_face->ReceiveInterest (interest);
+  m_face->onReceiveInterest (*interest);
 
   ScheduleNextPacket ();
 }

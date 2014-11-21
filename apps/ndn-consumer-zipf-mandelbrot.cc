@@ -199,7 +199,7 @@ ConsumerZipfMandelbrot::SendPacket() {
   // interest->GetPayload ()->AddPacketTag (hopCountTag);
 
   m_transmittedInterests (interest, this, m_face);
-  m_face->ReceiveInterest (interest);
+  m_face->onReceiveInterest (*interest);
 
   ConsumerZipfMandelbrot::ScheduleNextPacket ();
 }

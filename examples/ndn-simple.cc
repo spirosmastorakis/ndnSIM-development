@@ -78,7 +78,7 @@ main (int argc, char *argv[])
   AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   // Consumer will request /prefix/0, /prefix/1, ...
   consumerHelper.SetPrefix ("/prefix");
-  consumerHelper.SetAttribute ("Frequency", StringValue ("10")); // 10 interests a second
+  consumerHelper.SetAttribute ("Frequency", StringValue ("1")); // 10 interests a second
   consumerHelper.Install (nodes.Get (0)); // first node
 
   // Producer
@@ -88,7 +88,7 @@ main (int argc, char *argv[])
   producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
   producerHelper.Install (nodes.Get (2)); // last node
 
-  Simulator::Stop (Seconds (20.0));
+  Simulator::Stop (Seconds (1.0));
   Simulator::Run ();
   Simulator::Destroy ();
 

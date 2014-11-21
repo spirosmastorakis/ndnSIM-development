@@ -285,8 +285,6 @@ Face::SendInterest (shared_ptr<const Interest> interest)
   Block block = interest->wireEncode ();
   Convert::InterestToPacket (make_shared <Block> (block), packet);
   return Send (packet);
-
-  //return Send (Wire::FromInterest (interest));
 }
 
 bool
@@ -304,8 +302,6 @@ Face::SendData (shared_ptr<const Data> data)
   Block block = data->wireEncode ();
   Convert::InterestToPacket (make_shared <Block> (block), packet);
   return Send (packet);
-
-  //return Send (Wire::FromData (data));
 }
 
 bool
@@ -338,19 +334,6 @@ Face::Receive (Ptr<const Packet> p)
       //Let's see..
       Block block = Convert::FromPacket (packet);
       decodeAndDispatchInput(block);
-
-     //  uint32_t type = block.type();
-     //  if (type == 0x05) {
-     //    Interest interest;
-     //    interest.wireDecode (block);
-     //    ReceiveInterest (make_shared <Interest> (interest));
-     //  }
-     // else
-     //   if (type == 0x06) {
-     //     Data data;
-     //     data.wireDecode (block);
-     //     ReceiveData (make_shared <Data> (data));
-     //   }
     }
   catch (::ndn::UnknownHeaderException)
     {
@@ -359,37 +342,6 @@ Face::Receive (Ptr<const Packet> p)
     }
 
   return false;
-}
-
-bool
-Face::ReceiveInterest (shared_ptr<Interest> interest)
-{
-  if (!IsUp ())
-    {
-      // no tracing here. If we were off while receiving, we shouldn't even know that something was there
-      return false;
-    }
-
-  // m_upstreamInterestHandler (this, interest);
-  // Block block = interest->wireEncode();
-  // Ptr<Packet> packet = Create<Packet> ();
-  // Convert::InterestToPacket (make_shared<Block> (block), packet);
-  // Receive (packet);
-  // SendInterest (interest);
-  return true;
-}
-
-bool
-Face::ReceiveData (shared_ptr<Data> data)
-{
-  if (!IsUp ())
-    {
-      // no tracing here. If we were off while receiving, we shouldn't even know that something was there
-      return false;
-    }
-
-  // m_upstreamDataHandler (this, data);
-  return true;
 }
 
 void

@@ -102,7 +102,8 @@ AppFace::SendInterest (shared_ptr<const Interest> interest)
       return false;
     }
 
-  m_app->OnInterest (interest);
+  // to decouple callbacks
+  Simulator::ScheduleNow(&App::OnInterest, m_app, interest);
 
   return true;
 }
@@ -116,6 +117,9 @@ AppFace::SendData (shared_ptr<const Data> data)
     {
       return false;
     }
+
+  // to decouple callbacks
+  Simulator::ScheduleNow(&App::OnData, m_app, data);
 
   m_app->OnData (data);
   return true;

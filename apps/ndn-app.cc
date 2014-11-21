@@ -95,14 +95,7 @@ App::OnInterest (shared_ptr<const Interest> interest)
   NS_LOG_FUNCTION (this << interest);
   m_receivedInterests (interest, this, m_face);
 }
-/*
-void
-App::OnNack (::ndn::shared_ptr<const ::ndn::Interest> interest)
-{
-  //NS_LOG_FUNCTION (this << interest);
-  //m_receivedNacks (interest, this, m_face);
-}
-*/
+
 void
 App::OnData (shared_ptr<const Data> contentObject)
 {
