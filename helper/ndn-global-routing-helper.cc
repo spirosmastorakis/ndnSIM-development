@@ -326,6 +326,9 @@ GlobalRoutingHelper::CalculateRoutes (bool invalidatedRoutes/* = true*/)
                                     << " with delay " << i->second.get<2> ());
 
                       //Ptr<fib::Entry> entry = fib->Add (prefix, i->second.get<0> (), i->second.get<1> ());
+
+                      shared_ptr<::nfd::fib::Entry> entry = forwarder->getFib().insert(*prefix).first;
+                      entry->addNextHop((i->second.get<0> ())->shared_from_this (), i->second.get<1> ());
                       //entry->SetRealDelayToProducer (i->second.get<0> (), Seconds (i->second.get<2> ()));
 
                       //Ptr<Limits> faceLimits = i->second.get<0> ()->GetObject<Limits> ();
@@ -458,6 +461,8 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes (bool invalidatedRoutes/* = true
                             continue;
 
                           //Ptr<fib::Entry> entry = fib->Add (prefix, i->second.get<0> (), i->second.get<1> ());
+                          shared_ptr<::nfd::fib::Entry> entry = forwarder->getFib().insert(*prefix).first;
+                          entry->addNextHop((i->second.get<0> ())->shared_from_this (), i->second.get<1> ());
                           //entry->SetRealDelayToProducer (i->second.get<0> (), Seconds (i->second.get<2> ()));
 
                           //Ptr<Limits> faceLimits = i->second.get<0> ()->GetObject<Limits> ();
