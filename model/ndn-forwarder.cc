@@ -131,10 +131,29 @@ L3Protocol::initializeManagement()
   entry->addNextHop(m_internalFace, 0);
 }
 
+shared_ptr<FibManager>
+L3Protocol::GetFibManager ()
+{
+  return m_fibManager;
+}
+
+void
+L3Protocol::SetFibManager (shared_ptr<FibManager> fibManager)
+{
+  m_fibManager = fibManager;
+}
+
+
 shared_ptr<Forwarder>
 L3Protocol::GetForwarder ()
 {
   return m_forwarder;
+}
+
+void
+L3Protocol::SetForwarder (shared_ptr<Forwarder> forwarder)
+{
+  m_forwarder = forwarder;
 }
 
 /*

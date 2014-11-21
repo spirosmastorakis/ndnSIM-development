@@ -120,6 +120,12 @@ public:
   void
   initializeManagement();
 
+  shared_ptr<FibManager>
+  GetFibManager ();
+
+  void
+  SetFibManager (shared_ptr<FibManager> fibManager);
+
   /**
    * \brief Get the forwarder (NFD) instance
    *
@@ -127,6 +133,9 @@ public:
    */
   shared_ptr<Forwarder>
   GetForwarder ();
+
+  void
+  SetForwarder (shared_ptr<Forwarder> forwarder);
 
   /**
    * \brief Add face to Ndn stack
