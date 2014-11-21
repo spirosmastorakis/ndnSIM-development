@@ -15,8 +15,8 @@ class Block;
 
 class UnknownHeaderException {};
 
-class Convert {
-
+class Convert
+{
 public:
   static void
   ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet);

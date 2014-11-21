@@ -7,8 +7,8 @@
 
 namespace ndn {
 
-class NdnTrailer: public ns3::Trailer {
-
+class NdnTrailer: public ns3::Trailer
+{
 public:
   NdnTrailer();
 

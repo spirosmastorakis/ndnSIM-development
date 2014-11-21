@@ -7,8 +7,8 @@
 
 namespace ndn {
 
-class NdnHeader: public ns3::Header {
-
+class NdnHeader: public ns3::Header
+{
 public:
   NdnHeader();
 
