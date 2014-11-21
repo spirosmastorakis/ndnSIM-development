@@ -257,21 +257,6 @@ public:
   virtual bool
   SendData (shared_ptr<const Data> data);
 
-  /**
-   * \brief Receive interest from application or another node and forward it up to the NDN stack
-   *
-   * By default it is called from inside Receive method, but can be used directly, if appropriate
-   */
-  virtual bool
-  ReceiveInterest (shared_ptr<Interest> interest);
-
-  /**
-   * \brief Receive Data packet from application or another node and forward it up to the NDN stack
-   *
-   * By default it is called from inside Receive method, but can be used directly, if appropriate
-   */
-  virtual bool
-  ReceiveData (shared_ptr<Data> data);
   ////////////////////////////////////////////////////////////////////
 
   /**

@@ -190,12 +190,7 @@ L3Protocol::AddFace (const Ptr<Face> &face)
 {
   NS_LOG_FUNCTION (this << &face);
 
-  std::cerr << "ID: " << face->getId() << std::endl;
-
   face->SetId (m_faceCounter); // sets a unique ID of the face. This ID serves only informational purposes
-
-  // face->RegisterProtocolHandlers (MakeCallback (&(::nfd::Forwarder::onIncomingInterest) ),
-  //                                 MakeCallback (&(::nfd::Forwarder::onIncomingData)));
 
   shared_ptr<Face> sharedFace = shared_ptr<Face>(GetPointer(face),
                                                  bind(&faceNullDeleter, face));

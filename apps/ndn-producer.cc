@@ -123,43 +123,40 @@ Producer::StopApplication ()
 
 
 void
-Producer::OnInterest (shared_ptr<const Interest> interest)
+Producer::OnInterest(shared_ptr<const Interest> interest)
 {
-  App::OnInterest (interest); // tracing inside
+  App::OnInterest(interest); // tracing inside
 
-  NS_LOG_FUNCTION (this << interest);
+  NS_LOG_FUNCTION(this << interest);
 
-  if (!m_active) return;
+  if (!m_active)
+    return;
 
-  shared_ptr<Data> data(new Data(Convert::FromPacket
-                                 (Create<Packet> (m_virtualPayloadSize))));
+  Name dataName(interest->getName());
+  // dataName.append(m_postfix);
+  // dataName.appendVersion();
 
-  shared_ptr<Name> dataName(new Name(interest->getName ()));
+  auto data = make_shared<Data>(dataName);
+  data->setFreshnessPeriod(::ndn::time::milliseconds(m_freshness.GetMilliSeconds()));
 
-  dataName->append (m_postfix);
-  CustomSystemClock clock;
-  dataName->appendTimestamp (clock.getNow ());
-  data->setName (*dataName);
+  data->setContent(make_shared<::ndn::Buffer>(m_virtualPayloadSize));
 
-  ::ndn::time::milliseconds freshness (m_freshness.GetMilliSeconds ());
-  data->setFreshnessPeriod (freshness);
-
-  Block signatureValue = Block (&m_signature, sizeof(m_signature));
   Signature signature;
-  signature.setValue (signatureValue);
+  SignatureInfo signatureInfo(static_cast<::ndn::tlv::SignatureTypeValue>(255));
 
   if (m_keyLocator.size () > 0) {
-    SignatureInfo signatureInfo;
-    KeyLocator keyLocator;
-    keyLocator.setName (m_keyLocator);
-    signatureInfo.setKeyLocator (keyLocator);
-    signature.setInfo (signatureInfo);
+    signatureInfo.setKeyLocator (m_keyLocator);
   }
 
-  data->setSignature (signature);
+  signature.setInfo (signatureInfo);
+  signature.setValue(Block(&m_signature, sizeof(m_signature)));
+
+  data->setSignature(signature);
+
+  // to create real wire encoding
+  data->wireEncode();
 
   NS_LOG_INFO ("node("<< GetNode()->GetId() <<") respodning with Data: " << data->getName ());
-
 
   // Echo back FwHopCountTag if exists
   // FwHopCountTag hopCountTag;
@@ -168,7 +165,7 @@ Producer::OnInterest (shared_ptr<const Interest> interest)
   //      data->GetPayload ()->AddPacketTag (hopCountTag);
   //   }
 
-  m_face->ReceiveData (data);
+  m_face->onReceiveData (*data);
   m_transmittedDatas (data, this, m_face);
 }
 
