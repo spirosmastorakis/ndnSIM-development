@@ -2,7 +2,9 @@
 
 namespace ndn {
 
-NdnHeader::NdnHeader()
+NdnHeader::NdnHeader() :
+  m_headerLength (0),
+  m_headerBuffer (NULL)
 {
 }
 

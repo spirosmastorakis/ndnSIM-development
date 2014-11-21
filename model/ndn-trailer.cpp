@@ -2,7 +2,9 @@
 
 namespace ndn {
 
-NdnTrailer::NdnTrailer()
+NdnTrailer::NdnTrailer() :
+  m_trailerLength (0),
+  m_trailerBuffer (NULL)
 {
 }
 
