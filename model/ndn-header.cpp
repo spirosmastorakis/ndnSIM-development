@@ -4,7 +4,7 @@ namespace ndn {
 
 NdnHeader::NdnHeader() :
   m_headerLength (0),
-  m_headerBuffer (NULL)
+  m_headerBuffer (nullptr)
 {
 }
 
