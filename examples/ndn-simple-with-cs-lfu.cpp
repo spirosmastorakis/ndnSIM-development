@@ -25,8 +25,9 @@
 
 #include <sys/time.h>
 #include "ns3/ndnSIM/utils/mem-usage.hpp"
+#include "ns3/ndnSIM/model/cs/ndn-content-store.hpp"
 
-using namespace ns3;
+namespace ns3 {
 
 /**
  * This scenario simulates a very simple network topology:
@@ -52,10 +53,6 @@ PrintCsMemStatsHeader(std::ostream& os)
      << "\t"
      << "RealTime"
      << "\t"
-     // << "NumberOfProcessedData" << "\t"
-     // << "NumberOfProcessedInterests" << "\t"
-     << "NumberPitEntries"
-     << "\t"
      << "NumberCsEntries"
      << "\t"
      << "MemUsage"
@@ -75,20 +72,14 @@ PrintCsMemStats(std::ostream& os, Time nextPrintTime, double beginRealTime)
   // os << ndn::L3Protocol::GetDataCounter () << "\t";
   // os << ndn::L3Protocol::GetInterestCounter () << "\t";
 
-  uint64_t pitCount = 0;
   uint64_t csCount = 0;
   for (NodeList::Iterator node = NodeList::Begin(); node != NodeList::End(); node++) {
-    Ptr<ndn::Pit> pit = (*node)->GetObject<ndn::Pit>();
     Ptr<ndn::ContentStore> cs = (*node)->GetObject<ndn::ContentStore>();
-
-    if (pit != 0)
-      pitCount += pit->GetSize();
 
     if (cs != 0)
       csCount += cs->GetSize();
   }
 
-  os << pitCount << "\t";
   os << csCount << "\t";
   os << MemUsage::Get() / 1024.0 / 1024.0 << "\n";
 
@@ -117,18 +108,19 @@ main(int argc, char* argv[])
   p2p.Install(nodes.Get(1), nodes.Get(2));
 
   // Install CCNx stack on all nodes
-  ndn::StackHelper ccnxHelper;
-  ccnxHelper.SetDefaultRoutes(true);
+  ndn::StackHelper ndnHelper;
+  ndnHelper.SetDefaultRoutes(true);
+  ndnHelper.SetContentStoreChoice(false);
 
   // node 0: disable cache completely
-  ccnxHelper.SetContentStore("ns3::ndn::cs::Nocache"); // disable cache
-  ccnxHelper.Install(nodes.Get(0));
+  ndnHelper.SetContentStore("ns3::ndn::cs::Nocache"); // disable cache
+  ndnHelper.Install(nodes.Get(0));
 
   // node 1 and 2: set cache with Lfu policy
-  ccnxHelper.SetContentStore("ns3::ndn::cs::Freshness::Lfu", "MaxSize",
+  ndnHelper.SetContentStore("ns3::ndn::cs::Freshness::Lfu", "MaxSize",
                              "2"); // can set cache size this way
-  ccnxHelper.Install(nodes.Get(1));
-  ccnxHelper.Install(nodes.Get(2));
+  ndnHelper.Install(nodes.Get(1));
+  ndnHelper.Install(nodes.Get(2));
 
   // alternative way to configure cache size
   // [number after nodeList is global ID of the node (= node->GetId ())]
@@ -163,4 +155,12 @@ main(int argc, char* argv[])
   Simulator::Destroy();
 
   return 0;
+}
+
+} // namespace ns3
+
+int
+main(int argc, char* argv[])
+{
+  return ns3::main(argc, argv);
 }
