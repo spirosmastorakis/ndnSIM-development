@@ -22,6 +22,7 @@
 #include <ndn-cxx/signature-info.hpp>
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/data.hpp>
+#include <ndn-cxx/security/key-chain.hpp>
 
 using std::shared_ptr;
 using std::make_shared;
@@ -34,6 +35,7 @@ using ::ndn::Signature;
 using ::ndn::SignatureInfo;
 using ::ndn::Convert;
 using ::ndn::Block;
+using ::ndn::KeyChain;
 
 #define NDNSIM_MODE 1
 
