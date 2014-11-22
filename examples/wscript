@@ -14,7 +14,7 @@ def build(bld):
 
     obj = bld.create_ns3_program('ndn-simple', all_modules)
     obj.source = 'ndn-simple.cc'
-    '''
+
     obj = bld.create_ns3_program('ndn-csma', all_modules)
     obj.source = 'ndn-csma.cc'
 
@@ -23,7 +23,7 @@ def build(bld):
 
     obj = bld.create_ns3_program('ndn-zipf-mandelbrot', all_modules)
     obj.source = 'ndn-zipf-mandelbrot.cc'
-
+    '''
     obj = bld.create_ns3_program('ndn-simple-with-content-freshness', all_modules)
     obj.source = ['ndn-simple-with-content-freshness.cc',
                   'custom-apps/dumb-requester.cc']
@@ -32,8 +32,9 @@ def build(bld):
     obj.source = ['ndn-simple-with-custom-app.cc',
                   'custom-apps/custom-app.cc',
                   'custom-apps/hijacker.cc']
-
+    '''
     if 'topology' in bld.env['NDN_plugins']:
+
         obj = bld.create_ns3_program('ndn-grid-topo-plugin', all_modules)
         obj.source = 'ndn-grid-topo-plugin.cc'
 
@@ -45,7 +46,7 @@ def build(bld):
 
         obj = bld.create_ns3_program('ndn-congestion-topo-plugin', all_modules)
         obj.source = 'ndn-congestion-topo-plugin.cc'
-
+        '''
         obj = bld.create_ns3_program('ndn-congestion-alt-topo-plugin', all_modules)
         obj.source = [
             'custom-strategies/custom-strategy.cc',
@@ -90,10 +91,10 @@ def build(bld):
         'ndn-simple-api.cc',
         'custom-apps/ndn-api-app.cc'
         ]
-
+    '''
     obj = bld.create_ns3_program('ndn-simple-with-link-failure', all_modules)
     obj.source = 'ndn-simple-with-link-failure.cc'
-
+    '''
     if 'ip-faces' in bld.env['NDN_plugins']:
         obj = bld.create_ns3_program('ndn-simple-tcp', all_modules)
         obj.source = 'ndn-simple-tcp.cc'
