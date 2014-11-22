@@ -33,7 +33,7 @@ using namespace ns3;
  *     |          |         |
  *    ( ) ------ ( ) -- (producer)
  *
- * All links are 1Mbps with propagation 10ms delay. 
+ * All links are 1Mbps with propagation 10ms delay.
  *
  * FIB is populated using NdnGlobalRoutingHelper.
  *
@@ -48,6 +48,11 @@ using namespace ns3;
  *     NS_LOG=ndn.Consumer:ndn.Producer ./waf --run=ndn-grid-topo-plugin
  */
 
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
+using ns3::ndn::GlobalRoutingHelper;
+using ns3::AnnotatedTopologyReader;
+
 int
 main (int argc, char *argv[])
 {
@@ -59,12 +64,12 @@ main (int argc, char *argv[])
   topologyReader.Read ();
 
   // Install NDN stack on all nodes
-  ndn::StackHelper ndnHelper;
-  ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
+  StackHelper ndnHelper;
+  //ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
   ndnHelper.InstallAll ();
 
   // Installing global routing interface on all nodes
-  ndn::GlobalRoutingHelper ndnGlobalRoutingHelper;
+  GlobalRoutingHelper ndnGlobalRoutingHelper;
   ndnGlobalRoutingHelper.InstallAll ();
 
   // Getting containers for the consumer/producer
@@ -75,12 +80,12 @@ main (int argc, char *argv[])
   // Install NDN applications
   std::string prefix = "/prefix";
 
-  ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+  AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   consumerHelper.SetPrefix (prefix);
   consumerHelper.SetAttribute ("Frequency", StringValue ("100")); // 100 interests a second
   consumerHelper.Install (consumerNodes);
 
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
+  AppHelper producerHelper ("ns3::ndn::Producer");
   producerHelper.SetPrefix (prefix);
   producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
   producerHelper.Install (producer);
@@ -89,7 +94,7 @@ main (int argc, char *argv[])
   ndnGlobalRoutingHelper.AddOrigins (prefix, producer);
 
   // Calculate and install FIBs
-  ndn::GlobalRoutingHelper::CalculateRoutes ();
+  GlobalRoutingHelper::CalculateRoutes ();
 
   Simulator::Stop (Seconds (20.0));
 

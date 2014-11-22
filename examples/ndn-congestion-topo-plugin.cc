@@ -24,16 +24,21 @@
 
 using namespace ns3;
 
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
+using ns3::ndn::GlobalRoutingHelper;
+using ns3::AnnotatedTopologyReader;
+
 /**
  * This scenario simulates a grid topology (using topology reader module)
  *
  *   /------\	                                                 /------\
  *   | Src1 |<--+                                            +-->| Dst1 |
  *   \------/    \                                          /    \------/
- *            	 \                                        /     
- *                 +-->/------\   "bottleneck"  /------\<-+      
- *                     | Rtr1 |<===============>| Rtr2 |         
- *                 +-->\------/                 \------/<-+      
+ *            	 \                                        /
+ *                 +-->/------\   "bottleneck"  /------\<-+
+ *                     | Rtr1 |<===============>| Rtr2 |
+ *                 +-->\------/                 \------/<-+
  *                /                                        \
  *   /------\    /                                          \    /------\
  *   | Src2 |<--+                                            +-->| Dst2 |
@@ -55,14 +60,14 @@ main (int argc, char *argv[])
   topologyReader.Read ();
 
   // Install NDN stack on all nodes
-  ndn::StackHelper ndnHelper;
-  ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
-  ndnHelper.SetContentStore ("ns3::ndn::cs::Lru",
-                              "MaxSize", "10000");
+  StackHelper ndnHelper;
+  // ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
+  // ndnHelper.SetContentStore ("ns3::ndn::cs::Lru",
+  //                             "MaxSize", "10000");
   ndnHelper.InstallAll ();
 
   // Installing global routing interface on all nodes
-  ndn::GlobalRoutingHelper ndnGlobalRoutingHelper;
+  GlobalRoutingHelper ndnGlobalRoutingHelper;
   ndnGlobalRoutingHelper.InstallAll ();
 
   // Getting containers for the consumer/producer
@@ -72,7 +77,7 @@ main (int argc, char *argv[])
   Ptr<Node> producer1 = Names::Find<Node> ("Dst1");
   Ptr<Node> producer2 = Names::Find<Node> ("Dst2");
 
-  ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+  AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   consumerHelper.SetAttribute ("Frequency", StringValue ("100")); // 100 interests a second
 
   // on the first consumer node install a Consumer application
@@ -84,9 +89,9 @@ main (int argc, char *argv[])
   // that will express interests in /dst2 namespace
   consumerHelper.SetPrefix ("/dst2");
   consumerHelper.Install (consumer2);
-  
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
-  producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));  
+
+  AppHelper producerHelper ("ns3::ndn::Producer");
+  producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
 
   // Register /dst1 prefix with global routing controller and
   // install producer that will satisfy Interests in /dst1 namespace
@@ -101,7 +106,7 @@ main (int argc, char *argv[])
   producerHelper.Install (producer2);
 
   // Calculate and install FIBs
-  ndn::GlobalRoutingHelper::CalculateRoutes ();
+  GlobalRoutingHelper::CalculateRoutes ();
 
   Simulator::Stop (Seconds (20.0));
 
