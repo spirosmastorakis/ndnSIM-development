@@ -29,6 +29,10 @@
 
 using namespace ns3;
 
+using ns3::ndn::LinkControlHelper;
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
+
 /**
  * This scenario simulates a very simple network topology:
  *
@@ -49,7 +53,7 @@ using namespace ns3;
  *     NS_LOG=ndn.Consumer:ndn.Producer ./waf --run=ndn-simple
  */
 
-int 
+int
 main (int argc, char *argv[])
 {
   // setting default parameters for PointToPoint links and channels
@@ -71,30 +75,30 @@ main (int argc, char *argv[])
   p2p.Install (nodes.Get (1), nodes.Get (2));
 
   // Install NDN stack on all nodes
-  ndn::StackHelper ndnHelper;
+  StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (true);
   ndnHelper.InstallAll ();
 
   // Installing applications
 
   // Consumer
-  ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+  AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   // Consumer will request /prefix/0, /prefix/1, ...
   consumerHelper.SetPrefix ("/prefix");
   consumerHelper.SetAttribute ("Frequency", StringValue ("10")); // 10 interests a second
   consumerHelper.Install (nodes.Get (0)); // first node
 
   // Producer
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
+  AppHelper producerHelper ("ns3::ndn::Producer");
   // Producer will reply to all requests starting with /prefix
   producerHelper.SetPrefix ("/prefix");
   producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
   producerHelper.Install (nodes.Get (2)); // last node
 
   // The failure of the link connecting consumer and router will start from seconds 10.0 to 15.0
-  Simulator::Schedule (Seconds (10.0), ndn::LinkControlHelper::FailLink, nodes.Get (0), nodes.Get (1));
-  Simulator::Schedule (Seconds (15.0), ndn::LinkControlHelper::UpLink,   nodes.Get (0), nodes.Get (1));   
-  
+  Simulator::Schedule (Seconds (10.0), LinkControlHelper::FailLink, nodes.Get (0), nodes.Get (1));
+  Simulator::Schedule (Seconds (15.0), LinkControlHelper::UpLink,   nodes.Get (0), nodes.Get (1));
+
   Simulator::Stop (Seconds (20.0));
 
   Simulator::Run ();

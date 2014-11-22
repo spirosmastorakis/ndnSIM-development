@@ -25,6 +25,9 @@
 #include "ns3/ndnSIM-module.h"
 
 using namespace ns3;
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
+using ns3::ndn::GlobalRoutingHelper;
 
 /**
  * This scenario simulates a grid topology (using PointToPointGrid module)
@@ -69,14 +72,14 @@ main (int argc, char *argv[])
   grid.BoundingBox(100,100,200,200);
 
   // Install CCNx stack on all nodes
-  ndn::StackHelper ccnxHelper;
-  ccnxHelper.SetForwardingStrategy ("ns3::ndn::fw::SmartFlooding");
-  ccnxHelper.SetContentStore ("ns3::ndn::cs::Lru", "MaxSize", "10");
+  StackHelper ccnxHelper;
+  //ccnxHelper.SetForwardingStrategy ("ns3::ndn::fw::SmartFlooding");
+  //ccnxHelper.SetContentStore ("ns3::ndn::cs::Lru", "MaxSize", "10");
   ccnxHelper.InstallAll ();
 
   // Installing global routing interface on all nodes
   //ndn::CbisGlobalRoutingHelper ccnxGlobalRoutingHelper;
-  ndn::GlobalRoutingHelper ccnxGlobalRoutingHelper;
+  GlobalRoutingHelper ccnxGlobalRoutingHelper;
   ccnxGlobalRoutingHelper.InstallAll ();
 
   // Getting containers for the consumer/producer
@@ -87,7 +90,7 @@ main (int argc, char *argv[])
   // Install CCNx applications
   std::string prefix = "/prefix";
 
-  ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerZipfMandelbrot");
+  AppHelper consumerHelper ("ns3::ndn::ConsumerZipfMandelbrot");
   //ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   consumerHelper.SetPrefix (prefix);
   consumerHelper.SetAttribute ("Frequency", StringValue ("100")); // 100 interests a second
@@ -95,7 +98,7 @@ main (int argc, char *argv[])
   //consumerHelper.SetAttribute ("Randomize", StringValue ("uniform")); // 100 interests a second
   consumerHelper.Install (consumerNodes);
 
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
+  AppHelper producerHelper ("ns3::ndn::Producer");
   producerHelper.SetPrefix (prefix);
   producerHelper.SetAttribute ("PayloadSize", StringValue("100"));
   producerHelper.Install (producer);
@@ -104,7 +107,7 @@ main (int argc, char *argv[])
   // Calculate and install FIBs
   ccnxGlobalRoutingHelper.CalculateRoutes ();
 
-  Simulator::Stop (Seconds (10.0));
+  Simulator::Stop (Seconds (1.0));
 
   Simulator::Run ();
   Simulator::Destroy ();
