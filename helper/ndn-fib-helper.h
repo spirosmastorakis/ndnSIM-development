@@ -12,6 +12,7 @@
 
 #include "ns3/ndnSIM/NFD/daemon/mgmt/fib-manager.hpp"
 #include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/daemon/mgmt/command-validator.hpp"
 
 #include <ndn-cxx/util/command-interest-generator.hpp>
 
@@ -27,32 +28,24 @@ class FibHelper
 public:
   FibHelper ();
 
-  FibHelper (ControlParameters parameters, Ptr<Face> face, Ptr<Node> node);
-
   ~FibHelper ();
 
   void
-  SetFace (Ptr<Face> face);
-
-  Ptr<Face>
-  GetFace ();
+  GenerateCommand (Interest& interest);
 
   void
-  SetControlParameters (ControlParameters parameters);
-
-  ControlParameters
-  GetControlParameters ();
-
-  void
-  SendCommand (Name commandName);
+  AddNextHop (ControlParameters parameters, Ptr<Node> node);
 
 protected:
  CommandInterestGenerator m_generator;
 
 private:
-  Ptr<Face> m_face;
-  ControlParameters m_parameters;
-  Ptr<Node> m_node;
+  // Ptr<Face> m_face;
+  // ControlParameters m_parameters;
+  // Ptr<Node> m_node;
+  ::ndn::KeyChain m_keys;
+  // static const Name s_identityName;
+  // static shared_ptr<::ndn::IdentityCertificate> s_certificate;
 };
 
 } // namespace ndn

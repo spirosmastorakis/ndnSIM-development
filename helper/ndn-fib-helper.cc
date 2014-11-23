@@ -1,64 +1,65 @@
 #include "ndn-fib-helper.h"
 
+#include "ns3/log.h"
+
 namespace ns3 {
 
 namespace ndn {
 
+NS_LOG_COMPONENT_DEFINE ("ndn.FibHelper");
+
 using ::ndn::CommandInterestGenerator;
 using ::nfd::ControlParameters;
 using ::nfd::FibManager;
+using ::nfd::CommandValidator;
 
-FibHelper::FibHelper () :
-  m_face(NULL),
-  m_node (NULL)
-{
-}
+// const Name FibHelper::s_identityName("/add/FibEntry");
+// shared_ptr<::ndn::IdentityCertificate> FibHelper::s_certificate;
+//template void KeyChain::sign<Interest>(Interest);
 
-FibHelper::FibHelper (ControlParameters parameters, Ptr<Face> face, Ptr<Node> node)
+FibHelper::FibHelper ()
 {
-  m_parameters = parameters;
-  m_face = face;
-  m_node = node;
+  //s_certificate = m_keys.getCertificate(m_keys.createIdentity(s_identityName));
 }
 
 FibHelper::~FibHelper ()
 {
+  // s_certificate.reset();
+  // m_keys.deleteIdentity(s_identityName);
 }
 
 void
-FibHelper::SetFace (Ptr<Face> face)
+FibHelper::GenerateCommand (Interest& interest)
 {
-  m_face = face;
-}
-
-Ptr<Face>
-FibHelper::GetFace ()
-{
-  return m_face;
+  // m_generator.generateWithIdentity(interest, s_identityName);
 }
 
 void
-FibHelper::SetControlParameters (ControlParameters parameters)
+FibHelper::AddNextHop (ControlParameters parameters, Ptr<Node> node)
 {
-  m_parameters = parameters;
-}
+  NS_LOG_DEBUG ("Send Command initialized");
+  Block encodedParameters(parameters.wireEncode());
 
-ControlParameters
-FibHelper::GetControlParameters ()
-{
-  return m_parameters;
-}
+  Name commandName("/localhost/nfd/fib");
+  commandName.append("add-nexthop");
+  commandName.append(encodedParameters);
 
-void
-FibHelper::SendCommand (Name commandName)
-{
-  Block encodedParameters(m_parameters.wireEncode());
   shared_ptr<Interest> command(make_shared<Interest>(commandName));
-  //generateCommand(*command);
-  m_face->onReceiveData += [this, command, encodedParameters] (const Data& response) {
-  };
-  Ptr<L3Protocol> L3protocol = m_node->GetObject<L3Protocol> ();
+  KeyChain keyChain;
+  Name key;
+  key=keyChain.generateRsaKeyPairAsDefault("add-nexthop");
+  keyChain.sign(*command);
+  // CommandValidator validator;
+  // validator.addSupportedPrivilege("fib");
+  // validator.addInterestRule(commandName.toUri(), key, *keyChain.getPublicKey (key));
+  //GenerateCommand(*command);
+  NS_LOG_DEBUG ("Command was generated");
+  // m_face->onReceiveData += [this, command, encodedParameters] (const Data& response) {
+  //   NS_LOG_DEBUG ("NFD responded with " << response.getName());
+  // };
+  Ptr<L3Protocol> L3protocol = node->GetObject<L3Protocol> ();
   shared_ptr<FibManager> fibManager = L3protocol->GetFibManager ();
+  //fibManager->addInterestRule(commandName.toUri(), key, *keyChain.getPublicKey (key));
   fibManager->onFibRequest(*command);
 }
 
