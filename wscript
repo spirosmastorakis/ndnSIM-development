@@ -60,6 +60,8 @@ def configure(conf):
             Logs.error ("Please upgrade your distribution or install custom boost libraries (http://ndnsim.net/faq.html#boost-libraries)")
             return
 
+    conf.env['NDN_plugins'] = ['topology']
+
     conf.env['ENABLE_NDNSIM']=True;
     conf.env['MODULES_BUILT'].append('ndnSIM')
 
@@ -114,6 +116,7 @@ def build(bld):
         "helper/ndn-face-container.h",
         "helper/ndn-link-control-helper.h",
         "helper/ndn-global-routing-helper.h",
+        "helper/ndn-fib-helper.h",
         "apps/ndn-app.h",
         "apps/callback-based-app.h",
 
@@ -135,6 +138,13 @@ def build(bld):
 
     tests = bld.create_ns3_module_test_library('ndnSIM')
     tests.source = bld.path.ant_glob('test/*.cc')
+
+    headers.source.extend ([
+            "plugins/topology/rocketfuel-weights-reader.h",
+            "plugins/topology/annotated-topology-reader.h",
+            ])
+    module.source.extend (bld.path.ant_glob(['plugins/topology/*.cc']))
+    module.full_headers.extend ([p.path_from(bld.path) for p in bld.path.ant_glob(['plugins/topology/**/*.h'])])
 
     if bld.env.ENABLE_EXAMPLES:
         bld.recurse ('examples')
