@@ -33,7 +33,7 @@
 #include "ns3/random-variable.h"
 
 #include "ns3/ndn-face.h"
-
+#include "ns3/ndn-fib-helper.h"
 #include "ns3/ndn-net-device-face.h"
 
 #include <getopt.h>
@@ -43,6 +43,7 @@
 using nfd::NullFace;
 using nfd::FaceUri;
 using nfd::TablesConfigSection;
+using nfd::ControlParameters;
 
 NS_LOG_COMPONENT_DEFINE ("ndn.L3Protocol");
 
@@ -127,8 +128,16 @@ L3Protocol::initializeManagement()
   tablesConfig.ensureTablesAreConfigured();
 
   // add FIB entry for NFD Management Protocol
-  shared_ptr<::nfd::fib::Entry> entry = m_forwarder->getFib().insert("/localhost/nfd").first;
-  entry->addNextHop(m_internalFace, 0);
+  // shared_ptr<::nfd::fib::Entry> entry = m_forwarder->getFib().insert("/localhost/nfd").first;
+  // entry->addNextHop(m_internalFace, 0);
+  ControlParameters parameters;
+  parameters.setName("/localhost/nfd");
+  parameters.setFaceId(m_internalFace->getId ());
+  parameters.setCost (0);
+
+  FibHelper fibHelper;
+  Ptr<Node> node = GetObject<Node> ();
+  fibHelper.AddNextHop(parameters, node);
 }
 
 shared_ptr<FibManager>
@@ -142,7 +151,6 @@ L3Protocol::SetFibManager (shared_ptr<FibManager> fibManager)
 {
   m_fibManager = fibManager;
 }
-
 
 shared_ptr<Forwarder>
 L3Protocol::GetForwarder ()
