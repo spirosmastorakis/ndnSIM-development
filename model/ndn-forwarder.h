@@ -211,7 +211,7 @@ private:
 
   shared_ptr<std::ofstream>         m_logFile;
   std::basic_streambuf<char>*       m_originalStreamBuf;
-  ::ndn::KeyChain                   m_keyChain;
+  KeyChain                          m_keyChain;
 
 
   // These objects are aggregated, but for optimization, get them here
