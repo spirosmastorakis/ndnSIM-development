@@ -32,6 +32,7 @@
 #include "ns3/ndn-face-container.h"
 #include "ns3/ndn-net-device-face.h"
 #include "ns3/ndn-forwarder.h"
+#include "ns3/ndn-fib-helper.h"
 
 namespace ns3 {
 

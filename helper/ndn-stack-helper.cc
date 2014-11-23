@@ -50,6 +50,8 @@ NS_LOG_COMPONENT_DEFINE ("ndn.StackHelper");
 namespace ns3 {
 namespace ndn {
 
+using ::nfd::ControlParameters;
+
 StackHelper::StackHelper ()
   : m_limitsEnabled (false)
   , m_needSetDefaultRoutes (false)
@@ -369,9 +371,16 @@ StackHelper::AddRoute (Ptr<Node> node, const std::string &prefix, Ptr<Face> face
   //Get the forwarder instance
   shared_ptr<Forwarder> m_forwarder = L3protocol->GetForwarder();
   //add the appropriate fib entry to the NFD fib table
-  Name name(prefix);
-  shared_ptr<::nfd::fib::Entry> m_entry = m_forwarder->getFib().insert(prefix).first;
-  m_entry->addNextHop(face->shared_from_this(), metric);
+  // Name name(prefix);
+  // shared_ptr<::nfd::fib::Entry> m_entry = m_forwarder->getFib().insert(prefix).first;
+  // m_entry->addNextHop(face->shared_from_this(), metric);
+  ControlParameters parameters;
+  parameters.setName(prefix);
+  parameters.setFaceId(face->getId ());
+  parameters.setCost (metric);
+
+  FibHelper fibHelper;
+  fibHelper.AddNextHop(parameters, node);
 }
 
 void
