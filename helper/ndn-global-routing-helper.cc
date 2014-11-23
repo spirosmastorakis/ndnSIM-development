@@ -27,6 +27,7 @@
 #include "ndn-global-routing-helper.h"
 
 #include "ns3/ndn-forwarder.h"
+#include "ns3/ndn-fib-helper.h"
 #include "../model/ndn-net-device-face.h"
 #include "../model/ndn-global-router.h"
 
@@ -62,6 +63,7 @@ NS_LOG_COMPONENT_DEFINE ("ndn.GlobalRoutingHelper");
 
 using namespace std;
 using namespace boost;
+using nfd::ControlParameters;
 
 namespace ns3 {
 namespace ndn {
@@ -327,8 +329,17 @@ GlobalRoutingHelper::CalculateRoutes (bool invalidatedRoutes/* = true*/)
 
                       //Ptr<fib::Entry> entry = fib->Add (prefix, i->second.get<0> (), i->second.get<1> ());
 
-                      shared_ptr<::nfd::fib::Entry> entry = forwarder->getFib().insert(*prefix).first;
-                      entry->addNextHop((i->second.get<0> ())->shared_from_this (), i->second.get<1> ());
+                      // shared_ptr<::nfd::fib::Entry> entry = forwarder->getFib().insert(*prefix).first;
+                      // entry->addNextHop((i->second.get<0> ())->shared_from_this (), i->second.get<1> ());
+
+                      ControlParameters parameters;
+                      parameters.setName(*prefix);
+                      parameters.setFaceId((i->second.get<0>())->getId());
+                      parameters.setCost (i->second.get<1>());
+
+                      FibHelper fibHelper;
+                      fibHelper.AddNextHop(parameters, *node);
+
                       //entry->SetRealDelayToProducer (i->second.get<0> (), Seconds (i->second.get<2> ()));
 
                       //Ptr<Limits> faceLimits = i->second.get<0> ()->GetObject<Limits> ();
@@ -461,8 +472,16 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes (bool invalidatedRoutes/* = true
                             continue;
 
                           //Ptr<fib::Entry> entry = fib->Add (prefix, i->second.get<0> (), i->second.get<1> ());
-                          shared_ptr<::nfd::fib::Entry> entry = forwarder->getFib().insert(*prefix).first;
-                          entry->addNextHop((i->second.get<0> ())->shared_from_this (), i->second.get<1> ());
+                          // shared_ptr<::nfd::fib::Entry> entry = forwarder->getFib().insert(*prefix).first;
+                          // entry->addNextHop((i->second.get<0> ())->shared_from_this (), i->second.get<1> ());
+                          ControlParameters parameters;
+                          parameters.setName(*prefix);
+                          parameters.setFaceId((i->second.get<0>())->getId());
+                          parameters.setCost (i->second.get<1>());
+
+                          FibHelper fibHelper;
+                          fibHelper.AddNextHop(parameters, *node);
+
                           //entry->SetRealDelayToProducer (i->second.get<0> (), Seconds (i->second.get<2> ()));
 
                           //Ptr<Limits> faceLimits = i->second.get<0> ()->GetObject<Limits> ();
