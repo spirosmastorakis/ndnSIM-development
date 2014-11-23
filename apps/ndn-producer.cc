@@ -31,8 +31,8 @@
 #include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
 #include "ns3/ndn-ns3.hpp"
 #include "ns3/ndn-forwarder.h"
-
-#include "ns3/ndnSIM/utils/ndn-fw-hop-count-tag.h"
+#include "ns3/ndn-fib-helper.h"
+#include "ns3/ndn-fw-hop-count-tag.h"
 
 #include <boost/ref.hpp>
 #include <boost/lambda/lambda.hpp>
@@ -46,6 +46,8 @@ NS_LOG_COMPONENT_DEFINE ("ndn.Producer");
 
 namespace ns3 {
 namespace ndn {
+
+using nfd::ControlParameters;
 
 NS_OBJECT_ENSURE_REGISTERED (Producer);
 
@@ -100,9 +102,18 @@ Producer::StartApplication ()
 
   NS_LOG_DEBUG ("NodeID: " << GetNode ()->GetId ());
 
-  ::ndn::shared_ptr< ::nfd::fib::Entry> entry =
-     GetNode ()->GetObject<L3Protocol> ()->GetForwarder ()->getFib ().insert (m_prefix).first;
-  entry->addNextHop (m_face->shared_from_this (), 0);
+  // ::ndn::shared_ptr< ::nfd::fib::Entry> entry =
+  //    GetNode ()->GetObject<L3Protocol> ()->GetForwarder ()->getFib ().insert (m_prefix).first;
+  // entry->addNextHop (m_face->shared_from_this (), 0);
+
+  ControlParameters parameters;
+  parameters.setName(m_prefix);
+  parameters.setFaceId(m_face->getId ());
+  parameters.setCost (0);
+
+  FibHelper fibHelper;
+  Ptr<Node> node = GetNode();
+  fibHelper.AddNextHop(parameters, node);
 
   // fibEntry->UpdateStatus (m_face, fib::FaceMetric::NDN_FIB_GREEN);
 
