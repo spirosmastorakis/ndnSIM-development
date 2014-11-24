@@ -26,6 +26,7 @@
 using namespace ns3;
 using ns3::ndn::StackHelper;
 using ns3::ndn::AppHelper;
+using ns3::ndn::StrategyChoiceHelper;
 
 /**
  * This scenario simulates a very simple network topology:
@@ -73,6 +74,10 @@ main (int argc, char *argv[])
   ndnHelper.SetDefaultRoutes (true);
   ndnHelper.InstallAll ();
   // Installing applications
+
+  // Choosing forwarding strategy
+  StrategyChoiceHelper strategyChoiceHelper ("/localhost/nfd/strategy/best-route");
+  strategyChoiceHelper.InstallAll ();
 
   // Consumer
   AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
