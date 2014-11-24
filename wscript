@@ -117,6 +117,7 @@ def build(bld):
         "helper/ndn-link-control-helper.h",
         "helper/ndn-global-routing-helper.h",
         "helper/ndn-fib-helper.h",
+        "helper/ndn-strategy-choice-helper.h",
         "apps/ndn-app.h",
         "apps/callback-based-app.h",
 
