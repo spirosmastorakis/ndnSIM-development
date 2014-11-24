@@ -36,6 +36,9 @@ public:
   void
   AddNextHop (ControlParameters parameters, Ptr<Node> node);
 
+  void
+  RemoveNextHop (ControlParameters parameters, Ptr<Node> node);
+
 protected:
  CommandInterestGenerator m_generator;
 
