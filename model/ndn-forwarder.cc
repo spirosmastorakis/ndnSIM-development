@@ -164,6 +164,18 @@ L3Protocol::SetForwarder (shared_ptr<Forwarder> forwarder)
   m_forwarder = forwarder;
 }
 
+shared_ptr<StrategyChoiceManager>
+L3Protocol::GetStrategyChoiceManager ()
+{
+  return m_strategyChoiceManager;
+}
+
+void
+L3Protocol::SetStrategyChoiceManager (shared_ptr<StrategyChoiceManager> strategyChoiceManager)
+{
+  m_strategyChoiceManager = strategyChoiceManager;
+}
+
 /*
  * This method is called by AddAgregate and completes the aggregation
  * by setting the node in the ndn stack

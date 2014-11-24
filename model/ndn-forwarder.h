@@ -126,6 +126,12 @@ public:
   void
   SetFibManager (shared_ptr<FibManager> fibManager);
 
+  shared_ptr<StrategyChoiceManager>
+  GetStrategyChoiceManager ();
+
+  void
+  SetStrategyChoiceManager (shared_ptr<StrategyChoiceManager> strategyChoiceManager);
+
   /**
    * \brief Get the forwarder (NFD) instance
    *
