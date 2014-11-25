@@ -8,23 +8,11 @@ namespace ndn {
 
 NS_LOG_COMPONENT_DEFINE ("ndn.StrategyChoiceHelper");
 
-using ::ndn::CommandInterestGenerator;
 using ::nfd::ControlParameters;
 using ::nfd::StrategyChoiceManager;
-using ::nfd::CommandValidator;
 
-// const Name FibHelper::s_identityName("/add/FibEntry");
-// shared_ptr<::ndn::IdentityCertificate> FibHelper::s_certificate;
-//template void KeyChain::sign<Interest>(Interest);
-
-StrategyChoiceHelper::StrategyChoiceHelper () :
-  m_strategy ("/localhost/nfd/strategy/best-route")
+StrategyChoiceHelper::StrategyChoiceHelper ()
 {
-}
-
-StrategyChoiceHelper::StrategyChoiceHelper (Name strategy)
-{
-  m_strategy = strategy;
 }
 
 StrategyChoiceHelper::~StrategyChoiceHelper ()
@@ -32,7 +20,7 @@ StrategyChoiceHelper::~StrategyChoiceHelper ()
 }
 
 void
-StrategyChoiceHelper::StrategyChoice (ControlParameters parameters, Ptr<Node> node) const
+StrategyChoiceHelper::StrategyChoice (ControlParameters parameters, Ptr<Node> node)
 {
   NS_LOG_DEBUG ("Strategy choice command was initialized");
   Block encodedParameters(parameters.wireEncode());
@@ -62,28 +50,28 @@ StrategyChoiceHelper::StrategyChoice (ControlParameters parameters, Ptr<Node> no
 }
 
 void
-StrategyChoiceHelper::Install (const NodeContainer &c) const
+StrategyChoiceHelper::Install (const NodeContainer &c, const Name namePrefix, const Name strategy)
 {
   for (NodeContainer::Iterator i = c.Begin (); i != c.End (); ++i)
     {
-      Install (*i);
+      Install (*i, namePrefix, strategy);
     }
 }
 
 void
-StrategyChoiceHelper::Install (Ptr<Node> node) const
+StrategyChoiceHelper::Install (Ptr<Node> node, const Name namePrefix, const Name strategy)
 {
   ControlParameters parameters;
-  parameters.setName ("/test");
-  NS_LOG_DEBUG ("Node ID: " << node->GetId () << " with forwarding strategy " << m_strategy);
-  parameters.setStrategy (m_strategy);
+  parameters.setName (namePrefix);
+  NS_LOG_DEBUG ("Node ID: " << node->GetId () << " with forwarding strategy " << strategy);
+  parameters.setStrategy (strategy);
   StrategyChoice (parameters, node);
 }
 
 void
-StrategyChoiceHelper::InstallAll ()
+StrategyChoiceHelper::InstallAll (const Name namePrefix, const Name strategy)
 {
-  Install (NodeContainer::GetGlobal ());
+  Install (NodeContainer::GetGlobal (), namePrefix, strategy);
 }
 
 } // namespace ndn
