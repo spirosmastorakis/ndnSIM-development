@@ -28,7 +28,7 @@
 
 namespace nfd {
 
-NS_LOG_COMPONENT_DEFINE("nfd.ManagerBase");
+NFD_LOG_INIT("nfd.ManagerBase");
 
 ManagerBase::ManagerBase(shared_ptr<InternalFace> face, const std::string& privilege,
                          ndn::KeyChain& keyChain)
@@ -121,7 +121,7 @@ void
 ManagerBase::onCommandValidationFailed(const shared_ptr<const Interest>& command,
                                        const std::string& error)
 {
-  NS_LOG_DEBUG("command result: unauthorized command: " << *command << " (" << error << ")");
+  NFD_LOG_DEBUG("command result: unauthorized command: " << *command << " (" << error << ")");
   sendResponse(command->getName(), 403, "Unauthorized command");
 }
 

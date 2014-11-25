@@ -35,7 +35,7 @@
 
 namespace nfd {
 
-NS_LOG_COMPONENT_DEFINE ("nfd.FibManager");
+NFD_LOG_INIT("FibManager");
 
 const Name FibManager::COMMAND_PREFIX = "/localhost/nfd/fib";
 
@@ -105,23 +105,22 @@ FibManager::onFibRequest(const Interest& request)
   const Name& command = request.getName();
   const size_t commandNComps = command.size();
   const Name::Component& verb = command.get(COMMAND_PREFIX.size());
-  NS_LOG_DEBUG ("Inside onFibRequest");
   UnsignedVerbDispatchTable::const_iterator unsignedVerbProcessor = m_unsignedVerbDispatch.find(verb);
   if (unsignedVerbProcessor != m_unsignedVerbDispatch.end())
     {
-      NS_LOG_DEBUG("command result: processing verb: " << verb);
+      NFD_LOG_DEBUG("command result: processing verb: " << verb);
       (unsignedVerbProcessor->second)(this, request);
     }
   else if (COMMAND_UNSIGNED_NCOMPS <= commandNComps &&
            commandNComps < COMMAND_SIGNED_NCOMPS)
     {
-      NS_LOG_DEBUG("command result: unsigned verb: " << command);
+      NFD_LOG_DEBUG("command result: unsigned verb: " << command);
       sendResponse(command, 401, "Signature required");
     }
   else if (commandNComps < COMMAND_SIGNED_NCOMPS ||
            !COMMAND_PREFIX.isPrefixOf(command))
     {
-      NS_LOG_DEBUG("command result: malformed");
+      NFD_LOG_DEBUG("command result: malformed");
       sendResponse(command, 400, "Malformed command");
     }
   else
@@ -145,7 +144,7 @@ FibManager::onValidatedFibRequest(const shared_ptr<const Interest>& request)
       ControlParameters parameters;
       if (!extractParameters(parameterComponent, parameters))
         {
-          NS_LOG_DEBUG("command result: malformed verb: " << verb);
+          NFD_LOG_DEBUG("command result: malformed verb: " << verb);
           sendResponse(command, 400, "Malformed command");
           return;
         }
@@ -156,14 +155,14 @@ FibManager::onValidatedFibRequest(const shared_ptr<const Interest>& request)
           parameters.setFaceId(request->getIncomingFaceId());
         }
 
-      NS_LOG_DEBUG("command result: processing verb: " << verb);
+      NFD_LOG_DEBUG("command result: processing verb: " << verb);
       ControlResponse response;
       (verbProcessor->second)(this, parameters, response);
       sendResponse(command, response);
     }
   else
     {
-      NS_LOG_DEBUG("command result: unsupported verb: " << verb);
+      NFD_LOG_DEBUG("command result: unsupported verb: " << verb);
       sendResponse(command, 501, "Unsupported command");
     }
 }
@@ -176,7 +175,7 @@ FibManager::addNextHop(ControlParameters& parameters,
 
   if (!validateParameters(command, parameters))
     {
-      NS_LOG_DEBUG("add-nexthop result: FAIL reason: malformed");
+      NFD_LOG_DEBUG("add-nexthop result: FAIL reason: malformed");
       setResponse(response, 400, "Malformed command");
       return;
     }
@@ -196,7 +195,7 @@ FibManager::addNextHop(ControlParameters& parameters,
 
       entry->addNextHop(nextHopFace, cost);
 
-      NS_LOG_DEBUG("add-nexthop result: OK"
+      NFD_LOG_DEBUG("add-nexthop result: OK"
                     << " prefix:" << prefix
                     << " faceid: " << faceId
                     << " cost: " << cost);
