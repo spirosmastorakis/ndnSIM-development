@@ -30,6 +30,7 @@ using ns3::ndn::StackHelper;
 using ns3::ndn::AppHelper;
 using ns3::ndn::GlobalRoutingHelper;
 using ns3::AnnotatedTopologyReader;
+using ns3::ndn::FibHelper;
 
 /**
  *
@@ -119,21 +120,22 @@ main (int argc, char *argv[])
       // when Start/Stop time is not specified, the application is running throughout the simulation
     }
 
+  FibHelper fibHelper;
   // Manually configure FIB routes
-  StackHelper::AddRoute	("c1", "/data", "n1", 1); // link to n1
-  StackHelper::AddRoute	("c2", "/data", "n1", 1); // link to n1
-  StackHelper::AddRoute	("c3", "/data", "n1", 1); // link to n1
-  StackHelper::AddRoute	("c4", "/data", "n1", 1); // link to n1
+  FibHelper::AddRoute	("c1", "/data", "n1", 1); // link to n1
+  FibHelper::AddRoute	("c2", "/data", "n1", 1); // link to n1
+  FibHelper::AddRoute	("c3", "/data", "n1", 1); // link to n1
+  FibHelper::AddRoute	("c4", "/data", "n1", 1); // link to n1
 
-  StackHelper::AddRoute	("n1", "/data", "n2", 1); // link to n2
-  StackHelper::AddRoute	("n1", "/data", "n12", 2); // link to n12
+  FibHelper::AddRoute	("n1", "/data", "n2", 1); // link to n2
+  FibHelper::AddRoute	("n1", "/data", "n12", 2); // link to n12
 
-  StackHelper::AddRoute	("n12", "/data", "n2", 1); // link to n2
+  FibHelper::AddRoute	("n12", "/data", "n2", 1); // link to n2
 
-  StackHelper::AddRoute	("n2", "/data/p1", "p1", 1); // link to p1
-  StackHelper::AddRoute	("n2", "/data/p2", "p2", 1); // link to p2
-  StackHelper::AddRoute	("n2", "/data/p3", "p3", 1); // link to p3
-  StackHelper::AddRoute	("n2", "/data/p4", "p4", 1); // link to p4
+  FibHelper::AddRoute	("n2", "/data/p1", "p1", 1); // link to p1
+  FibHelper::AddRoute	("n2", "/data/p2", "p2", 1); // link to p2
+  FibHelper::AddRoute	("n2", "/data/p3", "p3", 1); // link to p3
+  FibHelper::AddRoute	("n2", "/data/p4", "p4", 1); // link to p4
 
   // Schedule simulation time and run the simulation
   Simulator::Stop (Seconds (20.0));
