@@ -31,13 +31,13 @@ public:
   ~StrategyChoiceHelper ();
 
   static void
-  Install (const NodeContainer &c, const Name namePrefix, const Name strategy);
+  Install (const NodeContainer& c, const Name& namePrefix, const Name& strategy);
 
   static void
-  Install (Ptr<Node> node, const Name namePrefix, const Name strategy);
+  Install (Ptr<Node> node, const Name& namePrefix, const Name& strategy);
 
   static void
-  InstallAll (const Name namePrefix, const Name strategy);
+  InstallAll (const Name& namePrefix, const Name& strategy);
 
 protected:
   static void
