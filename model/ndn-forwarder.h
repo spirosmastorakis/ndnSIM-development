@@ -222,7 +222,12 @@ private:
 
   // These objects are aggregated, but for optimization, get them here
   Ptr<Node> m_node; ///< \brief node on which ndn stack is installed
-  //Ptr<ForwardingStrategy> m_forwardingStrategy; ///< \brief smart pointer to the selected forwarding strategy
+
+  TracedCallback<const Interest&, const Face&> m_inInterests; ///< @brief trace of incoming Interests
+  TracedCallback<const Interest&, const Face&> m_outInterests; ///< @brief Transmitted interests trace
+
+  TracedCallback<const Data&, const Face&> m_outData; ///< @brief trace of outgoing Data
+  TracedCallback<const Data&, const Face&> m_inData; ///< @brief trace of incoming Data
 };
 
 } // namespace ndn
