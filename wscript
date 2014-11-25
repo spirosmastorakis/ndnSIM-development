@@ -67,12 +67,12 @@ def configure(conf):
     conf.report_optional_feature("ndnSIM", "ndnSIM", True, "")
 
 def build(bld):
-    deps = ['core', 'network', 'point-to-point']
+    deps = ['core', 'network', 'point-to-point', 'topology-read', 'mobility', 'internet']
     if 'ns3-visualizer' in bld.env['NS3_ENABLED_MODULES']:
-        deps.append ('visualizer')
+        deps.append('visualizer')
 
-    deps.append ('topology-read')
-    deps.append ('mobility')
+    if bld.env.ENABLE_EXAMPLES:
+        deps += ['point-to-point-layout', 'csma', 'applications']
 
     module = bld.create_ns3_module ('ndnSIM', deps)
     module.module = 'ndnSIM'
