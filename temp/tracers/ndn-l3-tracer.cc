@@ -24,19 +24,20 @@
 #include "ns3/config.h"
 #include "ns3/names.h"
 #include "ns3/callback.h"
-#include "ns3/ndn-forwarding-strategy.h"
 
 #include <boost/lexical_cast.hpp>
 
 #include "ns3/ndn-face.h"
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
-#include "ns3/ndn-pit-entry.h"
 
 using namespace std;
 
 namespace ns3 {
 namespace ndn {
+
+using ::ndn::Interest;
+using ::ndn::Data;
 
 L3Tracer::L3Tracer (Ptr<Node> node)
 : m_nodePtr (node)
@@ -66,15 +67,13 @@ L3Tracer::~L3Tracer ()
 void
 L3Tracer::Connect ()
 {
-  Ptr<ForwardingStrategy> fw = m_nodePtr->GetObject<ForwardingStrategy> ();
+  m_node->TraceConnectWithoutContext ("OutInterests",  MakeCallback (&L3Tracer::OutInterests, this));
+  m_node->TraceConnectWithoutContext ("InInterests",   MakeCallback (&L3Tracer::InInterests, this));
+  // m_node->TraceConnectWithoutContext ("DropInterests", MakeCallback (&L3Tracer::DropInterests, this));
 
-  fw->TraceConnectWithoutContext ("OutInterests",  MakeCallback (&L3Tracer::OutInterests, this));
-  fw->TraceConnectWithoutContext ("InInterests",   MakeCallback (&L3Tracer::InInterests, this));
-  fw->TraceConnectWithoutContext ("DropInterests", MakeCallback (&L3Tracer::DropInterests, this));
-
-  fw->TraceConnectWithoutContext ("OutData",  MakeCallback (&L3Tracer::OutData, this));
-  fw->TraceConnectWithoutContext ("InData",   MakeCallback (&L3Tracer::InData, this));
-  fw->TraceConnectWithoutContext ("DropData", MakeCallback (&L3Tracer::DropData, this));
+  // m_node->TraceConnectWithoutContext ("OutData",  MakeCallback (&L3Tracer::OutData, this));
+  // m_node->TraceConnectWithoutContext ("InData",   MakeCallback (&L3Tracer::InData, this));
+  // m_node->TraceConnectWithoutContext ("DropData", MakeCallback (&L3Tracer::DropData, this));
   /*
   // only for some strategies
   fw->TraceConnectWithoutContext ("OutNacks",  MakeCallback (&L3Tracer::OutNacks, this));
@@ -82,8 +81,8 @@ L3Tracer::Connect ()
   fw->TraceConnectWithoutContext ("DropNacks", MakeCallback (&L3Tracer::DropNacks, this));
   */
   // satisfied/timed out PIs
-  fw->TraceConnectWithoutContext ("SatisfiedInterests", MakeCallback (&L3Tracer::SatisfiedInterests, this));
-  fw->TraceConnectWithoutContext ("TimedOutInterests", MakeCallback (&L3Tracer::TimedOutInterests, this));
+  // m_node->TraceConnectWithoutContext ("SatisfiedInterests", MakeCallback (&L3Tracer::SatisfiedInterests, this));
+  // m_node->TraceConnectWithoutContext ("TimedOutInterests", MakeCallback (&L3Tracer::TimedOutInterests, this));
 }
 
 } // namespace ndn

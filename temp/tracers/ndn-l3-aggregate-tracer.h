@@ -162,11 +162,11 @@ protected:
   DropData (shared_ptr<const ::ndn::Data>, Ptr<const Face>);
 
 
-  virtual void
-  SatisfiedInterests (Ptr<const pit::Entry>);
+  // virtual void
+  // SatisfiedInterests (Ptr<const pit::Entry>);
 
-  virtual void
-  TimedOutInterests (Ptr<const pit::Entry>);
+  // virtual void
+  // TimedOutInterests (Ptr<const pit::Entry>);
 
 protected:
   void
