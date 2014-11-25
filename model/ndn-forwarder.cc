@@ -66,6 +66,18 @@ L3Protocol::GetTypeId (void)
                    ObjectVectorValue (),
                    MakeObjectVectorAccessor (&L3Protocol::m_faces),
                    MakeObjectVectorChecker<Face> ())
+
+    .AddTraceSource("OutInterests",  "OutInterests",
+                     MakeTraceSourceAccessor(&L3Protocol::m_outInterests))
+    .AddTraceSource("InInterests",   "InInterests",
+                    MakeTraceSourceAccessor(&L3Protocol::m_inInterests))
+
+    ////////////////////////////////////////////////////////////////////
+
+    .AddTraceSource ("OutData",  "OutData",
+                      MakeTraceSourceAccessor(&L3Protocol::m_outData))
+    .AddTraceSource ("InData",   "InData",
+                      MakeTraceSourceAccessor(&L3Protocol::m_inData))
   ;
   return tid;
 }
@@ -225,7 +237,7 @@ faceNullDeleter(const Ptr<Face>& face)
 }
 
 uint32_t
-L3Protocol::AddFace (const Ptr<Face> &face)
+L3Protocol::AddFace (const Ptr<Face>& face)
 {
   NS_LOG_FUNCTION (this << &face);
 
@@ -240,6 +252,25 @@ L3Protocol::AddFace (const Ptr<Face> &face)
 
   m_faces.push_back (face);
   m_faceCounter++;
+
+  face->onReceiveInterest += [this, face] (const Interest& interest) {
+    this->m_inInterests(interest, *face);
+  };
+
+  face->onSendInterest += [this, face] (const Interest& interest) {
+    this->m_outInterests(interest, *face);
+  };
+
+  face->onReceiveData += [this, face] (const Data& data) {
+    this->m_inData(data, *face);
+  };
+
+  face->onSendData += [this, face] (const Data& data) {
+    this->m_outData(data, *face);
+  };
+  //face->onSendInterest += bind(m_outInterests, _1, ref(*face));
+  //face->onReceiveData += bind(m_inData, _1, ref(*face));
+  //face->onSendData += bind(m_outData, _1, ref(*face));
 
   return face->GetId ();
 }
