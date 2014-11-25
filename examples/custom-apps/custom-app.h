@@ -27,6 +27,10 @@
 
 namespace ns3 {
 
+using std::shared_ptr;
+using ::ndn::Interest;
+using ::ndn::Data;
+
 /**
  * @brief A simple custom application
  *
@@ -43,7 +47,7 @@ public:
   // register NS-3 type "CustomApp"
   static TypeId
   GetTypeId ();
-  
+
   // (overridden from ndn::App) Processing upon start of the application
   virtual void
   StartApplication ();
@@ -54,11 +58,11 @@ public:
 
   // (overridden from ndn::App) Callback that will be called when Interest arrives
   virtual void
-  OnInterest (Ptr<const ndn::Interest> interest);
+  OnInterest (shared_ptr<const Interest> interest);
 
   // (overridden from ndn::App) Callback that will be called when Data arrives
   virtual void
-  OnData (Ptr<const ndn::Data> contentObject);
+  OnData (shared_ptr<const Data> contentObject);
 
 private:
   void

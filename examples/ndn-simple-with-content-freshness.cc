@@ -24,6 +24,8 @@
 #include "ns3/ndnSIM-module.h"
 
 using namespace ns3;
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
 
 /**
  * This scenario simulates a very simple network topology:
@@ -36,11 +38,11 @@ using namespace ns3;
  * This scenario demonstrates how to use content store that responds to Freshness parameter set in Datas.
  * That is, if producer set Freshness field to 2 seconds, the corresponding content object will not be cached
  * more than 2 seconds (can be cached for a shorter time, if entry is evicted earlier)
- * 
+ *
  *     NS_LOG=DumbRequester ./waf --run ndn-simple-with-content-freshness
  */
 
-int 
+int
 main (int argc, char *argv[])
 {
   // setting default parameters for PointToPoint links and channels
@@ -62,7 +64,7 @@ main (int argc, char *argv[])
   p2p.Install (nodes.Get (1), nodes.Get (2));
 
   // Install CCNx stack on all nodes
-  ndn::StackHelper ccnxHelper;
+  StackHelper ccnxHelper;
   ccnxHelper.SetDefaultRoutes (true);
   ccnxHelper.SetContentStore ("ns3::ndn::cs::Freshness::Lru",
                               "MaxSize", "2"); // allow just 2 entries to be cached
@@ -71,7 +73,7 @@ main (int argc, char *argv[])
   // Installing applications
 
   // Consumer
-  ndn::AppHelper consumerHelper ("DumbRequester");
+  AppHelper consumerHelper ("DumbRequester");
 
   // /*
   //   1) at time 1 second requests Data from a producer that does not specify freshness
@@ -86,7 +88,7 @@ main (int argc, char *argv[])
   //  */
 
   ApplicationContainer apps;
-  
+
   consumerHelper.SetPrefix ("/no-freshness");
   apps = consumerHelper.Install (nodes.Get (0));
   apps.Start (Seconds (0.1));
@@ -96,9 +98,9 @@ main (int argc, char *argv[])
   apps = consumerHelper.Install (nodes.Get (0));
   apps.Start (Seconds (20.1));
   apps.Stop  (Seconds (30.0));
-  
+
   // Producer
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
+  AppHelper producerHelper ("ns3::ndn::Producer");
   producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
 
   producerHelper.SetAttribute ("Freshness", TimeValue (Seconds (0))); // unlimited freshness
@@ -108,7 +110,7 @@ main (int argc, char *argv[])
   producerHelper.SetAttribute ("Freshness", TimeValue (Seconds (2.0))); // freshness 2 seconds (!!! freshness granularity is 1 seconds !!!)
   producerHelper.SetPrefix ("/with-freshness");
   producerHelper.Install (nodes.Get (2)); // last node
-                               
+
   Simulator::Stop (Seconds (30.0));
 
   Simulator::Run ();

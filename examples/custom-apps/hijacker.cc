@@ -17,7 +17,7 @@
  *
  * Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
-
+/*
 // hijacker.cc
 
 #include "hijacker.h"
@@ -73,3 +73,4 @@ Hijacker::StopApplication ()
 
 } // namespace ns3
 
+*/
