@@ -28,6 +28,7 @@ using namespace ns3;
 using ns3::ndn::StackHelper;
 using ns3::ndn::AppHelper;
 using ns3::ndn::GlobalRoutingHelper;
+using ns3::ndn::L3RateTracer;
 
 /**
  * This scenario simulates a grid topology (using PointToPointGrid module)
@@ -104,6 +105,9 @@ main (int argc, char *argv[])
   GlobalRoutingHelper::CalculateRoutes ();
 
   Simulator::Stop (Seconds (20.0));
+
+  // Install rate tracer
+  L3RateTracer::InstallAll ("rate-trace.txt", Seconds (1.5));
 
   Simulator::Run ();
   Simulator::Destroy ();
