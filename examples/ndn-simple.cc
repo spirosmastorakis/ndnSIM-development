@@ -78,8 +78,8 @@ main (int argc, char *argv[])
   // Installing applications
 
   // Choosing forwarding strategy
-  StrategyChoiceHelper strategyChoiceHelper ("/localhost/nfd/strategy/best-route");
-  strategyChoiceHelper.InstallAll ();
+  StrategyChoiceHelper strategyChoiceHelper;
+  strategyChoiceHelper.InstallAll ("/prefix", "/localhost/nfd/strategy/best-route");
 
   // Consumer
   AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
