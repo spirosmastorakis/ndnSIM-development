@@ -29,12 +29,18 @@
 #include "ns3/string.h"
 
 #include "ns3/ndn-app-face.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 
 NS_LOG_COMPONENT_DEFINE ("DumbRequester");
 
 namespace ns3 {
+
+using std::shared_ptr;
+using std::make_shared;
+using ::ndn::Interest;
+using ::ndn::Data;
 
 NS_OBJECT_ENSURE_REGISTERED (DumbRequester);
 
@@ -83,22 +89,22 @@ void
 DumbRequester::SendInterest ()
 {
   if (!m_isRunning) return;
-  
+
   /////////////////////////////////////
   // Sending one Interest packet out //
   /////////////////////////////////////
-  
-  Ptr<ndn::Name> prefix = Create<ndn::Name> (m_name); // another way to create name
+
+  shared_ptr<::ndn::Name> prefix = make_shared<::ndn::Name> (m_name); // another way to create name
 
   // Create and configure ndn::Interest
-  Ptr<ndn::Interest> interest = Create<ndn::Interest> ();
+  shared_ptr<Interest> interest = make_shared<Interest> ();
   UniformVariable rand (0,std::numeric_limits<uint32_t>::max ());
-  interest->SetNonce            (rand.GetValue ());
-  interest->SetName             (prefix);
-  interest->SetInterestLifetime (Seconds (1.0));
+  interest->setNonce            (rand.GetValue ());
+  interest->setName             (*prefix);
+  interest->setInterestLifetime (::ndn::time::seconds (uint64_t (1.0)));
 
   NS_LOG_DEBUG ("Sending Interest packet for " << *prefix);
-  
+
 
   // Call trace (for logging purposes)
   m_transmittedInterests (interest, this, m_face);
@@ -110,9 +116,9 @@ DumbRequester::SendInterest ()
 }
 
 void
-DumbRequester::OnData (Ptr<const ndn::Data> contentObject)
+DumbRequester::OnData (shared_ptr<const Data> contentObject)
 {
-  NS_LOG_DEBUG ("Receiving Data packet for " << contentObject->GetName ());
+  NS_LOG_DEBUG ("Receiving Data packet for " << contentObject->getName ());
 }
 
 

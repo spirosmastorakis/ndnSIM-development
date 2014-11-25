@@ -26,30 +26,35 @@
 
 using namespace ns3;
 
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
+using ns3::ndn::GlobalRoutingHelper;
+using ns3::AnnotatedTopologyReader;
+
 /**
  *
  *   /------\ 0                                                 0 /------\
  *   |  c1  |<-----+                                       +----->|  p1  |
  *   \------/       \                                     /       \------/
- *                   \              /-----\              /        
+ *                   \              /-----\              /
  *   /------\ 0       \         +==>| r12 |<==+         /       0 /------\
  *   |  c2  |<--+      \       /    \-----/    \       /      +-->|  p2  |
  *   \------/    \      \     |                 |     /      /    \------/
- *                \      |    |   1Mbps links   |    |      /     
- *                 \  1  v0   v5               1v   2v  3  /      
- *                  +->/------\                 /------\<-+       
- *                    2|  r1  |<===============>|  r2  |4         
- *                  +->\------/4               0\------/<-+       
- *                 /    3^                           ^5    \      
- *                /      |                           |      \     
+ *                \      |    |   1Mbps links   |    |      /
+ *                 \  1  v0   v5               1v   2v  3  /
+ *                  +->/------\                 /------\<-+
+ *                    2|  r1  |<===============>|  r2  |4
+ *                  +->\------/4               0\------/<-+
+ *                 /    3^                           ^5    \
+ *                /      |                           |      \
  *   /------\ 0  /      /                             \      \  0 /------\
  *   |  c3  |<--+      /                               \      +-->|  p3  |
  *   \------/         /                                 \         \------/
- *                   /     "All consumer-router and"     \        
+ *                   /     "All consumer-router and"     \
  *   /------\ 0     /      "router-producer links are"    \    0 /------\
  *   |  c4  |<-----+       "10Mbps"                        +---->|  p4  |
  *   \------/                                                    \------/
- *                                                               
+ *
  *   "Numbers near nodes denote face IDs. Face ID is assigned based on the order of link"
  *   "definitions in the topology file"
  *
@@ -69,10 +74,10 @@ main (int argc, char *argv[])
   topologyReader.Read ();
 
   // Install NDN stack on all nodes
-  ndn::StackHelper ndnHelper;
-  ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::CustomStrategy");
-  ndnHelper.SetContentStore ("ns3::ndn::cs::Lru",
-                              "MaxSize", "1"); // ! Attention ! If set to 0, then MaxSize is infinite
+  StackHelper ndnHelper;
+  // ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::CustomStrategy");
+  // ndnHelper.SetContentStore ("ns3::ndn::cs::Lru",
+  //                             "MaxSize", "1"); // ! Attention ! If set to 0, then MaxSize is infinite
   ndnHelper.InstallAll ();
 
   // Getting containers for the consumer/producer
@@ -88,25 +93,25 @@ main (int argc, char *argv[])
   for (int i = 0; i < 4; i++)
     {
       std::string prefix = "/data/"+Names::FindName (producers[i]);
-      
+
       /////////////////////////////////////////////////////////////////////////////////
       // install consumer app on consumer node c_i to request data from producer p_i //
       /////////////////////////////////////////////////////////////////////////////////
 
-      ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+      AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
       consumerHelper.SetAttribute ("Frequency", StringValue ("10")); // 100 interests a second
-      
+
       consumerHelper.SetPrefix (prefix);
       ApplicationContainer consumer = consumerHelper.Install (consumers[i]);
       consumer.Start (Seconds (i));    // start consumers at 0s, 1s, 2s, 3s
       consumer.Stop  (Seconds (19-i)); // stop consumers at 19s, 18s, 17s, 16s
-      
+
       ///////////////////////////////////////////////
       // install producer app on producer node p_i //
       ///////////////////////////////////////////////
-            
-      ndn::AppHelper producerHelper ("ns3::ndn::Producer");
-      producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));  
+
+      AppHelper producerHelper ("ns3::ndn::Producer");
+      producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
 
       // install producer that will satisfy Interests in /dst1 namespace
       producerHelper.SetPrefix (prefix);
@@ -115,20 +120,20 @@ main (int argc, char *argv[])
     }
 
   // Manually configure FIB routes
-  ndn::StackHelper::AddRoute	("c1", "/data", "n1", 1); // link to n1
-  ndn::StackHelper::AddRoute	("c2", "/data", "n1", 1); // link to n1
-  ndn::StackHelper::AddRoute	("c3", "/data", "n1", 1); // link to n1
-  ndn::StackHelper::AddRoute	("c4", "/data", "n1", 1); // link to n1
+  StackHelper::AddRoute	("c1", "/data", "n1", 1); // link to n1
+  StackHelper::AddRoute	("c2", "/data", "n1", 1); // link to n1
+  StackHelper::AddRoute	("c3", "/data", "n1", 1); // link to n1
+  StackHelper::AddRoute	("c4", "/data", "n1", 1); // link to n1
 
-  ndn::StackHelper::AddRoute	("n1", "/data", "n2", 1); // link to n2
-  ndn::StackHelper::AddRoute	("n1", "/data", "n12", 2); // link to n12
+  StackHelper::AddRoute	("n1", "/data", "n2", 1); // link to n2
+  StackHelper::AddRoute	("n1", "/data", "n12", 2); // link to n12
 
-  ndn::StackHelper::AddRoute	("n12", "/data", "n2", 1); // link to n2
+  StackHelper::AddRoute	("n12", "/data", "n2", 1); // link to n2
 
-  ndn::StackHelper::AddRoute	("n2", "/data/p1", "p1", 1); // link to p1
-  ndn::StackHelper::AddRoute	("n2", "/data/p2", "p2", 1); // link to p2
-  ndn::StackHelper::AddRoute	("n2", "/data/p3", "p3", 1); // link to p3
-  ndn::StackHelper::AddRoute	("n2", "/data/p4", "p4", 1); // link to p4
+  StackHelper::AddRoute	("n2", "/data/p1", "p1", 1); // link to p1
+  StackHelper::AddRoute	("n2", "/data/p2", "p2", 1); // link to p2
+  StackHelper::AddRoute	("n2", "/data/p3", "p3", 1); // link to p3
+  StackHelper::AddRoute	("n2", "/data/p4", "p4", 1); // link to p4
 
   // Schedule simulation time and run the simulation
   Simulator::Stop (Seconds (20.0));

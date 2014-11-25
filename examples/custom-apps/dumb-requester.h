@@ -25,13 +25,17 @@
 
 #include "ns3/ndn-app.h"
 #include "ns3/ndn-name.h"
+#include <ndn-cxx/data.hpp>
 
 namespace ns3 {
+
+using std::shared_ptr;
+using ::ndn::Data;
 
 /**
  * @brief A dumb requester application
  *
- * This app keeps requesting every second the same content object 
+ * This app keeps requesting every second the same content object
  */
 class DumbRequester : public ndn::App
 {
@@ -41,7 +45,7 @@ public:
   GetTypeId ();
 
   DumbRequester ();
-  
+
   // (overridden from ndn::App) Processing upon start of the application
   virtual void
   StartApplication ();
@@ -52,8 +56,8 @@ public:
 
   // (overridden from ndn::App) Callback that will be called when Data arrives
   virtual void
-  OnData (Ptr<const ndn::Data> contentObject);
-  
+  OnData (shared_ptr<const Data> contentObject);
+
 private:
   void
   SendInterest ();

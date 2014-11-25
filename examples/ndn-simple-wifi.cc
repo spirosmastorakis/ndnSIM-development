@@ -30,6 +30,9 @@
 using namespace std;
 using namespace ns3;
 
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
+
 NS_LOG_COMPONENT_DEFINE ("ndn.WifiExample");
 
 //
@@ -105,7 +108,7 @@ main (int argc, char *argv[])
 
   // 3. Install NDN stack
   NS_LOG_INFO ("Installing NDN stack");
-  ndn::StackHelper ndnHelper;
+  StackHelper ndnHelper;
   // ndnHelper.AddNetDeviceFaceCreateCallback (WifiNetDevice::GetTypeId (), MakeCallback (MyNetDeviceFaceCallback));
   ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
   ndnHelper.SetContentStore ("ns3::ndn::cs::Lru", "MaxSize", "1000");
@@ -115,12 +118,12 @@ main (int argc, char *argv[])
   // 4. Set up applications
   NS_LOG_INFO ("Installing Applications");
 
-  ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+  AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   consumerHelper.SetPrefix ("/test/prefix");
   consumerHelper.SetAttribute ("Frequency", DoubleValue (10.0));
   consumerHelper.Install (nodes.Get (0));
 
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
+  AppHelper producerHelper ("ns3::ndn::Producer");
   producerHelper.SetPrefix ("/");
   producerHelper.SetAttribute ("PayloadSize", StringValue("1200"));
   producerHelper.Install (nodes.Get (1));
