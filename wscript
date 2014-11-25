@@ -137,6 +137,7 @@ def build(bld):
         "utils/ndn-fw-hop-count-tag.h",
         "utils/tracers/ndn-l3-aggregate-tracer.h",
         "utils/tracers/ndn-l3-tracer.h",
+        "utils/tracers/ndn-l3-rate-tracer.h",
 
         "plugins/topology/annotated-topology-reader.h",
         "plugins/topology/rocketfuel-map-reader.h"
