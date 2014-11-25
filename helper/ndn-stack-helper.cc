@@ -245,7 +245,8 @@ StackHelper::Install (Ptr<Node> node) const
       if (m_needSetDefaultRoutes)
         {
           // default route with lowest priority possible
-          AddRoute (node, "/", StaticCast<Face> (face), std::numeric_limits<int32_t>::max ());
+          FibHelper fibHelper;
+          fibHelper.AddRoute (node, "/", StaticCast<Face> (face), std::numeric_limits<int32_t>::max ());
         }
 
       face->SetUp ();
@@ -360,99 +361,6 @@ StackHelper::Install (const std::string &nodeName) const
   Ptr<Node> node = Names::Find<Node> (nodeName);
   return Install (node);
 }
-
-void
-StackHelper::AddRoute (Ptr<Node> node, const std::string &prefix, Ptr<Face> face, int32_t metric)
-{
-  NS_LOG_LOGIC ("[" << node->GetId () << "]$ route add " << prefix << " via " << *face << " metric " << metric);
-
-  //Get L3Protocol object
-  Ptr<L3Protocol> L3protocol = node->GetObject<L3Protocol> ();
-  //Get the forwarder instance
-  shared_ptr<Forwarder> m_forwarder = L3protocol->GetForwarder();
-  //add the appropriate fib entry to the NFD fib table
-  // Name name(prefix);
-  // shared_ptr<::nfd::fib::Entry> m_entry = m_forwarder->getFib().insert(prefix).first;
-  // m_entry->addNextHop(face->shared_from_this(), metric);
-  ControlParameters parameters;
-  parameters.setName(prefix);
-  parameters.setFaceId(face->getId ());
-  parameters.setCost (metric);
-
-  FibHelper fibHelper;
-  fibHelper.AddNextHop(parameters, node);
-}
-
-void
-StackHelper::AddRoute (Ptr<Node> node, const std::string &prefix, uint32_t faceId, int32_t metric)
-{
-  Ptr<L3Protocol>     ndn = node->GetObject<L3Protocol> ();
-  NS_ASSERT_MSG (ndn != 0, "Ndn stack should be installed on the node");
-
-  Ptr<Face> face = ndn->GetFace (faceId);
-  NS_ASSERT_MSG (face != 0, "Face with ID [" << faceId << "] does not exist on node [" << node->GetId () << "]");
-
-  AddRoute (node, prefix, face, metric);
-}
-
-void
-StackHelper::AddRoute (const std::string &nodeName, const std::string &prefix, uint32_t faceId, int32_t metric)
-{
-  Ptr<Node> node = Names::Find<Node> (nodeName);
-  NS_ASSERT_MSG (node != 0, "Node [" << nodeName << "] does not exist");
-
-  Ptr<L3Protocol>     ndn = node->GetObject<L3Protocol> ();
-  NS_ASSERT_MSG (ndn != 0, "Ndn stack should be installed on the node");
-
-  Ptr<Face> face = ndn->GetFace (faceId);
-  NS_ASSERT_MSG (face != 0, "Face with ID [" << faceId << "] does not exist on node [" << nodeName << "]");
-
-  AddRoute (node, prefix, face, metric);
-}
-
-void
-StackHelper::AddRoute (Ptr<Node> node, const std::string &prefix, Ptr<Node> otherNode, int32_t metric)
-{
-  for (uint32_t deviceId = 0; deviceId < node->GetNDevices (); deviceId ++)
-    {
-      Ptr<PointToPointNetDevice> netDevice = DynamicCast<PointToPointNetDevice> (node->GetDevice (deviceId));
-      if (netDevice == 0)
-        continue;
-
-      Ptr<Channel> channel = netDevice->GetChannel ();
-      if (channel == 0)
-        continue;
-
-      if (channel->GetDevice (0)->GetNode () == otherNode ||
-          channel->GetDevice (1)->GetNode () == otherNode)
-        {
-          Ptr<L3Protocol> ndn = node->GetObject<L3Protocol> ();
-          NS_ASSERT_MSG (ndn != 0, "Ndn stack should be installed on the node");
-
-          Ptr<Face> face = ndn->GetFaceByNetDevice (netDevice);
-          NS_ASSERT_MSG (face != 0, "There is no face associated with the p2p link");
-
-          AddRoute (node, prefix, face, metric);
-
-          return;
-        }
-    }
-
-  NS_FATAL_ERROR ("Cannot add route: Node# " << node->GetId () << " and Node# " << otherNode->GetId () << " are not connected");
-}
-
-void
-StackHelper::AddRoute (const std::string &nodeName, const std::string &prefix, const std::string &otherNodeName, int32_t metric)
-{
-  Ptr<Node> node = Names::Find<Node> (nodeName);
-  NS_ASSERT_MSG (node != 0, "Node [" << nodeName << "] does not exist");
-
-  Ptr<Node> otherNode = Names::Find<Node> (otherNodeName);
-  NS_ASSERT_MSG (otherNode != 0, "Node [" << otherNodeName << "] does not exist");
-
-  AddRoute (node, prefix, otherNode, metric);
-}
-
 
 } // namespace ndn
 } // namespace ns3
