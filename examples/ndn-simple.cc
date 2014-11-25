@@ -27,6 +27,8 @@ using namespace ns3;
 using ns3::ndn::StackHelper;
 using ns3::ndn::AppHelper;
 using ns3::ndn::StrategyChoiceHelper;
+using ns3::ndn::L3AggregateTracer;
+
 
 /**
  * This scenario simulates a very simple network topology:
@@ -94,6 +96,10 @@ main (int argc, char *argv[])
   producerHelper.Install (nodes.Get (2)); // last node
 
   Simulator::Stop (Seconds (20.0));
+
+  //Install tracer
+  L3AggregateTracer::InstallAll ("aggregate-trace.txt", Seconds (0.5));
+
   Simulator::Run ();
   Simulator::Destroy ();
 
