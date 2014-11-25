@@ -30,25 +30,14 @@ public:
 
   ~FibHelper ();
 
-  void
+  static void
   GenerateCommand (Interest& interest);
 
-  void
-  AddNextHop (ControlParameters parameters, Ptr<Node> node);
+  static void
+  AddNextHop (ControlParameters parameters, Ptr<const Node> node);
 
-  void
-  RemoveNextHop (ControlParameters parameters, Ptr<Node> node);
-
-protected:
- CommandInterestGenerator m_generator;
-
-private:
-  // Ptr<Face> m_face;
-  // ControlParameters m_parameters;
-  // Ptr<Node> m_node;
-  ::ndn::KeyChain m_keys;
-  // static const Name s_identityName;
-  // static shared_ptr<::ndn::IdentityCertificate> s_certificate;
+  static void
+  RemoveNextHop (ControlParameters parameters, Ptr<const Node> node);
 };
 
 } // namespace ndn

@@ -8,34 +8,19 @@ namespace ndn {
 
 NS_LOG_COMPONENT_DEFINE ("ndn.FibHelper");
 
-using ::ndn::CommandInterestGenerator;
 using ::nfd::ControlParameters;
 using ::nfd::FibManager;
-using ::nfd::CommandValidator;
-
-// const Name FibHelper::s_identityName("/add/FibEntry");
-// shared_ptr<::ndn::IdentityCertificate> FibHelper::s_certificate;
-//template void KeyChain::sign<Interest>(Interest);
 
 FibHelper::FibHelper ()
 {
-  //s_certificate = m_keys.getCertificate(m_keys.createIdentity(s_identityName));
 }
 
 FibHelper::~FibHelper ()
 {
-  // s_certificate.reset();
-  // m_keys.deleteIdentity(s_identityName);
 }
 
 void
-FibHelper::GenerateCommand (Interest& interest)
-{
-  // m_generator.generateWithIdentity(interest, s_identityName);
-}
-
-void
-FibHelper::AddNextHop (ControlParameters parameters, Ptr<Node> node)
+FibHelper::AddNextHop (ControlParameters parameters, Ptr<const Node> node)
 {
   NS_LOG_DEBUG ("Add Next Hop command was initialized");
   Block encodedParameters(parameters.wireEncode());
@@ -64,7 +49,7 @@ FibHelper::AddNextHop (ControlParameters parameters, Ptr<Node> node)
 }
 
 void
-FibHelper::RemoveNextHop (ControlParameters parameters, Ptr<Node> node)
+FibHelper::RemoveNextHop (ControlParameters parameters, Ptr<const Node> node)
 {
   NS_LOG_DEBUG ("Remove Next Hop command was initialized");
   Block encodedParameters(parameters.wireEncode());
