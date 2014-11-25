@@ -134,7 +134,12 @@ def build(bld):
         "utils/ndn-time.h",
         "utils/ndn-rtt-estimator.h",
         "utils/ndn-rtt-mean-deviation.h",
-        "utils/ndn-fw-hop-count-tag.h"
+        "utils/ndn-fw-hop-count-tag.h",
+        "utils/tracers/ndn-l3-aggregate-tracer.h",
+        "utils/tracers/ndn-l3-tracer.h",
+
+        "plugins/topology/annotated-topology-reader.h",
+        "plugins/topology/rocketfuel-map-reader.h"
     ]
 
     tests = bld.create_ns3_module_test_library('ndnSIM')
