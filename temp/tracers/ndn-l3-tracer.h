@@ -24,18 +24,16 @@
 #include <ndn-cxx/common.hpp>
 #include "ns3/ptr.h"
 #include "ns3/simple-ref-count.h"
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/data.hpp>
 
 /**
  * @ingroup ndn-helpers
  * @defgroup ndn-tracers Helpers to simplify metric collection
  */
 
-namespace ndn {
-
-class Interest;
-class Data;
-
-}
+using ::ndn::Interest;
+using ::ndn::Data;
 
 namespace ns3 {
 
@@ -43,10 +41,6 @@ class Node;
 class Packet;
 
 namespace ndn {
-
-namespace pit {
-class Entry;
-}
 
 class Face;
 
@@ -123,11 +117,11 @@ protected:
   virtual void
   DropData (shared_ptr<const ::ndn::Data>, Ptr<const Face>) = 0;
 
-  virtual void
-  SatisfiedInterests (Ptr<const pit::Entry>) = 0;
+  // virtual void
+  // SatisfiedInterests (Ptr<const pit::Entry>) = 0;
 
-  virtual void
-  TimedOutInterests (Ptr<const pit::Entry>) = 0;
+  // virtual void
+  // TimedOutInterests (Ptr<const pit::Entry>) = 0;
 
 protected:
   std::string m_node;

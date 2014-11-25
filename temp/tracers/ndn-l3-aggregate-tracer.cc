@@ -295,9 +295,9 @@ L3AggregateTracer::Print (std::ostream &os) const
       PRINTER ("OutInterests",  m_outInterests);
       PRINTER ("DropInterests", m_dropInterests);
 
-      PRINTER ("InNacks",   m_inNacks);
-      PRINTER ("OutNacks",  m_outNacks);
-      PRINTER ("DropNacks", m_dropNacks);
+      // PRINTER ("InNacks",   m_inNacks);
+      // PRINTER ("OutNacks",  m_outNacks);
+      // PRINTER ("DropNacks", m_dropNacks);
 
       PRINTER ("InData",   m_inData);
       PRINTER ("OutData",  m_outData);
@@ -409,19 +409,19 @@ L3AggregateTracer::DropData (::ndn::shared_ptr<const ::ndn::Data> data,
     }
 }
 
-void
-L3AggregateTracer::SatisfiedInterests (Ptr<const pit::Entry>)
-{
-  m_stats[0].get<0> ().m_satisfiedInterests ++;
-  // no "size" stats
-}
+// void
+// L3AggregateTracer::SatisfiedInterests (Ptr<const pit::Entry>)
+// {
+//   m_stats[0].get<0> ().m_satisfiedInterests ++;
+//   // no "size" stats
+// }
 
-void
-L3AggregateTracer::TimedOutInterests (Ptr<const pit::Entry>)
-{
-  m_stats[0].get<0> ().m_timedOutInterests ++;
-  // no "size" stats
-}
+// void
+// L3AggregateTracer::TimedOutInterests (Ptr<const pit::Entry>)
+// {
+//   m_stats[0].get<0> ().m_timedOutInterests ++;
+//   // no "size" stats
+// }
 
 } // namespace ndn
 } // namespace ns3
