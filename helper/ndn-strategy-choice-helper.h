@@ -28,28 +28,20 @@ class StrategyChoiceHelper
 public:
   StrategyChoiceHelper ();
 
-  StrategyChoiceHelper (Name strategy);
-
   ~StrategyChoiceHelper ();
 
-  void
-  Install (const NodeContainer &c) const;
+  static void
+  Install (const NodeContainer &c, const Name namePrefix, const Name strategy);
 
-  void
-  Install (Ptr<Node> node) const;
+  static void
+  Install (Ptr<Node> node, const Name namePrefix, const Name strategy);
 
-  void
-  InstallAll ();
+  static void
+  InstallAll (const Name namePrefix, const Name strategy);
 
 protected:
-  void
-  StrategyChoice (ControlParameters parameters, Ptr<Node> node) const;
-
-  CommandInterestGenerator m_generator;
-
-private:
-  Name m_strategy;
-  ::ndn::KeyChain m_keys;
+  static void
+  StrategyChoice (ControlParameters parameters, Ptr<Node> node);
 };
 
 } // namespace ndn
