@@ -10,6 +10,9 @@ NS_LOG_COMPONENT_DEFINE ("ndn.StrategyChoiceHelper");
 
 using ::nfd::ControlParameters;
 using ::nfd::StrategyChoiceManager;
+using ::nfd::StrategyChoice;
+using ::nfd::fw::Strategy;
+using ::nfd::Forwarder;
 
 StrategyChoiceHelper::StrategyChoiceHelper ()
 {
@@ -73,6 +76,33 @@ StrategyChoiceHelper::InstallAll (const Name& namePrefix, const Name& strategy)
 {
   Install (NodeContainer::GetGlobal (), namePrefix, strategy);
 }
+
+// void
+// StrategyChoiceHelper::InstallCustomStrategy (Ptr<Node> node, const Name& customStrategy)
+// {
+//   Ptr<L3Protocol> l3Protocol = node->GetObject<L3Protocol> ();
+//   //shared_ptr<Forwarder>
+//   //Strategy strategy (*(l3Protocol->GetForwarder ()), customStrategy);
+//   //shared_ptr<Strategy> strategy = make_shared<customStrategy>
+//     (*(l3Protocol->GetForwarder ()), customStrategy);
+//   //StrategyChoice strategyChoice;
+//   strategyChoice.install (strategy);
+// }
+
+// void
+// StrategyChoiceHelper::InstallCustomStrategy (const NodeContainer& c, const Name& customStrategy)
+// {
+//   for (NodeContainer::Iterator i = c.Begin (); i != c.End (); ++i)
+//     {
+//       InstallCustomStrategy (*i, customStrategy);
+//     }
+// }
+
+// void
+// StrategyChoiceHelper::InstallCustomStrategyAll (const Name& customStrategy)
+// {
+//   InstallCustomStrategy (NodeContainer::GetGlobal (), customStrategy);
+// }
 
 } // namespace ndn
 
