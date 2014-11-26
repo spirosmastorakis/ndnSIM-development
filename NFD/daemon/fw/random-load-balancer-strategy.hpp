@@ -23,45 +23,36 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "best-route-strategy.hpp"
-#include "broadcast-strategy.hpp"
-#include "client-control-strategy.hpp"
-#include "ncc-strategy.hpp"
-#include "best-route-strategy2.hpp"
+#ifndef NFD_DAEMON_FW_SIMPLE_LOAD_BALANCER_STRATEGY_HPP
+#define NFD_DAEMON_FW_SIMPLE_LOAD_BALANCER_STRATEGY_HPP
 
-// Including the custom forwarding strategy
-#include "random-load-balancer-strategy.hpp"
+#include <boost/random/mersenne_twister.hpp>
+#include "ns3/ndnSIM/model/ndn-face.hpp"
+#include "strategy.hpp"
 
 namespace nfd {
 namespace fw {
 
-shared_ptr<Strategy>
-makeDefaultStrategy(Forwarder& forwarder)
-{
-  return make_shared<BestRouteStrategy2>(ref(forwarder));
-}
+using ns3::ndn::Face;
 
-template<typename S>
-inline void
-installStrategy(Forwarder& forwarder)
-{
-  StrategyChoice& strategyChoice = forwarder.getStrategyChoice();
-  if (!strategyChoice.hasStrategy(S::STRATEGY_NAME)) {
-    strategyChoice.install(make_shared<S>(ref(forwarder)));
-  }
-}
+class RandomLoadBalancerStrategy : public Strategy {
+public:
+  RandomLoadBalancerStrategy(Forwarder& forwarder, const Name& name = STRATEGY_NAME);
 
-void
-installStrategies(Forwarder& forwarder)
-{
-  installStrategy<BestRouteStrategy>(forwarder);
-  installStrategy<BroadcastStrategy>(forwarder);
-  installStrategy<ClientControlStrategy>(forwarder);
-  installStrategy<NccStrategy>(forwarder);
-  installStrategy<BestRouteStrategy2>(forwarder);
-  // Install the random load balancer forwarding strategy
-  installStrategy<RandomLoadBalancerStrategy>(forwarder);
-}
+  virtual ~RandomLoadBalancerStrategy();
+
+  virtual void
+  afterReceiveInterest(const Face& inFace, const Interest& interest,
+                       shared_ptr<fib::Entry> fibEntry, shared_ptr<pit::Entry> pitEntry);
+
+public:
+  static const Name STRATEGY_NAME;
+
+protected:
+  boost::random::mt19937 m_randomGenerator;
+};
 
 } // namespace fw
 } // namespace nfd
+
+#endif // NFD_DAEMON_FW_RANDOM_LOAD_BALANCER_HPP
