@@ -75,7 +75,7 @@ FaceTable::addImpl(shared_ptr<Face> face, FaceId faceId)
   face->onReceiveInterest += bind(&Forwarder::onInterest,
                                   &m_forwarder, ref(*face), _1);
   face->onReceiveData     += bind(&Forwarder::onData,
-                                  &m_forwarder, ref(*face), _1);
+                                &m_forwarder, ref(*face), _1);
   face->onFail            += bind(&FaceTable::remove,
                                   this, face);
 

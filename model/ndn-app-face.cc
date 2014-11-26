@@ -121,7 +121,6 @@ AppFace::SendData (shared_ptr<const Data> data)
   // to decouple callbacks
   Simulator::ScheduleNow(&App::OnData, m_app, data);
 
-  m_app->OnData (data);
   return true;
 }
 
