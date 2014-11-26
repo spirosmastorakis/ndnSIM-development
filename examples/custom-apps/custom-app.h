@@ -24,12 +24,9 @@
 #define CUSTOM_APP_H_
 
 #include "ns3/ndn-app.h"
+#include "ns3/ndn-common.h"
 
 namespace ns3 {
-
-using std::shared_ptr;
-using ::ndn::Interest;
-using ::ndn::Data;
 
 /**
  * @brief A simple custom application
@@ -48,6 +45,8 @@ public:
   static TypeId
   GetTypeId ();
 
+  CustomApp ();
+
   // (overridden from ndn::App) Processing upon start of the application
   virtual void
   StartApplication ();
@@ -55,10 +54,6 @@ public:
   // (overridden from ndn::App) Processing when application is stopped
   virtual void
   StopApplication ();
-
-  // (overridden from ndn::App) Callback that will be called when Interest arrives
-  virtual void
-  OnInterest (shared_ptr<const Interest> interest);
 
   // (overridden from ndn::App) Callback that will be called when Data arrives
   virtual void

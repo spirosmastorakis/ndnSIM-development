@@ -30,17 +30,9 @@
 
 #include "ns3/ndn-app-face.h"
 
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
-
 NS_LOG_COMPONENT_DEFINE ("DumbRequester");
 
 namespace ns3 {
-
-using std::shared_ptr;
-using std::make_shared;
-using ::ndn::Interest;
-using ::ndn::Data;
 
 NS_OBJECT_ENSURE_REGISTERED (DumbRequester);
 
@@ -101,7 +93,8 @@ DumbRequester::SendInterest ()
   UniformVariable rand (0,std::numeric_limits<uint32_t>::max ());
   interest->setNonce            (rand.GetValue ());
   interest->setName             (*prefix);
-  interest->setInterestLifetime (::ndn::time::seconds (uint64_t (1.0)));
+  Time lifetime = MilliSeconds (1000);
+  interest->setInterestLifetime (::ndn::time::milliseconds (lifetime.GetMilliSeconds ()));
 
   NS_LOG_DEBUG ("Sending Interest packet for " << *prefix);
 
@@ -110,7 +103,7 @@ DumbRequester::SendInterest ()
   m_transmittedInterests (interest, this, m_face);
 
   // Forward packet to lower (network) layer
-  m_face->ReceiveInterest (interest);
+  m_face->onReceiveInterest (*interest);
 
   Simulator::Schedule (Seconds (1.0), &DumbRequester::SendInterest, this);
 }

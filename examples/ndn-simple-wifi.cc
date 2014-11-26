@@ -110,8 +110,6 @@ main (int argc, char *argv[])
   NS_LOG_INFO ("Installing NDN stack");
   StackHelper ndnHelper;
   // ndnHelper.AddNetDeviceFaceCreateCallback (WifiNetDevice::GetTypeId (), MakeCallback (MyNetDeviceFaceCallback));
-  ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
-  ndnHelper.SetContentStore ("ns3::ndn::cs::Lru", "MaxSize", "1000");
   ndnHelper.SetDefaultRoutes (true);
   ndnHelper.Install (nodes);
 

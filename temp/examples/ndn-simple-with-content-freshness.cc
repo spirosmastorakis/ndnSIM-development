@@ -66,8 +66,6 @@ main (int argc, char *argv[])
   // Install CCNx stack on all nodes
   StackHelper ccnxHelper;
   ccnxHelper.SetDefaultRoutes (true);
-  ccnxHelper.SetContentStore ("ns3::ndn::cs::Freshness::Lru",
-                              "MaxSize", "2"); // allow just 2 entries to be cached
   ccnxHelper.InstallAll ();
 
   // Installing applications
@@ -107,7 +105,7 @@ main (int argc, char *argv[])
   producerHelper.SetPrefix ("/no-freshness");
   producerHelper.Install (nodes.Get (2)); // last node
 
-  producerHelper.SetAttribute ("Freshness", TimeValue (Seconds (2.0))); // freshness 2 seconds (!!! freshness granularity is 1 seconds !!!)
+  producerHelper.SetAttribute ("Freshness", TimeValue (Seconds (1))); // freshness 2 seconds (!!! freshness granularity is 1 seconds !!!)
   producerHelper.SetPrefix ("/with-freshness");
   producerHelper.Install (nodes.Get (2)); // last node
 
