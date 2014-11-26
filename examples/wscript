@@ -21,8 +21,8 @@ def build(bld):
     obj = bld.create_ns3_program('ndn-grid', all_modules)
     obj.source = 'ndn-grid.cc'
 
-    obj = bld.create_ns3_program('ndn-multiple-strategies', all_modules)
-    obj.source = 'ndn-multiple-strategies.cc'
+    obj = bld.create_ns3_program('ndn-grid-multiple-strategies', all_modules)
+    obj.source = 'ndn-grid-multiple-strategies.cc'
 
     obj = bld.create_ns3_program('ndn-zipf-mandelbrot', all_modules)
     obj.source = 'ndn-zipf-mandelbrot.cc'
@@ -55,16 +55,16 @@ def build(bld):
             'custom-strategies/custom-strategy.cc',
             'ndn-congestion-alt-topo-plugin.cc'
             ]
-
+        '''
         obj = bld.create_ns3_program('ndn-tree-tracers', all_modules)
         obj.source = 'ndn-tree-tracers.cc'
-
+        '''
         obj = bld.create_ns3_program('ndn-tree-cs-tracers', all_modules)
         obj.source = 'ndn-tree-cs-tracers.cc'
-
-        obj = bld.create_ns3_program('ndn-tree-app-delay-tracer', all_modules)
-        obj.source = 'ndn-tree-app-delay-tracer.cc'
-
+        '''
+        obj = bld.create_ns3_program('ndn-tree-rate-tracer', all_modules)
+        obj.source = 'ndn-tree-rate-tracer.cc'
+        '''
         obj = bld.create_ns3_program('ndn-tree-with-l2tracer', all_modules)
         obj.source = 'ndn-tree-with-l2tracer.cc'
 
