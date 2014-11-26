@@ -32,21 +32,21 @@ using namespace ns3;
  *    /------\      /------\      /------\      /------\
  *    |leaf-1|      |leaf-2|      |leaf-3|      |leaf-4|
  *    \------/      \------/      \------/      \------/
- *         ^          ^                ^           ^	
+ *         ^          ^                ^           ^
  *         |          |                |           |
- *    	    \        /                  \         / 
+ *    	    \        /                  \         /
  *           \      /  			 \  	 /    10Mbps / 1ms
  *            \    /  			  \ 	/
- *             |  |  			   |   | 
- *    	       v  v                        v   v     
+ *             |  |  			   |   |
+ *    	       v  v                        v   v
  *          /-------\                    /-------\
  *          | rtr-1 |                    | rtr-2 |
  *          \-------/                    \-------/
- *                ^                        ^                      
+ *                ^                        ^
  *      	  |	 		   |
- *      	   \			  /  10 Mpbs / 1ms 
- *      	    +--------+  +--------+ 
- *      		     |  |      
+ *      	   \			  /  10 Mpbs / 1ms
+ *      	    +--------+  +--------+
+ *      		     |  |
  *                           v  v
  *      		  /--------\
  *      		  |  root  |
@@ -57,6 +57,13 @@ using namespace ns3;
  *
  *     ./waf --run=ndn-tree-tracers
  */
+
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
+using ns3::ndn::GlobalRoutingHelper;
+using ns3::AnnotatedTopologyReader;
+using ns3::ndn::L3RateTracer;
+using ns3::ndn::L3AggregateTracer;
 
 int
 main (int argc, char *argv[])
@@ -69,12 +76,11 @@ main (int argc, char *argv[])
   topologyReader.Read ();
 
   // Install CCNx stack on all nodes
-  ndn::StackHelper ccnxHelper;
-  ccnxHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
+  StackHelper ccnxHelper;
   ccnxHelper.InstallAll ();
 
   // Installing global routing interface on all nodes
-  ndn::GlobalRoutingHelper ccnxGlobalRoutingHelper;
+  GlobalRoutingHelper ccnxGlobalRoutingHelper;
   ccnxGlobalRoutingHelper.InstallAll ();
 
   // Getting containers for the consumer/producer
@@ -84,16 +90,16 @@ main (int argc, char *argv[])
 
   for (int i = 0; i < 4; i++)
     {
-      ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+      AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
       consumerHelper.SetAttribute ("Frequency", StringValue ("100")); // 100 interests a second
 
       // Each consumer will express unique interests /root/<leaf-name>/<seq-no>
       consumerHelper.SetPrefix ("/root/" + Names::FindName (consumers[i]));
       consumerHelper.Install (consumers[i]);
     }
-    
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
-  producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));  
+
+  AppHelper producerHelper ("ns3::ndn::Producer");
+  producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
 
   // Register /root prefix with global routing controller and
   // install producer that will satisfy Interests in /root namespace
@@ -106,9 +112,9 @@ main (int argc, char *argv[])
 
   Simulator::Stop (Seconds (20.0));
 
-  ndn::L3AggregateTracer::InstallAll ("aggregate-trace.txt", Seconds (0.5));
-  ndn::L3RateTracer::InstallAll ("rate-trace.txt", Seconds (0.5));
-  
+  L3AggregateTracer::InstallAll ("aggregate-trace.txt", Seconds (0.5));
+  L3RateTracer::InstallAll ("rate-trace.txt", Seconds (0.5));
+
   Simulator::Run ();
   Simulator::Destroy ();
 
