@@ -44,6 +44,9 @@ def build(bld):
         obj = bld.create_ns3_program('ndn-grid-topo-plugin-loss', all_modules)
         obj.source = 'ndn-grid-topo-plugin-loss.cc'
 
+        obj = bld.create_ns3_program('ndn-load-balancer', all_modules)
+        obj.source = 'ndn-load-balancer.cc'
+
         obj = bld.create_ns3_program('ndn-grid-topo-plugin-red-queues', all_modules)
         obj.source = 'ndn-grid-topo-plugin-red-queues.cc'
 
