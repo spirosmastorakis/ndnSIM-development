@@ -28,6 +28,8 @@
 #include "ns3/ndnSIM/NFD/daemon/fw/client-control-strategy.hpp"
 #include "ns3/ndnSIM/NFD/daemon/fw/ncc-strategy.hpp"
 #include "ns3/ndnSIM/NFD/daemon/fw/best-route-strategy2.hpp"
+// Including the custom forwarding strategy "random-load-balancer-strategy"
+#include "ns3/ndnSIM/NFD/daemon/fw/random-load-balancer-strategy.hpp"
 
 namespace nfd {
 namespace fw {
@@ -56,6 +58,8 @@ installStrategies(Forwarder& forwarder)
   installStrategy<ClientControlStrategy>(forwarder);
   installStrategy<NccStrategy>(forwarder);
   installStrategy<BestRouteStrategy2>(forwarder);
+  // Install the random load balancer forwarding strategy
+  installStrategy<RandomLoadBalancerStrategy>(forwarder);
 }
 
 } // namespace fw
