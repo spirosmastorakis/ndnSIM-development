@@ -26,23 +26,18 @@
 #include "ns3/simulator.h"
 #include "ns3/packet.h"
 
+#include "ns3/ndn-fib-helper.h"
 #include "ns3/ndn-forwarder.h"
 #include "ns3/ndn-app-face.h"
 
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
-
-#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
 #include "ns3/random-variable.h"
 
 NS_LOG_COMPONENT_DEFINE ("CustomApp");
 
 namespace ns3 {
 
-using std::shared_ptr;
-using std::make_shared;
-using namespace ::ndn;
-using ::nfd::Fib;
+using nfd::ControlParameters;
+using ndn::FibHelper;
 
 NS_OBJECT_ENSURE_REGISTERED (CustomApp);
 
@@ -57,24 +52,17 @@ CustomApp::GetTypeId ()
   return tid;
 }
 
+CustomApp::CustomApp ()
+{
+  NS_LOG_FUNCTION_NOARGS ();
+}
+
 // Processing upon start of the application
 void
 CustomApp::StartApplication ()
 {
   // initialize ndn::App
   ndn::App::StartApplication ();
-
-  // Create a name components object for name ``/prefix/sub``
-  shared_ptr<Name> prefix = make_shared<Name> (); // now prefix contains ``/``
-  prefix->append ("prefix"); // now prefix contains ``/prefix``
-  prefix->append ("sub"); // now prefix contains ``/prefix/sub``
-
-  /////////////////////////////////////////////////////////////////////////////
-  // Creating FIB entry that ensures that we will receive incoming Interests //
-  /////////////////////////////////////////////////////////////////////////////
-  ::ndn::shared_ptr< ::nfd::fib::Entry> entry =
-      GetNode ()->GetObject<ndn::L3Protocol> ()->GetForwarder ()->getFib ().insert (*prefix).first;
-  entry->addNextHop (m_face->shared_from_this (), 0);
 
   Simulator::Schedule (Seconds (1.0), &CustomApp::SendInterest, this);
 }
@@ -94,7 +82,7 @@ CustomApp::SendInterest ()
   // Sending one Interest packet out //
   /////////////////////////////////////
 
-  shared_ptr<::ndn::Name> prefix = make_shared<::ndn::Name> ("/prefix/sub"); // another way to create name
+  shared_ptr<Name> prefix = make_shared<Name> ("/prefix/sub"); // another way to create name
 
   // Create and configure ndn::Interest
   shared_ptr<Interest> interest = make_shared<Interest> ();
@@ -108,32 +96,7 @@ CustomApp::SendInterest ()
   // Call trace (for logging purposes)
   m_transmittedInterests (interest, this, m_face);
 
-  m_face->ReceiveInterest (interest);
-}
-
-// Callback that will be called when Interest arrives
-void
-CustomApp::OnInterest (shared_ptr<const Interest> interest)
-{
-  ndn::App::OnInterest (interest);
-
-  NS_LOG_DEBUG ("Received Interest packet for " << interest->getName ());
-
-  // Create and configure ndn::Data and ndn::DataTail
-  // (header is added in front of the packet, tail is added at the end of the packet)
-
-  // Note that Interests send out by the app will not be sent back to the app !
-
-  shared_ptr<Data> data(new Data(Convert::FromPacket
-                                 (Create<Packet> (1024))));
-  shared_ptr<::ndn::Name> dataName(new ::ndn::Name(interest->getName ())); // data will have the same name as Interests
-
-  NS_LOG_DEBUG ("Sending Data packet for " << data->getName ());
-
-  // Call trace (for logging purposes)
-  m_transmittedDatas (data, this, m_face);
-
-  m_face->ReceiveData (data);
+  m_face->onReceiveInterest (*interest);
 }
 
 // Callback that will be called when Data arrives

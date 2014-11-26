@@ -230,7 +230,6 @@ Consumer::OnData (shared_ptr<const Data> data)
 
   // NS_LOG_INFO ("Received content object: " << boost::cref(*data));
 
-  // This could be a problem......
   uint32_t seq = data->getName ().at (-1).toSequenceNumber ();
   NS_LOG_INFO ("< DATA for " << seq);
 

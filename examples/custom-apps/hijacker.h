@@ -26,6 +26,7 @@
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/ndnSIM-module.h"
+#include "ns3/ndn-common.h"
 
 namespace ns3 {
 
@@ -39,7 +40,7 @@ public:
 
   // Receive all Interests but do nothing in response
   void
-  OnInterest (Ptr<const ndn::Interest> interest);
+  OnInterest (shared_ptr<const Interest> interest);
 
 protected:
   // inherited from Application base class.

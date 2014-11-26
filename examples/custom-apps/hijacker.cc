@@ -17,15 +17,16 @@
  *
  * Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
-/*
 // hijacker.cc
 
 #include "hijacker.h"
-#include "ns3/ndn-name.h"
+#include "ns3/ndn-fib-helper.h"
 
 NS_LOG_COMPONENT_DEFINE ("Hijacker");
 
 namespace ns3 {
+
+using nfd::ControlParameters;
 
 // Necessary if you are planning to use ndn::AppHelper
 NS_OBJECT_ENSURE_REGISTERED (Hijacker);
@@ -46,12 +47,12 @@ Hijacker::Hijacker ()
 }
 
 void
-Hijacker::OnInterest (Ptr<const ndn::Interest> interest)
+Hijacker::OnInterest (shared_ptr<const Interest> interest)
 {
   ndn::App::OnInterest (interest); // forward call to perform app-level tracing
   // do nothing else (hijack interest)
 
-  NS_LOG_DEBUG ("Do nothing for incoming interest for" << interest->GetName ());
+  NS_LOG_DEBUG ("Do nothing for incoming interest for" << interest->getName ());
 }
 
 void
@@ -60,9 +61,14 @@ Hijacker::StartApplication ()
   App::StartApplication ();
 
   // equivalent to setting interest filter for "/" prefix
-  Ptr<ndn::Fib> fib = GetNode ()->GetObject<ndn::Fib> ();
-  Ptr<ndn::fib::Entry> fibEntry = fib->Add (ndn::Name ("/"), m_face, 0);
-  fibEntry->UpdateStatus (m_face, ndn::fib::FaceMetric::NDN_FIB_GREEN);
+  ControlParameters parameters;
+  parameters.setName("/");
+  parameters.setFaceId(m_face->getId ());
+  parameters.setCost (0);
+
+  ndn::FibHelper fibHelper;
+  Ptr<Node> node = GetNode();
+  fibHelper.AddNextHop(parameters, node);
 }
 
 void
@@ -72,5 +78,3 @@ Hijacker::StopApplication ()
 }
 
 } // namespace ns3
-
-*/

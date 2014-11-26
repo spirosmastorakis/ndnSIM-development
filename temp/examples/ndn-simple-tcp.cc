@@ -26,6 +26,10 @@
 
 using namespace ns3;
 
+using ns3::ndn::IpFacesHelper;
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
+
 /**
  * This scenario simulates a very simple network topology:
  *
@@ -47,11 +51,11 @@ using namespace ns3;
  *     NS_LOG=ndn.Consumer:ndn.Producer ./waf --run=ndn-simple-tcp
  */
 
-int 
+int
 main (int argc, char *argv[])
 {
   Packet::EnablePrinting ();
-  
+
   // setting default parameters for PointToPoint links and channels
   Config::SetDefault ("ns3::PointToPointNetDevice::DataRate", StringValue ("1Mbps"));
   Config::SetDefault ("ns3::PointToPointChannel::Delay", StringValue ("10ms"));
@@ -71,7 +75,7 @@ main (int argc, char *argv[])
   NetDeviceContainer link2 = p2p.Install (nodes.Get (1), nodes.Get (2));
 
   // Install NDN stack on all nodes
-  ndn::StackHelper ndnHelper;
+  StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (false);
   ndnHelper.InstallAll ();
 
@@ -82,7 +86,7 @@ main (int argc, char *argv[])
   Ipv4AddressHelper ipAddressHelper;
   ipAddressHelper.SetBase (Ipv4Address ("10.1.1.0"), Ipv4Mask ("255.255.255.0"));
   ipAddressHelper.Assign (link1);
-  
+
   ipAddressHelper.SetBase (Ipv4Address ("10.1.2.0"), Ipv4Mask ("255.255.255.0"));
   ipAddressHelper.Assign (link2);
 
@@ -96,14 +100,14 @@ main (int argc, char *argv[])
     AddNetworkRouteTo (Ipv4Address ("10.1.1.0"), Ipv4Mask ("255.255.255.0"),
                        Ipv4Address ("10.1.2.1"),
                        1, 1);
-  
-  ndn::IpFacesHelper::InstallAll ();
-  ndn::IpFacesHelper::CreateTcpFace (Seconds (1.0), nodes.Get (0), Ipv4Address ("10.1.2.2"), "/tcp-route");
-  
+
+  IpFacesHelper::InstallAll ();
+  IpFacesHelper::CreateTcpFace (Seconds (1.0), nodes.Get (0), Ipv4Address ("10.1.2.2"), "/tcp-route");
+
   // Installing applications
 
   // Consumer
-  ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+  AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   // Consumer will request /tcp-route/0, /tcp-route/1, ...
   consumerHelper.SetPrefix ("/tcp-route");
   consumerHelper.SetAttribute ("Frequency", StringValue ("10")); // 10 interests a second
@@ -111,7 +115,7 @@ main (int argc, char *argv[])
     Start (Seconds (3)); // first node
 
   // Producer
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
+  AppHelper producerHelper ("ns3::ndn::Producer");
   // Producer will reply to all requests starting with /prefix
   producerHelper.SetPrefix ("/tcp-route");
   producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));

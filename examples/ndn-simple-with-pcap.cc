@@ -24,6 +24,8 @@
 #include "ns3/ndnSIM-module.h"
 
 using namespace ns3;
+using ns3::ndn::AppHelper;
+using ns3::ndn::StackHelper;
 
 class PcapWriter
 {
@@ -56,12 +58,10 @@ main (int argc, char *argv[])
   Config::SetDefault ("ns3::PointToPointChannel::Delay", StringValue ("10ms"));
   Config::SetDefault ("ns3::DropTailQueue::MaxPackets", StringValue ("20"));
 
-  Config::SetGlobal ("ndn::WireFormat", StringValue ("1"));
-
   // Read optional command-line parameters (e.g., enable visualizer with ./waf --run=<> --visualize
   CommandLine cmd;
   cmd.Parse (argc, argv);
-  
+
   // Creating nodes
   NodeContainer nodes;
   nodes.Create (3);
@@ -72,21 +72,21 @@ main (int argc, char *argv[])
   p2p.Install (nodes.Get (1), nodes.Get (2));
 
   // Install NDN stack on all nodes
-  ndn::StackHelper ndnHelper;
+  StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (true);
   ndnHelper.InstallAll ();
 
   // Installing applications
 
   // Consumer
-  ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+  AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   // Consumer will request /prefix/0, /prefix/1, ...
   consumerHelper.SetPrefix ("/prefix");
   consumerHelper.SetAttribute ("Frequency", StringValue ("10")); // 10 interests a second
   consumerHelper.Install (nodes.Get (0)); // first node
 
   // Producer
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
+  AppHelper producerHelper ("ns3::ndn::Producer");
   // Producer will reply to all requests starting with /prefix
   producerHelper.SetPrefix ("/prefix");
   producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
@@ -105,4 +105,3 @@ main (int argc, char *argv[])
 
   return 0;
 }
-

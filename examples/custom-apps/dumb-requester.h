@@ -24,13 +24,9 @@
 #define DUMB_REQUESTER_H_
 
 #include "ns3/ndn-app.h"
-#include "ns3/ndn-name.h"
-#include <ndn-cxx/data.hpp>
+#include "ns3/ndn-common.h"
 
 namespace ns3 {
-
-using std::shared_ptr;
-using ::ndn::Data;
 
 /**
  * @brief A dumb requester application
@@ -64,7 +60,7 @@ private:
 
 private:
   bool m_isRunning;
-  ndn::Name m_name;
+  Name m_name;
 };
 
 } // namespace ns3

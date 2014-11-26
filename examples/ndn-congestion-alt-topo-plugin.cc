@@ -76,9 +76,6 @@ main (int argc, char *argv[])
 
   // Install NDN stack on all nodes
   StackHelper ndnHelper;
-  // ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::CustomStrategy");
-  // ndnHelper.SetContentStore ("ns3::ndn::cs::Lru",
-  //                             "MaxSize", "1"); // ! Attention ! If set to 0, then MaxSize is infinite
   ndnHelper.InstallAll ();
 
   // Getting containers for the consumer/producer
@@ -105,7 +102,6 @@ main (int argc, char *argv[])
       consumerHelper.SetPrefix (prefix);
       ApplicationContainer consumer = consumerHelper.Install (consumers[i]);
       consumer.Start (Seconds (i));    // start consumers at 0s, 1s, 2s, 3s
-      consumer.Stop  (Seconds (19-i)); // stop consumers at 19s, 18s, 17s, 16s
 
       ///////////////////////////////////////////////
       // install producer app on producer node p_i //

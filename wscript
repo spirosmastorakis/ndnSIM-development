@@ -95,7 +95,7 @@ def build(bld):
                                        'ndn.cxx/**/*.cc',
                                        'helper/**/*.cpp',
                                        'model/**/*.cpp',
-                                       'NFD/**/*.cpp',
+                                       'NFD/**/*.cpp'
                                        ])
 
     module.full_headers = [p.path_from(bld.path) for p in bld.path.ant_glob([
@@ -106,7 +106,7 @@ def build(bld):
                            'ndn.cxx/**/*.h',
                            'helper/**/*.hpp',
                            'model/**/*.hpp',
-                           'NFD/**/*.hpp',
+                           'NFD/**/*.hpp'
                            ])]
 
     headers.source = [

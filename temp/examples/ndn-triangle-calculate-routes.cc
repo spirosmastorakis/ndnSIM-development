@@ -25,7 +25,11 @@
 using namespace ns3;
 using namespace std;
 
-int 
+using ns3::ndn::StackHelper;
+using ns3::ndn::AppHelper;
+using ns3::ndn::GlobalRoutingHelper;
+
+int
 main (int argc, char *argv[])
 {
   // setting default parameters for PointToPoint links and channels
@@ -61,21 +65,21 @@ main (int argc, char *argv[])
   topologyReader.Read ();
 
   // Install NDN stack on all nodes
-  ndn::StackHelper ndnHelper;
+  StackHelper ndnHelper;
   ndnHelper.InstallAll ();
 
   topologyReader.ApplyOspfMetric ();
 
-  ndn::GlobalRoutingHelper ndnGlobalRoutingHelper;
+  GlobalRoutingHelper ndnGlobalRoutingHelper;
   ndnGlobalRoutingHelper.InstallAll ();
 
   ndnGlobalRoutingHelper.AddOrigins ("/test/prefix", Names::Find<Node> ("C1"));
   ndnGlobalRoutingHelper.AddOrigins ("/test/prefix", Names::Find<Node> ("C2"));
-  ndn::GlobalRoutingHelper::CalculateRoutes ();
+  GlobalRoutingHelper::CalculateRoutes ();
 
   cout << "FIB content on node A1" << endl;
-  Ptr<ndn::Fib> fib = Names::Find<Node> ("A1")->GetObject<ndn::Fib> ();
-  for (Ptr<ndn::fib::Entry> entry = fib->Begin (); entry != fib->End (); entry = fib->Next (entry))
+  Ptr<ndn::Fib> fib = Names::Find<Node> ("A1")->GetObject<L3Protoco>->GetObject<::nfd::Fib> ();
+  for (Ptr<::nfd::fib::Entry> entry = fib->Begin (); entry != fib->End (); entry = fib->Next (entry))
     {
       cout << *entry << " (this is towards: ";
       cout << Names::FindName (DynamicCast<const ndn::NetDeviceFace> (entry->FindBestCandidate (0).GetFace ())->GetNetDevice ()->GetChannel ()->GetDevice (1)->GetNode ());
@@ -83,17 +87,17 @@ main (int argc, char *argv[])
     }
 
   cout << "FIB content on node A2" << endl;
-  fib = Names::Find<Node> ("A2")->GetObject<ndn::Fib> ();
-  for (Ptr<ndn::fib::Entry> entry = fib->Begin (); entry != fib->End (); entry = fib->Next (entry))
+  fib = Names::Find<Node> ("A2")->GetObject<L3Protoco>->GetObject<::nfd::Fib> ();
+  for (Ptr<::nfd::fib::Entry> entry = fib->Begin (); entry != fib->End (); entry = fib->Next (entry))
     {
       cout << *entry << " (this is towards: ";
       cout << Names::FindName (DynamicCast<const ndn::NetDeviceFace> (entry->FindBestCandidate (0).GetFace ())->GetNetDevice ()->GetChannel ()->GetDevice (1)->GetNode ());
       cout << ")" << endl;
     }
-    
+
   Simulator::Stop (Seconds (20.0));
   Simulator::Run ();
   Simulator::Destroy ();
-  
+
   return 0;
 }
