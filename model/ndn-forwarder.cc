@@ -268,6 +268,7 @@ L3Protocol::AddFace (const Ptr<Face>& face)
   face->onSendData += [this, face] (const Data& data) {
     this->m_outData(data, *face);
   };
+
   //face->onSendInterest += bind(m_outInterests, _1, ref(*face));
   //face->onReceiveData += bind(m_inData, _1, ref(*face));
   //face->onSendData += bind(m_outData, _1, ref(*face));
