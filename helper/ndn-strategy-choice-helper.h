@@ -11,8 +11,9 @@
 #include "ns3/ndn-stack-helper.h"
 
 #include "ns3/ndnSIM/NFD/daemon/mgmt/strategy-choice-manager.hpp"
+#include "ns3/ndnSIM/NFD/daemon/table/strategy-choice.hpp"
+#include "ns3/ndnSIM/NFD/daemon/fw/strategy.hpp"
 #include "ns3/ndnSIM/NFD/common.hpp"
-#include "ns3/ndnSIM/NFD/daemon/mgmt/command-validator.hpp"
 
 #include <ndn-cxx/util/command-interest-generator.hpp>
 
@@ -20,7 +21,6 @@ namespace ns3 {
 
 namespace ndn {
 
-using ::ndn::CommandInterestGenerator;
 using ::nfd::ControlParameters;
 
 class StrategyChoiceHelper
@@ -38,6 +38,15 @@ public:
 
   static void
   InstallAll (const Name& namePrefix, const Name& strategy);
+
+  // static void
+  // InstallCustomStrategy (Ptr<Node> node, const Name& customStrategy);
+
+  // static void
+  // InstallCustomStrategy (const NodeContainer& c, const Name& customStrategy);
+
+  // static void
+  // InstallCustomStrategyAll (const Name& strategy);
 
 protected:
   static void
