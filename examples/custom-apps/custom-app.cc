@@ -65,6 +65,23 @@ CustomApp::StartApplication ()
   ndn::App::StartApplication ();
 
   Simulator::Schedule (Seconds (1.0), &CustomApp::SendInterest, this);
+
+  // Create a name components object for name ``/prefix/sub``
+  shared_ptr<Name> prefix = make_shared<Name> (); // now prefix contains ``/``
+  prefix->append ("prefix"); // now prefix contains ``/prefix``
+  prefix->append ("sub"); // now prefix contains ``/prefix/sub``
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Creating FIB entry that ensures that we will receive incoming Interests //
+  /////////////////////////////////////////////////////////////////////////////
+  ControlParameters parameters;
+  parameters.setName(*prefix);
+  parameters.setFaceId(m_face->getId ());
+  parameters.setCost (0);
+
+  FibHelper fibHelper;
+  Ptr<Node> node = GetNode();
+  fibHelper.AddNextHop(parameters, node);
 }
 
 // Processing when application is stopped
@@ -97,6 +114,44 @@ CustomApp::SendInterest ()
   m_transmittedInterests (interest, this, m_face);
 
   m_face->onReceiveInterest (*interest);
+}
+
+// Callback that will be called when Interest arrives
+void
+CustomApp::OnInterest (shared_ptr<const Interest> interest)
+{
+  ndn::App::OnInterest (interest);
+
+  NS_LOG_DEBUG ("Received Interest packet for " << interest->getName ());
+
+  // Note that Interests send out by the app will not be sent back to the app !
+
+  Name dataName(interest->getName());
+
+  auto data = make_shared<Data>(dataName);
+  data->setFreshnessPeriod(::ndn::time::milliseconds(uint64_t (1000)));
+
+  data->setContent(make_shared<::ndn::Buffer>(1024));
+
+  Signature signature;
+  SignatureInfo signatureInfo(static_cast<::ndn::tlv::SignatureTypeValue>(255));
+
+  int sign = 0;
+
+  signature.setInfo (signatureInfo);
+  signature.setValue(Block(&sign, sizeof(sign)));
+
+  data->setSignature(signature);
+
+  // to create real wire encoding
+  data->wireEncode();
+
+  NS_LOG_DEBUG ("Sending Data packet for " << data->getName ());
+
+  // Call trace (for logging purposes)
+  m_transmittedDatas (data, this, m_face);
+
+  m_face->onReceiveData (*data);
 }
 
 // Callback that will be called when Data arrives
