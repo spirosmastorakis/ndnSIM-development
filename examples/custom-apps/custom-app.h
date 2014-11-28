@@ -55,6 +55,10 @@ public:
   virtual void
   StopApplication ();
 
+  // (overridden from ndn::App) Callback that will be called when Interest arrives
+  virtual void
+  OnInterest (shared_ptr<const Interest> interest);
+
   // (overridden from ndn::App) Callback that will be called when Data arrives
   virtual void
   OnData (shared_ptr<const Data> contentObject);
