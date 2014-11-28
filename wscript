@@ -92,8 +92,6 @@ def build(bld):
                                        'apps/*.cc',
                                        'utils/**/*.cc',
                                        'helper/**/*.cc',
-                                       'ndn.cxx/**/*.cc',
-                                       'helper/**/*.cpp',
                                        'model/**/*.cpp',
                                        'NFD/**/*.cpp'
                                        ])
@@ -103,8 +101,6 @@ def build(bld):
                            'model/**/*.h',
                            'apps/**/*.h',
                            'helper/**/*.h',
-                           'ndn.cxx/**/*.h',
-                           'helper/**/*.hpp',
                            'model/**/*.hpp',
                            'NFD/**/*.hpp'
                            ])]
