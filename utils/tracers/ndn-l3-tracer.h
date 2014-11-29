@@ -23,7 +23,7 @@
 
 #include "ns3/ndn-common.h"
 #include "ns3/ptr.h"
-#include "ns3/ndn-forwarder.h"
+#include "ns3/ndn-l3-protocol.h"
 #include "ns3/simple-ref-count.h"
 
 /**

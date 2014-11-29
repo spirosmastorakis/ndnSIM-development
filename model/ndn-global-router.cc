@@ -20,7 +20,7 @@
 
 #include "ndn-global-router.h"
 
-#include "ns3/ndn-forwarder.h"
+#include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-face.h"
 
 #include "ns3/channel.h"

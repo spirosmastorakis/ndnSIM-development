@@ -38,7 +38,7 @@
 #include "ns3/pointer.h"
 #include "ns3/uinteger.h"
 #include "ns3/ipv4-address.h"
-#include "ns3/ndn-forwarder.h"
+#include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-face.h"
 #include "ns3/random-variable.h"
 #include "ns3/error-model.h"
