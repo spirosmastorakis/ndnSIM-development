@@ -6,7 +6,7 @@
 #include "ns3/pointer.h"
 
 #include "ns3/ndn-common.h"
-#include "ns3/ndn-forwarder.h"
+#include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-face.h"
 #include "ns3/ndn-stack-helper.h"
 

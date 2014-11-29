@@ -27,7 +27,7 @@
 #include "ns3/packet.h"
 
 #include "ns3/ndn-fib-helper.h"
-#include "ns3/ndn-forwarder.h"
+#include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-app-face.h"
 
 #include "ns3/random-variable.h"

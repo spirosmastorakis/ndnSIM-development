@@ -26,7 +26,7 @@
 
 #include "ndn-global-routing-helper.h"
 
-#include "ns3/ndn-forwarder.h"
+#include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-fib-helper.h"
 #include "../model/ndn-net-device-face.h"
 #include "../model/ndn-global-router.h"

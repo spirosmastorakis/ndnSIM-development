@@ -118,7 +118,7 @@ def build(bld):
         "apps/callback-based-app.h",
 
         "model/ndn-common.h",
-        "model/ndn-forwarder.h",
+        "model/ndn-l3-protocol.h",
         "model/ndn-face.h",
         "model/ndn-app-face.h",
         "model/ndn-net-device-face.h",

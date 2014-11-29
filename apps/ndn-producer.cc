@@ -30,7 +30,7 @@
 #include "ns3/ndn-app-face.h"
 #include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
 #include "ns3/ndn-ns3.hpp"
-#include "ns3/ndn-forwarder.h"
+#include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-fib-helper.h"
 #include "ns3/ndn-fw-hop-count-tag.h"
 
@@ -62,7 +62,7 @@ Producer::GetTypeId (void)
                     StringValue ("/"),
                     MakeNameAccessor (&Producer::m_prefix),
                     MakeNameChecker ())
-     .AddAttribute ("Postfix", "Postfix that is added to the output data (e.g., for adding producer-uniqueness)",
+    .AddAttribute ("Postfix", "Postfix that is added to the output data (e.g., for adding producer-uniqueness)",
                     StringValue ("/"),
                     MakeNameAccessor (&Producer::m_postfix),
                     MakeNameChecker ())
@@ -70,7 +70,7 @@ Producer::GetTypeId (void)
                    UintegerValue (1024),
                    MakeUintegerAccessor (&Producer::m_virtualPayloadSize),
                    MakeUintegerChecker<uint32_t> ())
-     .AddAttribute ("Freshness", "Freshness of data packets, if 0, then unlimited freshness",
+    .AddAttribute ("Freshness", "Freshness of data packets, if 0, then unlimited freshness",
                     TimeValue (Seconds (0)),
                     MakeTimeAccessor (&Producer::m_freshness),
                     MakeTimeChecker ())
@@ -78,7 +78,7 @@ Producer::GetTypeId (void)
                    UintegerValue (0),
                    MakeUintegerAccessor (&Producer::m_signature),
                    MakeUintegerChecker<uint32_t> ())
-     .AddAttribute ("KeyLocator", "Name to be used for key locator.  If root, then key locator is not used",
+    .AddAttribute ("KeyLocator", "Name to be used for key locator.  If root, then key locator is not used",
                     NameValue (),
                     MakeNameAccessor (&Producer::m_keyLocator),
                     MakeNameChecker ())
