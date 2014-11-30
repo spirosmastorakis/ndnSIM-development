@@ -14,11 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * Author:  Alexander Afanasyev <alexander.afanasyev@ucla.edu>
- *          Ilya Moiseenko <iliamo@cs.ucla.edu>
  */
-#include "ns3/ndnSIM/helper/ndn-stack-helper.h"
+
+#include "ndn-stack-helper.h"
+#include "ndn-fib-helper.h"
 
 #include "ns3/assert.h"
 #include "ns3/log.h"
@@ -39,35 +38,50 @@
 #include "ns3/node-list.h"
 #include "ns3/data-rate.h"
 
+#include "../utils/ndn-time.h"
+
 #include <limits>
 #include <map>
-#include <boost/filesystem.hpp>
-#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
-NS_LOG_COMPONENT_DEFINE ("ndn.StackHelper");
+NS_LOG_COMPONENT_DEFINE("ndn.StackHelper");
 
 namespace ns3 {
 namespace ndn {
-
-using ::nfd::ControlParameters;
 
 StackHelper::StackHelper ()
   : m_limitsEnabled (false)
   , m_needSetDefaultRoutes (false)
 {
+  setCustomNdnCxxClocks();
+
   m_ndnFactory.         SetTypeId ("ns3::ndn::L3Protocol");
   // m_strategyFactory.    SetTypeId ("ns3::ndn::fw::Flooding");
   // m_contentStoreFactory.SetTypeId ("ns3::ndn::cs::Lru");
   // m_fibFactory.         SetTypeId ("ns3::ndn::fib::Default");
   // m_pitFactory.         SetTypeId ("ns3::ndn::pit::Persistent");
 
-  m_netDeviceCallbacks.push_back (std::make_pair (PointToPointNetDevice::GetTypeId (), MakeCallback (&StackHelper::PointToPointNetDeviceCallback, this)));
+  m_netDeviceCallbacks.push_back(std::make_pair(PointToPointNetDevice::GetTypeId (),
+                                                MakeCallback(&StackHelper::PointToPointNetDeviceCallback, this)));
   // default callback will be fired if non of others callbacks fit or did the job
 }
 
 StackHelper::~StackHelper ()
 {
+}
+
+void
+StackHelper::setCustomNdnCxxClocks()
+{
+  ::ndn::time::setCustomClocks(make_shared<ns3::ndn::time::CustomSteadyClock>(),
+                               make_shared<ns3::ndn::time::CustomSystemClock>());
+}
+
+KeyChain&
+StackHelper::getKeyChain()
+{
+  static KeyChain keyChain;
+  return keyChain;
 }
 
 void

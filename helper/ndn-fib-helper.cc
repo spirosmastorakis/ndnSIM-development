@@ -19,8 +19,9 @@
 #include "ns3/node-list.h"
 #include "ns3/data-rate.h"
 
-namespace ns3 {
+#include "ns3/ndnSIM/NFD/daemon/mgmt/fib-manager.hpp"
 
+namespace ns3 {
 namespace ndn {
 
 NS_LOG_COMPONENT_DEFINE ("ndn.FibHelper");
@@ -37,7 +38,7 @@ FibHelper::~FibHelper ()
 }
 
 void
-FibHelper::AddNextHop (ControlParameters parameters, Ptr<Node> node)
+FibHelper::AddNextHop (const ControlParameters& parameters, Ptr<Node> node)
 {
   NS_LOG_DEBUG ("Add Next Hop command was initialized");
   Block encodedParameters(parameters.wireEncode());
@@ -47,26 +48,15 @@ FibHelper::AddNextHop (ControlParameters parameters, Ptr<Node> node)
   commandName.append(encodedParameters);
 
   shared_ptr<Interest> command(make_shared<Interest>(commandName));
-  KeyChain keyChain;
-  Name key;
-  key=keyChain.generateRsaKeyPairAsDefault("add-nexthop");
-  keyChain.sign(*command);
-  // CommandValidator validator;
-  // validator.addSupportedPrivilege("fib");
-  // validator.addInterestRule(commandName.toUri(), key, *keyChain.getPublicKey (key));
-  // GenerateCommand(*command);
-  // NS_LOG_DEBUG ("Command was generated");
-  // m_face->onReceiveData += [this, command, encodedParameters] (const Data& response) {
-  //   NS_LOG_DEBUG ("NFD responded with " << response.getName());
-  // };
+  StackHelper::getKeyChain().signWithSha256(*command);
+
   Ptr<L3Protocol> L3protocol = node->GetObject<L3Protocol> ();
   shared_ptr<FibManager> fibManager = L3protocol->GetFibManager ();
-  // fibManager->addInterestRule(commandName.toUri(), key, *keyChain.getPublicKey (key));
   fibManager->onFibRequest(*command);
 }
 
 void
-FibHelper::RemoveNextHop (ControlParameters parameters, Ptr<Node> node)
+FibHelper::RemoveNextHop (const ControlParameters& parameters, Ptr<Node> node)
 {
   NS_LOG_DEBUG ("Remove Next Hop command was initialized");
   Block encodedParameters(parameters.wireEncode());
