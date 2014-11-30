@@ -10,18 +10,16 @@
 #include "ns3/ndn-face.h"
 #include "ns3/ndn-stack-helper.h"
 
-#include "ns3/ndnSIM/NFD/daemon/mgmt/fib-manager.hpp"
-#include "ns3/ndnSIM/NFD/common.hpp"
-#include "ns3/ndnSIM/NFD/daemon/mgmt/command-validator.hpp"
-
-#include <ndn-cxx/util/command-interest-generator.hpp>
+namespace ndn {
+namespace nfd {
+class ControlParameters;
+};
+};
 
 namespace ns3 {
-
 namespace ndn {
 
-using ::ndn::CommandInterestGenerator;
-using ::nfd::ControlParameters;
+using ::ndn::nfd::ControlParameters;
 
 class FibHelper
 {
@@ -31,13 +29,10 @@ public:
   ~FibHelper ();
 
   static void
-  GenerateCommand (Interest& interest);
+  AddNextHop(const ControlParameters& parameters, Ptr<Node> node);
 
   static void
-  AddNextHop (ControlParameters parameters, Ptr<Node> node);
-
-  static void
-  RemoveNextHop (ControlParameters parameters, Ptr<Node> node);
+  RemoveNextHop(const ControlParameters& parameters, Ptr<Node> node);
 
   /**
    * \brief Add forwarding entry to FIB
@@ -48,7 +43,7 @@ public:
    * \param metric Routing metric
    */
   static void
-  AddRoute (const std::string &nodeName, const std::string &prefix, uint32_t faceId, int32_t metric);
+  AddRoute(const std::string& nodeName, const std::string &prefix, uint32_t faceId, int32_t metric);
 
   /**
    * \brief Add forwarding entry to FIB
@@ -59,7 +54,7 @@ public:
    * \param metric Routing metric
    */
   static void
-  AddRoute (Ptr<Node> node, const std::string &prefix, uint32_t faceId, int32_t metric);
+  AddRoute(Ptr<Node> node, const std::string &prefix, uint32_t faceId, int32_t metric);
 
   /**
    * \brief Add forwarding entry to FIB
@@ -88,11 +83,17 @@ public:
    *
    * \param nodeName Node name (refer to ns3::Names)
    * \param prefix Routing prefix
-   * \param otherNode The other node name, to which interests (will be used to infer face id (refer to ns3::Names)
+   * \param otherNode The other node name, to which interests (will be
+   *                  used to infer face id (refer to ns3::Names)
    * \param metric Routing metric
    */
   static void
-  AddRoute (const std::string &nodeName, const std::string &prefix, const std::string &otherNodeName, int32_t metric);
+  AddRoute (const std::string &nodeName, const std::string &prefix,
+            const std::string &otherNodeName, int32_t metric);
+
+private:
+  static void
+  GenerateCommand(Interest& interest);
 };
 
 } // namespace ndn

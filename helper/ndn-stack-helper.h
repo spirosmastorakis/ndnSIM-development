@@ -32,7 +32,6 @@
 #include "ns3/ndn-face-container.h"
 #include "ns3/ndn-net-device-face.h"
 #include "ns3/ndn-l3-protocol.h"
-#include "ns3/ndn-fib-helper.h"
 
 namespace ns3 {
 
@@ -77,16 +76,17 @@ public:
   /**
    * \brief Destroy the NdnStackHelper
    */
-  virtual ~StackHelper ();
+  virtual
+  ~StackHelper ();
 
   /**
    * @brief Set parameters of NdnL3Protocol
    */
   void
-  SetStackAttributes (const std::string &attr1 = "", const std::string &value1 = "",
-                      const std::string &attr2 = "", const std::string &value2 = "",
-                      const std::string &attr3 = "", const std::string &value3 = "",
-                      const std::string &attr4 = "", const std::string &value4 = "");
+  SetStackAttributes(const std::string &attr1 = "", const std::string &value1 = "",
+                     const std::string &attr2 = "", const std::string &value2 = "",
+                     const std::string &attr3 = "", const std::string &value3 = "",
+                     const std::string &attr4 = "", const std::string &value4 = "");
 
 
   /**
@@ -246,12 +246,19 @@ public:
   void
   SetDefaultRoutes (bool needSet);
 
+  static KeyChain&
+  getKeyChain();
+
 private:
   Ptr<NetDeviceFace>
   DefaultNetDeviceCallback (Ptr<Node> node, Ptr<L3Protocol> ndn, Ptr<NetDevice> netDevice) const;
 
   Ptr<NetDeviceFace>
   PointToPointNetDeviceCallback (Ptr<Node> node, Ptr<L3Protocol> ndn, Ptr<NetDevice> netDevice) const;
+
+public:
+  void
+  setCustomNdnCxxClocks();
 
 private:
   StackHelper (const StackHelper &);

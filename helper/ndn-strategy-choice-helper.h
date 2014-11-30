@@ -10,18 +10,16 @@
 #include "ns3/ndn-face.h"
 #include "ns3/ndn-stack-helper.h"
 
-#include "ns3/ndnSIM/NFD/daemon/mgmt/strategy-choice-manager.hpp"
-#include "ns3/ndnSIM/NFD/daemon/table/strategy-choice.hpp"
-#include "ns3/ndnSIM/NFD/daemon/fw/strategy.hpp"
-#include "ns3/ndnSIM/NFD/common.hpp"
-
-#include <ndn-cxx/util/command-interest-generator.hpp>
+namespace ndn {
+namespace nfd {
+class ControlParameters;
+};
+};
 
 namespace ns3 {
-
 namespace ndn {
 
-using ::nfd::ControlParameters;
+using ::ndn::nfd::ControlParameters;
 
 class StrategyChoiceHelper
 {
@@ -48,13 +46,12 @@ public:
   // static void
   // InstallCustomStrategyAll (const Name& strategy);
 
-protected:
+private:
   static void
-  StrategyChoice (ControlParameters parameters, Ptr<Node> node);
+  StrategyChoice (const ControlParameters& parameters, Ptr<Node> node);
 };
 
 } // namespace ndn
-
 } // namespace ns3
 
 #endif // NDN_STRATEGY_CHOICE_HELPER_H
