@@ -30,9 +30,12 @@
 #include "ns3/integer.h"
 #include "ns3/double.h"
 
+#include "ns3/ndn-interest.h"
+#include "ns3/ndn-data.h"
 #include "ns3/ndn-app-face.h"
 #include "ns3/ndn-rtt-mean-deviation.h"
 
+#include <boost/lexical_cast.hpp>
 #include <boost/ref.hpp>
 
 NS_LOG_COMPONENT_DEFINE ("ndn.Consumer");
@@ -193,6 +196,7 @@ Consumer::SendPacket ()
   nameWithSequence->appendSequenceNumber (seq);
   //
 
+  // shared_ptr<Interest> interest = make_shared<Interest> ();
   shared_ptr<Interest> interest = make_shared<Interest> ();
   interest->setNonce               (m_rand.GetValue ());
   interest->setName                (*nameWithSequence);
@@ -205,11 +209,12 @@ Consumer::SendPacket ()
 
   WillSendOutInterest (seq);
 
-  // FwHopCountTag hopCountTag;
-  // interest->GetPayload ()->AddPacketTag (hopCountTag);
+  FwHopCountTag hopCountTag;
+  //Ptr<Packet> packet = Create<Packet> ();
+  interest->getPacket ()->AddPacketTag (hopCountTag);
 
-  m_transmittedInterests (interest, this, m_face);
-  m_face->onReceiveInterest (*interest);
+  m_transmittedInterests ((dynamic_cast<::ndn::Interest&>(*interest)).shared_from_this (), this, m_face);
+  m_face->onReceiveInterest (dynamic_cast<::ndn::Interest&>(*interest));
 
   ScheduleNextPacket ();
 }
@@ -220,7 +225,7 @@ Consumer::SendPacket ()
 
 
 void
-Consumer::OnData (shared_ptr<const Data> data)
+Consumer::OnData (shared_ptr<const ::ndn::Data> data)
 {
   if (!m_active) return;
 
@@ -233,23 +238,25 @@ Consumer::OnData (shared_ptr<const Data> data)
   uint32_t seq = data->getName ().at (-1).toSequenceNumber ();
   NS_LOG_INFO ("< DATA for " << seq);
 
+  // const Data d = (static_cast<const Data&>(*data));
   // int hopCount = -1;
   // FwHopCountTag hopCountTag;
-  // if (data->GetPayload ()->PeekPacketTag (hopCountTag))
+  // if (d.getPacket ()->PeekPacketTag (hopCountTag))
   //   {
   //     hopCount = hopCountTag.Get ();
+  //     std::cout << "Hops: " << hopCountTag.Get () << "\n";
   //   }
 
   SeqTimeoutsContainer::iterator entry = m_seqLastDelay.find (seq);
   if (entry != m_seqLastDelay.end ())
     {
-      //m_lastRetransmittedInterestDataDelay (this, seq, Simulator::Now () - entry->time, hopCount);
+      // m_lastRetransmittedInterestDataDelay (this, seq, Simulator::Now () - entry->time, hopCount);
     }
 
   entry = m_seqFullDelay.find (seq);
   if (entry != m_seqFullDelay.end ())
     {
-      //m_firstInterestDataDelay (this, seq, Simulator::Now () - entry->time, m_seqRetxCounts[seq], hopCount);
+      // m_firstInterestDataDelay (this, seq, Simulator::Now () - entry->time, m_seqRetxCounts[seq], hopCount);
     }
 
   m_seqRetxCounts.erase (seq);

@@ -58,28 +58,34 @@ public:
   uint32_t
   Get () const { return m_hopCount; }
 
+  /**
+   * @brief Set value of hop count
+   */
+  void
+  Set (uint32_t tag) { m_hopCount = tag; }
+
   ////////////////////////////////////////////////////////
   // from ObjectBase
   ////////////////////////////////////////////////////////
   virtual TypeId
   GetInstanceTypeId () const;
-  
+
   ////////////////////////////////////////////////////////
   // from Tag
   ////////////////////////////////////////////////////////
-  
+
   virtual uint32_t
   GetSerializedSize () const;
 
   virtual void
   Serialize (TagBuffer i) const;
-  
+
   virtual void
   Deserialize (TagBuffer i);
 
   virtual void
   Print (std::ostream &os) const;
-  
+
 private:
   uint32_t m_hopCount;
 };

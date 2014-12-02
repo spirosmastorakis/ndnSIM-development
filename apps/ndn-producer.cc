@@ -33,6 +33,8 @@
 #include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-fib-helper.h"
 #include "ns3/ndn-fw-hop-count-tag.h"
+#include "ns3/ndn-interest.h"
+#include "ns3/ndn-data.h"
 
 #include <boost/ref.hpp>
 #include <boost/lambda/lambda.hpp>
@@ -134,7 +136,7 @@ Producer::StopApplication ()
 
 
 void
-Producer::OnInterest(shared_ptr<const Interest> interest)
+Producer::OnInterest(shared_ptr<const ::ndn::Interest> interest)
 {
   App::OnInterest(interest); // tracing inside
 
@@ -147,7 +149,8 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   // dataName.append(m_postfix);
   // dataName.appendVersion();
 
-  auto data = make_shared<Data>(dataName);
+  auto data = make_shared<Data>();
+  data->setName (dataName);
   data->setFreshnessPeriod(::ndn::time::milliseconds(m_freshness.GetMilliSeconds()));
 
   data->setContent(make_shared<::ndn::Buffer>(m_virtualPayloadSize));
@@ -164,20 +167,22 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 
   data->setSignature(signature);
 
-  // to create real wire encoding
-  data->wireEncode();
-
   NS_LOG_INFO ("node("<< GetNode()->GetId() <<") respodning with Data: " << data->getName ());
 
   // Echo back FwHopCountTag if exists
-  // FwHopCountTag hopCountTag;
-  // if (interest->GetPayload ()->PeekPacketTag (hopCountTag))
-  //   {
-  //      data->GetPayload ()->AddPacketTag (hopCountTag);
-  //   }
+  FwHopCountTag hopCountTag;
+  const Interest& i = reinterpret_cast<const Interest&>(*interest);
+  if (i.getPacket ()->PeekPacketTag (hopCountTag))
+   {
+     data->getPacket ()->AddPacketTag (hopCountTag);
+     // NS_LOG_DEBUG ("Hops: "<< hopCountTag.Get() << "\n");
+    }
 
-  m_face->onReceiveData (*data);
-  m_transmittedDatas (data, this, m_face);
+  // to create real wire encoding
+  data->wireEncode();
+
+  m_transmittedDatas ((dynamic_cast<::ndn::Data&>(*data)).shared_from_this (), this, m_face);
+  m_face->onReceiveData (dynamic_cast<::ndn::Data&>(*data));
 }
 
 } // namespace ndn
