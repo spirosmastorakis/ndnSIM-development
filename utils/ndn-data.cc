@@ -6,14 +6,10 @@ namespace ndn {
 
 using ns3::Ptr;
 using ns3::Packet;
+using ::ndn::Name;
 
-Data::Data () :
-  ::ndn::Data ()
-{
-}
-
-Data::Data (::ndn::Block block) :
-  ::ndn::Data (block)
+Data::Data(const Name& name) :
+  ::ndn::Data(name)
 {
 }
 
