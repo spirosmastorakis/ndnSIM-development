@@ -170,20 +170,16 @@ Producer::OnInterest(shared_ptr<const ::ndn::Interest> interest)
   NS_LOG_INFO ("node("<< GetNode()->GetId() <<") respodning with Data: " << data->getName ());
 
   // Echo back FwHopCountTag if exists
-  FwHopCountTag hopCountTag;
-  const Interest& i = reinterpret_cast<const Interest&>(*interest);
-  if (i.getPacket ()->PeekPacketTag (hopCountTag))
-   {
-     // NS_LOG_DEBUG ("Hop count: "<< hopCountTag.Get() << "\n");
-     hopCountTag.Set(0);
-     data->getPacket ()->AddPacketTag (hopCountTag);
-   }
+  // FwHopCountTag hopCountTag;
+  // const Interest& inter = reinterpret_cast<const Interest&>(*interest);
+  // if (inter.getPacket ()->PeekPacketTag (hopCountTag))
+  // {
+  //   data->getPacket ()->AddPacketTag (hopCountTag);
+  //   NS_LOG_DEBUG ("Hops: "<< hopCountTag.Get());
+  //  }
 
-  // to create real wire encoding
-  data->wireEncode();
-
-  m_transmittedDatas ((dynamic_cast<::ndn::Data&>(*data)).shared_from_this (), this, m_face);
-  m_face->onReceiveData (dynamic_cast<::ndn::Data&>(*data));
+  m_transmittedDatas (data, this, m_face);
+  m_face->onReceiveData (*data);
 }
 
 } // namespace ndn

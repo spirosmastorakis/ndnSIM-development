@@ -30,8 +30,8 @@
 #include "ns3/integer.h"
 #include "ns3/double.h"
 
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+//#include "ns3/ndn-interest.h"
+//#include "ns3/ndn-data.h"
 #include "ns3/ndn-app-face.h"
 #include "ns3/ndn-rtt-mean-deviation.h"
 
@@ -197,7 +197,7 @@ Consumer::SendPacket ()
   //
 
   // shared_ptr<Interest> interest = make_shared<Interest> ();
-  shared_ptr<Interest> interest = make_shared<Interest> ();
+  shared_ptr<::ndn::Interest> interest = make_shared<::ndn::Interest> ();
   interest->setNonce               (m_rand.GetValue ());
   interest->setName                (*nameWithSequence);
   ::ndn::time::milliseconds interestLifeTime (m_interestLifeTime.GetMilliSeconds ());
@@ -209,11 +209,11 @@ Consumer::SendPacket ()
 
   WillSendOutInterest (seq);
 
-  FwHopCountTag hopCountTag;
-  interest->getPacket ()->AddPacketTag (hopCountTag);
+  // FwHopCountTag hopCountTag;
+  // interest->getPacket ()->AddPacketTag (hopCountTag);
 
-  m_transmittedInterests ((dynamic_cast<::ndn::Interest&>(*interest)).shared_from_this (), this, m_face);
-  m_face->onReceiveInterest (dynamic_cast<::ndn::Interest&>(*interest));
+  m_transmittedInterests (/*(dynamic_cast<::ndn::Interest&>(*interest)).shared_from_this ()*/interest, this, m_face);
+  m_face->onReceiveInterest (/*dynamic_cast<::ndn::Interest&>(*interest)*/*interest);
 
   ScheduleNextPacket ();
 }
@@ -237,14 +237,12 @@ Consumer::OnData (shared_ptr<const ::ndn::Data> data)
   uint32_t seq = data->getName ().at (-1).toSequenceNumber ();
   NS_LOG_INFO ("< DATA for " << seq);
 
-  const Data& d = static_cast<const Data&>(*data);
-  int hopCount = -1;
-  FwHopCountTag hopCountTag;
-  if (d.getPacket ()->PeekPacketTag (hopCountTag))
-    {
-      hopCount = hopCountTag.Get ();
-      // NS_LOG_DEBUG ("Hop count: " << hopCountTag.Get() << "\n");
-    }
+  // int hopCount = -1;
+  // FwHopCountTag hopCountTag;
+  // if ((reinterpret_cast<const Data&>(*data)).getPacket ()->PeekPacketTag (hopCountTag))
+  //    {
+  //      hopCount = hopCountTag.Get ();
+  //    }
 
   SeqTimeoutsContainer::iterator entry = m_seqLastDelay.find (seq);
   if (entry != m_seqLastDelay.end ())
