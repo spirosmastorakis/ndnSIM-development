@@ -55,6 +55,11 @@ def build(bld):
         obj = bld.create_ns3_program('ndn-congestion-alt-topo-plugin', all_modules)
         obj.source = 'ndn-congestion-alt-topo-plugin.cc'
 
+        #obj = bld.create_ns3_program('ndn-ping', all_modules)
+        #obj.source = ['ndn-ping.cc',
+              #       'custom-apps/ping-client.cc',
+              #       'custom-apps/ping-server.cc']
+
     obj = bld.create_ns3_program('ndn-simple-with-pcap', all_modules)
     obj.source = 'ndn-simple-with-pcap.cc'
 

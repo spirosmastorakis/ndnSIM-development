@@ -131,6 +131,8 @@ def build(bld):
         "utils/ndn-rtt-estimator.h",
         "utils/ndn-rtt-mean-deviation.h",
         "utils/ndn-fw-hop-count-tag.h",
+        "utils/ndn-interest.h",
+        "utils/ndn-data.h",
         "utils/tracers/ndn-l3-aggregate-tracer.h",
         "utils/tracers/ndn-l3-tracer.h",
         "utils/tracers/ndn-l3-rate-tracer.h",

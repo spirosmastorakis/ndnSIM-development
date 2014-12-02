@@ -65,7 +65,6 @@ main (int argc, char *argv[])
 
   // Install NDN stack on all nodes
   StackHelper ndnHelper;
-  //ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
   ndnHelper.InstallAll ();
 
   // Installing global routing interface on all nodes
