@@ -22,6 +22,7 @@
 #define NDN_FW_HOP_COUNT_TAG_H
 
 #include "ns3/tag.h"
+#include "ns3/ndn-common.h"
 
 namespace ns3 {
 namespace ndn {
@@ -63,23 +64,23 @@ public:
   ////////////////////////////////////////////////////////
   virtual TypeId
   GetInstanceTypeId () const;
-  
+
   ////////////////////////////////////////////////////////
   // from Tag
   ////////////////////////////////////////////////////////
-  
+
   virtual uint32_t
   GetSerializedSize () const;
 
   virtual void
   Serialize (TagBuffer i) const;
-  
+
   virtual void
   Deserialize (TagBuffer i);
 
   virtual void
   Print (std::ostream &os) const;
-  
+
 private:
   uint32_t m_hopCount;
 };
