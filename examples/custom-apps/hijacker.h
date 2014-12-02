@@ -27,6 +27,8 @@
 #include "ns3/network-module.h"
 #include "ns3/ndnSIM-module.h"
 #include "ns3/ndn-common.h"
+//#include "ns3/ndn-interest.h"
+//#include "ns3/ndn-data.h"
 
 namespace ns3 {
 

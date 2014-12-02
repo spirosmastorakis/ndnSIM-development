@@ -33,6 +33,8 @@
 #include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-fib-helper.h"
 #include "ns3/ndn-fw-hop-count-tag.h"
+#include "ns3/ndn-interest.h"
+#include "ns3/ndn-data.h"
 
 #include <boost/ref.hpp>
 #include <boost/lambda/lambda.hpp>
@@ -134,7 +136,7 @@ Producer::StopApplication ()
 
 
 void
-Producer::OnInterest(shared_ptr<const Interest> interest)
+Producer::OnInterest(shared_ptr<const ::ndn::Interest> interest)
 {
   App::OnInterest(interest); // tracing inside
 
@@ -171,13 +173,15 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 
   // Echo back FwHopCountTag if exists
   // FwHopCountTag hopCountTag;
-  // if (interest->GetPayload ()->PeekPacketTag (hopCountTag))
-  //   {
-  //      data->GetPayload ()->AddPacketTag (hopCountTag);
-  //   }
+  // const Interest& inter = reinterpret_cast<const Interest&>(*interest);
+  // if (inter.getPacket ()->PeekPacketTag (hopCountTag))
+  // {
+  //   data->getPacket ()->AddPacketTag (hopCountTag);
+  //   NS_LOG_DEBUG ("Hops: "<< hopCountTag.Get());
+  //  }
 
-  m_face->onReceiveData (*data);
   m_transmittedDatas (data, this, m_face);
+  m_face->onReceiveData (*data);
 }
 
 } // namespace ndn

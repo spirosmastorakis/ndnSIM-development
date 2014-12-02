@@ -30,9 +30,12 @@
 #include "ns3/integer.h"
 #include "ns3/double.h"
 
+//#include "ns3/ndn-interest.h"
+//#include "ns3/ndn-data.h"
 #include "ns3/ndn-app-face.h"
 #include "ns3/ndn-rtt-mean-deviation.h"
 
+#include <boost/lexical_cast.hpp>
 #include <boost/ref.hpp>
 
 NS_LOG_COMPONENT_DEFINE ("ndn.Consumer");
@@ -193,7 +196,8 @@ Consumer::SendPacket ()
   nameWithSequence->appendSequenceNumber (seq);
   //
 
-  shared_ptr<Interest> interest = make_shared<Interest> ();
+  // shared_ptr<Interest> interest = make_shared<Interest> ();
+  shared_ptr<::ndn::Interest> interest = make_shared<::ndn::Interest> ();
   interest->setNonce               (m_rand.GetValue ());
   interest->setName                (*nameWithSequence);
   ::ndn::time::milliseconds interestLifeTime (m_interestLifeTime.GetMilliSeconds ());
@@ -206,10 +210,10 @@ Consumer::SendPacket ()
   WillSendOutInterest (seq);
 
   // FwHopCountTag hopCountTag;
-  // interest->GetPayload ()->AddPacketTag (hopCountTag);
+  // interest->getPacket ()->AddPacketTag (hopCountTag);
 
-  m_transmittedInterests (interest, this, m_face);
-  m_face->onReceiveInterest (*interest);
+  m_transmittedInterests (/*(dynamic_cast<::ndn::Interest&>(*interest)).shared_from_this ()*/interest, this, m_face);
+  m_face->onReceiveInterest (/*dynamic_cast<::ndn::Interest&>(*interest)*/*interest);
 
   ScheduleNextPacket ();
 }
@@ -220,7 +224,7 @@ Consumer::SendPacket ()
 
 
 void
-Consumer::OnData (shared_ptr<const Data> data)
+Consumer::OnData (shared_ptr<const ::ndn::Data> data)
 {
   if (!m_active) return;
 
@@ -235,10 +239,10 @@ Consumer::OnData (shared_ptr<const Data> data)
 
   // int hopCount = -1;
   // FwHopCountTag hopCountTag;
-  // if (data->GetPayload ()->PeekPacketTag (hopCountTag))
-  //   {
-  //     hopCount = hopCountTag.Get ();
-  //   }
+  // if ((reinterpret_cast<const Data&>(*data)).getPacket ()->PeekPacketTag (hopCountTag))
+  //    {
+  //      hopCount = hopCountTag.Get ();
+  //    }
 
   SeqTimeoutsContainer::iterator entry = m_seqLastDelay.find (seq);
   if (entry != m_seqLastDelay.end ())

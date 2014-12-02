@@ -25,6 +25,8 @@
 
 #include "ns3/ndn-app.h"
 #include "ns3/ndn-common.h"
+//#include "ns3/ndn-interest.h"
+//#include "ns3/ndn-data.h"
 
 namespace ns3 {
 
