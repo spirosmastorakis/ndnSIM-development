@@ -41,7 +41,7 @@ StrategyChoiceHelper::StrategyChoice (const ControlParameters& parameters, Ptr<N
 }
 
 void
-StrategyChoiceHelper::Install (const NodeContainer& c, const Name& namePrefix, const Name& strategy)
+StrategyChoiceHelper::Install (const NodeContainer& c, const ::ndn::Name& namePrefix, const ::ndn::Name& strategy)
 {
   for (NodeContainer::Iterator i = c.Begin (); i != c.End (); ++i)
     {
@@ -50,7 +50,7 @@ StrategyChoiceHelper::Install (const NodeContainer& c, const Name& namePrefix, c
 }
 
 void
-StrategyChoiceHelper::Install (Ptr<Node> node, const Name& namePrefix, const Name& strategy)
+StrategyChoiceHelper::Install (Ptr<Node> node, const ::ndn::Name& namePrefix, const ::ndn::Name& strategy)
 {
   ControlParameters parameters;
   parameters.setName (namePrefix);
@@ -60,7 +60,7 @@ StrategyChoiceHelper::Install (Ptr<Node> node, const Name& namePrefix, const Nam
 }
 
 void
-StrategyChoiceHelper::InstallAll (const Name& namePrefix, const Name& strategy)
+StrategyChoiceHelper::InstallAll (const ::ndn::Name& namePrefix, const ::ndn::Name& strategy)
 {
   Install (NodeContainer::GetGlobal (), namePrefix, strategy);
 }
