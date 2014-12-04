@@ -6,12 +6,6 @@ namespace ndn {
 
 using ns3::Ptr;
 using ns3::Packet;
-using ::ndn::Name;
-
-Data::Data(const Name& name) :
-  ::ndn::Data(name)
-{
-}
 
 Ptr<Packet>
 Data::getPacket () const

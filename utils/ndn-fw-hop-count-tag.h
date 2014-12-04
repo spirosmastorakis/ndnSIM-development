@@ -22,7 +22,6 @@
 #define NDN_FW_HOP_COUNT_TAG_H
 
 #include "ns3/tag.h"
-#include "ns3/ndn-common.h"
 
 namespace ns3 {
 namespace ndn {
