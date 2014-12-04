@@ -114,6 +114,51 @@ public:
   {
   };
 
+  /** \brief Get whether underlying communication is up
+   *
+   *  In this base class this property is always true.
+   */
+  virtual bool
+  isUp() const;
+
+  /** \brief Get whether face is created on demand or explicitly via FaceManagement protocol
+   */
+  bool
+  isOnDemand() const;
+
+  const nfd::FaceCounters&
+  getCounters() const;
+
+  /** \return a FaceUri that represents the remote endpoint
+   */
+  const FaceUri&
+  getRemoteUri() const;
+
+  /** \return a FaceUri that represents the local endpoint (NFD side)
+   */
+  const FaceUri&
+  getLocalUri() const;
+
+  // this is a non-virtual method
+  bool
+  decodeAndDispatchInput(const Block& element, uint32_t hopTag);
+
+  nfd::FaceCounters&
+  getMutableCounters();
+
+  void
+  setOnDemand(bool isOnDemand);
+
+  /** \brief fail the face and raise onFail event if it's UP; otherwise do nothing
+   */
+  void
+  fail(const std::string& reason);
+
+  /** \return FaceStatus data structure filled with the current Face status
+   */
+  virtual FaceStatus
+  getFaceStatus() const;
+
   /**
    * @brief Get node to which this face is associated
    */

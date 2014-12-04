@@ -44,6 +44,12 @@ NS_LOG_COMPONENT_DEFINE ("ndn.Face");
 namespace ns3 {
 namespace ndn {
 
+using ::ndn::util::FaceUri;
+using ::ndn::nfd::FaceEventNotification;
+using ::ndn::nfd::FaceStatus;
+
+//shared_ptr<::ndn::Data> m_data;
+
 NS_OBJECT_ENSURE_REGISTERED (Face);
 
 TypeId
@@ -59,6 +65,113 @@ Face::GetTypeId ()
                    MakeUintegerChecker<uint32_t> ())
     ;
   return tid;
+}
+
+Face::Face(const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal)
+  : m_idNfd(INVALID_FACEID)
+  , m_remoteUri(remoteUri)
+  , m_localUri(localUri)
+  , m_isLocal(isLocal)
+  , m_isOnDemand(false)
+  , m_isFailed(false)
+{
+  // GetNode();
+  onReceiveInterest += [this](const ::ndn::Interest&) { ++m_counters.getNInInterests(); };
+  onReceiveData     += [this](const ::ndn::Data& data) {
+    //m_data = make_shared<::ndn::Data>(data);
+    ++m_counters.getNInDatas(); };
+  onSendInterest    += [this](const ::ndn::Interest& interest) {
+    SendInterest (make_shared<::ndn::Interest> (interest));
+    ++m_counters.getNOutInterests(); };
+  onSendData        += [this](const ::ndn::Data& data) {
+    SendData (make_shared<::ndn::Data> (data));
+    ++m_counters.getNOutDatas(); };
+}
+
+FaceId
+Face::getId() const
+{
+  return m_idNfd;
+}
+
+// this method is private and should be used only by the FaceTable
+void
+Face::setId(FaceId faceId)
+{
+  m_idNfd = faceId;
+}
+
+void
+Face::setDescription(const std::string& description)
+{
+  m_description = description;
+}
+
+const std::string&
+Face::getDescription() const
+{
+  return m_description;
+}
+
+bool
+Face::isMultiAccess() const
+{
+  return false;
+}
+
+bool
+Face::isUp() const
+{
+  return true;
+}
+
+bool
+Face::decodeAndDispatchInput(const Block& element, uint32_t hopTag)
+{
+  try {
+    /// \todo Ensure lazy field decoding process
+
+    if (element.type() == ::ndn::tlv::Interest)
+      {
+        shared_ptr<Interest> i = make_shared<Interest>();
+        i->wireDecode(element);
+        FwHopCountTag hopCount;
+        hopCount.Set (hopTag);
+        i->getPacket ()->AddPacketTag (hopCount);
+        this->onReceiveInterest(dynamic_cast<::ndn::Interest&>(*i));
+      }
+    else if (element.type() == ::ndn::tlv::Data)
+      {
+        shared_ptr<Data> d = make_shared<Data>();
+        d->wireDecode(element);
+        // std::cout << "Print " << d->getIncomingFaceId () << "\n";
+        // FwHopCountTag hopCount;
+        // hopCount.Set (hopTag);
+        // //std::cout << "hop count : " << hopCount.Get () << "\n";
+        // d->getPacket ()->AddPacketTag (hopCount);
+        this->onReceiveData(dynamic_cast<::ndn::Data&>(*d));
+      }
+    else
+      return false;
+
+    return true;
+  }
+  catch (::ndn::tlv::Error&) {
+    return false;
+  }
+}
+
+void
+Face::fail(const std::string& reason)
+{
+  if (m_isFailed) {
+    return;
+  }
+
+  m_isFailed = true;
+  this->onFail(reason);
+
+  this->onFail.clear();
 }
 
 void
@@ -130,8 +243,8 @@ Face::GetNode () const
   return m_node;
 }
 
-void
-Face::sendInterest (const ::ndn::Interest& interest)
+bool
+Face::SendInterest (shared_ptr<const ::ndn::Interest> interest)
 {
   NS_LOG_FUNCTION (this << boost::cref (*this) << interest.getName ());
 
@@ -141,20 +254,19 @@ Face::sendInterest (const ::ndn::Interest& interest)
   //   }
   // I assume that this should work...
 
-  const Interest i = static_cast<const Interest&>(interest);
+  const Interest i = reinterpret_cast<const Interest&>(*interest);
   Ptr<Packet> packet = Create <Packet> ();
 
   FwHopCountTag hopCount;
-  bool tagExists = i.getPacket ()->PeekPacketTag (hopCount);
-  if (tagExists)
-    packet->AddPacketTag (hopCount);
-  Block block = interest.wireEncode ();
-  Convert::ToPacket (make_shared <Block> (block), packet);
-  Send (packet);
+  i.getPacket ()->RemovePacketTag (hopCount);
+  packet->AddPacketTag (hopCount);
+  Block block = interest->wireEncode ();
+  Convert::InterestToPacket (make_shared <Block> (block), packet);
+  return Send (packet);
 }
 
-void
-Face::sendData (const ::ndn::Data& data)
+bool
+Face::SendData (shared_ptr<const ::ndn::Data> data)
 {
   NS_LOG_FUNCTION (this << data);
 
@@ -164,17 +276,26 @@ Face::sendData (const ::ndn::Data& data)
   //   }
   // I assume that this should work..
 
-  const Data& d = static_cast<const Data&>(data);
+  // std::cout << "here \n";
+  // Data d = static_cast<Data&>(*m_data);
+  // std::cout << "success \n";
 
   Ptr<Packet> packet = Create <Packet> ();
 
-  FwHopCountTag hopCount;
-  bool tagExists = d.getPacket ()->PeekPacketTag (hopCount);
-  if (tagExists)
-    packet->AddPacketTag (hopCount);
-  Block block = data.wireEncode ();
-  Convert::ToPacket (make_shared <Block> (block), packet);
-  Send (packet);
+  // FwHopCountTag hopCount;
+  // // std::cout << "here2 \n";
+  // const_cast<Data&>(d).setPacket (packet);
+  // bool tagExists = d.getPacket ()->RemovePacketTag (hopCount);
+  // if (tagExists)
+  //    {
+  //      hopCount.Increment ();
+  // //     //packet->AddPacketTag (hopCount);
+  //    }
+  // // std::cout << "success2 \n";
+  //  packet->AddPacketTag (hopCount);
+  Block block = data->wireEncode ();
+  Convert::InterestToPacket (make_shared <Block> (block), packet);
+  return Send (packet);
 }
 
 bool
@@ -205,8 +326,9 @@ Face::Receive (Ptr<const Packet> p)
   try
     {
       //Let's see..
-      Block block = Convert::FromPacket (packet);
-      decodeAndDispatchInput(block, packet);
+      uint32_t hopTag = 0;
+      Block block = Convert::FromPacket (packet, hopTag);
+      decodeAndDispatchInput(block, hopTag);
     }
   catch (::ndn::UnknownHeaderException)
     {
