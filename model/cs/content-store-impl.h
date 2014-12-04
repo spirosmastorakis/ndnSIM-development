@@ -179,7 +179,7 @@ struct isNotExcluded
   }
 
   bool
-  operator () (const name::Component &comp) const
+  operator () (const Name::Component &comp) const
   {
     return !m_exclude.isExcluded (comp);
   }
