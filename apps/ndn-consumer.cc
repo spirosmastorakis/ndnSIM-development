@@ -30,8 +30,8 @@
 #include "ns3/integer.h"
 #include "ns3/double.h"
 
-//#include "ns3/ndn-interest.h"
-//#include "ns3/ndn-data.h"
+#include "ns3/ndn-interest.h"
+#include "ns3/ndn-data.h"
 #include "ns3/ndn-app-face.h"
 #include "ns3/ndn-rtt-mean-deviation.h"
 
@@ -197,7 +197,7 @@ Consumer::SendPacket ()
   //
 
   // shared_ptr<Interest> interest = make_shared<Interest> ();
-  shared_ptr<::ndn::Interest> interest = make_shared<::ndn::Interest> ();
+  shared_ptr<Interest> interest = make_shared<Interest> ();
   interest->setNonce               (m_rand.GetValue ());
   interest->setName                (*nameWithSequence);
   ::ndn::time::milliseconds interestLifeTime (m_interestLifeTime.GetMilliSeconds ());
@@ -209,11 +209,12 @@ Consumer::SendPacket ()
 
   WillSendOutInterest (seq);
 
-  // FwHopCountTag hopCountTag;
-  // interest->getPacket ()->AddPacketTag (hopCountTag);
+  FwHopCountTag hopCountTag;
+  //Ptr<Packet> packet = Create<Packet> ();
+  interest->getPacket ()->AddPacketTag (hopCountTag);
 
-  m_transmittedInterests (/*(dynamic_cast<::ndn::Interest&>(*interest)).shared_from_this ()*/interest, this, m_face);
-  m_face->onReceiveInterest (/*dynamic_cast<::ndn::Interest&>(*interest)*/*interest);
+  m_transmittedInterests ((dynamic_cast<::ndn::Interest&>(*interest)).shared_from_this (), this, m_face);
+  m_face->onReceiveInterest (dynamic_cast<::ndn::Interest&>(*interest));
 
   ScheduleNextPacket ();
 }
@@ -237,23 +238,25 @@ Consumer::OnData (shared_ptr<const ::ndn::Data> data)
   uint32_t seq = data->getName ().at (-1).toSequenceNumber ();
   NS_LOG_INFO ("< DATA for " << seq);
 
+  // const Data d = (static_cast<const Data&>(*data));
   // int hopCount = -1;
   // FwHopCountTag hopCountTag;
-  // if ((reinterpret_cast<const Data&>(*data)).getPacket ()->PeekPacketTag (hopCountTag))
-  //    {
-  //      hopCount = hopCountTag.Get ();
-  //    }
+  // if (d.getPacket ()->PeekPacketTag (hopCountTag))
+  //   {
+  //     hopCount = hopCountTag.Get ();
+  //     std::cout << "Hops: " << hopCountTag.Get () << "\n";
+  //   }
 
   SeqTimeoutsContainer::iterator entry = m_seqLastDelay.find (seq);
   if (entry != m_seqLastDelay.end ())
     {
-      m_lastRetransmittedInterestDataDelay (this, seq, Simulator::Now () - entry->time, hopCount);
+      // m_lastRetransmittedInterestDataDelay (this, seq, Simulator::Now () - entry->time, hopCount);
     }
 
   entry = m_seqFullDelay.find (seq);
   if (entry != m_seqFullDelay.end ())
     {
-      m_firstInterestDataDelay (this, seq, Simulator::Now () - entry->time, m_seqRetxCounts[seq], hopCount);
+      // m_firstInterestDataDelay (this, seq, Simulator::Now () - entry->time, m_seqRetxCounts[seq], hopCount);
     }
 
   m_seqRetxCounts.erase (seq);
