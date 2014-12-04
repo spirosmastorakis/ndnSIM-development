@@ -54,6 +54,7 @@ using ns3::ndn::AppHelper;
 using ns3::ndn::GlobalRoutingHelper;
 using ns3::ndn::StrategyChoiceHelper;
 using ns3::AnnotatedTopologyReader;
+using ::ndn::Name;
 
 int
 main (int argc, char *argv[])

@@ -127,15 +127,21 @@ def build(bld):
         "model/ndn-header.hpp",
         "model/ndn-trailer.hpp",
 
+        "model/cs/ndn-content-store.h",
+        "model/cs/content-store-nocache.h",
+
         "utils/ndn-time.h",
         "utils/ndn-rtt-estimator.h",
         "utils/ndn-rtt-mean-deviation.h",
         "utils/ndn-fw-hop-count-tag.h",
         "utils/ndn-interest.h",
         "utils/ndn-data.h",
+        "utils/ndn-name.h",
         "utils/tracers/ndn-l3-aggregate-tracer.h",
         "utils/tracers/ndn-l3-tracer.h",
         "utils/tracers/ndn-l3-rate-tracer.h",
+        "utils/trie/trie.h",
+        "utils/trie/trie-with-policy.h",
 
         "plugins/topology/annotated-topology-reader.h",
         "plugins/topology/rocketfuel-map-reader.h"
