@@ -211,7 +211,7 @@ public:
 
   // this is a non-virtual method
   bool
-  decodeAndDispatchInput(const Block& element);
+  decodeAndDispatchInput(const Block& element, uint32_t hopTag);
 
   nfd::FaceCounters&
   getMutableCounters();
