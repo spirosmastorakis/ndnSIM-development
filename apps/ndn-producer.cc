@@ -149,7 +149,8 @@ Producer::OnInterest(shared_ptr<const ::ndn::Interest> interest)
   // dataName.append(m_postfix);
   // dataName.appendVersion();
 
-  auto data = make_shared<Data>(dataName);
+  auto data = make_shared<Data>();
+  data->setName (dataName);
   data->setFreshnessPeriod(::ndn::time::milliseconds(m_freshness.GetMilliSeconds()));
 
   data->setContent(make_shared<::ndn::Buffer>(m_virtualPayloadSize));
@@ -166,22 +167,22 @@ Producer::OnInterest(shared_ptr<const ::ndn::Interest> interest)
 
   data->setSignature(signature);
 
-  // to create real wire encoding
-  data->wireEncode();
-
   NS_LOG_INFO ("node("<< GetNode()->GetId() <<") respodning with Data: " << data->getName ());
 
   // Echo back FwHopCountTag if exists
-  // FwHopCountTag hopCountTag;
-  // const Interest& inter = reinterpret_cast<const Interest&>(*interest);
-  // if (inter.getPacket ()->PeekPacketTag (hopCountTag))
-  // {
-  //   data->getPacket ()->AddPacketTag (hopCountTag);
-  //   NS_LOG_DEBUG ("Hops: "<< hopCountTag.Get());
-  //  }
+  FwHopCountTag hopCountTag;
+  const Interest& i = reinterpret_cast<const Interest&>(*interest);
+  if (i.getPacket ()->PeekPacketTag (hopCountTag))
+   {
+     data->getPacket ()->AddPacketTag (hopCountTag);
+     // NS_LOG_DEBUG ("Hops: "<< hopCountTag.Get() << "\n");
+    }
 
-  m_transmittedDatas (data, this, m_face);
-  m_face->onReceiveData (*data);
+  // to create real wire encoding
+  data->wireEncode();
+
+  m_transmittedDatas ((dynamic_cast<::ndn::Data&>(*data)).shared_from_this (), this, m_face);
+  m_face->onReceiveData (dynamic_cast<::ndn::Data&>(*data));
 }
 
 } // namespace ndn
