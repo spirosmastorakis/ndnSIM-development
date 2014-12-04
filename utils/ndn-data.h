@@ -4,7 +4,6 @@
 #include "ns3/packet.h"
 #include "ns3/ptr.h"
 #include <ndn-cxx/data.hpp>
-#include <ndn-cxx/name.hpp>
 
 namespace ns3 {
 
@@ -12,13 +11,10 @@ namespace ndn {
 
 using ns3::Ptr;
 using ns3::Packet;
-using ::ndn::Name;
 
 class Data : public ::ndn::Data
 {
 public:
-  Data (const Name& name);
-
   Ptr<Packet>
   getPacket () const;
 

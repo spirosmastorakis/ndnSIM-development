@@ -22,7 +22,6 @@
 #define NDN_FW_HOP_COUNT_TAG_H
 
 #include "ns3/tag.h"
-#include "ns3/ndn-common.h"
 
 namespace ns3 {
 namespace ndn {
@@ -58,6 +57,12 @@ public:
    */
   uint32_t
   Get () const { return m_hopCount; }
+
+  /**
+   * @brief Set value of hop count
+   */
+  void
+  Set (uint32_t tag) { m_hopCount = tag; }
 
   ////////////////////////////////////////////////////////
   // from ObjectBase
