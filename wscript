@@ -137,6 +137,8 @@ def build(bld):
         "utils/ndn-interest.h",
         "utils/ndn-data.h",
         "utils/ndn-name.h",
+        "utils/blob.h",
+        "utils/name-component.h",
         "utils/tracers/ndn-l3-aggregate-tracer.h",
         "utils/tracers/ndn-l3-tracer.h",
         "utils/tracers/ndn-l3-rate-tracer.h",
