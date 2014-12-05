@@ -31,6 +31,8 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/foreach.hpp>
 #include <boost/mpl/if.hpp>
+
+#include "ns3/blob.h"
 #include "ns3/ndn-name.h"
 
 namespace ns3 {
@@ -208,7 +210,9 @@ public:
   {
     trie *trieNode = this;
 
-    BOOST_FOREACH (const Key &subkey, key)
+    Key tempkey;
+    ns3::ndn::name::Component &subkey = static_cast<ns3::ndn::name::Component&>(tempkey);
+    BOOST_FOREACH (subkey, key)
       {
         typename unordered_set::iterator item = trieNode->children_.find (subkey);
         if (item == trieNode->children_.end ())
@@ -244,7 +248,6 @@ public:
     else
       return std::make_pair (trieNode, false);
   }
-
   /**
    * @brief Removes payload (if it exists) and if there are no children, prunes parents trie
    */
@@ -309,7 +312,9 @@ public:
     iterator foundNode = (payload_ != PayloadTraits::empty_payload) ? this : 0;
     bool reachLast = true;
 
-    BOOST_FOREACH (const Key &subkey, key)
+    Key tempkey;
+    ns3::ndn::name::Component &subkey = static_cast<ns3::ndn::name::Component&>(tempkey);
+    BOOST_FOREACH (subkey, key)
       {
         typename unordered_set::iterator item = trieNode->children_.find (subkey);
         if (item == trieNode->children_.end ())
@@ -541,9 +546,6 @@ private:
   trie *parent_; // to make cleaning effective
 };
 
-
-
-
 template<typename FullKey, typename PayloadTraits, typename PolicyHook>
 inline std::ostream&
 operator << (std::ostream &os, const trie<FullKey, PayloadTraits, PolicyHook> &trie_node)
@@ -596,14 +598,14 @@ inline bool
 operator == (const trie<FullKey, PayloadTraits, PolicyHook> &a,
              const trie<FullKey, PayloadTraits, PolicyHook> &b)
 {
-  return a.key_ == b.key_;
+  return (ns3::ndn::Blob)(a.key_) == (ns3::ndn::Blob)(b.key_);
 }
 
 template<typename FullKey, typename PayloadTraits, typename PolicyHook>
 inline std::size_t
 hash_value (const trie<FullKey, PayloadTraits, PolicyHook> &trie_node)
 {
-  //return boost::hash_value (trie_node.key_);
+  return boost::hash_value (trie_node.key_);
 }
 
 
