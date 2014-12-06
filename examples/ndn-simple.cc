@@ -74,7 +74,7 @@ main (int argc, char *argv[])
   // Install NDN stack on all nodes
   StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (true);
-  ndnHelper.SetContentStoreChoice (false);
+  ndnHelper.SetContentStore (false);
   ndnHelper.InstallAll ();
   // Installing applications
 
