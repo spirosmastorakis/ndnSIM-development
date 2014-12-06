@@ -53,6 +53,18 @@ Forwarder::~Forwarder()
 }
 
 void
+Forwarder::setNode (ns3::Ptr<ns3::Node> node)
+{
+  m_node = node;
+}
+
+ns3::Ptr<ns3::Node>
+Forwarder::getNode ()
+{
+  return m_node;
+}
+
+void
 Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
 {
   // receive Interest
@@ -92,7 +104,16 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
   bool isPending = inRecords.begin() != inRecords.end();
   if (!isPending) {
     // CS lookup
-    const Data* csMatch = m_cs.find(interest);
+    const Data* csMatch;
+    if (getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetContentStore ())
+      csMatch = m_cs.find(interest);
+    else
+      {
+        shared_ptr<Data> Match =
+          getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
+          ->Lookup (make_shared<Interest>(interest));
+        csMatch = Match.get ();
+      }
     if (csMatch != 0) {
       const_cast<Data*>(csMatch)->setIncomingFaceId(FACEID_CONTENT_STORE);
       // XXX should we lookup PIT for other Interests that also match csMatch?
@@ -268,7 +289,11 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
   }
 
   // CS insert
-  m_cs.insert(data);
+  if (getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetContentStore ())
+    m_cs.insert(data);
+  else
+    getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
+      ->Add (make_shared<Data>(data));
 
   std::set<shared_ptr<Face> > pendingDownstreams;
   // foreach PitEntry
@@ -323,7 +348,11 @@ Forwarder::onDataUnsolicited(Face& inFace, const Data& data)
   bool acceptToCache = inFace.isLocal();
   if (acceptToCache) {
     // CS insert
-    m_cs.insert(data, true);
+    if (getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetContentStore ())
+      m_cs.insert(data, true);
+  else
+    getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
+      ->Add (make_shared<Data>(data));
   }
 
   NFD_LOG_DEBUG("onDataUnsolicited face=" << inFace.getId() <<

@@ -37,6 +37,12 @@
 #include "table/strategy-choice.hpp"
 #include "table/dead-nonce-list.hpp"
 
+#include "ns3/node.h"
+#include "ns3/ptr.h"
+#include "ns3/ndn-l3-protocol.h"
+#include "ns3/ndn-stack-helper.h"
+#include "ns3/ndn-content-store.h"
+
 namespace nfd {
 
 namespace fw {
@@ -76,6 +82,11 @@ public: // faces
   void
   addFace(shared_ptr<Face> face);
 
+  void
+  setNode (ns3::Ptr<ns3::Node> node);
+
+  ns3::Ptr<ns3::Node>
+  getNode ();
 public: // forwarding entrypoints and tables
   void
   onInterest(Face& face, const Interest& interest);
@@ -187,6 +198,7 @@ PROTECTED_WITH_TESTS_ELSE_PRIVATE:
 
 private:
   ForwarderCounters m_counters;
+  ns3::Ptr <ns3::Node> m_node;
 
   FaceTable m_faceTable;
 
