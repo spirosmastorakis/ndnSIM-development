@@ -115,6 +115,12 @@ public:
                    const std::string &attr3 = "", const std::string &value3 = "",
                    const std::string &attr4 = "", const std::string &value4 = "");
 
+  void
+  SetContentStore (const bool nfdCS);
+
+  bool
+  GetContentStore ();
+
   /**
    * @brief Set PIT class and its attributes
    * @param pitClass string, representing class of PIT
@@ -271,6 +277,7 @@ private:
   ObjectFactory m_pitFactory;
   ObjectFactory m_fibFactory;
 
+  bool     m_nfdCS = true;
   bool     m_limitsEnabled;
   Time     m_avgRtt;
   uint32_t m_avgDataSize;

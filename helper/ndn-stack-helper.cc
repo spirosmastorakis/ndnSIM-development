@@ -38,6 +38,7 @@
 #include "ns3/node-list.h"
 #include "ns3/data-rate.h"
 
+#include "ns3/ndn-content-store.h"
 #include "../utils/ndn-time.h"
 
 #include <limits>
@@ -125,6 +126,7 @@ StackHelper::SetContentStore (const std::string &contentStore,
                               const std::string &attr3, const std::string &value3,
                               const std::string &attr4, const std::string &value4)
 {
+  NS_ASSERT_MSG (m_nfdCS == true, "First choose not to use NFD's CS and then select the replacement policy");
   m_contentStoreFactory.SetTypeId (contentStore);
   if (attr1 != "")
       m_contentStoreFactory.Set (attr1, StringValue (value1));
@@ -134,6 +136,20 @@ StackHelper::SetContentStore (const std::string &contentStore,
       m_contentStoreFactory.Set (attr3, StringValue (value3));
   if (attr4 != "")
       m_contentStoreFactory.Set (attr4, StringValue (value4));
+}
+
+void
+StackHelper::SetContentStore (const bool nfdCS)
+{
+  m_nfdCS = nfdCS;
+  if (m_nfdCS == false)
+    m_contentStoreFactory.SetTypeId ("ns3::ndn::cs::Lru");
+}
+
+bool
+StackHelper::GetContentStore ()
+{
+  return m_nfdCS;
 }
 
 void
@@ -223,8 +239,13 @@ StackHelper::Install (Ptr<Node> node) const
     }
 
   Ptr<L3Protocol> ndn = m_ndnFactory.Create<L3Protocol> ();
+  ndn->SetContentStore (m_nfdCS);
   // Aggregate L3Protocol on node
   node->AggregateObject (ndn);
+
+  // Create and aggregate content store if NFD's contest store has been disabled
+  if (m_nfdCS == false)
+    ndn->AggregateObject (m_contentStoreFactory.Create<ContentStore> ());
 
   // NFD initialization
   NFDinit (node);
@@ -274,7 +295,7 @@ void
 StackHelper::NFDinit (Ptr<Node> node) const
 {
   Ptr<L3Protocol> L3protocol = node->GetObject<L3Protocol> ();
-  L3protocol->initialize();
+  L3protocol->initialize(node);
 }
 
 void
@@ -354,7 +375,7 @@ StackHelper::PointToPointNetDeviceCallback (Ptr<Node> node, Ptr<L3Protocol> ndn,
 
           NS_LOG_INFO("DataRate for this link is " << dataRate.Get());
 
-          double maxInterestPackets = 1.0  * dataRate.Get ().GetBitRate () / 8.0 / (m_avgDataSize + m_avgInterestSize);
+          // double maxInterestPackets = 1.0  * dataRate.Get ().GetBitRate () / 8.0 / (m_avgDataSize + m_avgInterestSize);
           // NS_LOG_INFO ("Max packets per second: " << maxInterestPackets);
           // NS_LOG_INFO ("Max burst: " << m_avgRtt.ToDouble (Time::S) * maxInterestPackets);
           //         NS_LOG_INFO ("MaxLimit: " << (int)(m_avgRtt.ToDouble (Time::S) * maxInterestPackets));
