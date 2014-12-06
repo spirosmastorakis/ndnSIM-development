@@ -111,7 +111,7 @@ public:
    *
    */
   void
-  initialize();
+  initialize(Ptr<Node> node);
 
   /**
    * \brief Initialized NFD management
@@ -131,6 +131,12 @@ public:
 
   void
   SetStrategyChoiceManager (shared_ptr<StrategyChoiceManager> strategyChoiceManager);
+
+  void
+  SetContentStore (const bool nfdCS);
+
+  bool
+  GetContentStore ();
 
   /**
    * \brief Get the forwarder (NFD) instance
@@ -218,7 +224,7 @@ private:
   shared_ptr<std::ofstream>         m_logFile;
   std::basic_streambuf<char>*       m_originalStreamBuf;
   KeyChain                          m_keyChain;
-
+  bool                              m_nfdCS = true;
 
   // These objects are aggregated, but for optimization, get them here
   Ptr<Node> m_node; ///< \brief node on which ndn stack is installed

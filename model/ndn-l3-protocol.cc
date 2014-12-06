@@ -94,9 +94,10 @@ L3Protocol::~L3Protocol ()
 }
 
 void
-L3Protocol::initialize()
+L3Protocol::initialize(Ptr<Node> node)
 {
   m_forwarder = make_shared<Forwarder>();
+  m_forwarder->setNode (node);
 
   initializeManagement();
 
@@ -137,7 +138,7 @@ L3Protocol::initializeManagement()
   // Alex do we need this?
   m_forwarder->getFaceTable().addReserved(m_internalFace, ns3::ndn::FACEID_INTERNAL_FACE);
 
-  tablesConfig.ensureTablesAreConfigured();
+  tablesConfig.ensureTablesAreConfigured(m_nfdCS);
 
   // add FIB entry for NFD Management Protocol
   // shared_ptr<::nfd::fib::Entry> entry = m_forwarder->getFib().insert("/localhost/nfd").first;
@@ -186,6 +187,18 @@ void
 L3Protocol::SetStrategyChoiceManager (shared_ptr<StrategyChoiceManager> strategyChoiceManager)
 {
   m_strategyChoiceManager = strategyChoiceManager;
+}
+
+void
+L3Protocol::SetContentStore (const bool nfdCS)
+{
+  m_nfdCS = nfdCS;
+}
+
+bool
+L3Protocol::GetContentStore ()
+{
+  return m_nfdCS;
 }
 
 /*
@@ -268,10 +281,6 @@ L3Protocol::AddFace (const Ptr<Face>& face)
   face->onSendData += [this, face] (const Data& data) {
     this->m_outData(data, *face);
   };
-
-  //face->onSendInterest += bind(m_outInterests, _1, ref(*face));
-  //face->onReceiveData += bind(m_inData, _1, ref(*face));
-  //face->onSendData += bind(m_outData, _1, ref(*face));
 
   return face->GetId ();
 }
