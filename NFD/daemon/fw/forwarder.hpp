@@ -85,6 +85,9 @@ public: // faces
   void
   setNode (ns3::Ptr<ns3::Node> node);
 
+  void
+  setNode (ns3::Ptr<ns3::Node> node);
+
   ns3::Ptr<ns3::Node>
   getNode ();
 public: // forwarding entrypoints and tables
@@ -199,7 +202,6 @@ PROTECTED_WITH_TESTS_ELSE_PRIVATE:
 private:
   ForwarderCounters m_counters;
   ns3::Ptr <ns3::Node> m_node;
-  uint32_t m_hopCounter;
 
   FaceTable m_faceTable;
 

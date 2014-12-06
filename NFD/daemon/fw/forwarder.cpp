@@ -68,7 +68,7 @@ Forwarder::getNode ()
 }
 
 void
-Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
+Forwarder::onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest)
 {
   // receive Interest
   NFD_LOG_DEBUG("onIncomingInterest face=" << inFace.getId() <<
@@ -109,15 +109,14 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
     // CS lookup
     const Data* csMatch;
     if (getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetContentStore ())
-        csMatch = m_cs.find(interest);
+      csMatch = m_cs.find(interest);
     else
       {
-        shared_ptr<Data> match =
+        shared_ptr<Data> Match =
           getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
           ->Lookup (make_shared<Interest>(interest));
-        csMatch = match.get ();
+        csMatch = Match.get ();
       }
-
     if (csMatch != 0) {
       const_cast<Data*>(csMatch)->setIncomingFaceId(FACEID_CONTENT_STORE);
       // XXX should we lookup PIT for other Interests that also match csMatch?
