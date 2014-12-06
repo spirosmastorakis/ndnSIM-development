@@ -51,6 +51,9 @@ public:
   void
   ensureTablesAreConfigured();
 
+  void
+  ensureTablesAreConfigured(bool nfdCS);
+
 private:
 
   void

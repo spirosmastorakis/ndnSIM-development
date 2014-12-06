@@ -36,6 +36,7 @@
 
 #include "ndn-net-device-face.hpp"
 #include "../helper/ndn-stack-helper.hpp"
+#include "cs/ndn-content-store.hpp"
 
 #include <boost/foreach.hpp>
 
@@ -90,11 +91,11 @@ L3Protocol::~L3Protocol()
 }
 
 void
-L3Protocol::initialize()
+L3Protocol::initialize(bool shouldUseNfdCs)
 {
   m_forwarder = make_shared<Forwarder>();
 
-  initializeManagement();
+  initializeManagement(shouldUseNfdCs);
 
   m_forwarder->getFaceTable().addReserved(make_shared<NullFace>(), nfd::FACEID_NULL);
   m_forwarder->getFaceTable().addReserved(make_shared<NullFace>(FaceUri("contentstore://")),
@@ -102,7 +103,7 @@ L3Protocol::initialize()
 }
 
 void
-L3Protocol::initializeManagement()
+L3Protocol::initializeManagement(bool shouldUseNfdCs)
 {
   m_internalFace = make_shared<InternalFace>();
 
@@ -123,6 +124,7 @@ L3Protocol::initializeManagement()
   TablesConfigSection tablesConfig(m_forwarder->getCs(), m_forwarder->getPit(),
                                    m_forwarder->getFib(), m_forwarder->getStrategyChoice(),
                                    m_forwarder->getMeasurements());
+  tablesConfig.ensureTablesAreConfigured(shouldUseNfdCs);
 
   m_forwarder->getFaceTable().addReserved(m_internalFace, nfd::FACEID_INTERNAL_FACE);
 
@@ -174,10 +176,14 @@ L3Protocol::SetStrategyChoiceManager(shared_ptr<StrategyChoiceManager> strategyC
 void
 L3Protocol::NotifyNewAggregate()
 {
-  // not really efficient, but this will work only once
-  if (m_node == 0) {
+  if (m_node == nullptr) {
     m_node = GetObject<Node>();
-    if (m_node != 0) {
+    if (m_node != nullptr) {
+      NS_ASSERT(m_forwarder != nullptr);
+      m_csFromNdnSim = GetObject<ContentStore>();
+      if (m_csFromNdnSim != nullptr) {
+        m_forwarder->setCsFromNdnSim(m_csFromNdnSim);
+      }
     }
   }
 

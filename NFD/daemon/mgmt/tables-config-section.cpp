@@ -73,6 +73,27 @@ TablesConfigSection::ensureTablesAreConfigured()
 }
 
 void
+TablesConfigSection::ensureTablesAreConfigured(bool nfdCS)
+{
+  if (m_areTablesConfigured) {
+    return;
+  }
+
+  if (nfdCS == true) {
+    NFD_LOG_INFO("Setting CS max packets to " << DEFAULT_CS_MAX_PACKETS);
+    m_cs.setLimit(DEFAULT_CS_MAX_PACKETS);
+
+    m_areTablesConfigured = true;
+  }
+  else {
+    NFD_LOG_INFO("Setting CS max packets to 1");
+    m_cs.setLimit(1);
+
+    m_areTablesConfigured = true;
+  }
+}
+
+void
 TablesConfigSection::onConfig(const ConfigSection& configSection,
                               bool isDryRun,
                               const std::string& filename)

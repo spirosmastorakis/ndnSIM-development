@@ -100,14 +100,14 @@ public:
    *
    */
   void
-  initialize();
+  initialize(bool shouldUseNfdCs);
 
   /**
    * \brief Initialized NFD management
    *
    */
   void
-  initializeManagement();
+  initializeManagement(bool shouldUseNfdCs);
 
   shared_ptr<FibManager>
   GetFibManager();
@@ -213,6 +213,8 @@ private:
   shared_ptr<FaceManager> m_faceManager;
   shared_ptr<StrategyChoiceManager> m_strategyChoiceManager;
   shared_ptr<StatusServer> m_statusServer;
+
+  Ptr<ContentStore> m_csFromNdnSim;
 
   // These objects are aggregated, but for optimization, get them here
   Ptr<Node> m_node; ///< \brief node on which ndn stack is installed
