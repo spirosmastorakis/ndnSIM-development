@@ -261,7 +261,7 @@ Face::SendInterest (shared_ptr<const ::ndn::Interest> interest)
   i.getPacket ()->RemovePacketTag (hopCount);
   packet->AddPacketTag (hopCount);
   Block block = interest->wireEncode ();
-  Convert::InterestToPacket (make_shared <Block> (block), packet);
+  Convert::ToPacket (make_shared <Block> (block), packet);
   return Send (packet);
 }
 
@@ -276,25 +276,21 @@ Face::SendData (shared_ptr<const ::ndn::Data> data)
   //   }
   // I assume that this should work..
 
-  // std::cout << "here \n";
   // Data d = static_cast<Data&>(*m_data);
-  // std::cout << "success \n";
 
   Ptr<Packet> packet = Create <Packet> ();
 
   // FwHopCountTag hopCount;
-  // // std::cout << "here2 \n";
   // const_cast<Data&>(d).setPacket (packet);
   // bool tagExists = d.getPacket ()->RemovePacketTag (hopCount);
   // if (tagExists)
   //    {
   //      hopCount.Increment ();
-  // //     //packet->AddPacketTag (hopCount);
+  //   //packet->AddPacketTag (hopCount);
   //    }
-  // // std::cout << "success2 \n";
   //  packet->AddPacketTag (hopCount);
   Block block = data->wireEncode ();
-  Convert::InterestToPacket (make_shared <Block> (block), packet);
+  Convert::ToPacket (make_shared <Block> (block), packet);
   return Send (packet);
 }
 
