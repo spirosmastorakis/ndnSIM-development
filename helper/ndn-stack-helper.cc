@@ -139,7 +139,7 @@ StackHelper::SetContentStore (const std::string &contentStore,
 }
 
 void
-StackHelper::SetContentStore (const bool nfdCS)
+StackHelper::SetContentStoreChoice (const bool nfdCS)
 {
   m_nfdCS = nfdCS;
   if (m_nfdCS == false)
@@ -147,7 +147,7 @@ StackHelper::SetContentStore (const bool nfdCS)
 }
 
 bool
-StackHelper::GetContentStore ()
+StackHelper::GetContentStoreChoice ()
 {
   return m_nfdCS;
 }

@@ -24,7 +24,7 @@ main (int argc, char *argv[])
   /****************************************************************************/
   // Install CCNx stack on all nodes
   StackHelper ccnxHelper;
-  ccnxHelper.SetContentStore (false);
+  ccnxHelper.SetContentStoreChoice (false);
   ccnxHelper.SetContentStore ("ns3::ndn::cs::Lru", "MaxSize", "1000");
   ccnxHelper.InstallAll ();
   /****************************************************************************/

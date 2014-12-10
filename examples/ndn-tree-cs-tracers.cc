@@ -74,7 +74,7 @@ main (int argc, char *argv[])
 
   // Install CCNx stack on all nodes
   StackHelper ndnHelper;
-  ndnHelper.SetContentStore (false);
+  ndnHelper.SetContentStoreChoice (false);
   ndnHelper.SetContentStore ("ns3::ndn::cs::Lru", "MaxSize", "100"); // default ContentStore parameters
   ndnHelper.InstallAll ();
 
