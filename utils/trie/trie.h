@@ -210,8 +210,8 @@ public:
   {
     trie *trieNode = this;
 
-    Key tempkey;
-    ns3::ndn::name::Component &subkey = static_cast<ns3::ndn::name::Component&>(tempkey);
+    Key subkey;
+    //ns3::ndn::name::Component &subkey = static_cast<ns3::ndn::name::Component&>(tempkey);
     BOOST_FOREACH (subkey, key)
       {
         typename unordered_set::iterator item = trieNode->children_.find (subkey);
@@ -314,8 +314,13 @@ public:
 
     Key tempkey;
     ns3::ndn::name::Component &subkey = static_cast<ns3::ndn::name::Component&>(tempkey);
-    BOOST_FOREACH (subkey, key)
+    const ns3::ndn::Name finalkey = static_cast<const ns3::ndn::Name&>(key);
+    BOOST_FOREACH (subkey, finalkey)
       {
+        if (subkey.wireEncode ().hasValue ())
+          {
+            reachLast = false;
+          }
         typename unordered_set::iterator item = trieNode->children_.find (subkey);
         if (item == trieNode->children_.end ())
           {
@@ -335,7 +340,7 @@ public:
   }
 
   /**
-   * @brief Perform the longest prefix match satisfying preficate
+   * @brief Perform the longest prefix match satisfying predicate
    * @param key the key for which to perform the longest prefix match
    *
    * @return ->second is true if prefix in ->first is longer than key

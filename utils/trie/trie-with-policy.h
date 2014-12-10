@@ -22,7 +22,7 @@
 #define TRIE_WITH_POLICY_H_
 
 #include "trie.h"
-#include <ndn-cxx/name-component.hpp>
+//#include <ndn-cxx/name-component.hpp>
 
 namespace ns3 {
 namespace ndn {
