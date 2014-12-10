@@ -29,8 +29,8 @@
 #include "available-strategies.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
 
-#include "ns3/ndn-data.h"
 #include "ns3/ndn-interest.h"
+#include "ns3/ndn-data.h"
 
 namespace nfd {
 
@@ -109,14 +109,16 @@ Forwarder::onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest)
     // CS lookup
     const Data* csMatch;
     if (getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetContentStore ())
-      csMatch = m_cs.find(interest);
+        csMatch = m_cs.find(interest);
     else
       {
-        shared_ptr<Data> Match =
+        shared_ptr<Data> match =
           getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
           ->Lookup (make_shared<Interest>(interest));
-        csMatch = Match.get ();
+        csMatch = match.get ();
       }
+
+
     if (csMatch != 0) {
       const_cast<Data*>(csMatch)->setIncomingFaceId(FACEID_CONTENT_STORE);
       // XXX should we lookup PIT for other Interests that also match csMatch?
