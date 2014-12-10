@@ -116,10 +116,10 @@ public:
                    const std::string &attr4 = "", const std::string &value4 = "");
 
   void
-  SetContentStore (const bool nfdCS);
+  SetContentStoreChoice (const bool nfdCS);
 
   bool
-  GetContentStore ();
+  GetContentStoreChoice ();
 
   /**
    * @brief Set PIT class and its attributes
