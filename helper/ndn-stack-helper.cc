@@ -126,7 +126,7 @@ StackHelper::SetContentStore (const std::string &contentStore,
                               const std::string &attr3, const std::string &value3,
                               const std::string &attr4, const std::string &value4)
 {
-  NS_ASSERT_MSG (m_nfdCS == true, "First choose not to use NFD's CS and then select the replacement policy");
+  NS_ASSERT_MSG (m_nfdCS == false, "First choose not to use NFD's CS and then select the replacement policy");
   m_contentStoreFactory.SetTypeId (contentStore);
   if (attr1 != "")
       m_contentStoreFactory.Set (attr1, StringValue (value1));
