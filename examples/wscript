@@ -35,6 +35,9 @@ def build(bld):
                   'custom-apps/custom-app.cc',
                   'custom-apps/hijacker.cc']
 
+    obj = bld.create_ns3_program('ndn-simple-with-cs-lfu', all_modules)
+    obj.source = 'ndn-simple-with-cs-lfu.cc'
+
     if 'topology' in bld.env['NDN_plugins']:
 
         obj = bld.create_ns3_program('ndn-grid-topo-plugin', all_modules)
