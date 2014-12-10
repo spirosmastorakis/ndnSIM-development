@@ -103,7 +103,7 @@ struct freshness_policy_traits
       insert (typename parent_trie::iterator item)
       {
         // get_time (item) = Simulator::Now ();
-        uint64_t time = boost::chrono::duration_cast<::ndn::time::milliseconds>(item->payload ()->GetData ()->getFreshnessPeriod ()).count() % 1000;
+        uint64_t time = (uint64_t)(boost::chrono::duration_cast<::ndn::time::milliseconds>(item->payload ()->GetData ()->getFreshnessPeriod ()).count()) % 1000;
         Time freshness = Time (time);
         if (!freshness.IsZero ())
           {
@@ -126,10 +126,10 @@ struct freshness_policy_traits
       inline void
       erase (typename parent_trie::iterator item)
       {
-        uint64_t time = boost::chrono::duration_cast<::ndn::time::milliseconds>(item->payload ()->GetData ()->getFreshnessPeriod ()).count() % 1000;
-        if ((int(time) == 0))
+        uint64_t time = (uint64_t)(boost::chrono::duration_cast<::ndn::time::milliseconds>(item->payload ()->GetData ()->getFreshnessPeriod ()).count()) % 1000;
+        if ((int(time) != 0))
           {
-            // erase only if freshness is non zero (otherwise an item is not in the policy
+            // erase only if freshness is non zero (otherwise an item is not in the policy)
             policy_container::erase (policy_container::s_iterator_to (*item));
           }
       }
