@@ -84,7 +84,6 @@ Face::Face(const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal)
     SendInterest (make_shared<::ndn::Interest> (interest));
     ++m_counters.getNOutInterests(); };
   onSendData        += [this](const ::ndn::Data& data) {
-    SendData (make_shared<::ndn::Data> (data));
     ++m_counters.getNOutDatas(); };
 }
 
@@ -144,11 +143,11 @@ Face::decodeAndDispatchInput(const Block& element, uint32_t hopTag)
       {
         shared_ptr<Data> d = make_shared<Data>();
         d->wireDecode(element);
-        // std::cout << "Print " << d->getIncomingFaceId () << "\n";
-        // FwHopCountTag hopCount;
-        // hopCount.Set (hopTag);
-        // //std::cout << "hop count : " << hopCount.Get () << "\n";
-        // d->getPacket ()->AddPacketTag (hopCount);
+        //std::cout << "Print " << d->getIncomingFaceId () << "\n";
+        FwHopCountTag hopCount;
+        hopCount.Set (hopTag);
+        //std::cout << "hop count : " << hopCount.Get () << "\n";
+        d->getPacket ()->AddPacketTag (hopCount);
         this->onReceiveData(dynamic_cast<::ndn::Data&>(*d));
       }
     else
@@ -254,7 +253,7 @@ Face::SendInterest (shared_ptr<const ::ndn::Interest> interest)
   //   }
   // I assume that this should work...
 
-  const Interest i = reinterpret_cast<const Interest&>(*interest);
+  const Interest i = static_cast<const Interest&>(*interest);
   Ptr<Packet> packet = Create <Packet> ();
 
   FwHopCountTag hopCount;
@@ -266,7 +265,7 @@ Face::SendInterest (shared_ptr<const ::ndn::Interest> interest)
 }
 
 bool
-Face::SendData (shared_ptr<const ::ndn::Data> data)
+Face::SendData (shared_ptr <const ::ndn::Data> data)
 {
   NS_LOG_FUNCTION (this << data);
 
@@ -276,19 +275,15 @@ Face::SendData (shared_ptr<const ::ndn::Data> data)
   //   }
   // I assume that this should work..
 
-  // Data d = static_cast<Data&>(*m_data);
+  NS_LOG_DEBUG ("Data name " << data->getName ());
+  const Data& d = static_cast<const Data&>(*data);
 
   Ptr<Packet> packet = Create <Packet> ();
 
-  // FwHopCountTag hopCount;
-  // const_cast<Data&>(d).setPacket (packet);
-  // bool tagExists = d.getPacket ()->RemovePacketTag (hopCount);
-  // if (tagExists)
-  //    {
-  //      hopCount.Increment ();
-  //   //packet->AddPacketTag (hopCount);
-  //    }
-  //  packet->AddPacketTag (hopCount);
+  FwHopCountTag hopCount;
+  bool tagExists = d.getPacket ()->PeekPacketTag (hopCount);
+  if (tagExists)
+    packet->AddPacketTag (hopCount);
   Block block = data->wireEncode ();
   Convert::ToPacket (make_shared <Block> (block), packet);
   return Send (packet);
