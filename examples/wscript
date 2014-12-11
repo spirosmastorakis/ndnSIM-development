@@ -52,6 +52,9 @@ def build(bld):
         obj = bld.create_ns3_program('ndn-tree-tracers', all_modules)
         obj.source = 'ndn-tree-tracers.cc'
 
+        obj = bld.create_ns3_program('ndn-tree-app-delay-tracer', all_modules)
+        obj.source = 'ndn-tree-app-delay-tracer.cc'
+
         obj = bld.create_ns3_program('ndn-tree-rate-tracer', all_modules)
         obj.source = 'ndn-tree-rate-tracer.cc'
 
