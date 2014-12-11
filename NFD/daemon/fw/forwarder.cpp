@@ -217,6 +217,13 @@ Forwarder::onOutgoingInterest(shared_ptr<pit::Entry> pitEntry, ns3::ndn::Face& o
   // insert OutRecord
   pitEntry->insertOrUpdateOutRecord(outFace.shared_from_this(), *interest);
 
+  // // extract and keep the hop counter
+  // const ::ns3::ndn::Interest i = static_cast<const ::ns3::ndn::Interest&>(*interest);
+  // ::ns3::ndn::FwHopCountTag hopCount;
+  // i.getPacket ()->RemovePacketTag (hopCount);
+  // m_hopCounter = hopCount.Get ();
+
+
   // send Interest - SendInterest method of ns3::ndn::Face class, hope it works...
   outFace.SendInterest(interest);
   ++m_counters.getNOutInterests();
@@ -359,6 +366,14 @@ Forwarder::onDataUnsolicited(ns3::ndn::Face& inFace, const Data& data)
     getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
       ->Add (make_shared<Data>(data));
   }
+  // ::ns3::ndn::Data d;
+  // d = const_cast<Data&>(data);
+  // ns3::Ptr<ns3::Packet> packet = ns3::Create<ns3::Packet> ();
+  // ::ns3::ndn::FwHopCountTag hopCount;
+  // hopCount.Set(m_hopCounter);
+  // packet->AddPacketTag (hopCount);
+  // d.setPacket (packet);
+
 
   NFD_LOG_DEBUG("onDataUnsolicited face=" << inFace.getId() <<
                 " data=" << data.getName() <<
@@ -387,7 +402,7 @@ Forwarder::onOutgoingData(const Data& data, ns3::ndn::Face& outFace)
   // TODO traffic manager
 
   // send Data - SendData method of ns3::ndn::Face, hope that it works...
-  outFace.SendData(make_shared<Data>(data));
+  outFace.SendData(data.shared_from_this());
   ++m_counters.getNOutDatas();
 }
 

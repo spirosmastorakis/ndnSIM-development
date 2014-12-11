@@ -199,6 +199,7 @@ PROTECTED_WITH_TESTS_ELSE_PRIVATE:
 private:
   ForwarderCounters m_counters;
   ns3::Ptr <ns3::Node> m_node;
+  uint32_t m_hopCounter;
 
   FaceTable m_faceTable;
 
