@@ -75,7 +75,7 @@ public: // triggers
    *        pitEntry is passed by value to reflect this fact.
    */
   virtual void
-  afterReceiveInterest(const ns3::ndn::Face& inFace,
+  afterReceiveInterest(const Face& inFace,
                        const Interest& interest,
                        shared_ptr<fib::Entry> fibEntry,
                        shared_ptr<pit::Entry> pitEntry) = 0;
@@ -92,7 +92,7 @@ public: // triggers
    */
   virtual void
   beforeSatisfyInterest(shared_ptr<pit::Entry> pitEntry,
-                        const ns3::ndn::Face& inFace, const Data& data);
+                        const Face& inFace, const Data& data);
 
   /** \brief trigger before PIT entry expires
    *
@@ -113,7 +113,7 @@ protected: // actions
   /// send Interest to outFace
   VIRTUAL_WITH_TESTS void
   sendInterest(shared_ptr<pit::Entry> pitEntry,
-               shared_ptr<ns3::ndn::Face> outFace,
+               shared_ptr<Face> outFace,
                bool wantNewNonce = false);
 
   /** \brief decide that a pending Interest cannot be forwarded
@@ -128,8 +128,8 @@ protected: // accessors
   MeasurementsAccessor&
   getMeasurements();
 
-  shared_ptr<ns3::ndn::Face>
-  getFace(ns3::ndn::FaceId id);
+  shared_ptr<Face>
+  getFace(FaceId id);
 
 private:
   Name m_name;
@@ -151,7 +151,7 @@ Strategy::getName() const
 
 inline void
 Strategy::sendInterest(shared_ptr<pit::Entry> pitEntry,
-                       shared_ptr<ns3::ndn::Face> outFace,
+                       shared_ptr<Face> outFace,
                        bool wantNewNonce)
 {
   m_forwarder.onOutgoingInterest(pitEntry, *outFace, wantNewNonce);
@@ -169,8 +169,8 @@ Strategy::getMeasurements()
   return m_measurements;
 }
 
-inline shared_ptr<ns3::ndn::Face>
-Strategy::getFace(ns3::ndn::FaceId id)
+inline shared_ptr<Face>
+Strategy::getFace(FaceId id)
 {
   return m_forwarder.getFace(id);
 }

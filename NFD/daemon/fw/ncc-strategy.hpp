@@ -42,14 +42,14 @@ public:
   ~NccStrategy();
 
   virtual void
-  afterReceiveInterest(const ns3::ndn::Face& inFace,
+  afterReceiveInterest(const Face& inFace,
                        const Interest& interest,
                        shared_ptr<fib::Entry> fibEntry,
                        shared_ptr<pit::Entry> pitEntry);
 
   virtual void
   beforeSatisfyInterest(shared_ptr<pit::Entry> pitEntry,
-                        const ns3::ndn::Face& inFace, const Data& data);
+                        const Face& inFace, const Data& data);
 
 protected:
   /// StrategyInfo on measurements::Entry
@@ -61,11 +61,11 @@ protected:
     void
     inheritFrom(const MeasurementsEntryInfo& other);
 
-    shared_ptr<ns3::ndn::Face>
+    shared_ptr<Face>
     getBestFace();
 
     void
-    updateBestFace(const ns3::ndn::Face& face);
+    updateBestFace(const Face& face);
 
     void
     adjustPredictUp();
@@ -78,8 +78,8 @@ protected:
     ageBestFace();
 
   public:
-    weak_ptr<ns3::ndn::Face> bestFace;
-    weak_ptr<ns3::ndn::Face> previousFace;
+    weak_ptr<Face> bestFace;
+    weak_ptr<Face> previousFace;
     time::microseconds prediction;
 
     static const time::microseconds INITIAL_PREDICTION;

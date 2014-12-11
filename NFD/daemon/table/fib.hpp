@@ -84,7 +84,7 @@ public:
    *  Removing all NextHops in a FIB entry will not remove the FIB entry.
    */
   void
-  removeNextHopFromAllEntries(shared_ptr<ns3::ndn::Face> face);
+  removeNextHopFromAllEntries(shared_ptr<Face> face);
 
   size_t
   size() const;

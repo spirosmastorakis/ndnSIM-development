@@ -31,8 +31,6 @@
 
 #include <ndn-cxx/management/nfd-face-event-notification.hpp>
 
-using ns3::ndn::Face;
-
 namespace nfd {
 
 NFD_LOG_INIT("FaceManager");

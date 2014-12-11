@@ -70,20 +70,20 @@ Entry::hasLocalInRecord() const
 }
 
 static inline bool
-predicate_FaceRecord_Face(const FaceRecord& faceRecord, const ns3::ndn::Face* face)
+predicate_FaceRecord_Face(const FaceRecord& faceRecord, const Face* face)
 {
   return faceRecord.getFace().get() == face;
 }
 
 static inline bool
 predicate_FaceRecord_ne_Face_and_unexpired(const FaceRecord& faceRecord,
-  const ns3::ndn::Face* face, const time::steady_clock::TimePoint& now)
+  const Face* face, const time::steady_clock::TimePoint& now)
 {
   return faceRecord.getFace().get() != face && faceRecord.getExpiry() >= now;
 }
 
 bool
-Entry::canForwardTo(const ns3::ndn::Face& face) const
+Entry::canForwardTo(const Face& face) const
 {
   OutRecordCollection::const_iterator outIt = std::find_if(
     m_outRecords.begin(), m_outRecords.end(),
@@ -106,7 +106,7 @@ Entry::canForwardTo(const ns3::ndn::Face& face) const
 }
 
 bool
-Entry::violatesScope(const ns3::ndn::Face& face) const
+Entry::violatesScope(const Face& face) const
 {
   // /localhost scope
   bool isViolatingLocalhost = !face.isLocal() &&
@@ -127,7 +127,7 @@ Entry::violatesScope(const ns3::ndn::Face& face) const
 }
 
 int
-Entry::findNonce(uint32_t nonce, const ns3::ndn::Face& face) const
+Entry::findNonce(uint32_t nonce, const Face& face) const
 {
   // TODO should we ignore expired in/out records?
 
@@ -161,7 +161,7 @@ Entry::findNonce(uint32_t nonce, const ns3::ndn::Face& face) const
 }
 
 InRecordCollection::iterator
-Entry::insertOrUpdateInRecord(shared_ptr<ns3::ndn::Face> face, const Interest& interest)
+Entry::insertOrUpdateInRecord(shared_ptr<Face> face, const Interest& interest)
 {
   InRecordCollection::iterator it = std::find_if(m_inRecords.begin(),
     m_inRecords.end(), bind(&predicate_FaceRecord_Face, _1, face.get()));
@@ -175,7 +175,7 @@ Entry::insertOrUpdateInRecord(shared_ptr<ns3::ndn::Face> face, const Interest& i
 }
 
 InRecordCollection::const_iterator
-Entry::getInRecord(shared_ptr<ns3::ndn::Face> face) const
+Entry::getInRecord(shared_ptr<Face> face) const
 {
   return std::find_if(m_inRecords.begin(), m_inRecords.end(),
                       bind(&predicate_FaceRecord_Face, _1, face.get()));
@@ -188,7 +188,7 @@ Entry::deleteInRecords()
 }
 
 OutRecordCollection::iterator
-Entry::insertOrUpdateOutRecord(shared_ptr<ns3::ndn::Face> face, const Interest& interest)
+Entry::insertOrUpdateOutRecord(shared_ptr<Face> face, const Interest& interest)
 {
   OutRecordCollection::iterator it = std::find_if(m_outRecords.begin(),
     m_outRecords.end(), bind(&predicate_FaceRecord_Face, _1, face.get()));
@@ -202,14 +202,14 @@ Entry::insertOrUpdateOutRecord(shared_ptr<ns3::ndn::Face> face, const Interest& 
 }
 
 OutRecordCollection::const_iterator
-Entry::getOutRecord(shared_ptr<ns3::ndn::Face> face) const
+Entry::getOutRecord(shared_ptr<Face> face) const
 {
   return std::find_if(m_outRecords.begin(), m_outRecords.end(),
                       bind(&predicate_FaceRecord_Face, _1, face.get()));
 }
 
 void
-Entry::deleteOutRecord(shared_ptr<ns3::ndn::Face> face)
+Entry::deleteOutRecord(shared_ptr<Face> face)
 {
   OutRecordCollection::iterator it = std::find_if(m_outRecords.begin(),
     m_outRecords.end(), bind(&predicate_FaceRecord_Face, _1, face.get()));

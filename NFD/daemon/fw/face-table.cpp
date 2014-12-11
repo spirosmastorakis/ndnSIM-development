@@ -33,7 +33,7 @@ NFD_LOG_INIT("FaceTable");
 
 FaceTable::FaceTable(Forwarder& forwarder)
   : m_forwarder(forwarder)
-  , m_lastFaceId(ns3::ndn::FACEID_RESERVED_MAX)
+  , m_lastFaceId(FACEID_RESERVED_MAX)
 {
 }
 
@@ -43,29 +43,29 @@ FaceTable::~FaceTable()
 }
 
 void
-FaceTable::add(shared_ptr<ns3::ndn::Face> face)
+FaceTable::add(shared_ptr<Face> face)
 {
-  if (face->getId() != ns3::ndn::INVALID_FACEID && m_faces.count(face->getId()) > 0) {
+  if (face->getId() != INVALID_FACEID && m_faces.count(face->getId()) > 0) {
     NFD_LOG_WARN("Trying to add existing face id=" << face->getId() << " to the face table");
     return;
   }
 
-  ns3::ndn::FaceId faceId = ++m_lastFaceId;
-  BOOST_ASSERT(faceId > ns3::ndn::FACEID_RESERVED_MAX);
+  FaceId faceId = ++m_lastFaceId;
+  BOOST_ASSERT(faceId > FACEID_RESERVED_MAX);
   this->addImpl(face, faceId);
 }
 
 void
-FaceTable::addReserved(shared_ptr<ns3::ndn::Face> face, ns3::ndn::FaceId faceId)
+FaceTable::addReserved(shared_ptr<Face> face, FaceId faceId)
 {
-  BOOST_ASSERT(face->getId() == ns3::ndn::INVALID_FACEID);
+  BOOST_ASSERT(face->getId() == INVALID_FACEID);
   BOOST_ASSERT(m_faces.count(face->getId()) == 0);
-  BOOST_ASSERT(faceId <= ns3::ndn::FACEID_RESERVED_MAX);
+  BOOST_ASSERT(faceId <= FACEID_RESERVED_MAX);
   this->addImpl(face, faceId);
 }
 
 void
-FaceTable::addImpl(shared_ptr<ns3::ndn::Face> face, ns3::ndn::FaceId faceId)
+FaceTable::addImpl(shared_ptr<Face> face, FaceId faceId)
 {
   face->setId(faceId);
   m_faces[faceId] = face;
@@ -82,13 +82,13 @@ FaceTable::addImpl(shared_ptr<ns3::ndn::Face> face, ns3::ndn::FaceId faceId)
 }
 
 void
-FaceTable::remove(shared_ptr<ns3::ndn::Face> face)
+FaceTable::remove(shared_ptr<Face> face)
 {
   this->onRemove(face);
 
-  ns3::ndn::FaceId faceId = face->getId();
+  FaceId faceId = face->getId();
   m_faces.erase(faceId);
-  face->setId(ns3::ndn::INVALID_FACEID);
+  face->setId(INVALID_FACEID);
   NFD_LOG_INFO("Removed face id=" << faceId << " remote=" << face->getRemoteUri() <<
                                                  " local=" << face->getLocalUri());
 

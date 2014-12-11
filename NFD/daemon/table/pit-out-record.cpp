@@ -27,7 +27,7 @@
 namespace nfd {
 namespace pit {
 
-OutRecord::OutRecord(shared_ptr<ns3::ndn::Face> face)
+OutRecord::OutRecord(shared_ptr<Face> face)
   : FaceRecord(face)
 {
 }

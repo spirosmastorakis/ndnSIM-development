@@ -36,8 +36,6 @@
 #include <ndn-cxx/management/nfd-control-parameters.hpp>
 #include <ndn-cxx/management/nfd-control-response.hpp>
 
-using ns3::ndn::Face;
-
 namespace nfd {
 
 const std::string FACE_MANAGER_PRIVILEGE = "faces";

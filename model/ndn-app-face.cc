@@ -29,13 +29,9 @@
 #include "ns3/simulator.h"
 #include "ns3/attribute.h"
 #include "ns3/attribute-helper.h"
-#include "ns3/ndn-common.h"
 
 #include "ns3/ndn-app.h"
-
-#include <ndn-cxx/name.hpp>
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
+#include "ns3/ndn-common.h"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.AppFace");
 
@@ -92,36 +88,36 @@ AppFace::close ()
 {
 }
 
-bool
-AppFace::SendInterest (shared_ptr<const Interest> interest)
+void
+AppFace::sendInterest (const Interest& interest)
 {
   NS_LOG_FUNCTION (this << interest);
 
-  if (!IsUp ())
-    {
-      return false;
-    }
+  // if (!IsUp ())
+  //   {
+  //     return false;
+  //   }
 
   // to decouple callbacks
-  Simulator::ScheduleNow(&App::OnInterest, m_app, interest);
+  Simulator::ScheduleNow(&App::OnInterest, m_app, interest.shared_from_this ());
 
-  return true;
+  // return true;
 }
 
-bool
-AppFace::SendData (shared_ptr<const Data> data)
+void
+AppFace::sendData (const Data& data)
 {
   NS_LOG_FUNCTION (this << data);
 
-  if (!IsUp ())
-    {
-      return false;
-    }
+  // if (!IsUp ())
+  //   {
+  //     return false;
+  //   }
 
   // to decouple callbacks
-  Simulator::ScheduleNow(&App::OnData, m_app, data);
+  Simulator::ScheduleNow(&App::OnData, m_app, data.shared_from_this ());
 
-  return true;
+  // return true;
 }
 
 std::ostream&

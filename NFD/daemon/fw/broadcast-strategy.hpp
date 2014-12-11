@@ -43,7 +43,7 @@ public:
   ~BroadcastStrategy();
 
   virtual void
-  afterReceiveInterest(const ns3::ndn::Face& inFace,
+  afterReceiveInterest(const Face& inFace,
                        const Interest& interest,
                        shared_ptr<fib::Entry> fibEntry,
                        shared_ptr<pit::Entry> pitEntry);

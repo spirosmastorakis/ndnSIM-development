@@ -135,7 +135,7 @@ Fib::erase(const fib::Entry& entry)
 }
 
 void
-Fib::removeNextHopFromAllEntries(shared_ptr<ns3::ndn::Face> face)
+Fib::removeNextHopFromAllEntries(shared_ptr<Face> face)
 {
   for (NameTree::const_iterator it = m_nameTree.fullEnumerate(
        &predicate_NameTreeEntry_hasFibEntry); it != m_nameTree.end();) {

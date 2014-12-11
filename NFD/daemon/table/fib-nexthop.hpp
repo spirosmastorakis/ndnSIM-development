@@ -26,7 +26,7 @@
 #define NFD_DAEMON_TABLE_FIB_NEXTHOP_HPP
 
 #include "ns3/ndnSIM/NFD/common.hpp"
-#include "ns3/ndnSIM/model/ndn-face.h"
+#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
 
 namespace nfd {
 namespace fib {
@@ -38,11 +38,11 @@ class NextHop
 {
 public:
   explicit
-  NextHop(shared_ptr<ns3::ndn::Face> face);
+  NextHop(shared_ptr<Face> face);
 
   NextHop(const NextHop& other);
 
-  shared_ptr<ns3::ndn::Face>
+  shared_ptr<Face>
   getFace() const;
 
   void
@@ -52,7 +52,7 @@ public:
   getCost() const;
 
 private:
-  shared_ptr<ns3::ndn::Face> m_face;
+  shared_ptr<Face> m_face;
   uint64_t m_cost;
 };
 

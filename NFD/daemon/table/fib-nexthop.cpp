@@ -27,7 +27,7 @@
 namespace nfd {
 namespace fib {
 
-NextHop::NextHop(shared_ptr<ns3::ndn::Face> face)
+NextHop::NextHop(shared_ptr<Face> face)
   : m_face(face), m_cost(0)
 {
 }
@@ -37,7 +37,7 @@ NextHop::NextHop(const NextHop& other)
 {
 }
 
-shared_ptr<ns3::ndn::Face>
+shared_ptr<Face>
 NextHop::getFace() const
 {
   return m_face;

@@ -46,20 +46,20 @@ public:
   ~FaceTable();
 
   VIRTUAL_WITH_TESTS void
-  add(shared_ptr<ns3::ndn::Face> face);
+  add(shared_ptr<Face> face);
 
   /// add a special Face with a reserved FaceId
   VIRTUAL_WITH_TESTS void
-  addReserved(shared_ptr<ns3::ndn::Face> face, ns3::ndn::FaceId faceId);
+  addReserved(shared_ptr<Face> face, FaceId faceId);
 
-  VIRTUAL_WITH_TESTS shared_ptr<ns3::ndn::Face>
-  get(ns3::ndn::FaceId id) const;
+  VIRTUAL_WITH_TESTS shared_ptr<Face>
+  get(FaceId id) const;
 
   size_t
   size() const;
 
 public: // enumeration
-  typedef std::map<ns3::ndn::FaceId, shared_ptr<ns3::ndn::Face> > FaceMap;
+  typedef std::map<FaceId, shared_ptr<Face> > FaceMap;
 
   /** \brief ForwardIterator for shared_ptr<Face>
    */
@@ -84,34 +84,34 @@ public: // enumeration
 public: // events
   /** \brief fires after a Face is added
    */
-  EventEmitter<shared_ptr<ns3::ndn::Face> > onAdd;
+  EventEmitter<shared_ptr<Face> > onAdd;
 
   /** \brief fires before a Face is removed
    *
    *  FaceId is valid when this event is fired
    */
-  EventEmitter<shared_ptr<ns3::ndn::Face> > onRemove;
+  EventEmitter<shared_ptr<Face> > onRemove;
 
 private:
   void
-  addImpl(shared_ptr<ns3::ndn::Face> face, ns3::ndn::FaceId faceId);
+  addImpl(shared_ptr<Face> face, FaceId faceId);
 
   // remove is private because it's a subscriber of face.onFail event.
   // face->close() closes a face and triggers .remove(face)
   void
-  remove(shared_ptr<ns3::ndn::Face> face);
+  remove(shared_ptr<Face> face);
 
 private:
   Forwarder& m_forwarder;
-  ns3::ndn::FaceId m_lastFaceId;
+  FaceId m_lastFaceId;
   FaceMap m_faces;
 };
 
-inline shared_ptr<ns3::ndn::Face>
-FaceTable::get(ns3::ndn::FaceId id) const
+inline shared_ptr<Face>
+FaceTable::get(FaceId id) const
 {
-  std::map<ns3::ndn::FaceId, shared_ptr<ns3::ndn::Face> >::const_iterator i = m_faces.find(id);
-  return (i == m_faces.end()) ? (shared_ptr<ns3::ndn::Face>()) : (i->second);
+  std::map<FaceId, shared_ptr<Face> >::const_iterator i = m_faces.find(id);
+  return (i == m_faces.end()) ? (shared_ptr<Face>()) : (i->second);
 }
 
 inline size_t

@@ -30,20 +30,9 @@
 #include "ns3/ndnSIM/NFD/daemon/mgmt/manager-base.hpp"
 #include "ns3/ndnSIM/NFD/daemon/mgmt/fib-enumeration-publisher.hpp"
 
-namespace ns3 {
-
-namespace ndn {
-
-class Face;
-
-} // namespace ndn
-
-} // namespace ns3
-
-using ns3::ndn::FaceId;
-
 namespace nfd {
 
+class Face;
 class Forwarder;
 class Fib;
 

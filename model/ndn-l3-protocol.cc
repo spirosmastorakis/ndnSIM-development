@@ -101,8 +101,8 @@ L3Protocol::initialize(Ptr<Node> node)
 
   initializeManagement();
 
-  m_forwarder->getFaceTable().addReserved(make_shared<NullFace>(), ns3::ndn::FACEID_NULL);
-  m_forwarder->getFaceTable().addReserved(make_shared<NullFace>(FaceUri("contentstore://")), ns3::ndn::FACEID_CONTENT_STORE);
+  m_forwarder->getFaceTable().addReserved(make_shared<NullFace>(), nfd::FACEID_NULL);
+  m_forwarder->getFaceTable().addReserved(make_shared<NullFace>(FaceUri("contentstore://")), nfd::FACEID_CONTENT_STORE);
 
   nfd::PrivilegeHelper::drop();
 }
@@ -136,7 +136,7 @@ L3Protocol::initializeManagement()
                                    m_forwarder->getMeasurements());
 
   // Alex do we need this?
-  m_forwarder->getFaceTable().addReserved(m_internalFace, ns3::ndn::FACEID_INTERNAL_FACE);
+  m_forwarder->getFaceTable().addReserved(m_internalFace, nfd::FACEID_INTERNAL_FACE);
 
   tablesConfig.ensureTablesAreConfigured(m_nfdCS);
 

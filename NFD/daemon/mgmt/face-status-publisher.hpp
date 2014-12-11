@@ -30,8 +30,6 @@
 #include "ns3/ndnSIM/NFD/daemon/mgmt/app-face.hpp"
 #include "ns3/ndnSIM/model/ndn-face.h"
 
-using ns3::ndn::Face;
-
 namespace nfd {
 
 class FaceTable;

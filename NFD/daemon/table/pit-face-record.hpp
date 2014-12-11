@@ -25,7 +25,7 @@
 #ifndef NFD_DAEMON_TABLE_PIT_FACE_RECORD_HPP
 #define NFD_DAEMON_TABLE_PIT_FACE_RECORD_HPP
 
-#include "ns3/ndnSIM/model/ndn-face.h"
+#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
 #include "ns3/ndnSIM/NFD/daemon/table/strategy-info-host.hpp"
 
 namespace nfd {
@@ -41,9 +41,9 @@ class FaceRecord : public StrategyInfoHost
 {
 public:
   explicit
-  FaceRecord(shared_ptr<ns3::ndn::Face> face);
+  FaceRecord(shared_ptr<Face> face);
 
-  shared_ptr<ns3::ndn::Face>
+  shared_ptr<Face>
   getFace() const;
 
   uint32_t
@@ -63,13 +63,13 @@ public:
   update(const Interest& interest);
 
 private:
-  shared_ptr<ns3::ndn::Face> m_face;
+  shared_ptr<Face> m_face;
   uint32_t m_lastNonce;
   time::steady_clock::TimePoint m_lastRenewed;
   time::steady_clock::TimePoint m_expiry;
 };
 
-inline shared_ptr<ns3::ndn::Face>
+inline shared_ptr<Face>
 FaceRecord::getFace() const
 {
   return m_face;

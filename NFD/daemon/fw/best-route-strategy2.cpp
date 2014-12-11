@@ -47,11 +47,11 @@ BestRouteStrategy2::BestRouteStrategy2(Forwarder& forwarder, const Name& name)
  */
 static inline bool
 predicate_NextHop_eligible(const shared_ptr<pit::Entry>& pitEntry,
-  const fib::NextHop& nexthop, ns3::ndn::FaceId currentDownstream,
+  const fib::NextHop& nexthop, FaceId currentDownstream,
   bool wantUnused = false,
   time::steady_clock::TimePoint now = time::steady_clock::TimePoint::min())
 {
-  shared_ptr<ns3::ndn::Face> upstream = nexthop.getFace();
+  shared_ptr<Face> upstream = nexthop.getFace();
 
   // upstream is current downstream
   if (upstream->getId() == currentDownstream)
@@ -85,7 +85,7 @@ compare_OutRecord_lastRenewed(const pit::OutRecord& a, const pit::OutRecord& b)
 static inline fib::NextHopList::const_iterator
 findEligibleNextHopWithEarliestOutRecord(const shared_ptr<pit::Entry>& pitEntry,
                                          const fib::NextHopList& nexthops,
-                                         ns3::ndn::FaceId currentDownstream)
+                                         FaceId currentDownstream)
 {
   fib::NextHopList::const_iterator found = nexthops.end();
   time::steady_clock::TimePoint earliestRenewed = time::steady_clock::TimePoint::max();
@@ -103,7 +103,7 @@ findEligibleNextHopWithEarliestOutRecord(const shared_ptr<pit::Entry>& pitEntry,
 }
 
 void
-BestRouteStrategy2::afterReceiveInterest(const ns3::ndn::Face& inFace,
+BestRouteStrategy2::afterReceiveInterest(const Face& inFace,
                                          const Interest& interest,
                                          shared_ptr<fib::Entry> fibEntry,
                                          shared_ptr<pit::Entry> pitEntry)
@@ -124,7 +124,7 @@ BestRouteStrategy2::afterReceiveInterest(const ns3::ndn::Face& inFace,
       return;
     }
 
-    shared_ptr<ns3::ndn::Face> outFace = it->getFace();
+    shared_ptr<Face> outFace = it->getFace();
     this->sendInterest(pitEntry, outFace);
     NFD_LOG_DEBUG(interest << " from=" << inFace.getId()
                            << " newPitEntry-to=" << outFace->getId());
@@ -150,7 +150,7 @@ BestRouteStrategy2::afterReceiveInterest(const ns3::ndn::Face& inFace,
   it = std::find_if(nexthops.begin(), nexthops.end(),
     bind(&predicate_NextHop_eligible, pitEntry, _1, inFace.getId(), true, now));
   if (it != nexthops.end()) {
-    shared_ptr<ns3::ndn::Face> outFace = it->getFace();
+    shared_ptr<Face> outFace = it->getFace();
     this->sendInterest(pitEntry, outFace);
     NFD_LOG_DEBUG(interest << " from=" << inFace.getId()
                            << " retransmit-unused-to=" << outFace->getId());
@@ -163,7 +163,7 @@ BestRouteStrategy2::afterReceiveInterest(const ns3::ndn::Face& inFace,
     NFD_LOG_DEBUG(interest << " from=" << inFace.getId() << " retransmitNoNextHop");
   }
   else {
-    shared_ptr<ns3::ndn::Face> outFace = it->getFace();
+    shared_ptr<Face> outFace = it->getFace();
     this->sendInterest(pitEntry, outFace);
     NFD_LOG_DEBUG(interest << " from=" << inFace.getId()
                            << " retransmit-retry-to=" << outFace->getId());

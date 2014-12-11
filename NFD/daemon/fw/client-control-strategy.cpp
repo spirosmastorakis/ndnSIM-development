@@ -44,7 +44,7 @@ ClientControlStrategy::~ClientControlStrategy()
 }
 
 void
-ClientControlStrategy::afterReceiveInterest(const ns3::ndn::Face& inFace,
+ClientControlStrategy::afterReceiveInterest(const Face& inFace,
                                             const Interest& interest,
                                             shared_ptr<fib::Entry> fibEntry,
                                             shared_ptr<pit::Entry> pitEntry)
@@ -56,8 +56,8 @@ ClientControlStrategy::afterReceiveInterest(const ns3::ndn::Face& inFace,
     return;
   }
 
-  ns3::ndn::FaceId outFaceId = static_cast<ns3::ndn::FaceId>(interest.getNextHopFaceId());
-  shared_ptr<ns3::ndn::Face> outFace = this->getFace(outFaceId);
+  FaceId outFaceId = static_cast<FaceId>(interest.getNextHopFaceId());
+  shared_ptr<Face> outFace = this->getFace(outFaceId);
   if (!static_cast<bool>(outFace)) {
     // If outFace doesn't exist, it's better to reject the Interest
     // than to use BestRouteStrategy.

@@ -29,9 +29,6 @@
 #include "ns3/ndnSIM/NFD/daemon/fw/available-strategies.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
 
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
-
 namespace nfd {
 
 NFD_LOG_INIT("Forwarder");
@@ -68,7 +65,7 @@ Forwarder::getNode ()
 }
 
 void
-Forwarder::onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest)
+Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
 {
   // receive Interest
   NFD_LOG_DEBUG("onIncomingInterest face=" << inFace.getId() <<
@@ -120,7 +117,7 @@ Forwarder::onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest)
 
 
     if (csMatch != 0) {
-      const_cast<Data*>(csMatch)->setIncomingFaceId(ns3::ndn::FACEID_CONTENT_STORE);
+      const_cast<Data*>(csMatch)->setIncomingFaceId(FACEID_CONTENT_STORE);
       // XXX should we lookup PIT for other Interests that also match csMatch?
 
       // set PIT straggler timer
@@ -147,7 +144,7 @@ Forwarder::onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest)
 }
 
 void
-Forwarder::onInterestLoop(ns3::ndn::Face& inFace, const Interest& interest,
+Forwarder::onInterestLoop(Face& inFace, const Interest& interest,
                           shared_ptr<pit::Entry> pitEntry)
 {
   NFD_LOG_DEBUG("onInterestLoop face=" << inFace.getId() <<
@@ -167,7 +164,7 @@ Forwarder::onInterestLoop(ns3::ndn::Face& inFace, const Interest& interest,
  *  vehicular network; otherwise, strategy shouldn't send to the sole inFace.
  */
 static inline bool
-compare_pickInterest(const pit::InRecord& a, const pit::InRecord& b, const ns3::ndn::Face* outFace)
+compare_pickInterest(const pit::InRecord& a, const pit::InRecord& b, const Face* outFace)
 {
   bool isOutFaceA = a.getFace().get() == outFace;
   bool isOutFaceB = b.getFace().get() == outFace;
@@ -183,10 +180,10 @@ compare_pickInterest(const pit::InRecord& a, const pit::InRecord& b, const ns3::
 }
 
 void
-Forwarder::onOutgoingInterest(shared_ptr<pit::Entry> pitEntry, ns3::ndn::Face& outFace,
+Forwarder::onOutgoingInterest(shared_ptr<pit::Entry> pitEntry, Face& outFace,
                               bool wantNewNonce)
 {
-  if (outFace.getId() == ns3::ndn::INVALID_FACEID) {
+  if (outFace.getId() == INVALID_FACEID) {
     NFD_LOG_WARN("onOutgoingInterest face=invalid interest=" << pitEntry->getName());
     return;
   }
@@ -217,15 +214,8 @@ Forwarder::onOutgoingInterest(shared_ptr<pit::Entry> pitEntry, ns3::ndn::Face& o
   // insert OutRecord
   pitEntry->insertOrUpdateOutRecord(outFace.shared_from_this(), *interest);
 
-  // // extract and keep the hop counter
-  // const ::ns3::ndn::Interest i = static_cast<const ::ns3::ndn::Interest&>(*interest);
-  // ::ns3::ndn::FwHopCountTag hopCount;
-  // i.getPacket ()->RemovePacketTag (hopCount);
-  // m_hopCounter = hopCount.Get ();
-
-
   // send Interest - SendInterest method of ns3::ndn::Face class, hope it works...
-  outFace.SendInterest(interest);
+  outFace.sendInterest(*interest);
   ++m_counters.getNOutInterests();
 }
 
@@ -275,7 +265,7 @@ Forwarder::onInterestFinalize(shared_ptr<pit::Entry> pitEntry, bool isSatisfied,
 }
 
 void
-Forwarder::onIncomingData(ns3::ndn::Face& inFace, const Data& data)
+Forwarder::onIncomingData(Face& inFace, const Data& data)
 {
   // receive Data
   NFD_LOG_DEBUG("onIncomingData face=" << inFace.getId() << " data=" << data.getName());
@@ -307,7 +297,7 @@ Forwarder::onIncomingData(ns3::ndn::Face& inFace, const Data& data)
     getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
       ->Add (make_shared<Data>(data));
 
-  std::set<shared_ptr<ns3::ndn::Face> > pendingDownstreams;
+  std::set<shared_ptr<Face> > pendingDownstreams;
   // foreach PitEntry
   for (pit::DataMatchResult::iterator it = pitMatches->begin();
        it != pitMatches->end(); ++it) {
@@ -342,9 +332,9 @@ Forwarder::onIncomingData(ns3::ndn::Face& inFace, const Data& data)
   }
 
   // foreach pending downstream
-  for (std::set<shared_ptr<ns3::ndn::Face> >::iterator it = pendingDownstreams.begin();
+  for (std::set<shared_ptr<Face> >::iterator it = pendingDownstreams.begin();
       it != pendingDownstreams.end(); ++it) {
-    shared_ptr<ns3::ndn::Face> pendingDownstream = *it;
+    shared_ptr<Face> pendingDownstream = *it;
     if (pendingDownstream.get() == &inFace) {
       continue;
     }
@@ -354,7 +344,7 @@ Forwarder::onIncomingData(ns3::ndn::Face& inFace, const Data& data)
 }
 
 void
-Forwarder::onDataUnsolicited(ns3::ndn::Face& inFace, const Data& data)
+Forwarder::onDataUnsolicited(Face& inFace, const Data& data)
 {
   // accept to cache?
   bool acceptToCache = inFace.isLocal();
@@ -366,14 +356,6 @@ Forwarder::onDataUnsolicited(ns3::ndn::Face& inFace, const Data& data)
     getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
       ->Add (make_shared<Data>(data));
   }
-  // ::ns3::ndn::Data d;
-  // d = const_cast<Data&>(data);
-  // ns3::Ptr<ns3::Packet> packet = ns3::Create<ns3::Packet> ();
-  // ::ns3::ndn::FwHopCountTag hopCount;
-  // hopCount.Set(m_hopCounter);
-  // packet->AddPacketTag (hopCount);
-  // d.setPacket (packet);
-
 
   NFD_LOG_DEBUG("onDataUnsolicited face=" << inFace.getId() <<
                 " data=" << data.getName() <<
@@ -381,9 +363,9 @@ Forwarder::onDataUnsolicited(ns3::ndn::Face& inFace, const Data& data)
 }
 
 void
-Forwarder::onOutgoingData(const Data& data, ns3::ndn::Face& outFace)
+Forwarder::onOutgoingData(const Data& data, Face& outFace)
 {
-  if (outFace.getId() == ns3::ndn::INVALID_FACEID) {
+  if (outFace.getId() == INVALID_FACEID) {
     NFD_LOG_WARN("onOutgoingData face=invalid data=" << data.getName());
     return;
   }
@@ -402,7 +384,7 @@ Forwarder::onOutgoingData(const Data& data, ns3::ndn::Face& outFace)
   // TODO traffic manager
 
   // send Data - SendData method of ns3::ndn::Face, hope that it works...
-  outFace.SendData(data.shared_from_this());
+  outFace.sendData(data);
   ++m_counters.getNOutDatas();
 }
 
@@ -459,7 +441,7 @@ insertNonceToDnl(DeadNonceList& dnl, const pit::Entry& pitEntry,
 void
 Forwarder::insertDeadNonceList(pit::Entry& pitEntry, bool isSatisfied,
                                const time::milliseconds& dataFreshnessPeriod,
-                               ns3::ndn::Face* upstream)
+                               Face* upstream)
 {
   // need Dead Nonce List insert?
   bool needDnl = false;

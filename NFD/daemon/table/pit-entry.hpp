@@ -86,7 +86,7 @@ public:
    *          and scope is not violated
    */
   bool
-  canForwardTo(const ns3::ndn::Face& face) const;
+  canForwardTo(const Face& face) const;
 
   /** \brief decides whether forwarding Interest to face would violate scope
    *
@@ -98,13 +98,13 @@ public:
    *        back to incoming face
    */
   bool
-  violatesScope(const ns3::ndn::Face& face) const;
+  violatesScope(const Face& face) const;
 
   /** \brief finds where a duplicate Nonce appears
    *  \return OR'ed DuplicateNonceWhere
    */
   int
-  findNonce(uint32_t nonce, const ns3::ndn::Face& face) const;
+  findNonce(uint32_t nonce, const Face& face) const;
 
 public: // InRecord
   const InRecordCollection&
@@ -125,13 +125,13 @@ public: // InRecord
    *  \return an iterator to the InRecord
    */
   InRecordCollection::iterator
-  insertOrUpdateInRecord(shared_ptr<ns3::ndn::Face> face, const Interest& interest);
+  insertOrUpdateInRecord(shared_ptr<Face> face, const Interest& interest);
 
   /** \brief get the InRecord for face
    *  \return an iterator to the InRecord, or .end if it does not exist
    */
   InRecordCollection::const_iterator
-  getInRecord(shared_ptr<ns3::ndn::Face> face) const;
+  getInRecord(shared_ptr<Face> face) const;
 
   /// deletes all InRecords
   void
@@ -147,17 +147,17 @@ public: // OutRecord
    *  \return an iterator to the OutRecord
    */
   OutRecordCollection::iterator
-  insertOrUpdateOutRecord(shared_ptr<ns3::ndn::Face> face, const Interest& interest);
+  insertOrUpdateOutRecord(shared_ptr<Face> face, const Interest& interest);
 
   /** \brief get the OutRecord for face
    *  \return an iterator to the OutRecord, or .end if it does not exist
    */
   OutRecordCollection::const_iterator
-  getOutRecord(shared_ptr<ns3::ndn::Face> face) const;
+  getOutRecord(shared_ptr<Face> face) const;
 
   /// deletes one OutRecord for face if exists
   void
-  deleteOutRecord(shared_ptr<ns3::ndn::Face> face);
+  deleteOutRecord(shared_ptr<Face> face);
 
   /** \return true if there is one or more unexpired OutRecords
    */

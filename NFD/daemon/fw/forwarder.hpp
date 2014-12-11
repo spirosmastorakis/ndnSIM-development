@@ -72,15 +72,15 @@ public: // faces
    *
    *  shortcut to .getFaceTable().get(face)
    */
-  shared_ptr<ns3::ndn::Face>
-  getFace(ns3::ndn::FaceId id) const;
+  shared_ptr<Face>
+  getFace(FaceId id) const;
 
   /** \brief add new Face
    *
    *  shortcut to .getFaceTable().add(face)
    */
   void
-  addFace(shared_ptr<ns3::ndn::Face> face);
+  addFace(shared_ptr<Face> face);
 
   void
   setNode (ns3::Ptr<ns3::Node> node);
@@ -89,10 +89,10 @@ public: // faces
   getNode ();
 public: // forwarding entrypoints and tables
   void
-  onInterest(ns3::ndn::Face& face, const Interest& interest);
+  onInterest(Face& face, const Interest& interest);
 
   void
-  onData(ns3::ndn::Face& face, const Data& data);
+  onData(Face& face, const Data& data);
 
   NameTree&
   getNameTree();
@@ -119,18 +119,18 @@ PUBLIC_WITH_TESTS_ELSE_PRIVATE: // pipelines
   /** \brief incoming Interest pipeline
    */
   VIRTUAL_WITH_TESTS void
-  onIncomingInterest(ns3::ndn::Face& inFace, const Interest& interest);
+  onIncomingInterest(Face& inFace, const Interest& interest);
 
   /** \brief Interest loop pipeline
    */
   VIRTUAL_WITH_TESTS void
-  onInterestLoop(ns3::ndn::Face& inFace, const Interest& interest,
+  onInterestLoop(Face& inFace, const Interest& interest,
                  shared_ptr<pit::Entry> pitEntry);
 
   /** \brief outgoing Interest pipeline
    */
   VIRTUAL_WITH_TESTS void
-  onOutgoingInterest(shared_ptr<pit::Entry> pitEntry, ns3::ndn::Face& outFace,
+  onOutgoingInterest(shared_ptr<pit::Entry> pitEntry, Face& outFace,
                      bool wantNewNonce = false);
 
   /** \brief Interest reject pipeline
@@ -154,17 +154,17 @@ PUBLIC_WITH_TESTS_ELSE_PRIVATE: // pipelines
   /** \brief incoming Data pipeline
    */
   VIRTUAL_WITH_TESTS void
-  onIncomingData(ns3::ndn::Face& inFace, const Data& data);
+  onIncomingData(Face& inFace, const Data& data);
 
   /** \brief Data unsolicited pipeline
    */
   VIRTUAL_WITH_TESTS void
-  onDataUnsolicited(ns3::ndn::Face& inFace, const Data& data);
+  onDataUnsolicited(Face& inFace, const Data& data);
 
   /** \brief outgoing Data pipeline
    */
   VIRTUAL_WITH_TESTS void
-  onOutgoingData(const Data& data, ns3::ndn::Face& outFace);
+  onOutgoingData(const Data& data, Face& outFace);
 
 PROTECTED_WITH_TESTS_ELSE_PRIVATE:
   VIRTUAL_WITH_TESTS void
@@ -184,7 +184,7 @@ PROTECTED_WITH_TESTS_ELSE_PRIVATE:
   VIRTUAL_WITH_TESTS void
   insertDeadNonceList(pit::Entry& pitEntry, bool isSatisfied,
                       const time::milliseconds& dataFreshnessPeriod,
-                      ns3::ndn::Face* upstream);
+                      Face* upstream);
 
   /// call trigger (method) on the effective strategy of pitEntry
 #ifdef WITH_TESTS
@@ -230,26 +230,26 @@ Forwarder::getFaceTable()
   return m_faceTable;
 }
 
-inline shared_ptr<ns3::ndn::Face>
-Forwarder::getFace(ns3::ndn::FaceId id) const
+inline shared_ptr<Face>
+Forwarder::getFace(FaceId id) const
 {
   return m_faceTable.get(id);
 }
 
 inline void
-Forwarder::addFace(shared_ptr<ns3::ndn::Face> face)
+Forwarder::addFace(shared_ptr<Face> face)
 {
   m_faceTable.add(face);
 }
 
 inline void
-Forwarder::onInterest(ns3::ndn::Face& face, const Interest& interest)
+Forwarder::onInterest(Face& face, const Interest& interest)
 {
   this->onIncomingInterest(face, interest);
 }
 
 inline void
-Forwarder::onData(ns3::ndn::Face& face, const Data& data)
+Forwarder::onData(Face& face, const Data& data)
 {
   this->onIncomingData(face, data);
 }

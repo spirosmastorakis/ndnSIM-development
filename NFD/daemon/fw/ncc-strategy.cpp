@@ -46,7 +46,7 @@ const time::microseconds NccStrategy::DEFER_RANGE_WITHOUT_BEST_FACE = time::micr
 const time::nanoseconds NccStrategy::MEASUREMENTS_LIFETIME = time::seconds(16);
 
 void
-NccStrategy::afterReceiveInterest(const ns3::ndn::Face& inFace,
+NccStrategy::afterReceiveInterest(const Face& inFace,
                                   const Interest& interest,
                                   shared_ptr<fib::Entry> fibEntry,
                                   shared_ptr<pit::Entry> pitEntry)
@@ -71,7 +71,7 @@ NccStrategy::afterReceiveInterest(const ns3::ndn::Face& inFace,
   time::microseconds deferRange = DEFER_RANGE_WITHOUT_BEST_FACE;
   size_t nUpstreams = nexthops.size();
 
-  shared_ptr<ns3::ndn::Face> bestFace = measurementsEntryInfo->getBestFace();
+  shared_ptr<Face> bestFace = measurementsEntryInfo->getBestFace();
   if (static_cast<bool>(bestFace) && fibEntry->hasNextHop(bestFace) &&
       pitEntry->canForwardTo(*bestFace)) {
     // TODO Should we use `randlow = 100 + nrand48(h->seed) % 4096U;` ?
@@ -89,7 +89,7 @@ NccStrategy::afterReceiveInterest(const ns3::ndn::Face& inFace,
     // TODO avoid sending to inFace
   }
 
-  shared_ptr<ns3::ndn::Face> previousFace = measurementsEntryInfo->previousFace.lock();
+  shared_ptr<Face> previousFace = measurementsEntryInfo->previousFace.lock();
   if (static_cast<bool>(previousFace) && fibEntry->hasNextHop(previousFace) &&
       pitEntry->canForwardTo(*previousFace)) {
     --nUpstreams;
@@ -130,7 +130,7 @@ NccStrategy::doPropagate(weak_ptr<pit::Entry> pitEntryWeak, weak_ptr<fib::Entry>
   shared_ptr<MeasurementsEntryInfo> measurementsEntryInfo =
     this->getMeasurementsEntryInfo(pitEntry);
 
-  shared_ptr<ns3::ndn::Face> previousFace = measurementsEntryInfo->previousFace.lock();
+  shared_ptr<Face> previousFace = measurementsEntryInfo->previousFace.lock();
   if (static_cast<bool>(previousFace) && fibEntry->hasNextHop(previousFace) &&
       pitEntry->canForwardTo(*previousFace)) {
     this->sendInterest(pitEntry, previousFace);
@@ -139,7 +139,7 @@ NccStrategy::doPropagate(weak_ptr<pit::Entry> pitEntryWeak, weak_ptr<fib::Entry>
   const fib::NextHopList& nexthops = fibEntry->getNextHops();
   bool isForwarded = false;
   for (fib::NextHopList::const_iterator it = nexthops.begin(); it != nexthops.end(); ++it) {
-    shared_ptr<ns3::ndn::Face> face = it->getFace();
+    shared_ptr<Face> face = it->getFace();
     if (pitEntry->canForwardTo(*face)) {
       isForwarded = true;
       this->sendInterest(pitEntry, face);
@@ -183,7 +183,7 @@ NccStrategy::timeoutOnBestFace(weak_ptr<pit::Entry> pitEntryWeak)
 
 void
 NccStrategy::beforeSatisfyInterest(shared_ptr<pit::Entry> pitEntry,
-                                   const ns3::ndn::Face& inFace, const Data& data)
+                                   const Face& inFace, const Data& data)
 {
   if (pitEntry->getInRecords().empty()) {
     // PIT entry has already been satisfied (and is now waiting for straggler timer to expire)
@@ -260,9 +260,9 @@ NccStrategy::MeasurementsEntryInfo::inheritFrom(const MeasurementsEntryInfo& oth
   this->operator=(other);
 }
 
-shared_ptr<ns3::ndn::Face>
+shared_ptr<Face>
 NccStrategy::MeasurementsEntryInfo::getBestFace(void) {
-  shared_ptr<ns3::ndn::Face> best = this->bestFace.lock();
+  shared_ptr<Face> best = this->bestFace.lock();
   if (static_cast<bool>(best)) {
     return best;
   }
@@ -271,18 +271,18 @@ NccStrategy::MeasurementsEntryInfo::getBestFace(void) {
 }
 
 void
-NccStrategy::MeasurementsEntryInfo::updateBestFace(const ns3::ndn::Face& face) {
+NccStrategy::MeasurementsEntryInfo::updateBestFace(const Face& face) {
   if (this->bestFace.expired()) {
-    this->bestFace = const_cast<ns3::ndn::Face&>(face).shared_from_this();
+    this->bestFace = const_cast<Face&>(face).shared_from_this();
     return;
   }
-  shared_ptr<ns3::ndn::Face> bestFace = this->bestFace.lock();
+  shared_ptr<Face> bestFace = this->bestFace.lock();
   if (bestFace.get() == &face) {
     this->adjustPredictDown();
   }
   else {
     this->previousFace = this->bestFace;
-    this->bestFace = const_cast<ns3::ndn::Face&>(face).shared_from_this();
+    this->bestFace = const_cast<Face&>(face).shared_from_this();
   }
 }
 

@@ -38,7 +38,7 @@ class InRecord : public FaceRecord
 {
 public:
   explicit
-  InRecord(shared_ptr<ns3::ndn::Face> face);
+  InRecord(shared_ptr<Face> face);
 
   void
   update(const Interest& interest);

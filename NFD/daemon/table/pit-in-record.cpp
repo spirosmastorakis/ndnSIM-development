@@ -27,7 +27,7 @@
 namespace nfd {
 namespace pit {
 
-InRecord::InRecord(shared_ptr<ns3::ndn::Face> face)
+InRecord::InRecord(shared_ptr<Face> face)
   : FaceRecord(face)
 {
 }

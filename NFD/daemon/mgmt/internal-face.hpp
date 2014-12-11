@@ -28,15 +28,12 @@
 
 #include <ndn-cxx/util/face-uri.hpp>
 
-#include "ns3/ndnSIM/model/ndn-face.h"
+#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
 #include "ns3/ndnSIM/NFD/daemon/mgmt/app-face.hpp"
 
 #include "ns3/ndnSIM/NFD/daemon/mgmt/command-validator.hpp"
 
 namespace nfd {
-
-using ns3::ndn::Face;
-using ndn::util::FaceUri;
 
 class InternalFace : public Face, public AppFace
 {

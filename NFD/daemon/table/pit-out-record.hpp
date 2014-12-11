@@ -38,7 +38,7 @@ class OutRecord : public FaceRecord
 {
 public:
   explicit
-  OutRecord(shared_ptr<ns3::ndn::Face> face);
+  OutRecord(shared_ptr<Face> face);
 };
 
 } // namespace pit

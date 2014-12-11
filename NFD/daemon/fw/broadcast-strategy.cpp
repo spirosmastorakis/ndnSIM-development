@@ -40,7 +40,7 @@ BroadcastStrategy::~BroadcastStrategy()
 }
 
 void
-BroadcastStrategy::afterReceiveInterest(const ns3::ndn::Face& inFace,
+BroadcastStrategy::afterReceiveInterest(const Face& inFace,
                    const Interest& interest,
                    shared_ptr<fib::Entry> fibEntry,
                    shared_ptr<pit::Entry> pitEntry)
@@ -48,7 +48,7 @@ BroadcastStrategy::afterReceiveInterest(const ns3::ndn::Face& inFace,
   const fib::NextHopList& nexthops = fibEntry->getNextHops();
 
   for (fib::NextHopList::const_iterator it = nexthops.begin(); it != nexthops.end(); ++it) {
-    shared_ptr<ns3::ndn::Face> outFace = it->getFace();
+    shared_ptr<Face> outFace = it->getFace();
     if (pitEntry->canForwardTo(*outFace)) {
       this->sendInterest(pitEntry, outFace);
     }

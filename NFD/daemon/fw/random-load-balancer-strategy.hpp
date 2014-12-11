@@ -34,8 +34,6 @@
 namespace nfd {
 namespace fw {
 
-using ns3::ndn::Face;
-
 class RandomLoadBalancerStrategy : public Strategy
 {
 public:

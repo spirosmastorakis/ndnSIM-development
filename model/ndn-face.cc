@@ -44,12 +44,6 @@ NS_LOG_COMPONENT_DEFINE ("ndn.Face");
 namespace ns3 {
 namespace ndn {
 
-using ::ndn::util::FaceUri;
-using ::ndn::nfd::FaceEventNotification;
-using ::ndn::nfd::FaceStatus;
-
-//shared_ptr<::ndn::Data> m_data;
-
 NS_OBJECT_ENSURE_REGISTERED (Face);
 
 TypeId
@@ -67,155 +61,9 @@ Face::GetTypeId ()
   return tid;
 }
 
-Face::Face(const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal)
-  : m_idNfd(INVALID_FACEID)
-  , m_remoteUri(remoteUri)
-  , m_localUri(localUri)
-  , m_isLocal(isLocal)
-  , m_isOnDemand(false)
-  , m_isFailed(false)
-{
-  // GetNode();
-  onReceiveInterest += [this](const ::ndn::Interest&) { ++m_counters.getNInInterests(); };
-  onReceiveData     += [this](const ::ndn::Data& data) {
-    //m_data = make_shared<::ndn::Data>(data);
-    ++m_counters.getNInDatas(); };
-  onSendInterest    += [this](const ::ndn::Interest& interest) {
-    SendInterest (make_shared<::ndn::Interest> (interest));
-    ++m_counters.getNOutInterests(); };
-  onSendData        += [this](const ::ndn::Data& data) {
-    ++m_counters.getNOutDatas(); };
-}
-
-FaceId
-Face::getId() const
-{
-  return m_idNfd;
-}
-
-// this method is private and should be used only by the FaceTable
-void
-Face::setId(FaceId faceId)
-{
-  m_idNfd = faceId;
-}
-
-void
-Face::setDescription(const std::string& description)
-{
-  m_description = description;
-}
-
-const std::string&
-Face::getDescription() const
-{
-  return m_description;
-}
-
-bool
-Face::isMultiAccess() const
-{
-  return false;
-}
-
-bool
-Face::isUp() const
-{
-  return true;
-}
-
-bool
-Face::decodeAndDispatchInput(const Block& element, uint32_t hopTag)
-{
-  try {
-    /// \todo Ensure lazy field decoding process
-
-    if (element.type() == ::ndn::tlv::Interest)
-      {
-        shared_ptr<Interest> i = make_shared<Interest>();
-        i->wireDecode(element);
-        FwHopCountTag hopCount;
-        hopCount.Set (hopTag);
-        i->getPacket ()->AddPacketTag (hopCount);
-        this->onReceiveInterest(dynamic_cast<::ndn::Interest&>(*i));
-      }
-    else if (element.type() == ::ndn::tlv::Data)
-      {
-        shared_ptr<Data> d = make_shared<Data>();
-        d->wireDecode(element);
-        //std::cout << "Print " << d->getIncomingFaceId () << "\n";
-        FwHopCountTag hopCount;
-        hopCount.Set (hopTag);
-        //std::cout << "hop count : " << hopCount.Get () << "\n";
-        d->getPacket ()->AddPacketTag (hopCount);
-        this->onReceiveData(dynamic_cast<::ndn::Data&>(*d));
-      }
-    else
-      return false;
-
-    return true;
-  }
-  catch (::ndn::tlv::Error&) {
-    return false;
-  }
-}
-
-void
-Face::fail(const std::string& reason)
-{
-  if (m_isFailed) {
-    return;
-  }
-
-  m_isFailed = true;
-  this->onFail(reason);
-
-  this->onFail.clear();
-}
-
 void
 Face::close ()
 {
-}
-
-template<typename FaceTraits>
-void
-Face::copyStatusTo(FaceTraits& traits) const
-{
-  traits.setFaceId(getId())
-    .setRemoteUri(getRemoteUri().toString())
-    .setLocalUri(getLocalUri().toString());
-
-  if (isLocal()) {
-    traits.setFaceScope(::ndn::nfd::FACE_SCOPE_LOCAL);
-  }
-  else {
-    traits.setFaceScope(::ndn::nfd::FACE_SCOPE_NON_LOCAL);
-  }
-
-  if (isOnDemand()) {
-    traits.setFacePersistency(::ndn::nfd::FACE_PERSISTENCY_ON_DEMAND);
-  }
-  else {
-    traits.setFacePersistency(::ndn::nfd::FACE_PERSISTENCY_PERSISTENT);
-  }
-}
-
-template void
-Face::copyStatusTo<FaceStatus>(FaceStatus&) const;
-
-template void
-Face::copyStatusTo<FaceEventNotification>(FaceEventNotification&) const;
-
-FaceStatus
-Face::getFaceStatus() const
-{
-  FaceStatus status;
-  copyStatusTo(status);
-
-  this->getCounters().copyTo(status);
-
-  return status;
 }
 
 /**
@@ -224,7 +72,7 @@ Face::getFaceStatus() const
  * invoke SetUp on them once an Ndn address and mask have been set.
  */
 Face::Face (Ptr<Node> node)
-  : m_idNfd(INVALID_FACEID)
+  : m_idNfd(nfd::INVALID_FACEID)
   , m_remoteUri("ns3://face")
   , m_localUri("ns3://face")
   , m_node (node)
@@ -232,6 +80,7 @@ Face::Face (Ptr<Node> node)
   , m_id ((uint32_t)-1)
   , m_metric (0)
   , m_flags (0)
+    //, ::nfd::Face (m_remoteUri, m_localUri, false)
 {
   NS_LOG_FUNCTION (this << node);
 
@@ -253,41 +102,40 @@ Face::GetNode () const
   return m_node;
 }
 
-bool
-Face::SendInterest (shared_ptr<const ::ndn::Interest> interest)
+void
+Face::sendInterest (const ::ndn::Interest& interest)
 {
-  NS_LOG_FUNCTION (this << boost::cref (*this) << interest->getName ());
+  NS_LOG_FUNCTION (this << boost::cref (*this) << interest.getName ());
 
-  if (!IsUp ())
-    {
-      return false;
-    }
+  // if (!IsUp ())
+  //   {
+  //     return false;
+  //   }
   // I assume that this should work...
 
-  const Interest i = static_cast<const Interest&>(*interest);
+  const Interest i = static_cast<const Interest&>(interest);
   Ptr<Packet> packet = Create <Packet> ();
 
   FwHopCountTag hopCount;
   i.getPacket ()->RemovePacketTag (hopCount);
   packet->AddPacketTag (hopCount);
-  Block block = interest->wireEncode ();
+  Block block = interest.wireEncode ();
   Convert::ToPacket (make_shared <Block> (block), packet);
-  return Send (packet);
+  Send (packet);
 }
 
-bool
-Face::SendData (shared_ptr <const ::ndn::Data> data)
+void
+Face::sendData (const ::ndn::Data& data)
 {
   NS_LOG_FUNCTION (this << data);
 
-  if (!IsUp ())
-    {
-      return false;
-    }
+  // if (!IsUp ())
+  //   {
+  //     return false;
+  //   }
   // I assume that this should work..
 
-  NS_LOG_DEBUG ("Data name " << data->getName ());
-  const Data& d = static_cast<const Data&>(*data);
+  const Data& d = static_cast<const Data&>(data);
 
   Ptr<Packet> packet = Create <Packet> ();
 
@@ -295,9 +143,9 @@ Face::SendData (shared_ptr <const ::ndn::Data> data)
   bool tagExists = d.getPacket ()->PeekPacketTag (hopCount);
   if (tagExists)
     packet->AddPacketTag (hopCount);
-  Block block = data->wireEncode ();
+  Block block = data.wireEncode ();
   Convert::ToPacket (make_shared <Block> (block), packet);
-  return Send (packet);
+  Send (packet);
 }
 
 bool

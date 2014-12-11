@@ -26,16 +26,14 @@
 #ifndef NFD_DAEMON_FACE_NULL_FACE_HPP
 #define NFD_DAEMON_FACE_NULL_FACE_HPP
 
-#include "ns3/ndn-face.h"
+#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
 
 namespace nfd {
-
-using ndn::util::FaceUri;
 
 /**
  * \brief a Face that has no underlying transport and drops every packet
  */
-class NullFace : public ns3::ndn::Face
+class NullFace : public Face
 {
 public:
   explicit

@@ -25,11 +25,9 @@
 #ifndef NFD_DAEMON_FACE_CHANNEL_HPP
 #define NFD_DAEMON_FACE_CHANNEL_HPP
 
-#include "ns3/ndnSIM/model/ndn-face.h"
+#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
 
 namespace nfd {
-
-using ::ndn::util::FaceUri;
 
 class Channel : noncopyable
 {
@@ -38,7 +36,7 @@ public:
    *         (as a response to incoming connection or after connection
    *         is established)
    */
-  typedef function<void(const shared_ptr<ns3::ndn::Face>& newFace)> FaceCreatedCallback;
+  typedef function<void(const shared_ptr<Face>& newFace)> FaceCreatedCallback;
 
   /** \brief Prototype for the callback that is called when face is failed to
    *         get created

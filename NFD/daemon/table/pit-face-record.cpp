@@ -27,7 +27,7 @@
 namespace nfd {
 namespace pit {
 
-FaceRecord::FaceRecord(shared_ptr<ns3::ndn::Face> face)
+FaceRecord::FaceRecord(shared_ptr<Face> face)
   : m_face(face)
   , m_lastNonce(0)
   , m_lastRenewed(time::steady_clock::TimePoint::min())

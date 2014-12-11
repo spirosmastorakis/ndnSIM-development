@@ -47,7 +47,7 @@ predicate_PitEntry_canForwardTo_NextHop(shared_ptr<pit::Entry> pitEntry,
 }
 
 void
-BestRouteStrategy::afterReceiveInterest(const ns3::ndn::Face& inFace,
+BestRouteStrategy::afterReceiveInterest(const Face& inFace,
                    const Interest& interest,
                    shared_ptr<fib::Entry> fibEntry,
                    shared_ptr<pit::Entry> pitEntry)
@@ -66,7 +66,7 @@ BestRouteStrategy::afterReceiveInterest(const ns3::ndn::Face& inFace,
     return;
   }
 
-  shared_ptr<ns3::ndn::Face> outFace = it->getFace();
+  shared_ptr<Face> outFace = it->getFace();
   this->sendInterest(pitEntry, outFace);
 }
 
