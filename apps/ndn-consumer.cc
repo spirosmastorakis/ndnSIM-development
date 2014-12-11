@@ -238,25 +238,24 @@ Consumer::OnData (shared_ptr<const ::ndn::Data> data)
   uint32_t seq = data->getName ().at (-1).toSequenceNumber ();
   NS_LOG_INFO ("< DATA for " << seq);
 
-  // const Data d = (static_cast<const Data&>(*data));
-  // int hopCount = -1;
-  // FwHopCountTag hopCountTag;
-  // if (d.getPacket ()->PeekPacketTag (hopCountTag))
-  //   {
-  //     hopCount = hopCountTag.Get ();
-  //     std::cout << "Hops: " << hopCountTag.Get () << "\n";
-  //   }
+  const Data& d = static_cast<const Data&>(*data);
+  int hopCount = -1;
+  FwHopCountTag hopCountTag;
+  if (d.getPacket ()->PeekPacketTag (hopCountTag))
+    {
+      hopCount = hopCountTag.Get ();
+    }
 
   SeqTimeoutsContainer::iterator entry = m_seqLastDelay.find (seq);
   if (entry != m_seqLastDelay.end ())
     {
-      // m_lastRetransmittedInterestDataDelay (this, seq, Simulator::Now () - entry->time, hopCount);
+      m_lastRetransmittedInterestDataDelay (this, seq, Simulator::Now () - entry->time, hopCount);
     }
 
   entry = m_seqFullDelay.find (seq);
   if (entry != m_seqFullDelay.end ())
     {
-      // m_firstInterestDataDelay (this, seq, Simulator::Now () - entry->time, m_seqRetxCounts[seq], hopCount);
+      m_firstInterestDataDelay (this, seq, Simulator::Now () - entry->time, m_seqRetxCounts[seq], hopCount);
     }
 
   m_seqRetxCounts.erase (seq);

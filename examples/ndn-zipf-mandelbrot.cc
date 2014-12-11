@@ -107,7 +107,7 @@ main (int argc, char *argv[])
   // Calculate and install FIBs
   ccnxGlobalRoutingHelper.CalculateRoutes ();
 
-  Simulator::Stop (Seconds (1.0));
+  Simulator::Stop (Seconds (20.0));
 
   Simulator::Run ();
   Simulator::Destroy ();
