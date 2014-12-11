@@ -85,9 +85,6 @@ public: // faces
   void
   setNode (ns3::Ptr<ns3::Node> node);
 
-  void
-  setNode (ns3::Ptr<ns3::Node> node);
-
   ns3::Ptr<ns3::Node>
   getNode ();
 public: // forwarding entrypoints and tables

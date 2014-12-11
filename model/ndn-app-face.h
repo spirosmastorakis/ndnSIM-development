@@ -27,8 +27,7 @@
 #include "ns3/attribute.h"
 #include "ns3/attribute-helper.h"
 
-// #include "ns3/ndn-interest.h"
-// #include "ns3/ndn-data.h"
+#include "ndn-face.h"
 #include "ns3/ndn-common.h"
 
 namespace ns3 {

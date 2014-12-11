@@ -26,8 +26,6 @@
 #include "ns3/callback.h"
 #include "ns3/traced-callback.h"
 
-// #include "ns3/ndn-interest.h"
-// #include "ns3/ndn-data.h"
 #include "ns3/ndn-common.h"
 #include "ns3/ndn-face.h"
 

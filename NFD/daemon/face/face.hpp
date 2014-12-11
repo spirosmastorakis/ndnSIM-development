@@ -26,9 +26,6 @@
 #ifndef NFD_DAEMON_FACE_FACE_HPP
 #define NFD_DAEMON_FACE_FACE_HPP
 
-#include "ns3/ptr.h"
-#include "ns3/packet.h"
-
 #include "ns3/ndnSIM/NFD/common.hpp"
 #include "ns3/ndnSIM/NFD/daemon/face/face-counters.hpp"
 
@@ -184,7 +181,7 @@ public: // attributes
 protected:
   // this is a non-virtual method
   bool
-  decodeAndDispatchInput(const Block& element, ns3::Ptr<ns3::Packet> packet);
+  decodeAndDispatchInput(const Block& element, uint32_t hopTag);
 
   FaceCounters&
   getMutableCounters();
