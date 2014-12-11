@@ -210,7 +210,6 @@ Consumer::SendPacket ()
   WillSendOutInterest (seq);
 
   FwHopCountTag hopCountTag;
-  //Ptr<Packet> packet = Create<Packet> ();
   interest->getPacket ()->AddPacketTag (hopCountTag);
 
   m_transmittedInterests ((dynamic_cast<::ndn::Interest&>(*interest)).shared_from_this (), this, m_face);
@@ -244,6 +243,7 @@ Consumer::OnData (shared_ptr<const ::ndn::Data> data)
   if (d.getPacket ()->PeekPacketTag (hopCountTag))
     {
       hopCount = hopCountTag.Get ();
+      //NS_LOG_DEBUG ("Hop count: " << hopCountTag.Get() << "\n");
     }
 
   SeqTimeoutsContainer::iterator entry = m_seqLastDelay.find (seq);

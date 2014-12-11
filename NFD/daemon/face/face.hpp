@@ -26,10 +26,10 @@
 #ifndef NFD_DAEMON_FACE_FACE_HPP
 #define NFD_DAEMON_FACE_FACE_HPP
 
-#include "common.hpp"
-#include "core/face-uri.hpp"
-#include "face-counters.hpp"
+#include "ns3/ndnSIM/NFD/common.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/face-counters.hpp"
 
+#include <ndn-cxx/util/face-uri.hpp>
 #include <ndn-cxx/management/nfd-face-status.hpp>
 #include <ndn-cxx/management/nfd-face-event-notification.hpp>
 
@@ -52,10 +52,7 @@ const FaceId FACEID_NULL = 255;
 /// upper bound of reserved FaceIds
 const FaceId FACEID_RESERVED_MAX = 255;
 
-
-/// pratical limit of packet size in octets
-const size_t MAX_NDN_PACKET_SIZE = 8800;
-
+using ndn::util::FaceUri;
 
 /** \brief represents a face
  */
@@ -74,6 +71,8 @@ public:
     {
     }
   };
+
+  Face();
 
   Face(const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal = false);
 
@@ -174,21 +173,21 @@ public: // attributes
   virtual ndn::nfd::FaceStatus
   getFaceStatus() const;
 
+  /** \brief fail the face and raise onFail event if it's UP; otherwise do nothing
+   */
+  void
+  fail(const std::string& reason);
+
 protected:
   // this is a non-virtual method
   bool
-  decodeAndDispatchInput(const Block& element);
+  decodeAndDispatchInput(const Block& element, uint32_t hopTag);
 
   FaceCounters&
   getMutableCounters();
 
   void
   setOnDemand(bool isOnDemand);
-
-  /** \brief fail the face and raise onFail event if it's UP; otherwise do nothing
-   */
-  void
-  fail(const std::string& reason);
 
 private:
   void

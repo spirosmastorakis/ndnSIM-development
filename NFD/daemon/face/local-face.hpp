@@ -34,7 +34,6 @@ namespace nfd {
 using ndn::nfd::LocalControlFeature;
 using ndn::nfd::LOCAL_CONTROL_FEATURE_INCOMING_FACE_ID;
 using ndn::nfd::LOCAL_CONTROL_FEATURE_NEXT_HOP_FACE_ID;
-using ndn::util::FaceUri;
 
 /** \brief represents a face
  */

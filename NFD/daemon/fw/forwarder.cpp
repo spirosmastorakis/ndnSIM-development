@@ -29,9 +29,6 @@
 #include "available-strategies.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
 
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
-
 namespace nfd {
 
 NFD_LOG_INIT("Forwarder");

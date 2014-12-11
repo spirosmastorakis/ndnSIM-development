@@ -34,8 +34,6 @@
 
 namespace nfd {
 
-using ndn::util::FaceUri;
-
 class InternalFace : public Face, public AppFace
 {
 public:

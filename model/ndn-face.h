@@ -48,30 +48,6 @@ class Node;
 
 namespace ndn {
 
-using ::ndn::util::FaceUri;
-using ::ndn::nfd::FaceEventNotification;
-using ::ndn::nfd::FaceStatus;
-
-/** \class FaceId
- *  \brief identifies a face
- */
-typedef int FaceId;
-
-/// indicates an invalid FaceId
-const FaceId INVALID_FACEID = -1;
-
-/// identifies the InternalFace used in management
-const FaceId FACEID_INTERNAL_FACE = 1;
-/// identifies a packet comes from the ContentStore, in LocalControlHeader incomingFaceId
-const FaceId FACEID_CONTENT_STORE = 254;
-/// identifies the NullFace that drops every packet
-const FaceId FACEID_NULL = 255;
-/// upper bound of reserved FaceIds
-const FaceId FACEID_RESERVED_MAX = 255;
-
-/// pratical limit of packet size in octets
-const size_t MAX_NDN_PACKET_SIZE = 8800;
-
 /**
  * \ingroup ndn
  * \defgroup ndn-face Faces
@@ -88,7 +64,7 @@ const size_t MAX_NDN_PACKET_SIZE = 8800;
  */
 
 class Face :
-    public Object, public std::enable_shared_from_this<Face>
+    public Object, public ::nfd::Face
 {
 public:
   class Error : public std::runtime_error
@@ -106,8 +82,6 @@ public:
    */
   Face (Ptr<Node> node);
 
-  Face (const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal = false);
-
   virtual ~Face();
 
   static TypeId
@@ -119,34 +93,8 @@ public:
    * \param face Face from which packet has been received
    * \param packet Original packet
    */
-  typedef Callback<void, Ptr<Face>, shared_ptr<Interest> > InterestHandler;
-  typedef Callback<void, Ptr<Face>, shared_ptr<Data> > DataHandler;
-
-  /**
-   * \brief Default constructor
-   */
-  Face (Ptr<Node> node);
-
-  Face (const Face &); ///< \brief copy constructor
-
-  Face (const nfd::FaceUri& remoteUri, const nfd::FaceUri& localUri, bool isLocal = false);
-
-  virtual ~Face();
-
-  /// fires when an Interest is received
-  nfd::EventEmitter<Interest> onReceiveInterest;
-
-  /// fires when a Data is received
-  nfd::EventEmitter<Data> onReceiveData;
-
-  /// fires when an Interest is sent out
-  nfd::EventEmitter<Interest> onSendInterest;
-
-  /// fires when a Data is sent out
-  nfd::EventEmitter<Data> onSendData;
-
-  /// fires when face disconnects or fails to perform properly
-  nfd::EventEmitter<std::string/*reason*/> onFail;
+  typedef Callback<void, Ptr<Face>, shared_ptr<::ndn::Interest> > InterestHandler;
+  typedef Callback<void, Ptr<Face>, shared_ptr<::ndn::Data> > DataHandler;
 
   /** \brief Close the face
    *
@@ -155,36 +103,6 @@ public:
    */
   virtual void
   close();
-
-  FaceId
-  getId() const;
-
-  void
-  setId(FaceId faceId);
-
-  /** \return FaceTraits data structure filled with the current FaceTraits status
-   */
-  template<typename FaceTraits>
-  void
-  copyStatusTo(FaceTraits& traits) const;
-
-  /** \brief Set the description
-   *
-   *  This is typically invoked by mgmt on set description command
-   */
-  virtual void
-  setDescription(const std::string& description);
-
-  /// Get the description
-  virtual const std::string&
-  getDescription() const;
-
-  /** \brief Get whether packets sent this Face may reach multiple peers
-   *
-   *  In this base class this property is always false.
-   */
-  virtual bool
-  isMultiAccess() const;
 
   virtual void
   RegisterProtocolHandlers ()
@@ -195,51 +113,6 @@ public:
   UnRegisterProtocolHandlers ()
   {
   };
-
-  /** \brief Get whether underlying communication is up
-   *
-   *  In this base class this property is always true.
-   */
-  virtual bool
-  isUp() const;
-
-  /** \brief Get whether face is created on demand or explicitly via FaceManagement protocol
-   */
-  bool
-  isOnDemand() const;
-
-  const nfd::FaceCounters&
-  getCounters() const;
-
-  /** \return a FaceUri that represents the remote endpoint
-   */
-  const FaceUri&
-  getRemoteUri() const;
-
-  /** \return a FaceUri that represents the local endpoint (NFD side)
-   */
-  const FaceUri&
-  getLocalUri() const;
-
-  // this is a non-virtual method
-  bool
-  decodeAndDispatchInput(const Block& element, uint32_t hopTag);
-
-  nfd::FaceCounters&
-  getMutableCounters();
-
-  void
-  setOnDemand(bool isOnDemand);
-
-  /** \brief fail the face and raise onFail event if it's UP; otherwise do nothing
-   */
-  void
-  fail(const std::string& reason);
-
-  /** \return FaceStatus data structure filled with the current Face status
-   */
-  virtual FaceStatus
-  getFaceStatus() const;
 
   /**
    * @brief Get node to which this face is associated
@@ -256,8 +129,8 @@ public:
    *
    * @returns true if interest is considered to be send out (enqueued)
    */
-  virtual bool
-  SendInterest (shared_ptr<const Interest> interest);
+  virtual void
+  sendInterest (const Interest& interest);
 
   /**
    * @brief Send out Dat packet through the face
@@ -266,8 +139,8 @@ public:
    *
    * @returns true if Data packet is considered to be send out (enqueued)
    */
-  virtual bool
-  SendData (shared_ptr<const Data> data);
+  virtual void
+  sendData (const Data& data);
 
   ////////////////////////////////////////////////////////////////////
 
@@ -375,12 +248,6 @@ public:
   bool
   operator< (const Face &face) const;
 
-  /*
-  *  \brief Return true if this face is the local host, false otherwise.
-  */
-  virtual bool
-  isLocal() const;
-
 protected:
   /**
    * @brief Send packet down to the stack (towards app or network)
@@ -412,64 +279,13 @@ private:
   uint32_t m_id; ///< \brief id of the interface in NDN stack (per-node uniqueness)
   uint16_t m_metric; ///< \brief metric of the face
   uint32_t m_flags; ///< @brief faces flags (e.g., APPLICATION)
-  FaceId m_idNfd;
-  FaceUri m_remoteUri;
-  FaceUri m_localUri;
-  bool m_isLocal;
-  nfd::FaceCounters m_counters;
-  std::string m_description;
-  bool m_isOnDemand;
-  bool m_isFailed;
-
-  // allow setting FaceId
-  friend class FaceTable;
-
+  ::nfd::FaceId m_idNfd;
+  ::ndn::util::FaceUri m_remoteUri;
+  ::ndn::util::FaceUri m_localUri;
 };
 
   std::ostream&
   operator<< (std::ostream& os, const Face &face);
-
-  inline bool
-  Face::isLocal() const
-  {
-    return m_isLocal;
-  }
-
-  inline bool
-  Face::isOnDemand() const
-  {
-    return m_isOnDemand;
-  }
-
-  inline const FaceUri&
-  Face::getRemoteUri() const
-  {
-    return m_remoteUri;
-  }
-
-  inline const FaceUri&
-  Face::getLocalUri() const
-  {
-    return m_localUri;
-  }
-
-  inline const nfd::FaceCounters&
-  Face::getCounters() const
-  {
-    return m_counters;
-  }
-
-  inline nfd::FaceCounters&
-  Face::getMutableCounters()
-  {
-    return m_counters;
-  }
-
-  inline void
-  Face::setOnDemand(bool isOnDemand)
-  {
-    m_isOnDemand = isOnDemand;
-  }
 
   inline bool
   Face::IsUp (void) const

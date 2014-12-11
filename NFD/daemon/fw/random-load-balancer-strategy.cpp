@@ -37,8 +37,6 @@ NFD_LOG_INIT("RandomLoadBalancerStrategy");
 namespace nfd {
 namespace fw {
 
-using ns3::ndn::Face;
-
 const Name RandomLoadBalancerStrategy::STRATEGY_NAME("ndn:/localhost/nfd/strategy/random-load-balancer");
 
 RandomLoadBalancerStrategy::RandomLoadBalancerStrategy(Forwarder& forwarder, const Name& name)

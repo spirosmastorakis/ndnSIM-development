@@ -1,3 +1,4 @@
+
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * Copyright (c) 2014,  Regents of the University of California,
@@ -23,8 +24,12 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "face.hpp"
-#include "core/logger.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
+#include "ns3/ndnSIM/NFD/core/logger.hpp"
+
+#include "ns3/ndn-fw-hop-count-tag.h"
+#include "ns3/ndn-data.h"
+#include "ns3/ndn-interest.h"
 
 namespace nfd {
 
@@ -41,6 +46,11 @@ Face::Face(const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal)
   onSendInterest    += [this](const ndn::Interest&) { ++m_counters.getNOutInterests(); };
   onSendData        += [this](const ndn::Data&) {     ++m_counters.getNOutDatas(); };
 }
+
+Face::Face()
+{
+}
+
 
 Face::~Face()
 {
@@ -84,29 +94,37 @@ Face::isUp() const
 }
 
 bool
-Face::decodeAndDispatchInput(const Block& element)
+Face::decodeAndDispatchInput(const Block& element, uint32_t hopTag)
 {
   try {
     /// \todo Ensure lazy field decoding process
 
-    if (element.type() == tlv::Interest)
+    if (element.type() == ::ndn::tlv::Interest)
       {
-        shared_ptr<Interest> i = make_shared<Interest>();
+        shared_ptr<ns3::ndn::Interest> i = make_shared<ns3::ndn::Interest>();
         i->wireDecode(element);
-        this->onReceiveInterest(*i);
+        ns3::ndn::FwHopCountTag hopCount;
+        hopCount.Set (hopTag);
+        i->getPacket ()->AddPacketTag (hopCount);
+        this->onReceiveInterest(dynamic_cast<Interest&>(*i));
       }
-    else if (element.type() == tlv::Data)
+    else if (element.type() == ::ndn::tlv::Data)
       {
-        shared_ptr<Data> d = make_shared<Data>();
+        shared_ptr<ns3::ndn::Data> d = make_shared<ns3::ndn::Data>();
         d->wireDecode(element);
-        this->onReceiveData(*d);
+        //std::cout << "Print " << d->getIncomingFaceId () << "\n";
+        ns3::ndn::FwHopCountTag hopCount;
+        hopCount.Set (hopTag);
+        //std::cout << "hop count : " << hopCount.Get () << "\n";
+        d->getPacket ()->AddPacketTag (hopCount);
+        this->onReceiveData(dynamic_cast<Data&>(*d));
       }
     else
       return false;
 
     return true;
   }
-  catch (tlv::Error&) {
+  catch (::ndn::tlv::Error&) {
     return false;
   }
 }

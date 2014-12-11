@@ -27,8 +27,7 @@
 #include "ns3/attribute.h"
 #include "ns3/attribute-helper.h"
 
-// #include "ns3/ndn-interest.h"
-// #include "ns3/ndn-data.h"
+#include "ndn-face.h"
 #include "ns3/ndn-common.h"
 
 namespace ns3 {
@@ -69,11 +68,11 @@ public:
 
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from Face
-  virtual bool
-  SendInterest (shared_ptr<const Interest> interest);
+  virtual void
+  sendInterest (const Interest& interest);
 
-  virtual bool
-  SendData (shared_ptr<const Data> data);
+  virtual void
+  sendData (const Data& data);
 
   virtual bool
   isLocal() const;

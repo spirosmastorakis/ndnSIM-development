@@ -28,8 +28,6 @@
 #include <boost/lexical_cast.hpp>
 
 #include "ns3/ndn-face.h"
-#include <ndn-cxx/interest.hpp>
-#include <ndn-cxx/data.hpp>
 
 using namespace std;
 
