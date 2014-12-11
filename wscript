@@ -145,6 +145,7 @@ def build(bld):
         "utils/tracers/ndn-cs-tracer.h",
         "utils/tracers/l2-tracer.h",
         "utils/tracers/l2-rate-tracer.h",
+        "utils/tracers/ndn-app-delay-tracer.h",
         "utils/trie/trie.h",
         "utils/trie/trie-with-policy.h",
 
