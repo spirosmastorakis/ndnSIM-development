@@ -20,7 +20,7 @@ class Convert
 {
 public:
   static Block&
-  FromPacket(ns3::Ptr<ns3::Packet> packet, uint32_t& hopTag);
+  FromPacket(ns3::Ptr<ns3::Packet> packet);
 
   static void
   ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet);
