@@ -29,6 +29,9 @@
 #include "available-strategies.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
 
+#include "ns3/ndn-data.h"
+#include "ns3/ndn-interest.h"
+
 namespace nfd {
 
 NFD_LOG_INIT("Forwarder");
@@ -115,7 +118,6 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
         csMatch = match.get ();
       }
 
-
     if (csMatch != 0) {
       const_cast<Data*>(csMatch)->setIncomingFaceId(FACEID_CONTENT_STORE);
       // XXX should we lookup PIT for other Interests that also match csMatch?
@@ -124,9 +126,8 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
       this->setStragglerTimer(pitEntry, true, csMatch->getFreshnessPeriod());
 
       // Take care of packet tags
-      ns3::Ptr<ns3::Packet> packet = ns3::Create<ns3::Packet>();
-      ns3::ndn::FwHopCountTag hopCount;
-      packet->AddPacketTag (hopCount);
+      const ns3::ndn::Interest& i = reinterpret_cast<const ns3::ndn::Interest&>(interest);
+      ns3::Ptr<ns3::Packet> packet = i.getPacket();
       Block block = csMatch->wireEncode();
       ns3::ndn::Data d = ns3::ndn::Data (block);
       d.setPacket(packet);

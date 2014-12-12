@@ -15,6 +15,10 @@ using ns3::Packet;
 class Data : public ::ndn::Data
 {
 public:
+  Data ();
+
+  Data (::ndn::Block block);
+
   Ptr<Packet>
   getPacket () const;
 
