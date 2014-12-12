@@ -174,9 +174,10 @@ Producer::OnInterest(shared_ptr<const ::ndn::Interest> interest)
   const Interest& i = reinterpret_cast<const Interest&>(*interest);
   if (i.getPacket ()->PeekPacketTag (hopCountTag))
    {
+     // NS_LOG_DEBUG ("Hop count: "<< hopCountTag.Get() << "\n");
+     hopCountTag.Set(0);
      data->getPacket ()->AddPacketTag (hopCountTag);
-     // NS_LOG_DEBUG ("Hops: "<< hopCountTag.Get() << "\n");
-    }
+   }
 
   // to create real wire encoding
   data->wireEncode();
