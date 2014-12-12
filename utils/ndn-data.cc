@@ -7,6 +7,16 @@ namespace ndn {
 using ns3::Ptr;
 using ns3::Packet;
 
+Data::Data () :
+  ::ndn::Data ()
+{
+}
+
+Data::Data (::ndn::Block block) :
+  ::ndn::Data (block)
+{
+}
+
 Ptr<Packet>
 Data::getPacket () const
 {
