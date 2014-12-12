@@ -126,8 +126,9 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
       this->setStragglerTimer(pitEntry, true, csMatch->getFreshnessPeriod());
 
       // Take care of packet tags
-      const ns3::ndn::Interest& i = reinterpret_cast<const ns3::ndn::Interest&>(interest);
-      ns3::Ptr<ns3::Packet> packet = i.getPacket();
+      ns3::Ptr<ns3::Packet> packet = ns3::Create<ns3::Packet>();
+      ns3::ndn::FwHopCountTag hopCount;
+      packet->AddPacketTag (hopCount);
       Block block = csMatch->wireEncode();
       ns3::ndn::Data d = ns3::ndn::Data (block);
       d.setPacket(packet);
