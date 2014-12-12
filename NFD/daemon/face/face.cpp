@@ -94,7 +94,7 @@ Face::isUp() const
 }
 
 bool
-Face::decodeAndDispatchInput(const Block& element, uint32_t hopTag)
+Face::decodeAndDispatchInput(const Block& element, ns3::Ptr<ns3::Packet> packet)
 {
   try {
     /// \todo Ensure lazy field decoding process
@@ -103,20 +103,14 @@ Face::decodeAndDispatchInput(const Block& element, uint32_t hopTag)
       {
         shared_ptr<ns3::ndn::Interest> i = make_shared<ns3::ndn::Interest>();
         i->wireDecode(element);
-        ns3::ndn::FwHopCountTag hopCount;
-        hopCount.Set (hopTag);
-        i->getPacket ()->AddPacketTag (hopCount);
+        i->setPacket (packet);
         this->onReceiveInterest(dynamic_cast<Interest&>(*i));
       }
     else if (element.type() == ::ndn::tlv::Data)
       {
         shared_ptr<ns3::ndn::Data> d = make_shared<ns3::ndn::Data>();
         d->wireDecode(element);
-        //std::cout << "Print " << d->getIncomingFaceId () << "\n";
-        ns3::ndn::FwHopCountTag hopCount;
-        hopCount.Set (hopTag);
-        //std::cout << "hop count : " << hopCount.Get () << "\n";
-        d->getPacket ()->AddPacketTag (hopCount);
+        d->setPacket (packet);
         this->onReceiveData(dynamic_cast<Data&>(*d));
       }
     else

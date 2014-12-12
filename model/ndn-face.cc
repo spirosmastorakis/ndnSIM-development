@@ -80,7 +80,6 @@ Face::Face (Ptr<Node> node)
   , m_id ((uint32_t)-1)
   , m_metric (0)
   , m_flags (0)
-    //, ::nfd::Face (m_remoteUri, m_localUri, false)
 {
   NS_LOG_FUNCTION (this << node);
 
@@ -146,8 +145,9 @@ Face::sendInterest (const ::ndn::Interest& interest)
   Ptr<Packet> packet = Create <Packet> ();
 
   FwHopCountTag hopCount;
-  i.getPacket ()->RemovePacketTag (hopCount);
-  packet->AddPacketTag (hopCount);
+  bool tagExists = i.getPacket ()->PeekPacketTag (hopCount);
+  if (tagExists)
+    packet->AddPacketTag (hopCount);
   Block block = interest.wireEncode ();
   Convert::ToPacket (make_shared <Block> (block), packet);
   Send (packet);
@@ -205,9 +205,8 @@ Face::Receive (Ptr<const Packet> p)
   try
     {
       //Let's see..
-      uint32_t hopTag = 0;
-      Block block = Convert::FromPacket (packet, hopTag);
-      decodeAndDispatchInput(block, hopTag);
+      Block block = Convert::FromPacket (packet);
+      decodeAndDispatchInput(block, packet);
     }
   catch (::ndn::UnknownHeaderException)
     {
