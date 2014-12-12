@@ -33,7 +33,7 @@ namespace nfd {
 
 NFD_LOG_INIT("TablesConfigSection");
 
-const size_t TablesConfigSection::DEFAULT_CS_MAX_PACKETS = 65536;
+const size_t TablesConfigSection::DEFAULT_CS_MAX_PACKETS = 100;
 
 TablesConfigSection::TablesConfigSection(Cs& cs,
                                          Pit& pit,
