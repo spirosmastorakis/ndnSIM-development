@@ -31,7 +31,7 @@ class payload_with_index
 {
 public:
   typedef PayloadTraits::pointer_type iterator;
-  
+
   typedef typename IndexTraits::template index<
     PayloadTraits,
     typename IndexTraits::template container_hook<parent_trie>::type >::type index_container;
@@ -61,7 +61,7 @@ public:
   //   iterator foundItem, lastItem;
   //   bool reachLast;
   //   boost::tie (foundItem, reachLast, lastItem) = trie_.find (key);
-    
+
   //   if (!reachLast || lastItem->payload () == PayloadTraits::empty_payload)
   //     return; // nothing to invalidate
 

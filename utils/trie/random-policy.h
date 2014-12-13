@@ -51,20 +51,20 @@ struct random_policy_traits
   template<class Base,
            class Container,
            class Hook>
-  struct policy 
+  struct policy
   {
     static uint32_t& get_order (typename Container::iterator item)
     {
       return static_cast<typename policy_container::value_traits::hook_type*>
         (policy_container::value_traits::to_node_ptr(*item))->randomOrder;
     }
-      
+
     static const uint32_t& get_order (typename Container::const_iterator item)
     {
       return static_cast<const typename policy_container::value_traits::hook_type*>
         (policy_container::value_traits::to_node_ptr(*item))->randomOrder;
     }
-    
+
     template<class Key>
     struct MemberHookLess
     {
@@ -77,7 +77,7 @@ struct random_policy_traits
     typedef boost::intrusive::multiset< Container,
                                    boost::intrusive::compare< MemberHookLess< Container > >,
                                    Hook > policy_container;
-    
+
     // could be just typedef
     class type : public policy_container
     {
@@ -97,7 +97,7 @@ struct random_policy_traits
       {
         // do nothing. it's random policy
       }
-  
+
       inline bool
       insert (typename parent_trie::iterator item)
       {
@@ -121,13 +121,13 @@ struct random_policy_traits
         policy_container::insert (*item);
         return true;
       }
-  
+
       inline void
       lookup (typename parent_trie::iterator item)
       {
         // do nothing. it's random policy
       }
-  
+
       inline void
       erase (typename parent_trie::iterator item)
       {
@@ -154,7 +154,7 @@ struct random_policy_traits
 
     private:
       type () : base_(*((Base*)0)) { };
-      
+
     private:
       Base &base_;
       ns3::UniformVariable u_rand;

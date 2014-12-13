@@ -22,7 +22,6 @@
 #define TRIE_WITH_POLICY_H_
 
 #include "trie.h"
-//#include <ndn-cxx/name-component.hpp>
 
 namespace ns3 {
 namespace ndn {
@@ -49,7 +48,7 @@ public:
 
   inline
   trie_with_policy (size_t bucketSize = 1, size_t bucketIncrement = 1)
-    : trie_ (ns3::ndn::name::Component (), bucketSize, bucketIncrement)
+    : trie_ (::ndn::name::Component (), bucketSize, bucketIncrement)
     , policy_ (*this)
   {
   }

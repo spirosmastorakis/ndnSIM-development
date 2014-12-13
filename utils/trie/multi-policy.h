@@ -46,7 +46,7 @@ struct multi_policy_traits
 
   struct getHook { template<class Item> struct apply { typedef typename Item::policy_hook_type type; }; };
   typedef detail::multi_type_container< typename boost::mpl::transform1<policy_traits, getHook>::type > policy_hook_type;
-  
+
   template<class Container>
   struct container_hook
   {
@@ -56,7 +56,7 @@ struct multi_policy_traits
   template<class Base,
            class Container,
            class Hook>
-  struct policy 
+  struct policy
   {
     typedef boost::mpl::range_c<int, 0, boost::mpl::size<policy_traits>::type::value> policies_range;
 
@@ -75,15 +75,15 @@ struct multi_policy_traits
         type;
       };
     };
-    
+
     typedef
     typename boost::mpl::transform1<policies_range,
                                     getPolicy,
                                     boost::mpl::back_inserter< boost::mpl::vector0<> > >::type policies;
-                             
-    
+
+
     typedef detail::multi_policy_container< Base, policies > policy_container;
-    
+
     class type : public policy_container
     {
     public:
@@ -100,25 +100,25 @@ struct multi_policy_traits
       {
         policy_container::update (item);
       }
-  
+
       inline bool
       insert (typename parent_trie::iterator item)
       {
         return policy_container::insert (item);
       }
-  
+
       inline void
       lookup (typename parent_trie::iterator item)
       {
         policy_container::lookup (item);
       }
-  
+
       inline void
       erase (typename parent_trie::iterator item)
       {
         policy_container::erase (item);
       }
-      
+
       inline void
       clear ()
       {
@@ -128,7 +128,7 @@ struct multi_policy_traits
       struct max_size_setter
       {
         max_size_setter (policy_container &container, size_t size) : m_container (container), m_size (size) { }
-        
+
         template< typename U > void operator() (U index)
         {
           m_container.template get<U::value> ().set_max_size (m_size);
@@ -138,7 +138,7 @@ struct multi_policy_traits
         policy_container &m_container;
         size_t m_size;
       };
-      
+
       inline void
       set_max_size (size_t max_size)
       {
@@ -152,7 +152,7 @@ struct multi_policy_traits
         // as max size should be the same everywhere, get the value from the first available policy
         return policy_container::template get<0> ().get_max_size ();
       }
-      
+
     };
   };
 
@@ -160,7 +160,7 @@ struct multi_policy_traits
   struct name_getter
   {
     name_getter (std::string &name) : m_name (name) { }
-    
+
     template< typename U > void operator() (U index)
     {
       if (!m_name.empty ())
@@ -177,7 +177,7 @@ struct multi_policy_traits
     // combine names of all internal policies
     std::string name;
     boost::mpl::for_each< boost::mpl::range_c<int, 0, boost::mpl::size<policy_traits>::type::value> > (name_getter (name));
-    
+
     return name;
   }
 };

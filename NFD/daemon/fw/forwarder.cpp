@@ -114,7 +114,7 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
       {
         shared_ptr<Data> match =
           getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
-          ->Lookup (make_shared<Interest>(interest));
+          ->Lookup (interest.shared_from_this());
         csMatch = match.get ();
       }
 
@@ -305,7 +305,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     m_cs.insert(data);
   else
     getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
-      ->Add (make_shared<Data>(data));
+      ->Add (data.shared_from_this());
 
   std::set<shared_ptr<Face> > pendingDownstreams;
   // foreach PitEntry
@@ -364,7 +364,7 @@ Forwarder::onDataUnsolicited(Face& inFace, const Data& data)
       m_cs.insert(data, true);
   else
     getNode ()->GetObject<ns3::ndn::L3Protocol> ()->GetObject<ns3::ndn::ContentStore> ()
-      ->Add (make_shared<Data>(data));
+      ->Add (data.shared_from_this());
   }
 
   NFD_LOG_DEBUG("onDataUnsolicited face=" << inFace.getId() <<

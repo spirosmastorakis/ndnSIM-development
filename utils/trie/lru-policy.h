@@ -35,7 +35,7 @@ struct lru_policy_traits
 {
   /// @brief Name that can be used to identify the policy (for NS-3 object model and logging)
   static std::string GetName () { return "Lru"; }
-  
+
   struct policy_hook_type : public boost::intrusive::list_member_hook<> {};
 
   template<class Container>
@@ -49,16 +49,16 @@ struct lru_policy_traits
   template<class Base,
            class Container,
            class Hook>
-  struct policy 
+  struct policy
   {
     typedef typename boost::intrusive::list< Container, Hook > policy_container;
-    
+
     // could be just typedef
     class type : public policy_container
     {
     public:
       typedef Container parent_trie;
-    
+
       type (Base &base)
         : base_ (base)
         , max_size_ (100)
@@ -73,7 +73,7 @@ struct lru_policy_traits
                                   *this,
                                   policy_container::s_iterator_to (*item));
       }
-  
+
       inline bool
       insert (typename parent_trie::iterator item)
       {
@@ -81,11 +81,11 @@ struct lru_policy_traits
           {
             base_.erase (&(*policy_container::begin ()));
           }
-      
+
         policy_container::push_back (*item);
         return true;
       }
-  
+
       inline void
       lookup (typename parent_trie::iterator item)
       {
@@ -94,7 +94,7 @@ struct lru_policy_traits
                                   *this,
                                   policy_container::s_iterator_to (*item));
       }
-  
+
       inline void
       erase (typename parent_trie::iterator item)
       {
