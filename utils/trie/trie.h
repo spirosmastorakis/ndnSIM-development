@@ -32,9 +32,6 @@
 #include <boost/foreach.hpp>
 #include <boost/mpl/if.hpp>
 
-#include "ns3/blob.h"
-#include "ns3/ndn-name.h"
-
 namespace ns3 {
 namespace ndn {
 namespace ndnSIM {
@@ -140,7 +137,7 @@ template<typename FullKey,
 class trie
 {
 public:
-  typedef typename FullKey::partial_type Key;
+  typedef typename FullKey::value_type Key;
 
   typedef trie*       iterator;
   typedef const trie* const_iterator;
@@ -210,9 +207,7 @@ public:
   {
     trie *trieNode = this;
 
-    Key subkey;
-    //ns3::ndn::name::Component &subkey = static_cast<ns3::ndn::name::Component&>(tempkey);
-    BOOST_FOREACH (subkey, key)
+    BOOST_FOREACH (const Key &subkey, key)
       {
         typename unordered_set::iterator item = trieNode->children_.find (subkey);
         if (item == trieNode->children_.end ())
@@ -248,6 +243,7 @@ public:
     else
       return std::make_pair (trieNode, false);
   }
+
   /**
    * @brief Removes payload (if it exists) and if there are no children, prunes parents trie
    */
@@ -312,15 +308,8 @@ public:
     iterator foundNode = (payload_ != PayloadTraits::empty_payload) ? this : 0;
     bool reachLast = true;
 
-    Key tempkey;
-    ns3::ndn::name::Component &subkey = static_cast<ns3::ndn::name::Component&>(tempkey);
-    const ns3::ndn::Name finalkey = static_cast<const ns3::ndn::Name&>(key);
-    BOOST_FOREACH (subkey, finalkey)
+    BOOST_FOREACH (const Key &subkey, key)
       {
-        if (subkey.wireEncode ().hasValue ())
-          {
-            reachLast = false;
-          }
         typename unordered_set::iterator item = trieNode->children_.find (subkey);
         if (item == trieNode->children_.end ())
           {
@@ -340,7 +329,7 @@ public:
   }
 
   /**
-   * @brief Perform the longest prefix match satisfying predicate
+   * @brief Perform the longest prefix match satisfying preficate
    * @param key the key for which to perform the longest prefix match
    *
    * @return ->second is true if prefix in ->first is longer than key
@@ -551,6 +540,9 @@ private:
   trie *parent_; // to make cleaning effective
 };
 
+
+
+
 template<typename FullKey, typename PayloadTraits, typename PolicyHook>
 inline std::ostream&
 operator << (std::ostream &os, const trie<FullKey, PayloadTraits, PolicyHook> &trie_node)
@@ -603,7 +595,7 @@ inline bool
 operator == (const trie<FullKey, PayloadTraits, PolicyHook> &a,
              const trie<FullKey, PayloadTraits, PolicyHook> &b)
 {
-  return (ns3::ndn::Blob)(a.key_) == (ns3::ndn::Blob)(b.key_);
+  return a.key_ == b.key_;
 }
 
 template<typename FullKey, typename PayloadTraits, typename PolicyHook>

@@ -130,7 +130,7 @@ struct aggregate_stats_policy_traits
 
     private:
       Base &base_;
-      
+
       uint64_t m_updates;
       uint64_t m_inserts;
       uint64_t m_lookups;

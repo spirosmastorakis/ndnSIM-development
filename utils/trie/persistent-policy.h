@@ -52,16 +52,16 @@ struct persistent_policy_traits
   template<class Base,
            class Container,
            class Hook>
-  struct policy 
+  struct policy
   {
     typedef typename boost::intrusive::list< Container, Hook > policy_container;
-    
+
     // could be just typedef
     class type : public policy_container
     {
     public:
       typedef Container parent_trie;
-    
+
       type (Base &base)
         : base_ (base)
         , max_size_ (100) // when 0, policy is not enforced
@@ -73,23 +73,23 @@ struct persistent_policy_traits
       {
         // do nothing
       }
-  
+
       inline bool
       insert (typename parent_trie::iterator item)
       {
         if (max_size_ != 0 && policy_container::size () >= max_size_)
           return false;
-      
+
         policy_container::push_back (*item);
         return true;
       }
-  
+
       inline void
       lookup (typename parent_trie::iterator item)
       {
         // do nothing
       }
-  
+
       inline void
       erase (typename parent_trie::iterator item)
       {

@@ -40,12 +40,12 @@ struct empty_policy_traits
   template<class Base,
            class Container,
            class Hook>
-  struct policy 
+  struct policy
   {
     struct type
     {
       inline type (Base &base) {}
-      
+
       inline void update (typename Container::iterator) { }
       inline bool insert (typename Container::iterator) { return true; }
       inline void lookup (typename Container::iterator item) { }

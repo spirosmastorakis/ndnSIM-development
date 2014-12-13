@@ -179,7 +179,7 @@ struct isNotExcluded
   }
 
   bool
-  operator () (const name::Component &comp) const
+  operator () (const ::ndn::name::Component &comp) const
   {
     return !m_exclude.isExcluded (comp);
   }
@@ -197,11 +197,11 @@ ContentStoreImpl<Policy>::Lookup (shared_ptr<const Interest> interest)
   typename super::const_iterator node;
   if (interest->getExclude ().empty ())
     {
-      node = this->deepest_prefix_match (static_cast<const ns3::ndn::Name&>(interest->getName ()));
+      node = this->deepest_prefix_match (interest->getName ());
     }
   else
     {
-      node = this->deepest_prefix_match_if_next_level (static_cast<const ns3::ndn::Name&>(interest->getName ()),
+      node = this->deepest_prefix_match_if_next_level (interest->getName (),
                                                        isNotExcluded (interest->getExclude ()));
     }
 
@@ -227,7 +227,7 @@ ContentStoreImpl<Policy>::Add (shared_ptr<const Data> data)
   NS_LOG_FUNCTION (this << data->getName ());
 
   Ptr< entry > newEntry = Create< entry > (this, data);
-  std::pair< typename super::iterator, bool > result = super::insert (static_cast<const ns3::ndn::Name&>(data->getName ()), newEntry);
+  std::pair< typename super::iterator, bool > result = super::insert (data->getName (), newEntry);
 
   if (result.first != super::end ())
     {
