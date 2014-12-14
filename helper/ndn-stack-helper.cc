@@ -40,6 +40,7 @@
 
 #include "ns3/ndn-content-store.h"
 #include "../utils/ndn-time.h"
+#include "../utils/dummy-keychain.hpp"
 
 #include <limits>
 #include <map>
@@ -81,7 +82,7 @@ StackHelper::setCustomNdnCxxClocks()
 KeyChain&
 StackHelper::getKeyChain()
 {
-  static KeyChain keyChain;
+  static ::ndn::DummyKeyChain keyChain;
   return keyChain;
 }
 
