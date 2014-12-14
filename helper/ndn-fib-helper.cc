@@ -66,18 +66,8 @@ FibHelper::RemoveNextHop (const ControlParameters& parameters, Ptr<Node> node)
   commandName.append(encodedParameters);
 
   shared_ptr<Interest> command(make_shared<Interest>(commandName));
-  KeyChain keyChain;
-  Name key;
-  key=keyChain.generateRsaKeyPairAsDefault("remove-nexthop");
-  keyChain.sign(*command);
-  // CommandValidator validator;
-  // validator.addSupportedPrivilege("fib");
-  // validator.addInterestRule(commandName.toUri(), key, *keyChain.getPublicKey (key));
-  // GenerateCommand(*command);
-  // NS_LOG_DEBUG ("Command was generated");
-  // m_face->onReceiveData += [this, command, encodedParameters] (const Data& response) {
-  //   NS_LOG_DEBUG ("NFD responded with " << response.getName());
-  // };
+  StackHelper::getKeyChain().signWithSha256(*command);
+
   Ptr<L3Protocol> L3protocol = node->GetObject<L3Protocol> ();
   shared_ptr<FibManager> fibManager = L3protocol->GetFibManager ();
   // fibManager->addInterestRule(commandName.toUri(), key, *keyChain.getPublicKey (key));
@@ -93,10 +83,7 @@ FibHelper::AddRoute (Ptr<Node> node, const std::string &prefix, Ptr<Face> face, 
   Ptr<L3Protocol> L3protocol = node->GetObject<L3Protocol> ();
   //Get the forwarder instance
   shared_ptr<Forwarder> m_forwarder = L3protocol->GetForwarder();
-  //add the appropriate fib entry to the NFD fib table
-  // Name name(prefix);
-  // shared_ptr<::nfd::fib::Entry> m_entry = m_forwarder->getFib().insert(prefix).first;
-  // m_entry->addNextHop(face->shared_from_this(), metric);
+
   ControlParameters parameters;
   parameters.setName(prefix);
   parameters.setFaceId(face->getId ());

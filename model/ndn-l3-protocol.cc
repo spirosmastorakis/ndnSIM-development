@@ -115,19 +115,19 @@ L3Protocol::initializeManagement()
   m_fibManager = make_shared<FibManager>(ref(m_forwarder->getFib()),
                                          bind(&Forwarder::getFace, m_forwarder.get(), _1),
                                          m_internalFace,
-                                         ref(m_keyChain));
+                                         ref(StackHelper::getKeyChain()));
 
   m_faceManager = make_shared<FaceManager>(ref(m_forwarder->getFaceTable()),
                                            m_internalFace,
-                                           ref(m_keyChain));
+                                           ref(StackHelper::getKeyChain()));
 
   m_strategyChoiceManager = make_shared<StrategyChoiceManager>(ref(m_forwarder->getStrategyChoice()),
                                                                m_internalFace,
-                                                               ref(m_keyChain));
+                                                               ref(StackHelper::getKeyChain()));
 
   m_statusServer = make_shared<StatusServer>(m_internalFace,
                                              ref(*m_forwarder),
-                                             ref(m_keyChain));
+                                             ref(StackHelper::getKeyChain()));
 
   TablesConfigSection tablesConfig(m_forwarder->getCs(),
                                    m_forwarder->getPit(),

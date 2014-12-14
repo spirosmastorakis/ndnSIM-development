@@ -221,9 +221,6 @@ private:
   shared_ptr<StrategyChoiceManager> m_strategyChoiceManager;
   shared_ptr<StatusServer>          m_statusServer;
 
-  shared_ptr<std::ofstream>         m_logFile;
-  std::basic_streambuf<char>*       m_originalStreamBuf;
-  KeyChain                          m_keyChain;
   bool                              m_nfdCS = true;
 
   // These objects are aggregated, but for optimization, get them here
