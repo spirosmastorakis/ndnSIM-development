@@ -176,8 +176,8 @@ Face::Receive (Ptr<const Packet> p)
   try
     {
       //Let's see..
-      Block block = Convert::FromPacket (packet);
-      decodeAndDispatchInput(block, packet);
+      shared_ptr<Block> block = Convert::FromPacket (packet);
+      decodeAndDispatchInput(*block, packet);
     }
   catch (::ndn::UnknownHeaderException)
     {

@@ -9,13 +9,13 @@
 
 namespace ndn {
 
-Block&
+shared_ptr<Block>
 Convert::FromPacket(ns3::Ptr<ns3::Packet> packet)
 {
   Buffer buffer(packet->GetSize());
   packet->CopyData(buffer.buf(), packet->GetSize());
-  Block *block = new Block(buffer.buf(), packet->GetSize());
-  return *block;
+  shared_ptr<Block> block = make_shared<Block>(Block(buffer.buf(), packet->GetSize()));
+  return block;
 }
 
 
