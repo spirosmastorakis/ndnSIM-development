@@ -1,4 +1,4 @@
-#include "ndn-header.hpp"
+#include "ndn-header.h"
 
 namespace ndn {
 
@@ -76,6 +76,12 @@ const uint8_t*
 NdnHeader::GetBuffer()
 {
   return m_headerBuffer;
+}
+
+size_t
+NdnHeader::GetLength()
+{
+  return m_headerLength;
 }
 
 void

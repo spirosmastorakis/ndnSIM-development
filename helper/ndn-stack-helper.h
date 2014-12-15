@@ -115,9 +115,21 @@ public:
                    const std::string &attr3 = "", const std::string &value3 = "",
                    const std::string &attr4 = "", const std::string &value4 = "");
 
+  /**
+   * \brief Choose the content store structure (NFD's CS or ndnSIM's CS)
+   *
+   * @param nfdCS True if NFD's CS has been chosen, false if ndnSIM's CS
+   * has been chosen
+   */
   void
   SetContentStoreChoice (const bool nfdCS);
 
+  /**
+   * \brief Get the content store choice
+   *
+   * \returns True if NFD's Cs has been chosen, false if ndnSIM's CS
+   * has been chosen
+   */
   bool
   GetContentStoreChoice ();
 
@@ -188,7 +200,7 @@ public:
   /**
    * \brief Initialize NFD
    *
-   * This method will initialize NFD
+   * @param node The node in which the NFD instance would be initialized
    *
    */
   void
@@ -252,6 +264,11 @@ public:
   void
   SetDefaultRoutes (bool needSet);
 
+  /**
+   * \brief Get the dummy key chain instance associated with the stack helper
+   *
+   * \returns the dummy key chain instance
+   */
   static KeyChain&
   getKeyChain();
 

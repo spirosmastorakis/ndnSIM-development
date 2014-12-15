@@ -21,16 +21,41 @@ namespace ndn {
 
 using ::ndn::nfd::ControlParameters;
 
+/**
+ * @ingroup ndn-helpers
+ * @brief This class describes the basic functionality
+ * of the fib helper that interacts with the fib manager
+ * of NFD
+ */
 class FibHelper
 {
 public:
+
+  /**
+   * \brief Default constructor
+   */
   FibHelper ();
 
+  /**
+   * \brief Destructor
+   */
   ~FibHelper ();
 
+  /**
+   * \brief Send command to the fib manager of NFD in order to add a next hop
+   *
+   * @param parameters The required control parameters
+   * @param node The node that sends the command
+   */
   static void
   AddNextHop(const ControlParameters& parameters, Ptr<Node> node);
 
+  /**
+   * \brief Send command to the fib manager of NFD in order to remove a next hop
+   *
+   * @param parameters The required control parameters
+   * @param node The node that sends the command
+   */
   static void
   RemoveNextHop(const ControlParameters& parameters, Ptr<Node> node);
 

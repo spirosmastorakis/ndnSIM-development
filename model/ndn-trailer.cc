@@ -1,4 +1,4 @@
-#include "ndn-trailer.hpp"
+#include "ndn-trailer.h"
 
 namespace ndn {
 

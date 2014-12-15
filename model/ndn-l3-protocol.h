@@ -109,6 +109,7 @@ public:
   /**
    * \brief Initialize NFD instance
    *
+   * @param node The node in which NFD would be initialized
    */
   void
   initialize(Ptr<Node> node);
@@ -120,21 +121,52 @@ public:
   void
   initializeManagement();
 
+  /**
+   * \brief Get the Fib Manager instance
+   *
+   * \returns shared pointer to the Fib Manager instance
+   */
   shared_ptr<FibManager>
   GetFibManager ();
 
+  /**
+   * \brief Set the Fib Manager instance
+   *
+   * @param fibManager The Fib Manager instance
+   */
   void
   SetFibManager (shared_ptr<FibManager> fibManager);
 
+  /**
+   * \brief Get the strategy choice manager instance
+   *
+   * \returns shared pointer to the strategy choice manager instance
+   */
   shared_ptr<StrategyChoiceManager>
   GetStrategyChoiceManager ();
 
+  /**
+   * \brief Set the strategy choice manager
+   *
+   * @param strategyChoiceManager The strategy choice manager instance
+   */
   void
   SetStrategyChoiceManager (shared_ptr<StrategyChoiceManager> strategyChoiceManager);
 
+  /**
+   * \brief Choose whether NFD's CS or the original CS of ndnSIM will be used
+   *
+   * @param nfdCS True if the CS of NFD has been chosen, false if the original
+   * CS of ndnSIM has been chosen
+   */
   void
   SetContentStore (const bool nfdCS);
 
+  /**
+   * \brief Get the choice of the CS structure that has been used
+   *
+   * \returns true for the CS of NFD, false for the original CS of ndnSIM
+   */
   bool
   GetContentStore ();
 
@@ -146,6 +178,11 @@ public:
   shared_ptr<Forwarder>
   GetForwarder ();
 
+  /**
+   * \brief Set the forwarder (NFD) instance
+   *
+   * @param forwarder The forwarder instance
+   */
   void
   SetForwarder (shared_ptr<Forwarder> forwarder);
 

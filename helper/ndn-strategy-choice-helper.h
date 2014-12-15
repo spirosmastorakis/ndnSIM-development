@@ -13,27 +13,64 @@
 namespace ndn {
 namespace nfd {
 class ControlParameters;
-};
-};
+}; // namespace nfd
+}; // namespace ndn
 
 namespace ns3 {
 namespace ndn {
 
 using ::ndn::nfd::ControlParameters;
 
+/**
+ * @ingroup ndn-helpers
+ * @brief This class describes the basic functionality
+ * of the strategy choice helper that interacts with
+ * the strategy choice manager of NFD
+ */
 class StrategyChoiceHelper
 {
 public:
+
+  /**
+   * \brief Default constructor
+   */
   StrategyChoiceHelper ();
 
+  /**
+   * \brief Destructor
+   */
   ~StrategyChoiceHelper ();
 
+  /**
+   * \brief Install the strategy choice helper to a number of nodes included
+   * in a node container
+   *
+   * @param c The node container including the nodes
+   * @param namePrefix The requested forwarding strategy would be
+   * applied to that name prefix
+   * @param strategy The name of the desired forwarding strategy
+   */
   static void
   Install (const NodeContainer& c, const ::ndn::Name& namePrefix, const ::ndn::Name& strategy);
 
+  /**
+   * \brief Install the strategy choice helper to a node
+   *
+   * @param node Install the strategy choice helper to that node
+   * @param namePrefix The requested forwarding strategy would be
+   * applied to that name prefix
+   * @param strategy The name of the desired forwarding strategy
+   */
   static void
   Install (Ptr<Node> node, const ::ndn::Name& namePrefix, const ::ndn::Name& strategy);
 
+  /**
+   * \brief Install the strategy choice helper to all the nodes
+   *
+   * @param namePrefix The requested forwarding strategy would be
+   * applied to that name prefix
+   * @param strategy The name of the desired forwarding strategy
+   */
   static void
   InstallAll (const ::ndn::Name& namePrefix, const ::ndn::Name& strategy);
 

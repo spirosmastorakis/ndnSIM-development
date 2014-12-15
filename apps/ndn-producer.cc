@@ -29,7 +29,7 @@
 
 #include "ns3/ndn-app-face.h"
 #include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
-#include "ns3/ndn-ns3.hpp"
+#include "ns3/ndn-ns3.h"
 #include "ns3/ndn-l3-protocol.h"
 #include "ns3/ndn-fib-helper.h"
 #include "ns3/ndn-fw-hop-count-tag.h"

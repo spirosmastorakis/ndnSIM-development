@@ -93,7 +93,6 @@ def build(bld):
                                        'utils/**/*.cc',
                                        'utils/**/*.cpp',
                                        'helper/**/*.cc',
-                                       'model/**/*.cpp',
                                        'NFD/**/*.cpp'
                                        ])
 
@@ -102,7 +101,6 @@ def build(bld):
                            'model/**/*.h',
                            'apps/**/*.h',
                            'helper/**/*.h',
-                           'model/**/*.hpp',
                            'NFD/**/*.hpp'
                            ])]
 
@@ -124,9 +122,9 @@ def build(bld):
         "model/ndn-app-face.h",
         "model/ndn-net-device-face.h",
 
-        "model/ndn-ns3.hpp",
-        "model/ndn-header.hpp",
-        "model/ndn-trailer.hpp",
+        "model/ndn-ns3.h",
+        "model/ndn-header.h",
+        "model/ndn-trailer.h",
 
         "model/cs/ndn-content-store.h",
         "model/cs/content-store-nocache.h",

@@ -33,7 +33,7 @@
 #include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
 
 #include "ns3/ndn-common.h"
-#include "ns3/ndn-ns3.hpp"
+#include "ns3/ndn-ns3.h"
 
 namespace ns3 {
 
@@ -98,11 +98,19 @@ public:
   virtual void
   close();
 
+  /**
+   * \brief Register protocol handlers
+   *
+   */
   virtual void
   RegisterProtocolHandlers ()
   {
   };
 
+  /**
+   * \brief Unregister protocol handlers
+   *
+   */
   virtual void
   UnRegisterProtocolHandlers ()
   {

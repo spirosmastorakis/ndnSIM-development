@@ -1,13 +1,14 @@
-#include "ndn-ns3.hpp"
-
-#include "ndn-header.hpp"
-#include "ndn-trailer.hpp"
+#include "ndn-ns3.h"
 
 #include <ndn-cxx/encoding/block.hpp>
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
 
 namespace ndn {
+
+Convert::Convert()
+{
+}
 
 shared_ptr<Block>
 Convert::FromPacket(ns3::Ptr<ns3::Packet> packet)
@@ -17,7 +18,6 @@ Convert::FromPacket(ns3::Ptr<ns3::Packet> packet)
   shared_ptr<Block> block = make_shared<Block>(Block(buffer.buf(), packet->GetSize()));
   return block;
 }
-
 
 void
 Convert::ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)

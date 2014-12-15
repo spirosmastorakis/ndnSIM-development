@@ -27,6 +27,13 @@ namespace time {
 
 using namespace ::ndn::time;
 
+/**
+ * \ingroup ndn
+ * \defgroup ndn-time Custom clock
+ * @brief Custom system clock class to synchronize the
+ * operation of both ndnSIM and NFD. Inherits
+ * ndn::CustomClock class.
+ */
 class CustomSystemClock : public CustomClock<system_clock>
 {
 public:
@@ -40,6 +47,12 @@ public:
   toPosixDuration(const system_clock::duration& duration) const;
 };
 
+/**
+ * \ingroup ndn-time
+ * @brief Custom steady clock class to synchronize the
+ * operation of both ndnSIM and NFD. Inherits
+ * ndn::CustomClock class.
+ */
 class CustomSteadyClock : public CustomClock<steady_clock>
 {
 public:

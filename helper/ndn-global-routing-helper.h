@@ -49,7 +49,6 @@ public:
   void
   Install (Ptr<Node> node);
 
-
   /**
    * @brief Install GlobalRouter interface on nodes
    *
