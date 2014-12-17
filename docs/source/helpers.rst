@@ -13,7 +13,7 @@ Example:
 
 .. code-block:: c++
 
-        ndn::StackHelper ndnHelper;
+        StackHelper ndnHelper;
         NodeContainer nodes;
         ...
         ndnHelper.Install (nodes);
@@ -22,7 +22,6 @@ Routing
 +++++++
 
 All forwarding strategies require knowledge of where Interests can be forwarded (Forwarding Information Base).
-Unlike IP routing, this knowledge may be imprecise, but without such knowledge forwarding strategies will not be able to make any decision and will drop any Interests.
 
 .. note::
    By default, all nodes have empty FIB.  You need either to manually configure routes, use global routing controller, or (not recommended) enable default routes.
@@ -30,19 +29,17 @@ Unlike IP routing, this knowledge may be imprecise, but without such knowledge f
 Manually routes
 ^^^^^^^^^^^^^^^
 
-Routes can be configured manually using :ndnsim:`StackHelper::AddRoute` static methods of :ndnsim:`StackHelper`.
-
-These routes **should** be created **after** installing NDN stack on a node:
+Routes can be configured manually using :ndnsim:`FibHelper::AddRoute` static methods of :ndnsim:`FibHelper`:
 
   .. code-block:: c++
 
-     ndnHelper.Install (nodes);
+     FibHelper fibHelper;
      ...
-     Ptr<Node> node = ...     // FIB entry will be added to FIB on this node
+     Ptr<Node> node = ...     // some node
      std::string prefix = ... // some prefix
      Ptr<ndn::Face> face = ... // NDN face that belongs to the node and through which prefix is accessible
      int32_t metric = ...     // some routing metric
-     ndn::StackHelper::AddRoute (node, prefix, face, metric);
+     FibHelper::AddRoute (node, prefix, face, metric);
 
 Global routing controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -57,7 +54,7 @@ There are several necessary steps, in order to take advantage of the global rout
 
      NodeContainer nodes;
      ...
-     ndn::GlobalRoutingHelper ndnGlobalRoutingHelper;
+     GlobalRoutingHelper ndnGlobalRoutingHelper;
      ndnGlobalRoutingHelper.Install (nodes);
 
 * specify which node exports which prefix using :ndnsim:`GlobalRoutingHelper::AddOrigins`
@@ -92,15 +89,18 @@ The following should be done before installing stack on a node:
      ndnHelper.Install (nodes);
 
 
-Content Store
-+++++++++++++
+ndnSIM's Content Store
+++++++++++++++++++++++
 
-ndnSIM comes with several different in-memory :ndnsim:`content store <ndn::ContentStore>` implementations, featuring different cache replacement policies.
+ndnSIM's Contest Store comes with several different in-memory :ndnsim:`content store <ndn::ContentStore>` implementations, featuring different cache replacement policies.
 
-To select a particular content store and configure its capacity, use :ndnsim:`SetContentStore <ndn::StackHelper::SetContentStore>` helper method:
+To select a particular content store and configure its capacity, use
+:ndnsim:`SetContentStore <ndn::StackHelper::SetContentStore>` helper method, after that you
+have specified that you want to use ndnSIM's Content Store and not NFD's.
 
       .. code-block:: c++
 
+         ndnHelper.SetContentStoreChoice (false);
          ndnHelper.SetContentStore ("<content store implementation>",
                                     ["<optional parameter>", "<optional parameter's value>" [, ...]]);
 	 ...
@@ -108,107 +108,72 @@ To select a particular content store and configure its capacity, use :ndnsim:`Se
 
 In simulation scenarios it is possible to select one of :ref:`the existing implementations of the content store or implement your own <content store>`.
 
+FIB helper
+----------
 
-Pending Interest Table
-++++++++++++++++++++++
+The :ndnsim:`FIB helper <FibHelper>` interacts with the FIB manager of NFD by sending
+special Interest commands to the manager in order to add/remove a next hop from FIB entries
+or add routes to the FIB manually (manual configuration of FIB). Examples of its usage are shown below:
 
-The current version of ndnSIM provides :ndnsim:`templated realizations <ndn::pit::PitImpl>` of :ndnsim:`PIT abstraction <ndn::Pit>`, allowing optional bounding the number of PIT entries and different replacement policies (i.e., perform different actions when limit on number of PIT entries is reached).
+Adding a next hop to a FIB entry (if any) that matches a given name prefix for a topology node:
 
-To select a particular PIT implementation and configure its policies, use :ndnsim:`SetPit <ndn::StackHelper::SetPit>` helper method:
+    .. code-block:: c++
 
-- :ndnsim:`persistent <ndn::pit::Persistent>` (default):
+       FibHelper fibHelper;
+       ...
+       Ptr<Node> node = // Get the desired node
+       nfd::ControlParameters parameters;
+       parameters.setName(prefix);
+       fibHelper.AddNextHop(parameters, node);
 
-    New entries will be rejected if PIT size reached its limit
+Removing a next hop from a FIB entry (if any) that matches a given name prefix for a topology node:
 
-      .. code-block:: c++
+    .. code-block:: c++
 
-         ndnHelper.SetPit ("ns3::ndn::pit::Persistent",
-                           "MaxSize", "0");
-	 ...
-	 ndnHelper.Install (nodes);
+       FibHelper fibHelper;
+       ...
+       Ptr<Node> node = // Get the desired node
+       nfd::ControlParameters parameters;
+       parameters.setName(prefix);
+       fibHelper.RemoveNextHop(parameters, node);
 
-- :ndnsim:`random <ndn::pit::Random>`:
+Adding a route to the FIB manually (as mentioned above as well):
 
-    when PIT reaches its limit, random entry (could be the newly created one) will be removed from PIT;
+    .. code-block:: c++
 
-      .. code-block:: c++
+       FibHelper fibHelper;
+       ...
+       Ptr<Node> node = ...     // some node
+       std::string prefix = ... // some prefix
+       Ptr<ndn::Face> face = ... // NDN face that belongs to the node and through which prefix is accessible
+       int32_t metric = ...     // some routing metric
+       FibHelper::AddRoute (node, prefix, face, metric);
 
-         ndnHelper.SetPit ("ns3::ndn::pit::Random",
-                           "MaxSize", "0");
-	 ...
-	 ndnHelper.Install (nodes);
+Strategy Choice helper
+----------------------
 
-- :ndnsim:`least-recently-used <ndn::pit::Lru>`:
+The :ndnsim:`Strategy Choice helper <StrategyChoiceHelper>` interacts with the Strategy
+Choice manager of NFD by sending special Interest commands to the manager in order to
+specify the desired per-name prefix forwarding strategy for one, more or all the nodes of a topology.
 
-    the least recently used entry (the oldest entry with minimum number of incoming faces) will be removed when PIT size reached its limit.
+This helper should be used as follows:
 
-      .. code-block:: c++
+    .. code-block:: c++
 
-         ndnHelper.SetPit ("ns3::ndn::pit::Lru",
-                           "MaxSize", "0");
-	 ...
-	 ndnHelper.Install (nodes);
+       StrategyChoiceHelper strategyChoiceHelper;
+       ...
+       strategyChoiceHelper.Install (nodes, prefix, strategyName);
 
-Forwarding strategy
-+++++++++++++++++++
+or (for a forwarding strategy to be installed in all the topology nodes):
 
-A desired :ndnsim:`forwarding strategy <ForwardingStrategy>` parameter need to be set before installing stack on a node.
+    .. code-block:: c++
 
-To select a particular forwarding strategy implementation and configure its parameters, use :ndnsim:`SetForwardingStrategy <ndn::StackHelper::SetForwardingStrategy>` helper method:
-
-      .. code-block:: c++
-
-         ndnHelper.SetForwardingStrategy ("<forwarding strategy implementation>",
-                                          ["<optional parameter>", "<optional parameter's value>" [, ...]]);
-	 ...
-	 ndnHelper.Install (nodes);
-
-In simulation scenarios it is possible to select one of :ref:`the existing implementations of the forwarding strategy or implement your own <forwarding strategies>`.
-
-
-.. Currently, there are following forwarding strategies that can be used in simulations:
-
-..   - :ndnsim:`Flooding` (default)
-
-..       Interests will be forwarded to all available faces available for a route (FIB entry).
-..       If there are no available GREEN or YELLOW faces, interests is dropped.
-
-..       .. code-block:: c++
-
-..          ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::Flooding");
-.. 	 ...
-.. 	 ndnHelper.Install (nodes);
-
-
-..   - :ndnsim:`SmartFlooding`
-
-..       If GREEN face is available, Interest will be sent to the highest-ranked GREEN face.
-..       If not, Interest will be forwarded to all available faces available for a route (FIB entry)/
-..       If there are no available GREEN or YELLOW faces, interests is dropped.
-
-..       .. code-block:: c++
-
-..          ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::SmartFlooding");
-.. 	 ...
-.. 	 ndnHelper.Install (nodes);
-
-..   - :ndnsim:`BestRoute`
-
-..       If GREEN face is available, Interest will be sent to the highest-ranked GREEN face.
-..       If not, Interest will be forwarded to the highest-ranked YELLOW face.
-..       If there are no available GREEN or YELLOW faces, interests is dropped.
-
-..       .. code-block:: c++
-
-..          ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
-.. 	 ...
-.. 	 ndnHelper.Install (nodes);
-
-
-
+       StrategyChoiceHelper strategyChoiceHelper;
+       ...
+       strategyChoiceHelper.InstallAll (prefix, strategyName);
 
 AppHelper
----------------
+---------
 
 :ndnsim:`AppHelper` simplifies task of creating, configuring, and installing ndnSIM applications.
 
@@ -220,7 +185,7 @@ The basic usage of the :ndnsim:`AppHelper`:
    .. code-block:: c++
 
       // Create helper for the consumer generating Interests with constant rate
-      ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+      AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
 
 * Assign prefix on which application operates (either generating Interests using this name or satisfying Interests for this name) using :ndnsim:`AppHelper::SetPrefix`:
 

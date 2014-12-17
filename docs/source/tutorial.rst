@@ -32,7 +32,6 @@ Contents:
     :hidden:
     :glob:
 
-    new-packet-formats
     meta/*
 
 
