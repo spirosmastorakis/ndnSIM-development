@@ -28,6 +28,8 @@
 #include "ns3/random-variable.h"
 #include "ns3/string.h"
 
+#include "ns3/ndn-interest.h"
+#include "ns3/ndn-data.h"
 #include "ns3/ndn-app-face.h"
 
 NS_LOG_COMPONENT_DEFINE ("DumbRequester");
@@ -86,10 +88,10 @@ DumbRequester::SendInterest ()
   // Sending one Interest packet out //
   /////////////////////////////////////
 
-  shared_ptr<::ndn::Name> prefix = make_shared<::ndn::Name> (m_name); // another way to create name
+  shared_ptr<Name> prefix = make_shared<Name> (m_name); // another way to create name
 
   // Create and configure ndn::Interest
-  shared_ptr<Interest> interest = make_shared<Interest> ();
+  shared_ptr<ndn::Interest> interest = make_shared<ndn::Interest> ();
   UniformVariable rand (0,std::numeric_limits<uint32_t>::max ());
   interest->setNonce            (rand.GetValue ());
   interest->setName             (*prefix);
@@ -98,18 +100,20 @@ DumbRequester::SendInterest ()
 
   NS_LOG_DEBUG ("Sending Interest packet for " << *prefix);
 
+  ndn::FwHopCountTag hopCountTag;
+  interest->getPacket ()->AddPacketTag (hopCountTag);
 
   // Call trace (for logging purposes)
-  m_transmittedInterests (interest, this, m_face);
+  m_transmittedInterests ((dynamic_cast<::ndn::Interest&>(*interest).shared_from_this()), this, m_face);
 
   // Forward packet to lower (network) layer
-  m_face->onReceiveInterest (*interest);
+  m_face->onReceiveInterest (dynamic_cast<::ndn::Interest&>(*interest));
 
   Simulator::Schedule (Seconds (1.0), &DumbRequester::SendInterest, this);
 }
 
 void
-DumbRequester::OnData (shared_ptr<const Data> contentObject)
+DumbRequester::OnData (shared_ptr<const ::ndn::Data> contentObject)
 {
   NS_LOG_DEBUG ("Receiving Data packet for " << contentObject->getName ());
 }

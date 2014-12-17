@@ -93,15 +93,13 @@ AppFace::sendInterest (const Interest& interest)
 {
   NS_LOG_FUNCTION (this << interest);
 
-  // if (!IsUp ())
-  //   {
-  //     return false;
-  //   }
+  if (!IsUp ())
+    {
+      return;
+    }
 
   // to decouple callbacks
   Simulator::ScheduleNow(&App::OnInterest, m_app, interest.shared_from_this ());
-
-  // return true;
 }
 
 void
@@ -109,15 +107,13 @@ AppFace::sendData (const Data& data)
 {
   NS_LOG_FUNCTION (this << data);
 
-  // if (!IsUp ())
-  //   {
-  //     return false;
-  //   }
+  if (!IsUp ())
+    {
+       return;
+    }
 
   // to decouple callbacks
   Simulator::ScheduleNow(&App::OnData, m_app, data.shared_from_this ());
-
-  // return true;
 }
 
 std::ostream&

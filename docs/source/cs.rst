@@ -3,6 +3,34 @@
 Content Store
 +++++++++++++
 
+ndnSIM provides the option to the user to select between two possible content store structures. The
+first choice is the content store structure included in NFD. This content store structure takes
+selectors into consideration, but it is not flexible when it comes to cache replacement policies. The
+second choice is the content store included in the previous version of the simulator. This content
+store structure is very flexible and offers a number of already implement cache replacement policies.
+
+The choice can be declared in the code of the simulation scenario. To use the NFD's content store, one
+has to type:
+
+      .. code-block:: c++
+
+         ndnHelper.SetContentStoreChoice (true);
+         ...
+         ndnHelper.Install (nodes);
+
+To use the content store of the original ndnSIM's content store:
+
+      .. code-block:: c++
+
+         ndnHelper.SetContentStoreChoice (false);
+         ...
+         ndnHelper.Install (nodes);
+
+It should be noted that the default choice is the use of NFD's content store.
+
+ndnSIM's original Content Store
++++++++++++++++++++++++++++++++
+
 ndnSIM comes with several different in-memory :ndnsim:`content store <ndn::ContentStore>` implementations, featuring different cache replacement policies.
 
 .. note:
@@ -214,29 +242,49 @@ Usage example:
                                     "MaxSize", "10000");
 	 ...
 
-Example
-~~~~~~~
 
-The following example demonstrates a basic usage of a customized content store (``ndn-simple-with-content-freshness.cc``).
-In this scenario two simple consumers (both installed on a consumer node) continually request the same data packet.
-When Data producer specify unlimited freshness, Content keeps getting satisfied from local caches, while if freshness is specified, Interests periodically are getting through to the Data producer.
+NFD's Content Store
++++++++++++++++++++
 
-.. aafig::
-    :aspect: 60
-    :scale: 120
+The current implementation of CS uses a skip list as its underlying data structure. Skip lists are a
+probabilistic alternative to balanced trees. Skip lists are balanced by virtue of a random number
+generator. Its average insertion and lookup complexity is O(log n). CS entries are placed in the Skip List in ascending order (by Name).
 
-      +----------+                +--------+                +----------+
-      |          |     1Mbps      |        |      1Mbps     |          |
-      | Consumer |<-------------->| Router |<-------------->| Producer |
-      |          |         10ms   |        |         10ms   |          |
-      +----------+                +--------+                +----------+
+The current implementation evicts CS entries based on prioritized FIFO (First In First Out) strategy.
+The entries that get removed first are unsolicited Data packets, which are the Data packets that got
+cached opportunistically without preceding forwarding of the corresponding Interest packet. Next, the
+Data packets with expired freshness are removed. Lastly, the Data packets are removed from the
+Content Store on a pure FIFO basis. This cache replacement policy is currently hard-coded; it is
+intended to be replaceable in the future by the NFD developer team.
 
+CS entry
+~~~~~~~~
 
-.. literalinclude:: ../../examples/ndn-simple-with-content-freshness.cc
-    :language: c++
-    :linenos:
-    :lines: 20-27,43-
+The Data packet, along with other necessary fields, are stored in a CS entry.
+Each entry contains:
 
-To run this scenario, use the following command::
+• the Data packet
+• whether the Data packet is unsolicited
+• the timestamp at which the cached Data becomes stale
 
-        NS_LOG=DumbRequester:ndn.cs.Freshness.Lru ./waf --run=ndn-simple-with-content-freshness
+CS
+~~~
+
+A multi-index container is maintained in order to support the prioritized FIFO cache replacement policy.
+In this way, pointers to the Data packets in a particular order are kept. Note that this multi-index
+container is completely separated from the skip list container, which indexes Content Store entries by
+name.
+
+The container (Cs::CleanupIndex) currently supports indexing of unsolicited Data packets, indexing by
+packet staleness and indexing by packet arrival time. Calculation of the indexes is performed in the
+container during the Data packet insertion (Cs::insert) in the Content Store.
+
+Eviction (Cs::evictItem) is performed during the insertion when the CS is full, and when the capacity
+is decreased by management. We decided not to perform periodical cleanups, because its CPU overhead
+causes jitter in packet forwarding.
+
+In the current version of NFD, cache replacement policy can be modified by adding different indexes in
+the Cs::CleanupIndex container (refer to Boost.multiIndex documentation) and implementing
+additional logic in Cs::evictItem function.
+
+For detailed specification you are encouraged to read the `NFD Developer's Guide <http://named-data.net/wp-content/uploads/2014/07/NFD-developer-guide.pdf>`_, section 3.2.

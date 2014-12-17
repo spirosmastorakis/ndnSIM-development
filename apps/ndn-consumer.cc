@@ -196,7 +196,6 @@ Consumer::SendPacket ()
   nameWithSequence->appendSequenceNumber (seq);
   //
 
-  // shared_ptr<Interest> interest = make_shared<Interest> ();
   shared_ptr<Interest> interest = make_shared<Interest> ();
   interest->setNonce               (m_rand.GetValue ());
   interest->setName                (*nameWithSequence);

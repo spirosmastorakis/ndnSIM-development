@@ -35,7 +35,7 @@ with frequency of 10 Interests per second (see :doc:`applications`).
 
 Producer is simulated using :ndnsim:`Producer` class, which is used to satisfy all incoming Interests with virtual payload data (1024 bytes).
 
-FIB on every node is populated using default routes (see :doc:`helpers`).
+FIB on every node is populated using default routes (see :doc:`helpers`) and the content store structure of the original ndnSIM is used.
 
 The following code represents all that is necessary to run such a
 simple scenario
@@ -43,8 +43,7 @@ simple scenario
 .. literalinclude:: ../../examples/ndn-simple.cc
    :language: c++
    :linenos:
-   :lines: 20-27,48-
-   :emphasize-lines: 30-33,37-49
+   :lines: 20-30,53-
 
 If this code is placed into ``scratch/ndn-simple.cc`` and NS-3 is compiled in debug mode, you can run and see progress of the
 simulation using the following command (in optimized mode nothing will be printed out)::
@@ -81,9 +80,9 @@ simulation using the following command (in optimized mode nothing will be printe
            | |<-------->| |<---->|Producer|
            \-/          \-/      \--------/
 
-This scenario (``ndn-grid.cc``) simulates a grid topology, which is constructed using PointToPointLayout NS-3 module
+This scenario (``ndn-grid.cc``) simulates a grid topology, which is constructed using PointToPointLayout NS-3 module.
 
-FIB is populated using :ndnsim:`GlobalRoutingHelper` (see :doc:`helpers`).
+FIB is populated using :ndnsim:`GlobalRoutingHelper` (see :doc:`helpers`). The content store structure of NFD is used in all the nodes.
 
 Consumer is simulated using :ndnsim:`ConsumerCbr` reference application and generates Interests towards the producer
 with frequency of 100 interests per second (see :doc:`applications`).
@@ -95,9 +94,7 @@ The following code represents all that is necessary to run such a simple scenari
 .. literalinclude:: ../../examples/ndn-grid.cc
    :language: c++
    :linenos:
-   :lines: 20-27,53-
-   :emphasize-lines: 28,31-33,35-38,53-57
-
+   :lines: 20-31,57-75,76-
 
 If this code is placed into ``scratch/ndn-grid.cc`` and NS-3 is compiled in debug mode, you can run and see progress of the
 simulation using the following command (in optimized mode nothing will be printed out)::
@@ -152,8 +149,7 @@ This scenario (``ndn-grid-topo-plugin.cc``) duplicates the functionality of :ref
 .. literalinclude:: ../../examples/ndn-grid-topo-plugin.cc
    :language: c++
    :linenos:
-   :lines: 20-26,51-
-   :emphasize-lines: 14-16,20,27-30
+   :lines: 20-25,51-
 
 As you can see, scenario code became more compact and more readable.
 
@@ -204,8 +200,7 @@ This scenario (``ndn-congestion-topo-plugin.cc``) can be used for congestion-rel
 .. literalinclude:: ../../examples/ndn-congestion-topo-plugin.cc
    :language: c++
    :linenos:
-   :lines: 20-26,47-
-   :emphasize-lines: 15,21-22,29-34,41-47,52-62
+   :lines: 20-30,52-63,67-
 
 .. :lines: 20-25,53-
 
@@ -216,10 +211,10 @@ To run this scenario and see what is happening, use the following command::
 .. note::
    If you compiled ndnSIM with examples (``./waf configure --enable-examples``) you can directly run the example without putting scenario into ``scratch/`` folder.
 
-.. _11-node 2-bottleneck topology with custom forwarding strategy:
+.. _11-node 2-bottleneck topology:
 
-11-node 2-bottleneck topology with custom forwarding strategy
--------------------------------------------------------------
+11-node 2-bottleneck topology
+------------------------------
 
 .. sidebar:: Topology
 
@@ -252,13 +247,7 @@ To run this scenario and see what is happening, use the following command::
          "Numbers near nodes denote face IDs. Face ID is assigned based on the order of link"
          "definitions in the topology file"
 
-To effectively use the example :ref:`custom strategy <Writing your own custom strategy>`, we need to make sure that FIB entries contain at least two entries.
-In the current version of ndnSIM, this can be accomplished using manual route configuration.
-
-The following example illustrates how the strategy can be used in simulation scenario.
-
-Let us first define a meaningful topology:
-
+Firstly, we define a meaningful topology:
 
 The corresponding topology file (``topo-11-node-two-bottlenecks.txt``):
 
@@ -267,14 +256,14 @@ The corresponding topology file (``topo-11-node-two-bottlenecks.txt``):
     :linenos:
     :lines: 1-2,28-
 
-Example simulation (``ndn-congestion-alt-topo-plugin.cc``) scenario that utilizes CustomStrategy forwarding strategy:
+After that, we define the simulation scenario:
+
+Example simulation (``ndn-congestion-alt-topo-plugin.cc``) scenario:
 
 .. literalinclude:: ../../examples/ndn-congestion-alt-topo-plugin.cc
     :language: c++
     :linenos:
-    :lines: 21-28,61-
-    :emphasize-lines: 16,21,49-50,65-79
-
+    :lines: 21-33,67-
 
 To run this scenario and see what is happening, use the following command::
 
@@ -287,6 +276,107 @@ You can also run using visualizer module to verify that both bottleneck links ar
 .. note::
    If you compiled ndnSIM with examples (``./waf configure --enable-examples``) you can directly run the example without putting scenario into ``scratch/`` folder.
 
+6-node topology with custom NFD forwarding strategy
+---------------------------------------------------
+
+.. sidebar:: Topology
+
+    .. aafig::
+        :aspect: 60
+        :scale: 90
+
+        This scenario simulates a load balancer topology (using topology reader module)
+
+                     ( ) ----- ( ) ---- (consumer)
+                      |
+              ------ ( ) -----
+             |               |
+         (producer) ---- (producer)
+
+        All links are 1Mbps with propagation 10ms delay.
+        FIB is populated using NdnGlobalRoutingHelper.
+
+Firstly, we define a meaningful topology:
+
+The corresponding topology file (``topo-load-balancer.txt``):
+
+.. literalinclude:: ../../examples/topologies/topo-load-balancer.txt
+    :language: bash
+    :linenos:
+    :lines: 30-36,43-
+
+After that, we define the simulation scenario:
+
+Example simulation (``ndn-load-balancer.cc``) scenario:
+
+.. literalinclude:: ../../examples/ndn-load-balancer.cc
+    :language: c++
+    :linenos:
+    :lines: 21-26,53-
+
+In this simulation scenario, the node called "UCLA-HUB" implements a random load balancing
+strategy for the name prefix "/ucla/hello". In this way, the Interest packets will be
+forwarded randomly either to the producer node called "UCLA-1" or the producer node called
+"UCLA-2".
+
+To run this scenario and see what is happening, use the following command::
+
+        NS_LOG=ndn.Consumer:ndn.Producer ./waf --run=ndn-load-balancer
+
+.. note::
+   If you compiled ndnSIM with examples (``./waf configure --enable-examples``) you can directly run the example without putting scenario into ``scratch/`` folder.
+
+9-node grid topology with different forwarding strategies per name prefix
+-------------------------------------------------------------------------
+
+This scenario simulates a grid topology (using PointToPointGrid module). In this scenario,
+thanks to NFD, we can choose a different forwarding strategy for each prefix in each node.
+
+Consumer requests data from producer with frequency 100 interests per second (interests
+contain constantly increasing sequence number).
+
+For every received interest, producer replies with a data packet, containing 1024 bytes of
+virtual payload.
+
+In this scenario, we choose the broadcast strategy to be installed for the name prefix
+"/prefix1" in all the nodes, while for the name prefix "/prefix2", the best-route strategy
+will be installed in all the topology nodes.
+
+Example simulation (``ndn-different-strategy-per-prefix.cc``) scenario:
+
+.. literalinclude:: ../../examples/ndn-different-strategy-per-prefix.cc
+    :language: c++
+    :linenos:
+    :lines: 21-33,62-
+
+To run this scenario and see what is happening, use the following command::
+
+        NS_LOG=ndn.Consumer:ndn.Producer ./waf --run=ndn-different-strategy-per-prefix
+
+9-node grid topology with different forwarding strategy for each node
+---------------------------------------------------------------------
+
+This scenario simulates a grid topology (using PointToPointGrid module). The first six nodes
+use the best route forwarding strategy, whereas the three remaining nodes use the broadcast
+forwarding strategy.
+
+Consumer requests data from producer with frequency 100 interests per second (interests
+contain constantly increasing sequence number).
+
+For every received interest, producer replies with a data packet, containing 1024 bytes of
+virtual payload.
+
+Example simulation (``ndn-grid-multiple-strategies.cc``) scenario:
+
+.. literalinclude:: ../../examples/ndn-grid-multiple-strategies.cc
+    :language: c++
+    :linenos:
+    :lines: 21-3,62-
+
+To run this scenario and see what is happening, use the following command::
+
+        NS_LOG=ndn.Consumer:ndn.Producer ./waf --run=ndn-grid-multiple-strategies
+
 3-level binary tree with packet-level trace helpers
 ---------------------------------------------------
 
@@ -297,18 +387,12 @@ You can also run using visualizer module to verify that both bottleneck links ar
 ---------------------------------------------------
 
 :ref:`cs trace helper example`
-
+s
 
 3-level binary tree with  application-level Interest-Data delay tracer
 ----------------------------------------------------------------------
 
-:ref:`app delay trace helper example`
-
-
-3-node topology with Content Store respecting freshness field of ContentObjects
--------------------------------------------------------------------------------
-
-:ref:`Content Store respecting freshness field of ContentObjects`
+:ref:`lapp delay trace helper example`
 
 1-node topology with custom application
 ---------------------------------------
@@ -351,8 +435,7 @@ ndnSIM now includes a simple helper that simplifies this process.
 .. literalinclude:: ../../examples/ndn-simple-with-link-failure.cc
    :language: c++
    :linenos:
-   :lines: 21-31,52-
-   :emphasize-lines: 54-56
+   :lines: 21-34,56-
 
 If this code is placed into ``scratch/ndn-simple-with-link-failure.cc`` and NS-3 is compiled in debug mode, you can run and see progress of the
 simulation using the following command (in optimized mode nothing will be printed out)::
@@ -367,8 +450,3 @@ simulation using the following command (in optimized mode nothing will be printe
 -----------------------------------
 
 :ref:`Example of packet drop tracer (L2Tracer)`
-
-3-node topology with periodic tracing of PIT
---------------------------------------------
-
-:ref:`periodic tracing of Pending Interest Table (PIT) size`

@@ -21,7 +21,7 @@ Packet-level trace helpers
 
         // the following should be put just before calling Simulator::Run in the scenario
 
-        ndn::L3AggregateTracer::InstallAll ("aggregate-trace.txt", Seconds (1.0));
+        L3AggregateTracer::InstallAll ("aggregate-trace.txt", Seconds (1.0));
 
         Simulator::Run ();
 
@@ -43,22 +43,15 @@ Packet-level trace helpers
     |                  |                                                                     |
     |                  | - ``InInterests``  measurements of incoming Interests               |
     |                  | - ``OutInterests``  measurements of outgoing Interests              |
-    |                  | - ``DropInterests``  measurements of dropped Interests              |
     |                  | - ``InData``  measurements of incoming Data                         |
     |                  | - ``OutData``  measurements of outgoing Data                        |
-    |                  | - ``DropData``  measurements of dropped Data                        |
-    |                  | - ``InNacks``  measurements of incoming NACKs                       |
-    |                  | - ``OutNacks``  measurements of outgoing NACKs                      |
-    |                  | - ``DropNacks``  measurements of dropped NACKs                      |
-    |                  | - ``SatisfiedInterests`` measurements of satisfied Interests        |
-    |                  | - ``TimedOutInterests`` measurements of timed out Interests         |
-    +------------------+---------------------------------------------------------------------+
++------------------+---------------------------------------------------------------------+
     | ``Packets``      | absolute number of packets within last averaging period             |
     |                  | (number of packets).                                                |
     +------------------+---------------------------------------------------------------------+
     | ``Kilobytes``    | absolute number of kilobytes transferred within the last averaging  |
     |                  | period  (number of packets).                                        |
-    +------------------+---------------------------------------------------------------------+
++------------------+---------------------------------------------------------------------+
 
 - :ndnsim:`ndn::L3RateTracer`
 
@@ -70,7 +63,7 @@ Packet-level trace helpers
 
         // the following should be put just before calling Simulator::Run in the scenario
 
-        ndn::L3RateTracer::InstallAll ("rate-trace.txt", Seconds (1.0));
+        L3RateTracer::InstallAll ("rate-trace.txt", Seconds (1.0));
 
         Simulator::Run ();
 
@@ -91,22 +84,9 @@ Packet-level trace helpers
     |                  |                                                                     |
     |                  | - ``InInterests``  measurements of incoming Interests               |
     |                  | - ``OutInterests``  measurements of outgoing Interests              |
-    |                  | - ``DropInterests``  measurements of dropped Interests              |
     |                  | - ``InData``  measurements of incoming Data                         |
     |                  | - ``OutData``  measurements of outgoing Data                        |
-    |                  | - ``DropData``  measurements of dropped Data                        |
-    |                  | - ``InNacks``  measurements of incoming NACKs                       |
-    |                  | - ``OutNacks``  measurements of outgoing NACKs                      |
-    |                  | - ``DropNacks``  measurements of dropped NACKs                      |
-    |                  | - ``InSatisfiedInterests`` measurements of incoming satisfied       |
-    |                  |   Interests                                                         |
-    |                  | - ``InTimedOutInterests`` measurements of incoming timed out        |
-    |                  |   Interests                                                         |
-    |                  | - ``OutSatisfiedInterests`` measurements of outgoing satisfied      |
-    |                  |   Interests                                                         |
-    |                  | - ``OutTimedOutInterests`` measurements of outgoing satisfied       |
-    |                  |   Interests                                                         |
-    +------------------+---------------------------------------------------------------------+
++------------------+---------------------------------------------------------------------+
     | ``Packets``      | estimated rate (EWMA average) of packets within the last averaging  |
     |                  | period (number of packets/s).                                       |
     +------------------+---------------------------------------------------------------------+
@@ -220,7 +200,7 @@ Example simulation (``ndn-tree-tracers.cc``) scenario that utilizes trace helper
 .. literalinclude:: ../../examples/ndn-tree-tracers.cc
     :language: c++
     :linenos:
-    :lines: 21-28,61-
+    :lines: 21-27,61-
     :emphasize-lines: 57-58
 
 To run this scenario, use the following command::
@@ -268,7 +248,7 @@ Example simulation (``ndn-tree-with-l2tracer.cc``) scenario that utilizes trace 
 .. literalinclude:: ../../examples/ndn-tree-with-l2tracer.cc
     :language: c++
     :linenos:
-    :lines: 1-
+    :lines: 21-
     :emphasize-lines: 16,135
 
 To run this scenario, use the following command::
@@ -291,6 +271,8 @@ For example, the following `R script <http://www.r-project.org/>`_ will build a 
 Content store trace helper
 --------------------------
 
+NOTE: This tracer can be used ONLY when the content store structure of ndnSIM is used!
+
 - :ndnsim:`ndn::CsTracer`
 
     With the use of :ndnsim:`ndn::CsTracer` it is possible to obtain statistics of cache hits/cache misses on simulation nodes.
@@ -301,7 +283,7 @@ Content store trace helper
 
         // the following should be put just before calling Simulator::Run in the scenario
 
-        ndn::CsTracer::InstallAll ("cs-trace.txt", Seconds (1));
+        CsTracer::InstallAll ("cs-trace.txt", Seconds (1));
 
         Simulator::Run ();
 
@@ -327,8 +309,8 @@ Example simulation (``ndn-tree-cs-tracers.cc``) scenario that utilizes trace hel
 .. literalinclude:: ../../examples/ndn-tree-cs-tracers.cc
     :language: c++
     :linenos:
-    :lines: 21-28,61-
-    :emphasize-lines: 59
+    :lines: 21-31,65-
+    :emphasize-lines: 60
 
 
 To run this scenario, use the following command::
@@ -351,7 +333,7 @@ Application-level trace helper
 
         // the following should be put just before calling Simulator::Run in the scenario
 
-        ndn::AppDelayTracer::InstallAll ("app-delays-trace.txt");
+        AppDelayTracer::InstallAll ("app-delays-trace.txt");
 
         Simulator::Run ();
 
@@ -408,33 +390,12 @@ Example simulation (``ndn-tree-app-delay-tracer.cc``) scenario that utilizes tra
 .. literalinclude:: ../../examples/ndn-tree-app-delay-tracer.cc
     :language: c++
     :linenos:
-    :lines: 21-28,61-
-    :emphasize-lines: 59
-
+    :lines: 21-31,65-
 
 To run this scenario, use the following command::
 
         ./waf --run=ndn-tree-app-delay-tracer
 
-The successful run will create ``app-delays-trace.txt``, which similarly to trace file from the :ref:`packet trace helper example <packet trace helper example>` can be analyzed manually or used as input to some graph/stats packages.
-
-
-Other types of stats
---------------------
-
-.. _periodic tracing of Pending Interest Table (PIT) size:
-
-Periodic tracing of Pending Interest Table (PIT) size
-+++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-This example (``ndn-simple-with-pit-count-stats.cc``) shows how you can periodically print out current size of PIT on the selected nodes.
-
-.. literalinclude:: ../../examples/ndn-simple-with-pit-count-stats.cc
-    :language: c++
-    :linenos:
-    :lines: 20-26,47-
-    :emphasize-lines: 9-20,43-46,59-61
-
-To run this scenario, use the following command::
-
-        ./waf --run=ndn-simple-with-pit-count-stats
+The successful run will create ``app-delays-trace.txt``, which similarly to trace file from the
+:ref:`packet trace helper example <packet trace helper example>` can be analyzed manually or used as
+input to some graph/stats packages.

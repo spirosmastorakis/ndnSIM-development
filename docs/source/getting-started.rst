@@ -4,7 +4,7 @@ Getting Started
 Portability
 ------------
 
-ndnSIM has been successfully compiled and used under Ubuntu Linux 12.04 (boost libraries **1.48**, with default version 1.46 compilation will probably fail), 12.10 (default version of boost 1.49), 13.04 (default version of boost 1.49), Fedora 18, Mac OS 10.7 and 10.8 (gcc-4.2 apple/llvm, macports gcc 4.7, boost 1.49-1.54).
+ndnSIM has been successfully compiled and used under Ubuntu Linux 12.04 (boost libraries **1.48**, with default version 1.46 compilation will probably fail), 12.10 (default version of boost 1.49), 13.04 (default version of boost 1.49), 14.04.1 (default version of boost 1.49), Fedora 18, Mac OS 10.7, 10.8, 10.9 and 10.10 (gcc-4.2 apple/llvm, macports gcc 4.7, boost 1.49-1.54).
 
 .. _requirements:
 
@@ -110,6 +110,19 @@ If you have problems connecting to github, you can try to clone from google serv
         git clone https://code.google.com/p/ndnsim.pybindgen/ pybindgen
         git clone https://code.google.com/p/ndnsim/ ns-3/src/ndnSIM
 
+Downloading and installing ndn-cxx library
+------------------------------------------
+
+Download the ndn-cxx library:
+
+    cd <ns-3-folder>
+    git clone https://github.com/named-data/ndn-cxx
+
+For prerequisites and instructions regarding the installation of the library please follow the link:
+
+    http://www.named-data.net/doc/ndn-cxx/current/INSTALL.html
+
+
 Compiling and running ndnSIM
 ----------------------------
 
@@ -150,6 +163,10 @@ or:
 .. code-block:: bash
 
 	./waf --run=ndn-grid
+
+To run the sample simulation scenarios with the logging module of NS-3 enabled:
+
+    NS_LOG=ndn.Producer:ndn.Consumer ./waf --run=<scenario name>
 
 If you have compiled with python bindings, then you can try to run these simulations with visualizer:
 

@@ -142,4 +142,6 @@ General questions
 
     I found an error in the documentation / bug in the code. What should I do?
 
-Please create an issue for the documentation error or code bug on `github <http://github.com/NDN-Routing/ndnSIM>`_, or tell us about the error on `our mailing list <http://www.lists.cs.ucla.edu/mailman/listinfo/ndnsim>`_ .
+Please submit a bug report on `redmine <http://redmine.named-data.net/projects/ndnsim?jump=welcome>`_,
+or tell us about the error on `our mailing list
+<http://www.lists.cs.ucla.edu/mailman/listinfo/ndnsim>`_ .
