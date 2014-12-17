@@ -16,7 +16,7 @@ ConsumerCbr
 .. code-block:: c++
 
    // Create application using the app helper
-   ndn::AppHelper helper ("ns3::ndn::ConsumerCbr");
+   AppHelper helper ("ns3::ndn::ConsumerCbr");
 
 This applications has the following attributes:
 
@@ -120,12 +120,12 @@ This applications has the following attributes:
 ConsumerWindow
 ^^^^^^^^^^^^^^^^^^
 
-:ndnsim:`ConsumerWindow` is an application generating a variable rate Interest traffic. It relies on an optional NACK-Interest feature and implements a simple sliding-window-based Interest generation mechanism.
+:ndnsim:`ConsumerWindow` is an application generating a variable rate Interest traffic. It implements a simple sliding-window-based Interest generation mechanism.
 
 .. code-block:: c++
 
    // Create application using the app helper
-   ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerWindow");
+   AppHelper consumerHelper ("ns3::ndn::ConsumerWindow");
 
 
 This applications has the following attributes:
@@ -161,7 +161,7 @@ Producer
 .. code-block:: c++
 
    // Create application using the app helper
-   ndn::AppHelper consumerHelper ("ns3::ndn::Producer");
+   AppHelper consumerHelper ("ns3::ndn::Producer");
 
 .. _Custom applications:
 
@@ -190,7 +190,7 @@ Header file ``examples/custom-apps/custom-app.h``:
 .. literalinclude:: ../../examples/custom-apps/custom-app.h
     :language: c++
     :linenos:
-    :lines: 21-29,40-
+    :lines: 21-29,41-
 
 Source file ``examples/custom-apps/custom-app.cc``:
 
@@ -209,9 +209,7 @@ Example how to use custom app in a scenario (``ndn-simple-with-custom-app.cc``):
 .. literalinclude:: ../../examples/ndn-simple-with-custom-app.cc
     :language: c++
     :linenos:
-    :lines: 21-28,39-
-    :emphasize-lines: 26-31
-
+    :lines: 21-30,42-
 
 To run this scenario, use the following command::
 
@@ -235,7 +233,7 @@ Source file ``examples/custom-apps/hijacker.cc``:
 .. literalinclude:: ../../examples/custom-apps/hijacker.cc
     :language: c++
     :linenos:
-    :lines: 21-
+    :lines: 20-
 
 
 After defining this class, you can use it with :ndnsim:`ndn::AppHelper`. For example:
@@ -265,5 +263,3 @@ Source file ``examples/custom-apps/dumb-requester.cc``:
     :language: c++
     :linenos:
     :lines: 21-
-
-

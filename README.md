@@ -8,7 +8,7 @@ Getting Started
 
 ### Portability
 
-ndnSIM has been successfully compiled and used under Ubuntu Linux 12.04 (boost libraries **1.48**, with default version 1.46 compilation will probably fail), 12.10 (default version of boost 1.49), 13.04 (default version of boost 1.49), Fedora 18, Mac OS 10.7 and 10.8 (gcc-4.2 apple/llvm, macports gcc 4.7, boost 1.49-1.54).
+ndnSIM has been successfully compiled and used under Ubuntu Linux 12.04 (boost libraries **1.48**, with default version 1.46 compilation will probably fail), 12.10 (default version of boost 1.49), 13.04 (default version of boost 1.49), 14.04.1 (default version of boost 1.49), Fedora 18, Mac OS 10.7, 10.8, 10.9 and 10.10 (gcc-4.2 apple/llvm, macports gcc 4.7, boost 1.49-1.54).
 
 ### Requirements
 
@@ -17,21 +17,21 @@ ndnSIM has been successfully compiled and used under Ubuntu Linux 12.04 (boost l
 2. Boost libraries should be installed on the system:
 
   * For Ubuntu
-  
+
     * 12.04
-  
+
             sudo aptitude install libboost1.48-all-dev
-  
+
     * 12.10, 13.04, and newer versions
-  
+
             sudo aptitude install libboost-all-dev
-  
+
   * For Fedora (for Fedora 18 and later only):
-  
+
           sudo yum install boost-devel
-  
+
   * For MacOS (macports):
-  
+
           sudo port instal boost
 
   **!!! ndnSIM requires boost version at least 1.48.**   Many linux distribution (Fedora 16, 17 at the time of this writing) ship an old version of boost, making it impossible to compile ndnSIM out-of-the-box.  Please install the latest version, following these simple instructions (http://ndnsim.net/faq.html#installing-boost-libraries).
@@ -44,22 +44,22 @@ ndnSIM has been successfully compiled and used under Ubuntu Linux 12.04 (boost l
 order to run visualizer module (http://www.nsnam.org/wiki/index.php/PyViz), the following should be installed:
 
   * For Ubuntu (tested on Ubuntu 12.04, 12.10, 13.04, should work on later versions as well):
-  
+
           sudo apt-get install python-dev python-pygraphviz python-kiwi
           sudo apt-get install python-pygoocanvas python-gnome2
           sudo apt-get install python-gnomedesktop python-rsvg ipython
-  
+
   * For Fedora (tested on Fedora 16):
-  
+
           sudo yum install pygoocanvas python-kiwi graphviz-python
-  
+
           # easy_install method, since pygraphviz is not (yet?) packaged into Fedora (https://bugzilla.redhat.com/show_bug.cgi?id=740687)
           sudo yum install graphviz-devel
           sudo yum install python-pip
           sudo easy_install pygraphviz
-  
+
   * For MacOS (macports):
-  
+
           sudo port install  py27-pygraphviz py27-goocanvas
 
 ### Downloading ndnSIM source
@@ -81,6 +81,17 @@ If you have problems connecting to github, you can try to clone from google serv
     git clone https://code.google.com/p/ndnsim.ns3-base/ ns-3
     git clone https://code.google.com/p/ndnsim.pybindgen/ pybindgen
     git clone https://code.google.com/p/ndnsim/ ns-3/src/ndnSIM
+
+### Downloading and installing ndn-cxx library
+
+Download the ndn-cxx library:
+
+    cd <ns-3-folder>
+    git clone https://github.com/named-data/ndn-cxx
+
+For prerequisites and instructions regarding the installation of the library please follow the link:
+
+   http://www.named-data.net/doc/ndn-cxx/current/INSTALL.html
 
 ### Compiling and running ndnSIM
 
@@ -112,6 +123,10 @@ or:
 
     ./waf --run=ndn-grid
 
+To run the sample simulation scenarios with the logging module of NS-3 enabled:
+
+    NS_LOG=ndn.Producer:ndn.Consumer ./waf --run=<scenario name>
+
 If you have compiled with python bindings, then you can try to run these simulations with visualizer:
 
     ./waf --run=ndn-simple --vis
@@ -134,22 +149,22 @@ For example, you can use the following template to write your extensions, simula
     git clone git://github.com/cawka/ns-3-dev-ndnSIM.git ns-3
     git clone git://github.com/cawka/pybindgen.git pybindgen
     git clone git://github.com/NDN-Routing/ndnSIM.git ns-3/src/ndnSIM
-    
+
     # Build and install NS-3 and ndnSIM
     cd ns-3
     ./waf configure -d optimized
     ./waf
-    
+
     sudo ./waf install
     cd ..
-    
+
     git clone git://github.com/cawka/ndnSIM-scenario-template.git scenario
     cd scenario
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
     export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-    
+
     ./waf configure
-    
+
     ./waf --run <scenario>
 
 For more detailed information, refer to README file (https://github.com/cawka/ndnSIM-scenario-template/blob/master/README.md).
