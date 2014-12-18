@@ -6,12 +6,15 @@ Forwarding Strategies
 ndnSIM through its integration with NFD provides simple ways to experiment with the custom
 Interest/Data forwarding strategies of NFD.
 
-A new forwarding strategy can be implement completely different processing or override just specific actions/events of the :nfd:`forwarding strategy interface <ForwardingStrategy>`.
+A new forwarding strategy can implement completely different processing or override just
+specific actions/events of the :nfd:`forwarding strategy interface <Strategy>`.
 NFD offers the maximum flexibility by allowing per-namespace selection of each specific
 forwarding strategy.
 
-Please refer to :nfd:`API documentation <ForwardingStrategy>` of the forwarding strategy interface, which lists all default actions/events. For a more detailed specification, you can
-read `NFD Developer's Guide <http://named-data.net/wp-content/uploads/2014/07/NFD-developer-guide.pdf>`_, section 5.
+Please refer to :nfd:`API documentation <Strategy>` of the forwarding strategy interface,
+which lists all default actions/events. For a more detailed specification, you can
+read `NFD Developer's Guide
+<http://named-data.net/wp-content/uploads/2014/07/NFD-developer-guide.pdf>`_, section 5.
 
 It should be noted here that each custom forwarding strategy file has to be added under the
 daemon/fw/ directory of NFD and also be listed in the available-strategies source file.
@@ -19,11 +22,8 @@ Moreover, the strategy choice helper has to be installed in the nodes in order t
 the desirable default or custom forwarding strategy.
 
 
-Available forwarding strategies
-+++++++++++++++++++++++++++++++
-
-Basic forwarding strategies
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Available built-in forwarding strategies
+++++++++++++++++++++++++++++++++++++++++
 
 Broadcast
 #########
@@ -111,7 +111,7 @@ classes as it provides natural grouping and scope protection of the strategy-spe
 entity, but it is not required to follow the same model. If timers are needed, EventId
 fields needs to be added to such data structure(s).
 
-The final step is to implement one or more of the triggers with the desired strategy logic. These triggers are listed below:
+The final step is to implement at least the "After Receive Interest" trigger and any (or none) of the two other triggers that are listed below with the desired strategy logic:
 
 After Receive Interest Trigger
 ++++++++++++++++++++++++++++++
@@ -120,7 +120,7 @@ This trigger is declared as Strategy::afterReceiveInterest method. This method i
 virtual, which must be overridden by a subclass.
 
 When an Interest is received, passes necessary checks, and needs to be forwarded, Incoming
-Interest pipeline (Section 4.2.1) invokes this trigger with the PIT entry, incoming Interest
+Interest pipeline invokes this trigger with the PIT entry, incoming Interest
 packet, and FIB entry. At that time, the following conditions hold for the Interest:
 
 • The Interest does not violate /localhost scope.
@@ -140,15 +140,37 @@ provides a default implementation that does nothing; a subclass can override thi
 the strategy needs to be invoked for this trigger, e.g., to record data plane measurement
 results for the pending Interest.
 
+When a PIT entry is satisfied, before Data is sent to downstream faces (if any), Incoming
+Data pipeline invokes this trigger with the PIT entry, the Data packet, and its incoming
+face. The PIT entry may represent either a pending Interest or a recently satisfied Interest.
+
 Before Expire Interest Trigger
 ++++++++++++++++++++++++++++++
 
 This trigger is declared as Strategy::beforeExpirePendingInterest method. The base class
-provides a default imple- mentation that does nothing; a subclass can override this method
+provides a default implementation that does nothing; a subclass can override this method
 if the strategy needs to be invoked for this trigger, e.g., to record data plane measurement
 results for the pending Interest.
 
-In this way, the recommended way to implement a custom forwarding strategy is to create a
+Actions
++++++++
+
+Actions are forwarding decisions made by the strategy. An action is implemented as a
+non-virtual protected method of nfd::Strategy class.
+
+Send Interest action
+++++++++++++++++++++
+
+This action is implemented as Strategy::sendInterest method. Parameters include a PIT entry,
+an outgoing face, and a wantNewNonce flag. It triggers entering the Outgoing Interest pipeline.
+
+Reject Pending Interest action
+++++++++++++++++++++++++++++++
+
+This action is implemented as Strategy::rejectPendingInterest method. Parameters include a
+PIT entry. This action triggers entering the Interest reject pipeline.
+
+As mentioned above, the way to implement a custom forwarding strategy is to create a
 new class for your strategy which would inherit the Strategy class of NFD :nfd:`nfd:Strategy`.
 
 In an essence, this class can constitute the template for writing a custom forwarding

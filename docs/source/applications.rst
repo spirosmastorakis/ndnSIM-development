@@ -94,7 +94,7 @@ THE following pictures show basic comparison of the generated stream of Interest
 ConsumerBatches
 ^^^^^^^^^^^^^^^^^^^
 
-:ndnsim:`ConsumerBatches` is an on-off-style application gen- erating a specified number of Interests at specified points of simulation.
+:ndnsim:`ConsumerBatches` is an on-off-style application generating a specified number of Interests at specified points of simulation.
 
 .. code-block:: c++
 

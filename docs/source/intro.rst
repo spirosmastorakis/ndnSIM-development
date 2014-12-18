@@ -26,8 +26,8 @@ network-layer entity in NDN.
 Specifically, the simulator fully interacts with NFD and its managers in order to use the
 :nfd:`pending Interest table (PIT) <Pit>`, :nfd:`forwarding information base (FIB) <Fib>`,
 :nfd:`content store <ContentStore>` and :nfd:`Interest forwarding strategies
-<ForwardingStrategy>`. However, it provides the option to the user to choose between the
-:nfd:`content store <ContentStore>` and the :ndnsim:`content store <ContentStore>` along
+<Strategy>`. However, it provides the option to the user to choose between the
+:nfd:`content store <Cs>` and the :ndnsim:`content store <ContentStore>` along
 with its cache replacement policies of the previous simulator version.
 
 This modular structure allows any component to be easily modified or replaced with no or
