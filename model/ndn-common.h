@@ -37,39 +37,14 @@ using ::ndn::Convert;
 using ::ndn::Block;
 using ::ndn::KeyChain;
 
-#define NDNSIM_MODE 1
-
-#define NDN_NAMESPACE_BEGIN  namespace ns3 { namespace ndn {
-#define NDN_NAMESPACE_END    } /*ndn*/ } /*ns3*/
-
-/**
- * @brief NS-3 namespace
- */
 namespace ns3 {
-
-/**
- * @brief ndnSIM namespace
- */
 namespace ndn {
-}
 
-}
+using ::ndn::Name;
+namespace name = ::ndn::name;
 
-NDN_NAMESPACE_BEGIN
+} // namespace ndn
+} // namespace ns3
 
-typedef Time TimeInterval;
-
-namespace time
-{
-
-inline Time
-NowUnixTimestamp ()
-{
-  return Simulator::Now ();
-}
-
-}
-
-NDN_NAMESPACE_END
 
 #endif // NDN_COMMON_H
