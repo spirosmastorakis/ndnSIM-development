@@ -9,7 +9,7 @@
  * Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
-#include "callback-based-app.h"
+#include "callback-based-app.hpp"
 
 #include <ns3/log.h>
 

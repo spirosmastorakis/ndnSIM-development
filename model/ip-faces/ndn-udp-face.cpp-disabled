@@ -19,8 +19,8 @@
  *
  */
 
-#include "ndn-udp-face.h"
-#include "ns3/ndn-l3-protocol.h"
+#include "ndn-udp-face.hpp"
+#include "model/ndn-l3-protocol.hpp"
 
 #include "ns3/log.h"
 #include "ns3/packet.h"

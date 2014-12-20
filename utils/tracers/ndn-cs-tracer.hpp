@@ -24,10 +24,11 @@
 
 #include "ns3/ptr.h"
 #include "ns3/simple-ref-count.h"
-#include "ns3/ndn-common.h"
 #include <ns3/nstime.h>
 #include <ns3/event-id.h>
 #include <ns3/node-container.h>
+
+#include "ns3/ndnSIM/model/ndn-common.hpp"
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/shared_ptr.hpp>

@@ -22,13 +22,15 @@
 #ifndef NDN_CONSUMER_H
 #define NDN_CONSUMER_H
 
-#include "ndn-app.h"
+#include "ndn-app.hpp"
+
 #include "ns3/random-variable.h"
 #include "ns3/nstime.h"
 #include "ns3/data-rate.h"
-#include "ns3/ndn-rtt-estimator.h"
-#include "ns3/ndn-fw-hop-count-tag.h"
-#include "ns3/ndn-common.h"
+
+#include "ns3/ndnSIM/model/ndn-common.hpp"
+#include "ns3/ndnSIM/utils/ndn-rtt-estimator.hpp"
+#include "ns3/ndnSIM/utils/ndn-fw-hop-count-tag.hpp"
 
 #include <set>
 #include <map>

@@ -22,8 +22,8 @@
 #ifndef NDN_CONTENT_STORE_NOCACHE_H
 #define	NDN_CONTENT_STORE_NOCACHE_H
 
-#include "ns3/ndn-content-store.h"
-#include "ns3/ndn-common.h"
+#include "ns3/ndnSIM/model/cs/ndn-content-store.hpp"
+#include "ns3/ndnSIM/model/ndn-common.hpp"
 
 namespace ns3 {
 namespace ndn {

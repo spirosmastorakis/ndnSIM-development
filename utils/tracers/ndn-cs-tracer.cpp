@@ -19,18 +19,19 @@
  *         Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
-#include "ndn-cs-tracer.h"
+#include "ndn-cs-tracer.hpp"
 #include "ns3/node.h"
 #include "ns3/packet.h"
 #include "ns3/config.h"
 #include "ns3/names.h"
 #include "ns3/callback.h"
 
-#include "ns3/ndn-app.h"
-#include "ns3/ndn-content-store.h"
 #include "ns3/simulator.h"
 #include "ns3/node-list.h"
 #include "ns3/log.h"
+
+#include "apps/ndn-app.hpp"
+#include "model/cs/ndn-content-store.hpp"
 
 #include <boost/lexical_cast.hpp>
 

@@ -19,22 +19,22 @@
  *         Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
+#include "ndn-producer.hpp"
+
 #include "ns3/object.h"
-#include "ndn-producer.h"
 #include "ns3/log.h"
 #include "ns3/string.h"
 #include "ns3/uinteger.h"
 #include "ns3/packet.h"
 #include "ns3/simulator.h"
 
-#include "ns3/ndn-app-face.h"
-#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
-#include "ns3/ndn-ns3.hpp"
-#include "ns3/ndn-l3-protocol.h"
-#include "ns3/ndn-fib-helper.h"
-#include "ns3/ndn-fw-hop-count-tag.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
+#include "model/ndn-app-face.hpp"
+#include "model/ndn-ns3.hpp"
+#include "model/ndn-l3-protocol.hpp"
+#include "helper/ndn-fib-helper.hpp"
+#include "utils/ndn-fw-hop-count-tag.hpp"
+#include "utils/ndn-interest.hpp"
+#include "utils/ndn-data.hpp"
 
 #include <boost/ref.hpp>
 #include <boost/lambda/lambda.hpp>
@@ -104,10 +104,6 @@ Producer::StartApplication ()
 
   NS_LOG_DEBUG ("NodeID: " << GetNode ()->GetId ());
 
-  // ::ndn::shared_ptr< ::nfd::fib::Entry> entry =
-  //    GetNode ()->GetObject<L3Protocol> ()->GetForwarder ()->getFib ().insert (m_prefix).first;
-  // entry->addNextHop (m_face->shared_from_this (), 0);
-
   ControlParameters parameters;
   parameters.setName(m_prefix);
   parameters.setFaceId(m_face->getId ());
@@ -116,13 +112,6 @@ Producer::StartApplication ()
   FibHelper fibHelper;
   Ptr<Node> node = GetNode();
   fibHelper.AddNextHop(parameters, node);
-
-  // fibEntry->UpdateStatus (m_face, fib::FaceMetric::NDN_FIB_GREEN);
-
-  // // make face green, so it will be used primarily
-  // StaticCast<fib::FibImpl> (fib)->modify (fibEntry,
-  //                                         ll::bind (&fib::Entry::UpdateStatus,
-  //                                                   ll::_1, m_face, fib::FaceMetric::NDN_FIB_GREEN));
 }
 
 void

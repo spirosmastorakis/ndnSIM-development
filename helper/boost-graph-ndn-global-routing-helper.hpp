@@ -28,11 +28,12 @@
 #include <boost/graph/properties.hpp>
 #include <boost/ref.hpp>
 
-#include "ns3/ndn-face.h"
-// #include "ns3/ndn-limits.h"
+#include "ns3/ndnSIM/model/ndn-face.hpp"
+#include "ns3/ndnSIM/model/ndn-global-router.hpp"
+
 #include "ns3/node-list.h"
 #include "ns3/channel-list.h"
-#include "../model/ndn-global-router.h"
+
 #include <list>
 #include <map>
 

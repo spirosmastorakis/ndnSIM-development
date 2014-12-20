@@ -1,4 +1,4 @@
-#include "ndn-strategy-choice-helper.h"
+#include "ndn-strategy-choice-helper.hpp"
 
 #include "ns3/log.h"
 

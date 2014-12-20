@@ -21,15 +21,11 @@
 #ifndef NDN_L3_TRACER_H
 #define NDN_L3_TRACER_H
 
-#include "ns3/ndn-common.h"
 #include "ns3/ptr.h"
-#include "ns3/ndn-l3-protocol.h"
 #include "ns3/simple-ref-count.h"
 
-/**
- * @ingroup ndn-helpers
- * @defgroup ndn-tracers Helpers to simplify metric collection
- */
+#include "ns3/ndnSIM/model/ndn-common.hpp"
+#include "ns3/ndnSIM/model/ndn-l3-protocol.hpp"
 
 namespace ns3 {
 

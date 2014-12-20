@@ -18,14 +18,16 @@
  * Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
-#include "ndn-app-delay-tracer.h"
+#include "ndn-app-delay-tracer.hpp"
+
 #include "ns3/node.h"
 #include "ns3/packet.h"
 #include "ns3/config.h"
 #include "ns3/names.h"
 #include "ns3/callback.h"
 
-#include "ns3/ndn-app.h"
+#include "apps/ndn-app.hpp"
+
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
 #include "ns3/simulator.h"

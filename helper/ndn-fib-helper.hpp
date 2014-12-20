@@ -5,10 +5,10 @@
 #include "ns3/object-vector.h"
 #include "ns3/pointer.h"
 
-#include "ns3/ndn-common.h"
-#include "ns3/ndn-l3-protocol.h"
-#include "ns3/ndn-face.h"
-#include "ns3/ndn-stack-helper.h"
+#include "ns3/ndnSIM/model/ndn-common.hpp"
+#include "ns3/ndnSIM/model/ndn-l3-protocol.hpp"
+#include "ns3/ndnSIM/model/ndn-face.hpp"
+#include "ns3/ndnSIM/helper/ndn-stack-helper.hpp"
 
 namespace ndn {
 namespace nfd {

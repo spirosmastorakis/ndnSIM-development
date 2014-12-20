@@ -19,7 +19,7 @@
  *
  */
 
-#include "ndn-face.h"
+#include "ndn-face.hpp"
 
 #include "ns3/packet.h"
 #include "ns3/log.h"
@@ -32,10 +32,10 @@
 #include "ns3/random-variable.h"
 #include "ns3/pointer.h"
 #include "ns3/ptr.h"
-#include "ns3/ndn-interest.h"
-#include "ns3/ndn-data.h"
 
-#include "ns3/ndn-fw-hop-count-tag.h"
+#include "utils/ndn-interest.hpp"
+#include "utils/ndn-data.hpp"
+#include "utils/ndn-fw-hop-count-tag.hpp"
 
 #include <boost/ref.hpp>
 

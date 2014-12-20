@@ -18,7 +18,7 @@
  * Author: Ilya Moiseenko <iliamo@cs.ucla.edu>
  */
 
-#include "ndn-consumer-cbr.h"
+#include "ndn-consumer-cbr.hpp"
 #include "ns3/ptr.h"
 #include "ns3/log.h"
 #include "ns3/simulator.h"
@@ -30,7 +30,7 @@
 #include "ns3/integer.h"
 #include "ns3/double.h"
 
-#include "ns3/ndn-app-face.h"
+#include "model/ndn-app-face.hpp"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.ConsumerCbr");
 

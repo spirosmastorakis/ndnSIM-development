@@ -21,8 +21,8 @@
 #ifndef NDN_L3_AGGREGATE_TRACER_H
 #define NDN_L3_AGGREGATE_TRACER_H
 
-#include "ndn-l3-tracer.h"
-#include "ns3/ndn-common.h"
+#include "ndn-l3-tracer.hpp"
+#include "ns3/ndnSIM/model/ndn-common.hpp"
 
 #include <ns3/nstime.h>
 #include <ns3/event-id.h>

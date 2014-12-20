@@ -22,22 +22,18 @@
 #ifndef NDN_APP_FACE_H
 #define NDN_APP_FACE_H
 
-#include "ndn-face.h"
+#include "ns3/ndnSIM/model/ndn-face.hpp"
+#include "ns3/ndnSIM/model/ndn-common.hpp"
+
 #include "ns3/traced-callback.h"
 #include "ns3/attribute.h"
 #include "ns3/attribute-helper.h"
-
-#include "ndn-face.h"
-#include "ns3/ndn-common.h"
 
 namespace ns3 {
 
 class Packet;
 
 namespace ndn {
-
-typedef Interest InterestHeader;
-typedef Data DataHeader;
 
 class App;
 

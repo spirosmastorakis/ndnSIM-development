@@ -25,8 +25,9 @@
 #include "ns3/attribute.h"
 #include "ns3/node-container.h"
 #include "ns3/application-container.h"
-#include "ns3/ndn-common.h"
 #include "ns3/ptr.h"
+
+#include "ns3/ndnSIM/model/ndn-common.hpp"
 
 namespace ns3 {
 namespace ndn {

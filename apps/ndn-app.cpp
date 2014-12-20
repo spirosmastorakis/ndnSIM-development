@@ -18,13 +18,13 @@
  * Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
-#include "ndn-app.h"
+#include "ndn-app.hpp"
 #include "ns3/log.h"
 #include "ns3/assert.h"
 #include "ns3/packet.h"
 
-#include "ns3/ndn-l3-protocol.h"
-#include "ns3/ndn-app-face.h"
+#include "model/ndn-l3-protocol.hpp"
+#include "model/ndn-app-face.hpp"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.App");
 

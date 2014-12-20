@@ -21,10 +21,10 @@
 #ifndef NDN_CONTENT_STORE_WITH_STATS_H_
 #define NDN_CONTENT_STORE_WITH_STATS_H_
 
-#include "content-store-impl.h"
+#include "content-store-impl.hpp"
 
-#include "../../utils/trie/multi-policy.h"
-#include "custom-policies/lifetime-stats-policy.h"
+#include "../../utils/trie/multi-policy.hpp"
+#include "custom-policies/lifetime-stats-policy.hpp"
 
 namespace ns3 {
 namespace ndn {

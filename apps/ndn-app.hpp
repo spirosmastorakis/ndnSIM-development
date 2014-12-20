@@ -26,8 +26,8 @@
 #include "ns3/callback.h"
 #include "ns3/traced-callback.h"
 
-#include "ns3/ndn-common.h"
-#include "ns3/ndn-face.h"
+#include "ns3/ndnSIM/model/ndn-common.hpp"
+#include "ns3/ndnSIM/model/ndn-face.hpp"
 
 namespace ns3 {
 

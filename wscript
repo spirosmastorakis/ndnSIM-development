@@ -1,12 +1,4 @@
 ## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
-#
-# Copyright (c) 2011-2013, Regents of the University of California
-#                          Alexander Afanasyev
-#
-# GNU 3.0 license, See the LICENSE file for more information
-#
-# Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
-#
 
 import os
 from waflib import Logs, Utils, Options, TaskGen, Task
@@ -88,45 +80,12 @@ def build(bld):
         bld.env['MODULES_NOT_BUILT'].append('ndnSIM')
         return
 
-    module.source = bld.path.ant_glob(['model/**/*.cc',
-                                       'apps/*.cc',
-                                       'utils/**/*.cc',
-                                       'utils/**/*.cpp',
-                                       'helper/**/*.cc',
-                                       'helper/**/*.cpp',
-                                       'model/**/*.cpp',
-                                       'NFD/**/*.cpp'
-                                       ])
+    module_dirs = ['NFD', 'apps', 'helper', 'model', 'utils']
+    
+    module.source = bld.path.ant_glob(['%s/**/*.cpp' % dir for dir in module_dirs])
 
-    module.full_headers = [p.path_from(bld.path) for p in bld.path.ant_glob([
-                           'utils/**/*.h',
-                           'model/**/*.h',
-                           'apps/**/*.h',
-                           'helper/**/*.h',
-                           'helper/**/*.hpp',
-                           'model/**/*.hpp',
-                           'NFD/**/*.hpp'
-                           ])]
-
-    headers.source = [
-        "helper/ndn-stack-helper.h",
-        "helper/ndn-app-helper.h",
-        "helper/ndn-face-container.h",
-        "helper/ndn-global-routing-helper.h",
-        "helper/ndn-link-control-helper.h",
-        "helper/ndn-header-helper.h",
-
-        "apps/ndn-app.h",
-        "apps/callback-based-app.h",
-
-        "model/ndn-common.h",
-        "model/ndn-l3-protocol.h",
-        "model/ndn-face.h",
-        "model/ndn-app-face.h",
-        "model/ndn-net-device-face.h",
-
-    tests = bld.create_ns3_module_test_library('ndnSIM')
-    tests.source = bld.path.ant_glob('test/*.cc')
+    module.full_headers = [p.path_from(bld.path) for p in bld.path.ant_glob(
+        ['%s/**/*.hpp' % dir for dir in module_dirs])]
 
     if bld.env.ENABLE_EXAMPLES:
         bld.recurse ('examples')

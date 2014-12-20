@@ -6,9 +6,10 @@
 
 #include "ndn-header.hpp"
 #include "ndn-trailer.hpp"
-#include "ns3/ndn-fw-hop-count-tag.h"
 
-#include <ndn-cxx/common.hpp>
+#include "ns3/ndnSIM/utils/ndn-fw-hop-count-tag.hpp"
+
+#include <ndn-cxx/encoding/block.hpp>
 
 namespace ndn {
 

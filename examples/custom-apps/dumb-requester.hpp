@@ -23,8 +23,8 @@
 #ifndef DUMB_REQUESTER_H_
 #define DUMB_REQUESTER_H_
 
-#include "ns3/ndn-app.h"
-#include "ns3/ndn-common.h"
+#include "ns3/ndn-app.hpp"
+#include "ns3/ndn-common.hpp"
 
 namespace ns3 {
 

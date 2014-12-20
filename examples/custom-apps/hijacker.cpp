@@ -20,7 +20,7 @@
 // hijacker.cc
 
 #include "hijacker.h"
-#include "ns3/ndn-fib-helper.h"
+#include "ns3/ndn-fib-helper.hpp"
 
 NS_LOG_COMPONENT_DEFINE ("Hijacker");
 

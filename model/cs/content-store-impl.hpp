@@ -21,8 +21,8 @@
 #ifndef NDN_CONTENT_STORE_IMPL_H_
 #define NDN_CONTENT_STORE_IMPL_H_
 
-#include "ndn-content-store.h"
-#include "ns3/packet.h"
+#include "ndn-content-store.hpp"
+
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
 #include <boost/foreach.hpp>
@@ -30,8 +30,9 @@
 #include "ns3/log.h"
 #include "ns3/uinteger.h"
 #include "ns3/string.h"
+#include "ns3/packet.h"
 
-#include "../../utils/trie/trie-with-policy.h"
+#include "../../utils/trie/trie-with-policy.hpp"
 
 namespace ns3 {
 namespace ndn {

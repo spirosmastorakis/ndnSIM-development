@@ -38,7 +38,7 @@
 #include <ndn-cxx/management/nfd-face-status.hpp>
 #include <ndn-cxx/util/face-uri.hpp>
 
-#include "ns3/ndnSIM/NFD/daemon/face/face-counters.hpp"
+#include "ns3/ndnSIM/model/ndn-common.hpp"
 #include "ns3/ndnSIM/model/ndn-ns3.hpp"
 
 namespace ns3 {

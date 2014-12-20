@@ -24,15 +24,17 @@
 #pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
 #endif
 
-#include "ndn-global-routing-helper.h"
+#include "ndn-global-routing-helper.hpp"
 
-#include "ns3/ndn-l3-protocol.h"
-#include "ns3/ndn-fib-helper.h"
-#include "../model/ndn-net-device-face.h"
-#include "../model/ndn-global-router.h"
+#include "model/ndn-l3-protocol.hpp"
+#include "helper/ndn-fib-helper.hpp"
+#include "model/ndn-net-device-face.hpp"
+#include "model/ndn-global-router.hpp"
 
-#include "ns3/ndnSIM/NFD/daemon/table/fib.hpp"
-#include "ns3/ndnSIM/NFD/daemon/fw/forwarder.hpp"
+#include "daemon/table/fib.hpp"
+#include "daemon/fw/forwarder.hpp"
+#include "daemon/table/fib-entry.hpp"
+#include "daemon/table/fib-nexthop.hpp"
 
 #include "ns3/object.h"
 #include "ns3/node.h"
@@ -49,13 +51,9 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
 #include <boost/concept/assert.hpp>
-
-#include "ns3/ndnSIM/NFD/daemon/table/fib-entry.hpp"
-#include "ns3/ndnSIM/NFD/daemon/table/fib-nexthop.hpp"
-
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
-#include "boost-graph-ndn-global-routing-helper.h"
+#include "boost-graph-ndn-global-routing-helper.hpp"
 
 #include <math.h>
 

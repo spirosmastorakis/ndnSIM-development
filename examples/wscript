@@ -1,82 +1,14 @@
 ## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
-#
-# Copyright (c) 2011-2013, Regents of the University of California
-#                          Alexander Afanasyev
-#
-# GNU 3.0 license, See the LICENSE file for more information
-#
-# Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
-#
+
+from waflib import Utils, Logs
 
 def build(bld):
     # This may be necessary for visualizer to work
     all_modules = [mod[len("ns3-"):] for mod in bld.env['NS3_ENABLED_MODULES']]
 
-    obj = bld.create_ns3_program('ndn-simple', all_modules)
-    obj.source = 'ndn-simple.cc'
+    for i in bld.path.ant_glob(['*.cpp']):
+        name = str(i)[:-len(".cpp")]
+        obj = bld.create_ns3_program(name, all_modules)
+        obj.source = [i] + bld.path.ant_glob(['%s/**/*.cpp' % name])
+        obj.includes += " .. ../NFD"
 
-    obj = bld.create_ns3_program('ndn-csma', all_modules)
-    obj.source = 'ndn-csma.cc'
-
-    obj = bld.create_ns3_program('ndn-grid', all_modules)
-    obj.source = 'ndn-grid.cc'
-
-    obj = bld.create_ns3_program('ndn-grid-multiple-strategies', all_modules)
-    obj.source = 'ndn-grid-multiple-strategies.cc'
-
-    obj = bld.create_ns3_program('ndn-different-strategy-per-prefix', all_modules)
-    obj.source = 'ndn-different-strategy-per-prefix.cc'
-
-    obj = bld.create_ns3_program('ndn-zipf-mandelbrot', all_modules)
-    obj.source = 'ndn-zipf-mandelbrot.cc'
-
-    obj = bld.create_ns3_program('ndn-simple-with-custom-app', all_modules)
-    obj.source = ['ndn-simple-with-custom-app.cc',
-                  'custom-apps/custom-app.cc',
-                  'custom-apps/hijacker.cc']
-
-    obj = bld.create_ns3_program('ndn-simple-with-cs-lfu', all_modules)
-    obj.source = 'ndn-simple-with-cs-lfu.cc'
-
-    if 'topology' in bld.env['NDN_plugins']:
-
-        obj = bld.create_ns3_program('ndn-grid-topo-plugin', all_modules)
-        obj.source = 'ndn-grid-topo-plugin.cc'
-
-        obj = bld.create_ns3_program('ndn-load-balancer', all_modules)
-        obj.source = 'ndn-load-balancer.cc'
-
-        obj = bld.create_ns3_program('ndn-congestion-topo-plugin', all_modules)
-        obj.source = 'ndn-congestion-topo-plugin.cc'
-
-        obj = bld.create_ns3_program('ndn-tree-tracers', all_modules)
-        obj.source = 'ndn-tree-tracers.cc'
-
-        obj = bld.create_ns3_program('ndn-tree-app-delay-tracer', all_modules)
-        obj.source = 'ndn-tree-app-delay-tracer.cc'
-
-        obj = bld.create_ns3_program('ndn-tree-rate-tracer', all_modules)
-        obj.source = 'ndn-tree-rate-tracer.cc'
-
-        obj = bld.create_ns3_program('ndn-tree-cs-tracers', all_modules)
-        obj.source = 'ndn-tree-cs-tracers.cc'
-
-        obj = bld.create_ns3_program('ndn-tree-with-l2tracer', all_modules)
-        obj.source = 'ndn-tree-with-l2tracer.cc'
-
-        obj = bld.create_ns3_program('ndn-congestion-alt-topo-plugin', all_modules)
-        obj.source = 'ndn-congestion-alt-topo-plugin.cc'
-
-        #obj = bld.create_ns3_program('ndn-ping', all_modules)
-        #obj.source = ['ndn-ping.cc',
-              #       'custom-apps/ping-client.cc',
-              #       'custom-apps/ping-server.cc']
-
-    obj = bld.create_ns3_program('ndn-simple-with-pcap', all_modules)
-    obj.source = 'ndn-simple-with-pcap.cc'
-
-    obj = bld.create_ns3_program('ndn-simple-with-link-failure', all_modules)
-    obj.source = 'ndn-simple-with-link-failure.cc'
-
-    obj = bld.create_ns3_program('ndn-simple-wifi', all_modules)
-    obj.source = 'ndn-simple-wifi.cc'

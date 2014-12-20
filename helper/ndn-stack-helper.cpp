@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ndn-stack-helper.h"
-#include "ndn-fib-helper.h"
+#include "ndn-stack-helper.hpp"
+#include "ndn-fib-helper.hpp"
 
 #include "ns3/assert.h"
 #include "ns3/log.h"
@@ -38,9 +38,9 @@
 #include "ns3/node-list.h"
 #include "ns3/data-rate.h"
 
-#include "ns3/ndn-content-store.h"
-#include "../utils/ndn-time.h"
-#include "../utils/dummy-keychain.hpp"
+#include "model/cs/ndn-content-store.hpp"
+#include "utils/ndn-time.hpp"
+#include "utils/dummy-keychain.hpp"
 
 #include <limits>
 #include <map>

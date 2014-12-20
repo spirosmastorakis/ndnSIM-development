@@ -20,7 +20,8 @@
  *
  */
 
-#include "content-store-nocache.h"
+#include "content-store-nocache.hpp"
+
 #include "ns3/log.h"
 #include "ns3/packet.h"
 

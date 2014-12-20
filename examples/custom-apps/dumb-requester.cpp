@@ -28,7 +28,7 @@
 #include "ns3/random-variable.h"
 #include "ns3/string.h"
 
-#include "ns3/ndn-app-face.h"
+#include "ns3/ndn-app-face.hpp"
 
 NS_LOG_COMPONENT_DEFINE ("DumbRequester");
 

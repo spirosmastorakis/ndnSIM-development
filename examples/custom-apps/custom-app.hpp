@@ -23,8 +23,8 @@
 #ifndef CUSTOM_APP_H_
 #define CUSTOM_APP_H_
 
-#include "ns3/ndn-app.h"
-#include "ns3/ndn-common.h"
+#include "ns3/ndn-app.hpp"
+#include "ns3/ndn-common.hpp"
 
 namespace ns3 {
 

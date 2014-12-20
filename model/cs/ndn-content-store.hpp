@@ -25,7 +25,8 @@
 #include "ns3/object.h"
 #include "ns3/ptr.h"
 #include "ns3/traced-callback.h"
-#include "ns3/ndn-common.h"
+
+#include "ns3/ndnSIM/model/ndn-common.hpp"
 
 #include <boost/tuple/tuple.hpp>
 

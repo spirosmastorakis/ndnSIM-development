@@ -18,7 +18,7 @@
  * Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
-#include "ndn-local-info-tag.h"
+#include "ndn-local-info-tag.hpp"
 #include <ns3/ndn-face.h>
 
 namespace ns3 {

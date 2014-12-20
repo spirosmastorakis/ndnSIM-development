@@ -19,8 +19,8 @@
  *
  */
 
-#include "ndn-net-device-face.h"
-#include "ndn-l3-protocol.h"
+#include "ndn-net-device-face.hpp"
+#include "ndn-l3-protocol.hpp"
 
 #include "ns3/net-device.h"
 #include "ns3/log.h"

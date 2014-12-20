@@ -18,14 +18,16 @@
  * Author:  Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
-#include "ndn-l3-aggregate-tracer.h"
+#include "ndn-l3-aggregate-tracer.hpp"
 
 #include "ns3/node.h"
 #include "ns3/packet.h"
 #include "ns3/config.h"
 #include "ns3/callback.h"
-#include "ns3/ndn-app.h"
-#include "ns3/ndn-face.h"
+
+#include "apps/ndn-app.hpp"
+#include "model/ndn-face.hpp"
+
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
 

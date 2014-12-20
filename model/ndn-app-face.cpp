@@ -20,7 +20,7 @@
  *
  */
 
-#include "ndn-app-face.h"
+#include "ndn-app-face.hpp"
 
 #include "ns3/log.h"
 #include "ns3/packet.h"
@@ -30,8 +30,7 @@
 #include "ns3/attribute.h"
 #include "ns3/attribute-helper.h"
 
-#include "ns3/ndn-app.h"
-#include "ns3/ndn-common.h"
+#include "apps/ndn-app.hpp"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.AppFace");
 

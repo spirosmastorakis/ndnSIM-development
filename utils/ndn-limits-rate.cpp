@@ -18,13 +18,14 @@
  * Author: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
-#include "ndn-limits-rate.h"
+#include "ndn-limits-rate.hpp"
 
 #include "ns3/log.h"
 #include "ns3/simulator.h"
 #include "ns3/random-variable.h"
-#include "ns3/ndn-face.h"
 #include "ns3/node.h"
+
+#include "model/ndn-face.hpp"
 
 NS_LOG_COMPONENT_DEFINE ("ndn.Limits.Rate");
 

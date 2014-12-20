@@ -1,4 +1,4 @@
-#include "ndn-fib-helper.h"
+#include "ndn-fib-helper.hpp"
 
 #include "ns3/assert.h"
 #include "ns3/log.h"
@@ -19,7 +19,7 @@
 #include "ns3/node-list.h"
 #include "ns3/data-rate.h"
 
-#include "ns3/ndnSIM/NFD/daemon/mgmt/fib-manager.hpp"
+#include "daemon/mgmt/fib-manager.hpp"
 
 namespace ns3 {
 namespace ndn {

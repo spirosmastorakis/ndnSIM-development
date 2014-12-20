@@ -1,4 +1,4 @@
-#include "ndn-interest.h"
+#include "ndn-interest.hpp"
 
 namespace ns3 {
 

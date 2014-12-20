@@ -19,7 +19,7 @@
  *         Ilya Moiseenko <iliamo@cs.ucla.edu>
  */
 
-#include "annotated-topology-reader.h"
+#include "annotated-topology-reader.hpp"
 
 #include "ns3/nstime.h"
 #include "ns3/log.h"
@@ -38,12 +38,12 @@
 #include "ns3/pointer.h"
 #include "ns3/uinteger.h"
 #include "ns3/ipv4-address.h"
-#include "ns3/ndn-l3-protocol.h"
-#include "ns3/ndn-face.h"
 #include "ns3/random-variable.h"
 #include "ns3/error-model.h"
-
 #include "ns3/constant-position-mobility-model.h"
+
+#include "model/ndn-l3-protocol.hpp"
+#include "model/ndn-face.hpp"
 
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>

@@ -21,10 +21,10 @@
 #ifndef NDN_CONTENT_STORE_WITH_PROBABILITY_H_
 #define NDN_CONTENT_STORE_WITH_PROBABILITY_H_
 
-#include "content-store-impl.h"
+#include "content-store-impl.hpp"
 
-#include "../../utils/trie/multi-policy.h"
-#include "custom-policies/probability-policy.h"
+#include "../../utils/trie/multi-policy.hpp"
+#include "custom-policies/probability-policy.hpp"
 #include "ns3/double.h"
 #include "ns3/type-id.h"
 

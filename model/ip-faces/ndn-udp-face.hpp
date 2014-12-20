@@ -18,13 +18,13 @@
  * Authors: Alexander Afanasyev <alexander.afanasyev@ucla.edu>
  */
 
-#ifndef NDN_TCP_FACE_H
-#define NDN_TCP_FACE_H
+#ifndef NDN_UDP_FACE_H
+#define NDN_UDP_FACE_H
 
-#include "ns3/ndn-face.h"
+#include "ns3/ndnSIM/model/ndn-face.hpp"
+
 #include "ns3/socket.h"
 #include "ns3/ptr.h"
-#include "ns3/callback.h"
 
 #include <map>
 
@@ -33,11 +33,11 @@ namespace ndn {
 
 /**
  * \ingroup ndn-face
- * \brief Implementation of TCP/IP NDN face
+ * \brief Implementation of UDP/IP NDN face
  *
- * \see NdnAppFace, NdnNetDeviceFace, NdnIpv4Face, NdnUdpFace
+ * \see ndn::AppFace, ndn::NetDeviceFace, ndn::Ipv4Face, ndn::TcpFace
  */
-class TcpFace : public Face
+class UdpFace : public Face
 {
 public:
   static TypeId
@@ -48,11 +48,8 @@ public:
    *
    * @param node Node associated with the face
    */
-  TcpFace (Ptr<Node> node, Ptr<Socket> socket, Ipv4Address address);
-  virtual ~TcpFace();
-
-  void
-  OnTcpConnectionClosed (Ptr<Socket> socket);
+  UdpFace (Ptr<Node> node, Ptr<Socket> socket, Ipv4Address address);
+  virtual ~UdpFace();
 
   virtual void
   close();
@@ -60,23 +57,11 @@ public:
   Ipv4Address
   GetAddress () const;
 
-  static Ptr<TcpFace>
-  GetFaceByAddress (const Ipv4Address &addr);
-
-  void
-  SetCreateCallback (Callback< void, Ptr<Face> > callback);
-
-  void
-  OnConnect (Ptr<Socket> socket);
+  virtual bool
+  ReceiveFromUdp (Ptr<const Packet> p);
 
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from ndn::Face
-  virtual void
-  RegisterProtocolHandlers (const InterestHandler &interestHandler, const DataHandler &dataHandler);
-
-  virtual void
-  UnRegisterProtocolHandlers ();
-
   virtual std::ostream&
   Print (std::ostream &os) const;
 
@@ -86,20 +71,15 @@ protected:
   Send (Ptr<Packet> p);
 
 private:
-  TcpFace (const TcpFace &); ///< \brief Disabled copy constructor
-  TcpFace& operator= (const TcpFace &); ///< \brief Disabled copy operator
-
-  void
-  ReceiveFromTcp (Ptr< Socket > clientSocket);
+  UdpFace (const UdpFace &); ///< \brief Disabled copy constructor
+  UdpFace& operator= (const UdpFace &); ///< \brief Disabled copy operator
 
 private:
   Ptr<Socket> m_socket;
   Ipv4Address m_address;
-  uint32_t m_pendingPacketLength;
-  Callback< void, Ptr<Face> > m_onCreateCallback;
 };
 
 } // namespace ndn
 } // namespace ns3
 
-#endif // NDN_TCP_FACE_H
+#endif // NDN_UDP_FACE_H
