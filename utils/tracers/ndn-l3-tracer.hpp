@@ -39,25 +39,24 @@ class Face;
  * @ingroup ndn-tracers
  * @brief Base class for network-layer (incoming/outgoing Interests and Data) tracing of NDN stack
  */
-class L3Tracer : public SimpleRefCount<L3Tracer>
-{
+class L3Tracer : public SimpleRefCount<L3Tracer> {
 public:
   /**
    * @brief Trace constructor that attaches to the node using node pointer
    * @param node  pointer to the node
    */
-  L3Tracer (Ptr<Node> node);
+  L3Tracer(Ptr<Node> node);
 
   /**
    * @brief Trace constructor that attaches to the node using node name
    * @param nodeName  name of the node registered using Names::Add
    */
-  L3Tracer (const std::string &node);
+  L3Tracer(const std::string& node);
 
   /**
    * @brief Destructor
    */
-  virtual ~L3Tracer ();
+  virtual ~L3Tracer();
 
   /**
    * @brief Print head of the trace (e.g., for post-processing)
@@ -65,7 +64,7 @@ public:
    * @param os reference to output stream
    */
   virtual void
-  PrintHeader (std::ostream &os) const = 0;
+  PrintHeader(std::ostream& os) const = 0;
 
   /**
    * @brief Print current trace data
@@ -73,17 +72,17 @@ public:
    * @param os reference to output stream
    */
   virtual void
-  Print (std::ostream &os) const = 0;
+  Print(std::ostream& os) const = 0;
 
 protected:
   void
-  Connect ();
+  Connect();
 
   virtual void
-  OutInterests  (const Interest&, const Face&) = 0;
+  OutInterests(const Interest&, const Face&) = 0;
 
   virtual void
-  InInterests   (const Interest&, const Face&) = 0;
+  InInterests(const Interest&, const Face&) = 0;
 
   // virtual void
   // DropInterests (shared_ptr<const ::ndn::Interest>, Ptr<const Face>) = 0;
@@ -100,10 +99,10 @@ protected:
   */
 
   virtual void
-  OutData  (const Data&, const Face&) = 0;
+  OutData(const Data&, const Face&) = 0;
 
   virtual void
-  InData   (const Data&, const Face&) = 0;
+  InData(const Data&, const Face&) = 0;
 
   // virtual void
   // DropData (shared_ptr<const ::ndn::Data>, Ptr<const Face>) = 0;
@@ -118,19 +117,19 @@ protected:
   std::string m_node;
   Ptr<Node> m_nodePtr;
 
-  struct Stats
-  {
-    inline void Reset ()
+  struct Stats {
+    inline void
+    Reset()
     {
-      m_inInterests   = 0;
-      m_outInterests  = 0;
+      m_inInterests = 0;
+      m_outInterests = 0;
       m_dropInterests = 0;
-      m_inNacks       = 0;
-      m_outNacks      = 0;
-      m_dropNacks     = 0;
-      m_inData        = 0;
-      m_outData       = 0;
-      m_dropData      = 0;
+      m_inNacks = 0;
+      m_outNacks = 0;
+      m_dropNacks = 0;
+      m_inData = 0;
+      m_outData = 0;
+      m_dropData = 0;
       m_satisfiedInterests = 0;
       m_timedOutInterests = 0;
 
@@ -158,12 +157,12 @@ protected:
  * @brief Helper to dump the trace to an output stream
  */
 inline std::ostream&
-operator << (std::ostream &os, const L3Tracer &tracer)
+operator<<(std::ostream& os, const L3Tracer& tracer)
 {
   os << "# ";
-  tracer.PrintHeader (os);
+  tracer.PrintHeader(os);
   os << "\n";
-  tracer.Print (os);
+  tracer.Print(os);
   return os;
 }
 

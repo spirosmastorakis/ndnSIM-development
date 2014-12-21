@@ -25,8 +25,7 @@
 namespace ndn {
 namespace security {
 
-class DummyPublicInfo : public SecPublicInfo
-{
+class DummyPublicInfo : public SecPublicInfo {
 public:
   virtual bool
   doesIdentityExist(const Name& identityName);
@@ -105,8 +104,7 @@ protected:
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-class DummyTpm : public SecTpm
-{
+class DummyTpm : public SecTpm {
 public:
   virtual void
   setTpmPassword(const uint8_t* password, size_t passwordLength);
@@ -136,8 +134,7 @@ public:
   getPublicKeyFromTpm(const Name& keyName);
 
   virtual Block
-  signInTpm(const uint8_t* data, size_t dataLength,
-            const Name& keyName,
+  signInTpm(const uint8_t* data, size_t dataLength, const Name& keyName,
             DigestAlgorithm digestAlgorithm);
 
   virtual ConstBufferPtr
@@ -169,13 +166,11 @@ protected:
   importPublicKeyPkcs1IntoTpm(const Name& keyName, const uint8_t* buffer, size_t bufferSize);
 };
 
-
 typedef KeyChainTraits<DummyPublicInfo, DummyTpm> DummyKeyChainTraits;
 
 } // namespace security
 
-class DummyKeyChain : public KeyChain
-{
+class DummyKeyChain : public KeyChain {
 public:
   DummyKeyChain()
     : KeyChain(security::DummyKeyChainTraits())

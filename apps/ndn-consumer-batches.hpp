@@ -31,15 +31,15 @@ namespace ndn {
  * @ingroup ndn-apps
  * \brief Ndn application for sending out Interest packets in batches
  */
-class ConsumerBatches: public Consumer
-{
+class ConsumerBatches : public Consumer {
 public:
-  static TypeId GetTypeId ();
+  static TypeId
+  GetTypeId();
 
   /**
    * \brief Default constructor
    */
-  ConsumerBatches ();
+  ConsumerBatches();
 
   // From App
   // virtual void
@@ -57,16 +57,18 @@ public:
 
 private:
   virtual void
-  StartApplication ();    ///< @brief Called at time specified by Start
+  StartApplication(); ///< @brief Called at time specified by Start
 
   void
-  AddBatch (uint32_t amount);
+  AddBatch(uint32_t amount);
+
 protected:
   /**
-   * \brief Constructs the Interest packet and sends it using a callback to the underlying NDN protocol
+   * \brief Constructs the Interest packet and sends it using a callback to the underlying NDN
+   * protocol
    */
   virtual void
-  ScheduleNextPacket ();
+  ScheduleNextPacket();
 
 private:
   bool m_initial;

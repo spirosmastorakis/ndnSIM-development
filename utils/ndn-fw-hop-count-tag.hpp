@@ -29,61 +29,72 @@ namespace ndn {
  * @ingroup ndn-fw
  * @brief Packet tag that is used to track hop count for Interest-Data pairs
  */
-class FwHopCountTag : public Tag
-{
+class FwHopCountTag : public Tag {
 public:
   static TypeId
-  GetTypeId (void);
+  GetTypeId(void);
 
   /**
    * @brief Default constructor
    */
-  FwHopCountTag () : m_hopCount (0) { };
+  FwHopCountTag()
+    : m_hopCount(0){};
 
   /**
    * @brief Destructor
    */
-  ~FwHopCountTag () { }
+  ~FwHopCountTag()
+  {
+  }
 
   /**
    * @brief Increment hop count
    */
   void
-  Increment () { m_hopCount ++; }
+  Increment()
+  {
+    m_hopCount++;
+  }
 
   /**
    * @brief Get value of hop count
    */
   uint32_t
-  Get () const { return m_hopCount; }
+  Get() const
+  {
+    return m_hopCount;
+  }
 
   /**
    * @brief Set value of hop count
    */
   void
-  Set (uint32_t tag) { m_hopCount = tag; }
+  Set(uint32_t tag)
+  {
+    m_hopCount = tag;
+  }
 
   ////////////////////////////////////////////////////////
   // from ObjectBase
   ////////////////////////////////////////////////////////
   virtual TypeId
-  GetInstanceTypeId () const;
+  GetInstanceTypeId() const;
 
   ////////////////////////////////////////////////////////
   // from Tag
   ////////////////////////////////////////////////////////
 
   virtual uint32_t
-  GetSerializedSize () const;
+  GetSerializedSize() const;
 
   virtual void
-  Serialize (TagBuffer i) const;
+  Serialize(TagBuffer i) const;
 
   virtual void
-  Deserialize (TagBuffer i);
+  Deserialize(TagBuffer i);
 
   virtual void
-  Print (std::ostream &os) const;
+  Print(std::ostream& os) const;
 
 private:
   uint32_t m_hopCount;

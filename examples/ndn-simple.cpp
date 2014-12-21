@@ -30,7 +30,6 @@ using ns3::ndn::AppHelper;
 using ns3::ndn::StrategyChoiceHelper;
 using ns3::ndn::L3AggregateTracer;
 
-
 /**
  * This scenario simulates a very simple network topology:
  *
@@ -52,58 +51,58 @@ using ns3::ndn::L3AggregateTracer;
  */
 
 int
-main (int argc, char *argv[])
+main(int argc, char* argv[])
 {
   // setting default parameters for PointToPoint links and channels
-  Config::SetDefault ("ns3::PointToPointNetDevice::DataRate", StringValue ("1Mbps"));
-  Config::SetDefault ("ns3::PointToPointChannel::Delay", StringValue ("10ms"));
-  Config::SetDefault ("ns3::DropTailQueue::MaxPackets", StringValue ("20"));
+  Config::SetDefault("ns3::PointToPointNetDevice::DataRate", StringValue("1Mbps"));
+  Config::SetDefault("ns3::PointToPointChannel::Delay", StringValue("10ms"));
+  Config::SetDefault("ns3::DropTailQueue::MaxPackets", StringValue("20"));
 
   // Read optional command-line parameters (e.g., enable visualizer with ./waf --run=<> --visualize
   CommandLine cmd;
-  cmd.Parse (argc, argv);
+  cmd.Parse(argc, argv);
 
   // Creating nodes
   NodeContainer nodes;
-  nodes.Create (3);
+  nodes.Create(3);
 
   // Connecting nodes using two links
   PointToPointHelper p2p;
-  p2p.Install (nodes.Get (0), nodes.Get (1));
-  p2p.Install (nodes.Get (1), nodes.Get (2));
+  p2p.Install(nodes.Get(0), nodes.Get(1));
+  p2p.Install(nodes.Get(1), nodes.Get(2));
 
   // Install NDN stack on all nodes
   StackHelper ndnHelper;
-  ndnHelper.SetDefaultRoutes (true);
-  ndnHelper.SetContentStoreChoice (false);
-  ndnHelper.InstallAll ();
+  ndnHelper.SetDefaultRoutes(true);
+  ndnHelper.SetContentStoreChoice(false);
+  ndnHelper.InstallAll();
   // Installing applications
 
   // Choosing forwarding strategy
   StrategyChoiceHelper strategyChoiceHelper;
-  strategyChoiceHelper.InstallAll ("/prefix", "/localhost/nfd/strategy/best-route");
+  strategyChoiceHelper.InstallAll("/prefix", "/localhost/nfd/strategy/best-route");
 
   // Consumer
-  AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
+  AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
   // Consumer will request /prefix/0, /prefix/1, ...
-  consumerHelper.SetPrefix ("/prefix");
-  consumerHelper.SetAttribute ("Frequency", StringValue ("1")); // 10 interests a second
-  consumerHelper.Install (nodes.Get (0)); // first node
+  consumerHelper.SetPrefix("/prefix");
+  consumerHelper.SetAttribute("Frequency", StringValue("1")); // 10 interests a second
+  consumerHelper.Install(nodes.Get(0));                       // first node
 
   // Producer
-  AppHelper producerHelper ("ns3::ndn::Producer");
+  AppHelper producerHelper("ns3::ndn::Producer");
   // Producer will reply to all requests starting with /prefix
-  producerHelper.SetPrefix ("/prefix");
-  producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
-  producerHelper.Install (nodes.Get (2)); // last node
+  producerHelper.SetPrefix("/prefix");
+  producerHelper.SetAttribute("PayloadSize", StringValue("1024"));
+  producerHelper.Install(nodes.Get(2)); // last node
 
-  Simulator::Stop (Seconds (20.0));
+  Simulator::Stop(Seconds(20.0));
 
-  //Install tracer
-  L3AggregateTracer::InstallAll ("aggregate-trace.txt", Seconds (0.5));
+  // Install tracer
+  L3AggregateTracer::InstallAll("aggregate-trace.txt", Seconds(0.5));
 
-  Simulator::Run ();
-  Simulator::Destroy ();
+  Simulator::Run();
+  Simulator::Destroy();
 
   return 0;
 }

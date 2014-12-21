@@ -28,8 +28,7 @@ namespace time {
 
 using namespace ::ndn::time;
 
-class CustomSystemClock : public CustomClock<system_clock>
-{
+class CustomSystemClock : public CustomClock<system_clock> {
 public:
   system_clock::time_point
   getNow() const;
@@ -41,8 +40,7 @@ public:
   toPosixDuration(const system_clock::duration& duration) const;
 };
 
-class CustomSteadyClock : public CustomClock<steady_clock>
-{
+class CustomSteadyClock : public CustomClock<steady_clock> {
 public:
   steady_clock::time_point
   getNow() const;

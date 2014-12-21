@@ -64,8 +64,7 @@ class L3Protocol;
  * attribute or a set of functionality that may be of interest to many other
  * classes.
  */
-class StackHelper
-{
+class StackHelper {
 public:
   /**
    * \brief Create a new NdnStackHelper with a default NDN_FLOODING forwarding stategy
@@ -75,18 +74,16 @@ public:
   /**
    * \brief Destroy the NdnStackHelper
    */
-  virtual
-  ~StackHelper ();
+  virtual ~StackHelper();
 
   /**
    * @brief Set parameters of NdnL3Protocol
    */
   void
-  SetStackAttributes(const std::string &attr1 = "", const std::string &value1 = "",
-                     const std::string &attr2 = "", const std::string &value2 = "",
-                     const std::string &attr3 = "", const std::string &value3 = "",
-                     const std::string &attr4 = "", const std::string &value4 = "");
-
+  SetStackAttributes(const std::string& attr1 = "", const std::string& value1 = "",
+                     const std::string& attr2 = "", const std::string& value2 = "",
+                     const std::string& attr3 = "", const std::string& value3 = "",
+                     const std::string& attr4 = "", const std::string& value4 = "");
 
   /**
    * @brief Set forwarding strategy class and its attributes
@@ -97,81 +94,85 @@ public:
    * Other strategies can be implemented, inheriting ns3::NdnForwardingStrategy class
    */
   void
-  SetForwardingStrategy (const std::string &forwardingStrategyClass,
-                         const std::string &attr1 = "", const std::string &value1 = "",
-                         const std::string &attr2 = "", const std::string &value2 = "",
-                         const std::string &attr3 = "", const std::string &value3 = "",
-                         const std::string &attr4 = "", const std::string &value4 = "");
+  SetForwardingStrategy(const std::string& forwardingStrategyClass, const std::string& attr1 = "",
+                        const std::string& value1 = "", const std::string& attr2 = "",
+                        const std::string& value2 = "", const std::string& attr3 = "",
+                        const std::string& value3 = "", const std::string& attr4 = "",
+                        const std::string& value4 = "");
 
   /**
    * @brief Set content store class and its attributes
    * @param contentStoreClass string, representing class of the content store
    */
   void
-  SetContentStore (const std::string &contentStoreClass,
-                   const std::string &attr1 = "", const std::string &value1 = "",
-                   const std::string &attr2 = "", const std::string &value2 = "",
-                   const std::string &attr3 = "", const std::string &value3 = "",
-                   const std::string &attr4 = "", const std::string &value4 = "");
+  SetContentStore(const std::string& contentStoreClass, const std::string& attr1 = "",
+                  const std::string& value1 = "", const std::string& attr2 = "",
+                  const std::string& value2 = "", const std::string& attr3 = "",
+                  const std::string& value3 = "", const std::string& attr4 = "",
+                  const std::string& value4 = "");
 
   void
-  SetContentStoreChoice (const bool nfdCS);
+  SetContentStoreChoice(const bool nfdCS);
 
   bool
-  GetContentStoreChoice ();
+  GetContentStoreChoice();
 
   /**
    * @brief Set PIT class and its attributes
    * @param pitClass string, representing class of PIT
    */
   void
-  SetPit (const std::string &pitClass,
-          const std::string &attr1 = "", const std::string &value1 = "",
-          const std::string &attr2 = "", const std::string &value2 = "",
-          const std::string &attr3 = "", const std::string &value3 = "",
-          const std::string &attr4 = "", const std::string &value4 = "");
+  SetPit(const std::string& pitClass, const std::string& attr1 = "", const std::string& value1 = "",
+         const std::string& attr2 = "", const std::string& value2 = "",
+         const std::string& attr3 = "", const std::string& value3 = "",
+         const std::string& attr4 = "", const std::string& value4 = "");
 
   /**
    * @brief Set FIB class and its attributes
    * @param pitClass string, representing class of FIB
    */
   void
-  SetFib (const std::string &fibClass,
-          const std::string &attr1 = "", const std::string &value1 = "",
-          const std::string &attr2 = "", const std::string &value2 = "",
-          const std::string &attr3 = "", const std::string &value3 = "",
-          const std::string &attr4 = "", const std::string &value4 = "");
+  SetFib(const std::string& fibClass, const std::string& attr1 = "", const std::string& value1 = "",
+         const std::string& attr2 = "", const std::string& value2 = "",
+         const std::string& attr3 = "", const std::string& value3 = "",
+         const std::string& attr4 = "", const std::string& value4 = "");
 
-  typedef Callback< Ptr<NetDeviceFace>, Ptr<Node>, Ptr<L3Protocol>, Ptr<NetDevice> > NetDeviceFaceCreateCallback;
+  typedef Callback<Ptr<NetDeviceFace>, Ptr<Node>, Ptr<L3Protocol>, Ptr<NetDevice>>
+    NetDeviceFaceCreateCallback;
 
   /**
-   * @brief Add callback to create and configure instance of the face, based on supplied Ptr<Node> and Ptr<NetDevice>
+   * @brief Add callback to create and configure instance of the face, based on supplied Ptr<Node>
+   *and Ptr<NetDevice>
    *
    * It is possible to set up several callbacks for different NetDevice types.
    *
-   * Currently, there is only one specialized callback for PointToPointNetDevice, which creates face and sets limits (if enabled)
+   * Currently, there is only one specialized callback for PointToPointNetDevice, which creates face
+   *and sets limits (if enabled)
    * based on PointToPoint link parameters
    *
-   * If none of the callbacks fit the TypeId of NetDevice, a default callback is used (DefaultNetDeviceCallback)
+   * If none of the callbacks fit the TypeId of NetDevice, a default callback is used
+   *(DefaultNetDeviceCallback)
    */
   void
-  AddNetDeviceFaceCreateCallback (TypeId netDeviceType, NetDeviceFaceCreateCallback callback);
+  AddNetDeviceFaceCreateCallback(TypeId netDeviceType, NetDeviceFaceCreateCallback callback);
 
   /**
-   * @brief Update callback to create and configure instance of the face, based on supplied Ptr<Node> and Ptr<NetDevice>
+   * @brief Update callback to create and configure instance of the face, based on supplied
+   *Ptr<Node> and Ptr<NetDevice>
    *
    * It is possible to set up several callbacks for different NetDevice types.
    *
    * Using this method, it is possible to override Face creation for PointToPointNetDevices
    */
   void
-  UpdateNetDeviceFaceCreateCallback (TypeId netDeviceType, NetDeviceFaceCreateCallback callback);
+  UpdateNetDeviceFaceCreateCallback(TypeId netDeviceType, NetDeviceFaceCreateCallback callback);
 
   /**
-   * @brief Remove callback to create and configure instance of the face, based on supplied Ptr<Node> and Ptr<NetDevice>
+   * @brief Remove callback to create and configure instance of the face, based on supplied
+   * Ptr<Node> and Ptr<NetDevice>
    */
   void
-  RemoveNetDeviceFaceCreateCallback (TypeId netDeviceType, NetDeviceFaceCreateCallback callback);
+  RemoveNetDeviceFaceCreateCallback(TypeId netDeviceType, NetDeviceFaceCreateCallback callback);
 
   /**
    * @brief Enable Interest limits (disabled by default)
@@ -182,7 +183,8 @@ public:
    * @param avgInterest      Average size of interest packets (including all headers)
    */
   void
-  EnableLimits (bool enable = true, Time avgRtt=Seconds(0.1), uint32_t avgData=1100, uint32_t avgInterest=40);
+  EnableLimits(bool enable = true, Time avgRtt = Seconds(0.1), uint32_t avgData = 1100,
+               uint32_t avgInterest = 40);
 
   /**
    * \brief Initialize NFD
@@ -191,21 +193,21 @@ public:
    *
    */
   void
-  NFDinit (Ptr<Node> node) const;
+  NFDinit(Ptr<Node> node) const;
 
-   /**
-   * \brief Install Ndn stack on the node
-   *
-   * This method will assert if called on a node that already has Ndn object
-   * installed on it
-   *
-   * \param nodeName The name of the node on which to install the stack.
-   *
-   * \returns list of installed faces in the form of a smart pointer
-   * to NdnFaceContainer object
-   */
+  /**
+  * \brief Install Ndn stack on the node
+  *
+  * This method will assert if called on a node that already has Ndn object
+  * installed on it
+  *
+  * \param nodeName The name of the node on which to install the stack.
+  *
+  * \returns list of installed faces in the form of a smart pointer
+  * to NdnFaceContainer object
+  */
   Ptr<FaceContainer>
-  Install (const std::string &nodeName) const;
+  Install(const std::string& nodeName) const;
 
   /**
    * \brief Install Ndn stack on the node
@@ -219,7 +221,7 @@ public:
    * to FaceContainer object
    */
   Ptr<FaceContainer>
-  Install (Ptr<Node> node) const;
+  Install(Ptr<Node> node) const;
 
   /**
    * \brief Install Ndn stack on each node in the input container
@@ -234,7 +236,7 @@ public:
    * to FaceContainer object
    */
   Ptr<FaceContainer>
-  Install (const NodeContainer &c) const;
+  Install(const NodeContainer& c) const;
 
   /**
    * \brief Install Ndn stack on all nodes in the simulation
@@ -243,31 +245,33 @@ public:
    * to FaceContainer object
    */
   Ptr<FaceContainer>
-  InstallAll () const;
+  InstallAll() const;
 
   /**
    * \brief Set flag indicating necessity to install default routes in FIB
    */
   void
-  SetDefaultRoutes (bool needSet);
+  SetDefaultRoutes(bool needSet);
 
   static KeyChain&
   getKeyChain();
 
 private:
   Ptr<NetDeviceFace>
-  DefaultNetDeviceCallback (Ptr<Node> node, Ptr<L3Protocol> ndn, Ptr<NetDevice> netDevice) const;
+  DefaultNetDeviceCallback(Ptr<Node> node, Ptr<L3Protocol> ndn, Ptr<NetDevice> netDevice) const;
 
   Ptr<NetDeviceFace>
-  PointToPointNetDeviceCallback (Ptr<Node> node, Ptr<L3Protocol> ndn, Ptr<NetDevice> netDevice) const;
+  PointToPointNetDeviceCallback(Ptr<Node> node, Ptr<L3Protocol> ndn,
+                                Ptr<NetDevice> netDevice) const;
 
 public:
   void
   setCustomNdnCxxClocks();
 
 private:
-  StackHelper (const StackHelper &);
-  StackHelper &operator = (const StackHelper &o);
+  StackHelper(const StackHelper&);
+  StackHelper&
+  operator=(const StackHelper& o);
 
 private:
   ObjectFactory m_ndnFactory;
@@ -276,14 +280,14 @@ private:
   ObjectFactory m_pitFactory;
   ObjectFactory m_fibFactory;
 
-  bool     m_nfdCS = true;
-  bool     m_limitsEnabled;
-  Time     m_avgRtt;
+  bool m_nfdCS = true;
+  bool m_limitsEnabled;
+  Time m_avgRtt;
   uint32_t m_avgDataSize;
   uint32_t m_avgInterestSize;
-  bool     m_needSetDefaultRoutes;
+  bool m_needSetDefaultRoutes;
 
-  typedef std::list< std::pair<TypeId, NetDeviceFaceCreateCallback> > NetDeviceCallbackList;
+  typedef std::list<std::pair<TypeId, NetDeviceFaceCreateCallback>> NetDeviceCallbackList;
   NetDeviceCallbackList m_netDeviceCallbacks;
 };
 

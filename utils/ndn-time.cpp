@@ -28,7 +28,7 @@ namespace time {
 system_clock::time_point
 CustomSystemClock::getNow() const
 {
-  boost::chrono::nanoseconds ns(Simulator::Now ().GetNanoSeconds());
+  boost::chrono::nanoseconds ns(Simulator::Now().GetNanoSeconds());
   return system_clock::time_point(ns);
 }
 
@@ -50,7 +50,7 @@ CustomSystemClock::toPosixDuration(const system_clock::duration& duration) const
 steady_clock::time_point
 CustomSteadyClock::getNow() const
 {
-  boost::chrono::nanoseconds ns(Simulator::Now ().GetNanoSeconds());
+  boost::chrono::nanoseconds ns(Simulator::Now().GetNanoSeconds());
   return steady_clock::time_point(ns);
 }
 

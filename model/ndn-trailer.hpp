@@ -26,8 +26,7 @@
 
 namespace ndn {
 
-class NdnTrailer: public ns3::Trailer
-{
+class NdnTrailer : public ns3::Trailer {
 public:
   NdnTrailer();
 
@@ -35,30 +34,38 @@ public:
 
   ~NdnTrailer();
 
-  virtual ns3::TypeId GetInstanceTypeId(void) const;
+  virtual ns3::TypeId
+  GetInstanceTypeId(void) const;
 
-  virtual uint32_t GetSerializedSize(void) const;
+  virtual uint32_t
+  GetSerializedSize(void) const;
 
-  virtual void Serialize(ns3::Buffer::Iterator start) const;
+  virtual void
+  Serialize(ns3::Buffer::Iterator start) const;
 
-  virtual uint32_t Deserialize(ns3::Buffer::Iterator start);
+  virtual uint32_t
+  Deserialize(ns3::Buffer::Iterator start);
 
-  virtual void Print(std::ostream &os) const;
+  virtual void
+  Print(std::ostream& os) const;
 
-  void AddNdnTrailer(ns3::Ptr<ns3::Packet> packet, NdnTrailer ndnTrailer);
+  void
+  AddNdnTrailer(ns3::Ptr<ns3::Packet> packet, NdnTrailer ndnTrailer);
 
-  void RemoveNdnTrailer(ns3::Ptr<ns3::Packet> packet, NdnTrailer ndnTrailer);
+  void
+  RemoveNdnTrailer(ns3::Ptr<ns3::Packet> packet, NdnTrailer ndnTrailer);
 
-  void SetBuffer(uint8_t* trailerBuffer);
+  void
+  SetBuffer(uint8_t* trailerBuffer);
 
-  void SetLength(size_t trailerLength);
+  void
+  SetLength(size_t trailerLength);
 
 private:
   ns3::Buffer m_buffer;
   size_t m_trailerLength;
   uint8_t* m_trailerBuffer;
 };
-
 }
 
 #endif

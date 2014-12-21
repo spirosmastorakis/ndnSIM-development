@@ -65,57 +65,56 @@ using ns3::ndn::L3RateTracer;
 using ns3::ndn::L3AggregateTracer;
 
 int
-main (int argc, char *argv[])
+main(int argc, char* argv[])
 {
   CommandLine cmd;
-  cmd.Parse (argc, argv);
+  cmd.Parse(argc, argv);
 
-  AnnotatedTopologyReader topologyReader ("", 1);
-  topologyReader.SetFileName ("src/ndnSIM/examples/topologies/topo-tree.txt");
-  topologyReader.Read ();
+  AnnotatedTopologyReader topologyReader("", 1);
+  topologyReader.SetFileName("src/ndnSIM/examples/topologies/topo-tree.txt");
+  topologyReader.Read();
 
   // Install CCNx stack on all nodes
   StackHelper ccnxHelper;
-  ccnxHelper.InstallAll ();
+  ccnxHelper.InstallAll();
 
   // Installing global routing interface on all nodes
   GlobalRoutingHelper ccnxGlobalRoutingHelper;
-  ccnxGlobalRoutingHelper.InstallAll ();
+  ccnxGlobalRoutingHelper.InstallAll();
 
   // Getting containers for the consumer/producer
-  Ptr<Node> consumers[4] = { Names::Find<Node> ("leaf-1"), Names::Find<Node> ("leaf-2"),
-                             Names::Find<Node> ("leaf-3"), Names::Find<Node> ("leaf-4") };
-  Ptr<Node> producer = Names::Find<Node> ("root");
+  Ptr<Node> consumers[4] = {Names::Find<Node>("leaf-1"), Names::Find<Node>("leaf-2"),
+                            Names::Find<Node>("leaf-3"), Names::Find<Node>("leaf-4")};
+  Ptr<Node> producer = Names::Find<Node>("root");
 
-  for (int i = 0; i < 4; i++)
-    {
-      AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
-      consumerHelper.SetAttribute ("Frequency", StringValue ("100")); // 100 interests a second
+  for (int i = 0; i < 4; i++) {
+    AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
+    consumerHelper.SetAttribute("Frequency", StringValue("100")); // 100 interests a second
 
-      // Each consumer will express unique interests /root/<leaf-name>/<seq-no>
-      consumerHelper.SetPrefix ("/root/" + Names::FindName (consumers[i]));
-      consumerHelper.Install (consumers[i]);
-    }
+    // Each consumer will express unique interests /root/<leaf-name>/<seq-no>
+    consumerHelper.SetPrefix("/root/" + Names::FindName(consumers[i]));
+    consumerHelper.Install(consumers[i]);
+  }
 
-  AppHelper producerHelper ("ns3::ndn::Producer");
-  producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
+  AppHelper producerHelper("ns3::ndn::Producer");
+  producerHelper.SetAttribute("PayloadSize", StringValue("1024"));
 
   // Register /root prefix with global routing controller and
   // install producer that will satisfy Interests in /root namespace
-  ccnxGlobalRoutingHelper.AddOrigins ("/root", producer);
-  producerHelper.SetPrefix ("/root");
-  producerHelper.Install (producer);
+  ccnxGlobalRoutingHelper.AddOrigins("/root", producer);
+  producerHelper.SetPrefix("/root");
+  producerHelper.Install(producer);
 
   // Calculate and install FIBs
-  ccnxGlobalRoutingHelper.CalculateRoutes ();
+  ccnxGlobalRoutingHelper.CalculateRoutes();
 
-  Simulator::Stop (Seconds (20.0));
+  Simulator::Stop(Seconds(20.0));
 
-  L3AggregateTracer::InstallAll ("aggregate-trace.txt", Seconds (0.5));
-  L3RateTracer::InstallAll ("rate-trace.txt", Seconds (0.5));
+  L3AggregateTracer::InstallAll("aggregate-trace.txt", Seconds(0.5));
+  L3RateTracer::InstallAll("rate-trace.txt", Seconds(0.5));
 
-  Simulator::Run ();
-  Simulator::Destroy ();
+  Simulator::Run();
+  Simulator::Destroy();
 
   return 0;
 }

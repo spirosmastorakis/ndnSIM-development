@@ -25,133 +25,131 @@
 #include "model/ndn-l3-protocol.hpp"
 #include "model/ndn-app-face.hpp"
 
-NS_LOG_COMPONENT_DEFINE ("ndn.App");
+NS_LOG_COMPONENT_DEFINE("ndn.App");
 
 namespace ns3 {
 namespace ndn {
 
-NS_OBJECT_ENSURE_REGISTERED (App);
+NS_OBJECT_ENSURE_REGISTERED(App);
 
 TypeId
-App::GetTypeId (void)
+App::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::ndn::App")
-    .SetGroupName ("Ndn")
-    .SetParent<Application> ()
-    .AddConstructor<App> ()
+  static TypeId tid = TypeId("ns3::ndn::App")
+                        .SetGroupName("Ndn")
+                        .SetParent<Application>()
+                        .AddConstructor<App>()
 
-    .AddTraceSource ("ReceivedInterests", "ReceivedInterests",
-                    MakeTraceSourceAccessor (&App::m_receivedInterests))
+                        .AddTraceSource("ReceivedInterests", "ReceivedInterests",
+                                        MakeTraceSourceAccessor(&App::m_receivedInterests))
 
-    //.AddTraceSource ("ReceivedNacks", "ReceivedNacks",
-    //MakeTraceSourceAccessor (&App::m_receivedNacks))
+                        //.AddTraceSource ("ReceivedNacks", "ReceivedNacks",
+                        // MakeTraceSourceAccessor (&App::m_receivedNacks))
 
-    .AddTraceSource ("ReceivedDatas", "ReceivedDatas",
-                    MakeTraceSourceAccessor (&App::m_receivedDatas))
+                        .AddTraceSource("ReceivedDatas", "ReceivedDatas",
+                                        MakeTraceSourceAccessor(&App::m_receivedDatas))
 
-    .AddTraceSource ("TransmittedInterests", "TransmittedInterests",
-                    MakeTraceSourceAccessor (&App::m_transmittedInterests))
+                        .AddTraceSource("TransmittedInterests", "TransmittedInterests",
+                                        MakeTraceSourceAccessor(&App::m_transmittedInterests))
 
-    .AddTraceSource ("TransmittedDatas", "TransmittedDatas",
-                    MakeTraceSourceAccessor (&App::m_transmittedDatas))
-    ;
+                        .AddTraceSource("TransmittedDatas", "TransmittedDatas",
+                                        MakeTraceSourceAccessor(&App::m_transmittedDatas));
   return tid;
 }
 
-App::App ()
-  : m_active (false)
-  , m_face (0)
+App::App()
+  : m_active(false)
+  , m_face(0)
 {
 }
 
-App::~App ()
+App::~App()
 {
 }
 
 void
-App::DoDispose ()
+App::DoDispose()
 {
-  NS_LOG_FUNCTION_NOARGS ();
+  NS_LOG_FUNCTION_NOARGS();
 
   // Unfortunately, this causes SEGFAULT
   // The best reason I see is that apps are freed after ndn stack is removed
   // StopApplication ();
-  Application::DoDispose ();
+  Application::DoDispose();
 }
 
 uint32_t
-App::GetId () const
+App::GetId() const
 {
   if (m_face == 0)
     return (uint32_t)-1;
   else
-    return m_face->GetId ();
+    return m_face->GetId();
 }
 
 void
-App::OnInterest (shared_ptr<const Interest> interest)
+App::OnInterest(shared_ptr<const Interest> interest)
 {
-  NS_LOG_FUNCTION (this << interest);
-  m_receivedInterests (interest, this, m_face);
+  NS_LOG_FUNCTION(this << interest);
+  m_receivedInterests(interest, this, m_face);
 }
 
 void
-App::OnData (shared_ptr<const Data> contentObject)
+App::OnData(shared_ptr<const Data> contentObject)
 {
-  NS_LOG_FUNCTION (this << contentObject);
-  m_receivedDatas (contentObject, this, m_face);
+  NS_LOG_FUNCTION(this << contentObject);
+  m_receivedDatas(contentObject, this, m_face);
 }
 
 // Application Methods
 void
-App::StartApplication () // Called at time specified by Start
+App::StartApplication() // Called at time specified by Start
 {
-  NS_LOG_FUNCTION_NOARGS ();
+  NS_LOG_FUNCTION_NOARGS();
 
-  NS_ASSERT (m_active != true);
+  NS_ASSERT(m_active != true);
   m_active = true;
 
-  NS_ASSERT_MSG (GetNode ()->GetObject<L3Protocol> () != 0,
-  "Ndn stack should be installed on the node " << GetNode ());
+  NS_ASSERT_MSG(GetNode()->GetObject<L3Protocol>() != 0,
+                "Ndn stack should be installed on the node " << GetNode());
 
   // step 1. Create a face
-  m_face = CreateObject<AppFace> (/*Ptr<App> (this)*/this);
+  m_face = CreateObject<AppFace>(/*Ptr<App> (this)*/ this);
 
   // step 2. Add face to the Ndn stack
-  GetNode ()->GetObject<L3Protocol> ()->AddFace (m_face);
+  GetNode()->GetObject<L3Protocol>()->AddFace(m_face);
 
   // step 3. Enable face
-  m_face->SetUp (true);
+  m_face->SetUp(true);
 }
 
 void
-App::StopApplication () // Called at time specified by Stop
+App::StopApplication() // Called at time specified by Stop
 {
-  NS_LOG_FUNCTION_NOARGS ();
+  NS_LOG_FUNCTION_NOARGS();
 
-  if (!m_active) return; //don't assert here, just return
+  if (!m_active)
+    return; // don't assert here, just return
 
-  NS_ASSERT (GetNode ()->GetObject<L3Protocol> () != 0);
+  NS_ASSERT(GetNode()->GetObject<L3Protocol>() != 0);
 
   m_active = false;
 
   // step 1. Disable face
-  m_face->SetUp (false);
+  m_face->SetUp(false);
 
   // step 2. Remove face from Ndn stack
-  GetNode ()->GetObject<L3Protocol> ()->RemoveFace (m_face);
+  GetNode()->GetObject<L3Protocol>()->RemoveFace(m_face);
 
   // step 3. Destroy face
-  if (m_face->GetReferenceCount () != 1)
-    {
-      NS_LOG_ERROR ("Please a bug report on https://github.com/NDN-Routing/ndnSIM/issues");
-      NS_LOG_ERROR ("At this point, nobody else should have referenced this face, but we have "
-                    << m_face->GetReferenceCount () << " references");
-
-    }
-   NS_ASSERT_MSG (m_face->GetReferenceCount ()==2,
+  if (m_face->GetReferenceCount() != 1) {
+    NS_LOG_ERROR("Please a bug report on https://github.com/NDN-Routing/ndnSIM/issues");
+    NS_LOG_ERROR("At this point, nobody else should have referenced this face, but we have "
+                 << m_face->GetReferenceCount() << " references");
+  }
+  NS_ASSERT_MSG(m_face->GetReferenceCount() == 2,
                 "At this point, nobody else should have referenced this face, but we have "
-                 << m_face->GetReferenceCount () << " references");
+                  << m_face->GetReferenceCount() << " references");
   m_face = 0;
 }
 

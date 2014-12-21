@@ -34,10 +34,10 @@ namespace ndn {
 
 class Block;
 
-class UnknownHeaderException {};
+class UnknownHeaderException {
+};
 
-class Convert
-{
+class Convert {
 public:
   static shared_ptr<Block>
   FromPacket(ns3::Ptr<ns3::Packet> packet);
@@ -45,7 +45,6 @@ public:
   static void
   ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet);
 };
-
 }
 
 #endif

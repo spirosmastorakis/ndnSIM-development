@@ -40,21 +40,20 @@ namespace ndn {
 
 using ::ndn::nfd::ControlParameters;
 
-class StrategyChoiceHelper
-{
+class StrategyChoiceHelper {
 public:
-  StrategyChoiceHelper ();
+  StrategyChoiceHelper();
 
-  ~StrategyChoiceHelper ();
-
-  static void
-  Install (const NodeContainer& c, const ::ndn::Name& namePrefix, const ::ndn::Name& strategy);
+  ~StrategyChoiceHelper();
 
   static void
-  Install (Ptr<Node> node, const ::ndn::Name& namePrefix, const ::ndn::Name& strategy);
+  Install(const NodeContainer& c, const ::ndn::Name& namePrefix, const ::ndn::Name& strategy);
 
   static void
-  InstallAll (const ::ndn::Name& namePrefix, const ::ndn::Name& strategy);
+  Install(Ptr<Node> node, const ::ndn::Name& namePrefix, const ::ndn::Name& strategy);
+
+  static void
+  InstallAll(const ::ndn::Name& namePrefix, const ::ndn::Name& strategy);
 
   // static void
   // InstallCustomStrategy (Ptr<Node> node, const Name& customStrategy);
@@ -67,7 +66,7 @@ public:
 
 private:
   static void
-  StrategyChoice (const ControlParameters& parameters, Ptr<Node> node);
+  StrategyChoice(const ControlParameters& parameters, Ptr<Node> node);
 };
 
 } // namespace ndn

@@ -40,49 +40,54 @@ namespace ndn {
  * @ingroup ndn-tracers
  * @brief NDN network-layer tracer for aggregate packet counts
  */
-class L3AggregateTracer : public L3Tracer
-{
+class L3AggregateTracer : public L3Tracer {
 public:
   /**
    * @brief Helper method to install tracers on all simulation nodes
    *
    * @param file File to which traces will be written.  If filename is -, then std::out is used
-   * @param averagingPeriod How often data will be written into the trace file (default, every half second)
+   * @param averagingPeriod How often data will be written into the trace file (default, every half
+   *second)
    *
-   * @returns a tuple of reference to output stream and list of tracers. !!! Attention !!! This tuple needs to be preserved
+   * @returns a tuple of reference to output stream and list of tracers. !!! Attention !!! This
+   *tuple needs to be preserved
    *          for the lifetime of simulation, otherwise SEGFAULTs are inevitable
    *
    */
   static void
-  InstallAll (const std::string &file, Time averagingPeriod = Seconds (0.5));
+  InstallAll(const std::string& file, Time averagingPeriod = Seconds(0.5));
 
   /**
    * @brief Helper method to install tracers on the selected simulation nodes
    *
    * @param nodes Nodes on which to install tracer
    * @param file File to which traces will be written.  If filename is -, then std::out is used
-   * @param averagingPeriod How often data will be written into the trace file (default, every half second)
+   * @param averagingPeriod How often data will be written into the trace file (default, every half
+   *second)
    *
-   * @returns a tuple of reference to output stream and list of tracers. !!! Attention !!! This tuple needs to be preserved
+   * @returns a tuple of reference to output stream and list of tracers. !!! Attention !!! This
+   *tuple needs to be preserved
    *          for the lifetime of simulation, otherwise SEGFAULTs are inevitable
    *
    */
   static void
-  Install (const NodeContainer &nodes, const std::string &file, Time averagingPeriod = Seconds (0.5));
+  Install(const NodeContainer& nodes, const std::string& file, Time averagingPeriod = Seconds(0.5));
 
   /**
    * @brief Helper method to install tracers on a specific simulation node
    *
    * @param nodes Nodes on which to install tracer
    * @param file File to which traces will be written.  If filename is -, then std::out is used
-   * @param averagingPeriod How often data will be written into the trace file (default, every half second)
+   * @param averagingPeriod How often data will be written into the trace file (default, every half
+   *second)
    *
-   * @returns a tuple of reference to output stream and list of tracers. !!! Attention !!! This tuple needs to be preserved
+   * @returns a tuple of reference to output stream and list of tracers. !!! Attention !!! This
+   *tuple needs to be preserved
    *          for the lifetime of simulation, otherwise SEGFAULTs are inevitable
    *
    */
   static void
-  Install (Ptr<Node> node, const std::string &file, Time averagingPeriod = Seconds (0.5));
+  Install(Ptr<Node> node, const std::string& file, Time averagingPeriod = Seconds(0.5));
 
   /**
    * @brief Explicit request to remove all statically created tracers
@@ -91,53 +96,56 @@ public:
    * or if it is desired to do a postprocessing of the resulting data
    */
   static void
-  Destroy ();
+  Destroy();
 
   /**
    * @brief Trace constructor that attaches to the node using node pointer
    * @param os    reference to the output stream
    * @param node  pointer to the node
    */
-  L3AggregateTracer (boost::shared_ptr<std::ostream> os, Ptr<Node> node);
+  L3AggregateTracer(boost::shared_ptr<std::ostream> os, Ptr<Node> node);
 
   /**
    * @brief Trace constructor that attaches to the node using node name
    * @param os        reference to the output stream
    * @param nodeName  name of the node registered using Names::Add
    */
-  L3AggregateTracer (boost::shared_ptr<std::ostream> os, const std::string &nodeName);
+  L3AggregateTracer(boost::shared_ptr<std::ostream> os, const std::string& nodeName);
 
   /**
    * @brief Destructor
    */
-  virtual ~L3AggregateTracer ();
+  virtual ~L3AggregateTracer();
 
   /**
    * @brief Helper method to install tracers on a specific simulation node
    *
    * @param nodes Nodes on which to install tracer
    * @param outputStream Smart pointer to a stream
-   * @param averagingPeriod How often data will be written into the trace file (default, every half second)
+   * @param averagingPeriod How often data will be written into the trace file (default, every half
+   *second)
    *
-   * @returns a tuple of reference to output stream and list of tracers. !!! Attention !!! This tuple needs to be preserved
+   * @returns a tuple of reference to output stream and list of tracers. !!! Attention !!! This
+   *tuple needs to be preserved
    *          for the lifetime of simulation, otherwise SEGFAULTs are inevitable
    */
   static Ptr<L3AggregateTracer>
-  Install (Ptr<Node> node, boost::shared_ptr<std::ostream> outputStream, Time averagingPeriod = Seconds (0.5));
+  Install(Ptr<Node> node, boost::shared_ptr<std::ostream> outputStream,
+          Time averagingPeriod = Seconds(0.5));
 
 protected:
   // from L3Tracer
   virtual void
-  PrintHeader (std::ostream &os) const;
+  PrintHeader(std::ostream& os) const;
 
   virtual void
-  Print (std::ostream &os) const;
+  Print(std::ostream& os) const;
 
   virtual void
-  OutInterests  (const Interest&, const Face&);
+  OutInterests(const Interest&, const Face&);
 
   virtual void
-  InInterests   (const Interest&, const Face&);
+  InInterests(const Interest&, const Face&);
 
   // virtual void
   // DropInterests (shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
@@ -154,14 +162,13 @@ protected:
   */
 
   virtual void
-  OutData  (const Data&, const Face&);
+  OutData(const Data&, const Face&);
 
   virtual void
-  InData   (const Data&, const Face&);
+  InData(const Data&, const Face&);
 
   // virtual void
   // DropData (shared_ptr<const ::ndn::Data>, Ptr<const Face>);
-
 
   // virtual void
   // SatisfiedInterests (Ptr<const pit::Entry>);
@@ -171,13 +178,13 @@ protected:
 
 protected:
   void
-  SetAveragingPeriod (const Time &period);
+  SetAveragingPeriod(const Time& period);
 
   void
-  Reset ();
+  Reset();
 
   void
-  PeriodicPrinter ();
+  PeriodicPrinter();
 
 protected:
   boost::shared_ptr<std::ostream> m_os;
@@ -185,7 +192,7 @@ protected:
   Time m_period;
   EventId m_printEvent;
 
-  mutable std::map<Ptr<const Face>, boost::tuple<Stats, Stats> > m_stats;
+  mutable std::map<Ptr<const Face>, boost::tuple<Stats, Stats>> m_stats;
 };
 
 } // namespace ndn

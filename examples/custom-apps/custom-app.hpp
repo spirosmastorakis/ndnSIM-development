@@ -37,34 +37,33 @@ namespace ns3 {
  *
  * When an Interest is received, it is replied with a Data with 1024-byte fake payload
  */
-class CustomApp : public ndn::App
-{
+class CustomApp : public ndn::App {
 public:
   // register NS-3 type "CustomApp"
   static TypeId
-  GetTypeId ();
+  GetTypeId();
 
-  CustomApp ();
+  CustomApp();
 
   // (overridden from ndn::App) Processing upon start of the application
   virtual void
-  StartApplication ();
+  StartApplication();
 
   // (overridden from ndn::App) Processing when application is stopped
   virtual void
-  StopApplication ();
+  StopApplication();
 
   // (overridden from ndn::App) Callback that will be called when Interest arrives
   virtual void
-  OnInterest (shared_ptr<const Interest> interest);
+  OnInterest(shared_ptr<const Interest> interest);
 
   // (overridden from ndn::App) Callback that will be called when Data arrives
   virtual void
-  OnData (shared_ptr<const Data> contentObject);
+  OnData(shared_ptr<const Data> contentObject);
 
 private:
   void
-  SendInterest ();
+  SendInterest();
 };
 
 } // namespace ns3

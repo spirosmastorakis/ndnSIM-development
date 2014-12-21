@@ -22,49 +22,46 @@
 #include "hijacker.h"
 #include "ns3/ndn-fib-helper.hpp"
 
-NS_LOG_COMPONENT_DEFINE ("Hijacker");
+NS_LOG_COMPONENT_DEFINE("Hijacker");
 
 namespace ns3 {
 
 using nfd::ControlParameters;
 
 // Necessary if you are planning to use ndn::AppHelper
-NS_OBJECT_ENSURE_REGISTERED (Hijacker);
+NS_OBJECT_ENSURE_REGISTERED(Hijacker);
 
 TypeId
-Hijacker::GetTypeId ()
+Hijacker::GetTypeId()
 {
-  static TypeId tid = TypeId ("Hijacker")
-    .SetParent<ndn::App> ()
-    .AddConstructor<Hijacker> ()
-    ;
+  static TypeId tid = TypeId("Hijacker").SetParent<ndn::App>().AddConstructor<Hijacker>();
 
   return tid;
 }
 
-Hijacker::Hijacker ()
+Hijacker::Hijacker()
 {
 }
 
 void
-Hijacker::OnInterest (shared_ptr<const Interest> interest)
+Hijacker::OnInterest(shared_ptr<const Interest> interest)
 {
-  ndn::App::OnInterest (interest); // forward call to perform app-level tracing
+  ndn::App::OnInterest(interest); // forward call to perform app-level tracing
   // do nothing else (hijack interest)
 
-  NS_LOG_DEBUG ("Do nothing for incoming interest for" << interest->getName ());
+  NS_LOG_DEBUG("Do nothing for incoming interest for" << interest->getName());
 }
 
 void
-Hijacker::StartApplication ()
+Hijacker::StartApplication()
 {
-  App::StartApplication ();
+  App::StartApplication();
 
   // equivalent to setting interest filter for "/" prefix
   ControlParameters parameters;
   parameters.setName("/");
-  parameters.setFaceId(m_face->getId ());
-  parameters.setCost (0);
+  parameters.setFaceId(m_face->getId());
+  parameters.setCost(0);
 
   ndn::FibHelper fibHelper;
   Ptr<Node> node = GetNode();
@@ -72,9 +69,9 @@ Hijacker::StartApplication ()
 }
 
 void
-Hijacker::StopApplication ()
+Hijacker::StopApplication()
 {
-  App::StopApplication ();
+  App::StopApplication();
 }
 
 } // namespace ns3

@@ -40,12 +40,11 @@ namespace ndn {
 
 using ::ndn::nfd::ControlParameters;
 
-class FibHelper
-{
+class FibHelper {
 public:
-  FibHelper ();
+  FibHelper();
 
-  ~FibHelper ();
+  ~FibHelper();
 
   static void
   AddNextHop(const ControlParameters& parameters, Ptr<Node> node);
@@ -62,7 +61,7 @@ public:
    * \param metric Routing metric
    */
   static void
-  AddRoute(const std::string& nodeName, const std::string &prefix, uint32_t faceId, int32_t metric);
+  AddRoute(const std::string& nodeName, const std::string& prefix, uint32_t faceId, int32_t metric);
 
   /**
    * \brief Add forwarding entry to FIB
@@ -73,7 +72,7 @@ public:
    * \param metric Routing metric
    */
   static void
-  AddRoute(Ptr<Node> node, const std::string &prefix, uint32_t faceId, int32_t metric);
+  AddRoute(Ptr<Node> node, const std::string& prefix, uint32_t faceId, int32_t metric);
 
   /**
    * \brief Add forwarding entry to FIB
@@ -84,7 +83,7 @@ public:
    * \param metric Routing metric
    */
   static void
-  AddRoute (Ptr<Node> node, const std::string &prefix, Ptr<Face> face, int32_t metric);
+  AddRoute(Ptr<Node> node, const std::string& prefix, Ptr<Face> face, int32_t metric);
 
   /**
    * @brief Add forwarding entry to FIB (work only with point-to-point links)
@@ -95,7 +94,7 @@ public:
    * \param metric Routing metric
    */
   static void
-  AddRoute (Ptr<Node> node, const std::string &prefix, Ptr<Node> otherNode, int32_t metric);
+  AddRoute(Ptr<Node> node, const std::string& prefix, Ptr<Node> otherNode, int32_t metric);
 
   /**
    * @brief Add forwarding entry to FIB (work only with point-to-point links)
@@ -107,8 +106,8 @@ public:
    * \param metric Routing metric
    */
   static void
-  AddRoute (const std::string &nodeName, const std::string &prefix,
-            const std::string &otherNodeName, int32_t metric);
+  AddRoute(const std::string& nodeName, const std::string& prefix, const std::string& otherNodeName,
+           int32_t metric);
 
 private:
   static void

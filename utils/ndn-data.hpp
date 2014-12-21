@@ -31,21 +31,20 @@ namespace ndn {
 using ns3::Ptr;
 using ns3::Packet;
 
-class Data : public ::ndn::Data
-{
+class Data : public ::ndn::Data {
 public:
-  Data ();
+  Data();
 
-  Data (::ndn::Block block);
+  Data(::ndn::Block block);
 
   Ptr<Packet>
-  getPacket () const;
+  getPacket() const;
 
   void
-  setPacket (Ptr<Packet> packet);
+  setPacket(Ptr<Packet> packet);
 
 private:
-  Ptr<Packet> m_packet = Create<Packet> ();
+  Ptr<Packet> m_packet = Create<Packet>();
 };
 
 } // namespace ndn

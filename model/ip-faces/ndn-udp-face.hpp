@@ -36,42 +36,42 @@ namespace ndn {
  *
  * \see ndn::AppFace, ndn::NetDeviceFace, ndn::Ipv4Face, ndn::TcpFace
  */
-class UdpFace : public Face
-{
+class UdpFace : public Face {
 public:
   static TypeId
-  GetTypeId ();
+  GetTypeId();
 
   /**
    * \brief Constructor
    *
    * @param node Node associated with the face
    */
-  UdpFace (Ptr<Node> node, Ptr<Socket> socket, Ipv4Address address);
+  UdpFace(Ptr<Node> node, Ptr<Socket> socket, Ipv4Address address);
   virtual ~UdpFace();
 
   virtual void
   close();
 
   Ipv4Address
-  GetAddress () const;
+  GetAddress() const;
 
   virtual bool
-  ReceiveFromUdp (Ptr<const Packet> p);
+  ReceiveFromUdp(Ptr<const Packet> p);
 
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from ndn::Face
   virtual std::ostream&
-  Print (std::ostream &os) const;
+  Print(std::ostream& os) const;
 
 protected:
   // also from ndn::Face
   virtual bool
-  Send (Ptr<Packet> p);
+  Send(Ptr<Packet> p);
 
 private:
-  UdpFace (const UdpFace &); ///< \brief Disabled copy constructor
-  UdpFace& operator= (const UdpFace &); ///< \brief Disabled copy operator
+  UdpFace(const UdpFace&); ///< \brief Disabled copy constructor
+  UdpFace&
+  operator=(const UdpFace&); ///< \brief Disabled copy operator
 
 private:
   Ptr<Socket> m_socket;

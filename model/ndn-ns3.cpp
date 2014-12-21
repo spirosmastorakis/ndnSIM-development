@@ -37,12 +37,11 @@ Convert::FromPacket(ns3::Ptr<ns3::Packet> packet)
   return block;
 }
 
-
 void
 Convert::ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
 {
-  size_t   headerLength;
-  uint8_t *headerBuffer;
+  size_t headerLength;
+  uint8_t* headerBuffer;
 
   block->parse();
   headerLength = block->size();
@@ -50,5 +49,4 @@ Convert::ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
   NdnHeader ndnHeader(headerBuffer, headerLength);
   ndnHeader.AddNdnHeader(packet, ndnHeader);
 }
-
 }

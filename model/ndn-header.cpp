@@ -21,9 +21,9 @@
 
 namespace ndn {
 
-NdnHeader::NdnHeader() :
-  m_headerLength (0),
-  m_headerBuffer (nullptr)
+NdnHeader::NdnHeader()
+  : m_headerLength(0)
+  , m_headerBuffer(nullptr)
 {
 }
 
@@ -40,9 +40,7 @@ NdnHeader::~NdnHeader()
 ns3::TypeId
 NdnHeader::GetInstanceTypeId(void) const
 {
-  static ns3::TypeId tid = ns3::TypeId ("ndn::NdnHeader")
-  .SetParent<ns3::Chunk> ()
-  ;
+  static ns3::TypeId tid = ns3::TypeId("ndn::NdnHeader").SetParent<ns3::Chunk>();
   return tid;
 }
 
@@ -56,7 +54,7 @@ void
 NdnHeader::Serialize(ns3::Buffer::Iterator start) const
 {
   ns3::Buffer::Iterator i = start;
-  i.Write(m_headerBuffer,  uint32_t(m_headerLength));
+  i.Write(m_headerBuffer, uint32_t(m_headerLength));
 }
 
 uint32_t
@@ -68,7 +66,7 @@ NdnHeader::Deserialize(ns3::Buffer::Iterator start)
 }
 
 void
-NdnHeader::Print(std::ostream &os) const
+NdnHeader::Print(std::ostream& os) const
 {
   os << m_headerBuffer;
 }
@@ -102,5 +100,4 @@ NdnHeader::SetLength(size_t headerLength)
 {
   m_headerLength = headerLength;
 }
-
 }

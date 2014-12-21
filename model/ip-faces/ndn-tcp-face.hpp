@@ -37,66 +37,66 @@ namespace ndn {
  *
  * \see NdnAppFace, NdnNetDeviceFace, NdnIpv4Face, NdnUdpFace
  */
-class TcpFace : public Face
-{
+class TcpFace : public Face {
 public:
   static TypeId
-  GetTypeId ();
+  GetTypeId();
 
   /**
    * \brief Constructor
    *
    * @param node Node associated with the face
    */
-  TcpFace (Ptr<Node> node, Ptr<Socket> socket, Ipv4Address address);
+  TcpFace(Ptr<Node> node, Ptr<Socket> socket, Ipv4Address address);
   virtual ~TcpFace();
 
   void
-  OnTcpConnectionClosed (Ptr<Socket> socket);
+  OnTcpConnectionClosed(Ptr<Socket> socket);
 
   virtual void
   close();
 
   Ipv4Address
-  GetAddress () const;
+  GetAddress() const;
 
   static Ptr<TcpFace>
-  GetFaceByAddress (const Ipv4Address &addr);
+  GetFaceByAddress(const Ipv4Address& addr);
 
   void
-  SetCreateCallback (Callback< void, Ptr<Face> > callback);
+  SetCreateCallback(Callback<void, Ptr<Face>> callback);
 
   void
-  OnConnect (Ptr<Socket> socket);
+  OnConnect(Ptr<Socket> socket);
 
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from ndn::Face
   virtual void
-  RegisterProtocolHandlers (const InterestHandler &interestHandler, const DataHandler &dataHandler);
+  RegisterProtocolHandlers(const InterestHandler& interestHandler, const DataHandler& dataHandler);
 
   virtual void
-  UnRegisterProtocolHandlers ();
+  UnRegisterProtocolHandlers();
 
   virtual std::ostream&
-  Print (std::ostream &os) const;
+  Print(std::ostream& os) const;
 
 protected:
   // also from ndn::Face
   virtual bool
-  Send (Ptr<Packet> p);
+  Send(Ptr<Packet> p);
 
 private:
-  TcpFace (const TcpFace &); ///< \brief Disabled copy constructor
-  TcpFace& operator= (const TcpFace &); ///< \brief Disabled copy operator
+  TcpFace(const TcpFace&); ///< \brief Disabled copy constructor
+  TcpFace&
+  operator=(const TcpFace&); ///< \brief Disabled copy operator
 
   void
-  ReceiveFromTcp (Ptr< Socket > clientSocket);
+  ReceiveFromTcp(Ptr<Socket> clientSocket);
 
 private:
   Ptr<Socket> m_socket;
   Ipv4Address m_address;
   uint32_t m_pendingPacketLength;
-  Callback< void, Ptr<Face> > m_onCreateCallback;
+  Callback<void, Ptr<Face>> m_onCreateCallback;
 };
 
 } // namespace ndn

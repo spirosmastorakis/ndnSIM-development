@@ -55,51 +55,51 @@ using ns3::ndn::GlobalRoutingHelper;
 using ns3::AnnotatedTopologyReader;
 
 int
-main (int argc, char *argv[])
+main(int argc, char* argv[])
 {
   CommandLine cmd;
-  cmd.Parse (argc, argv);
+  cmd.Parse(argc, argv);
 
-  AnnotatedTopologyReader topologyReader ("", 25);
-  topologyReader.SetFileName ("src/ndnSIM/examples/topologies/topo-grid-3x3.txt");
-  topologyReader.Read ();
+  AnnotatedTopologyReader topologyReader("", 25);
+  topologyReader.SetFileName("src/ndnSIM/examples/topologies/topo-grid-3x3.txt");
+  topologyReader.Read();
 
   // Install NDN stack on all nodes
   StackHelper ndnHelper;
-  ndnHelper.InstallAll ();
+  ndnHelper.InstallAll();
 
   // Installing global routing interface on all nodes
   GlobalRoutingHelper ndnGlobalRoutingHelper;
-  ndnGlobalRoutingHelper.InstallAll ();
+  ndnGlobalRoutingHelper.InstallAll();
 
   // Getting containers for the consumer/producer
-  Ptr<Node> producer = Names::Find<Node> ("Node8");
+  Ptr<Node> producer = Names::Find<Node>("Node8");
   NodeContainer consumerNodes;
-  consumerNodes.Add (Names::Find<Node> ("Node0"));
+  consumerNodes.Add(Names::Find<Node>("Node0"));
 
   // Install NDN applications
   std::string prefix = "/prefix";
 
-  AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
-  consumerHelper.SetPrefix (prefix);
-  consumerHelper.SetAttribute ("Frequency", StringValue ("100")); // 100 interests a second
-  consumerHelper.Install (consumerNodes);
+  AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
+  consumerHelper.SetPrefix(prefix);
+  consumerHelper.SetAttribute("Frequency", StringValue("100")); // 100 interests a second
+  consumerHelper.Install(consumerNodes);
 
-  AppHelper producerHelper ("ns3::ndn::Producer");
-  producerHelper.SetPrefix (prefix);
-  producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
-  producerHelper.Install (producer);
+  AppHelper producerHelper("ns3::ndn::Producer");
+  producerHelper.SetPrefix(prefix);
+  producerHelper.SetAttribute("PayloadSize", StringValue("1024"));
+  producerHelper.Install(producer);
 
   // Add /prefix origins to ndn::GlobalRouter
-  ndnGlobalRoutingHelper.AddOrigins (prefix, producer);
+  ndnGlobalRoutingHelper.AddOrigins(prefix, producer);
 
   // Calculate and install FIBs
-  GlobalRoutingHelper::CalculateRoutes ();
+  GlobalRoutingHelper::CalculateRoutes();
 
-  Simulator::Stop (Seconds (20.0));
+  Simulator::Stop(Seconds(20.0));
 
-  Simulator::Run ();
-  Simulator::Destroy ();
+  Simulator::Run();
+  Simulator::Destroy();
 
   return 0;
 }

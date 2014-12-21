@@ -45,16 +45,15 @@ class App;
  *
  * \see AppFace, NdnNetDeviceFace, NdnIpv4Face, NdnUdpFace
  */
-class AppFace  : public Face
-{
+class AppFace : public Face {
 public:
   static TypeId
-  GetTypeId ();
+  GetTypeId();
 
   /**
    * \brief Default constructor
    */
-  AppFace (Ptr<App> app);
+  AppFace(Ptr<App> app);
   virtual ~AppFace();
 
   virtual void
@@ -63,23 +62,24 @@ public:
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from Face
   virtual void
-  sendInterest (const Interest& interest);
+  sendInterest(const Interest& interest);
 
   virtual void
-  sendData (const Data& data);
+  sendData(const Data& data);
 
   virtual bool
   isLocal() const;
 
 public:
   virtual std::ostream&
-  Print (std::ostream &os) const;
+  Print(std::ostream& os) const;
   ////////////////////////////////////////////////////////////////////
 
 private:
-  AppFace ();
-  AppFace (const AppFace &); ///< \brief Disabled copy constructor
-  AppFace& operator= (const AppFace &); ///< \brief Disabled copy operator
+  AppFace();
+  AppFace(const AppFace&); ///< \brief Disabled copy constructor
+  AppFace&
+  operator=(const AppFace&); ///< \brief Disabled copy operator
 
 private:
   Ptr<App> m_app;
@@ -91,7 +91,7 @@ AppFace::isLocal() const
   return true;
 }
 
-ATTRIBUTE_HELPER_HEADER (Name);
+ATTRIBUTE_HELPER_HEADER(Name);
 
 } // namespace ndn
 } // namespace ns3

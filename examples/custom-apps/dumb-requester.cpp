@@ -29,89 +29,86 @@
 
 #include "ns3/ndn-app-face.hpp"
 
-NS_LOG_COMPONENT_DEFINE ("DumbRequester");
+NS_LOG_COMPONENT_DEFINE("DumbRequester");
 
 namespace ns3 {
 
-NS_OBJECT_ENSURE_REGISTERED (DumbRequester);
+NS_OBJECT_ENSURE_REGISTERED(DumbRequester);
 
 // register NS-3 type
 TypeId
-DumbRequester::GetTypeId ()
+DumbRequester::GetTypeId()
 {
-  static TypeId tid = TypeId ("DumbRequester")
-    .SetParent<ndn::App> ()
-    .AddConstructor<DumbRequester> ()
+  static TypeId tid =
+    TypeId("DumbRequester")
+      .SetParent<ndn::App>()
+      .AddConstructor<DumbRequester>()
 
-    .AddAttribute ("Prefix", "Requested name",
-                   StringValue ("/dumb-interest"),
-                   ndn::MakeNameAccessor (&DumbRequester::m_name),
-                   ndn::MakeNameChecker ())
-    ;
+      .AddAttribute("Prefix", "Requested name", StringValue("/dumb-interest"),
+                    ndn::MakeNameAccessor(&DumbRequester::m_name), ndn::MakeNameChecker());
   return tid;
 }
 
-DumbRequester::DumbRequester ()
-  : m_isRunning (false)
+DumbRequester::DumbRequester()
+  : m_isRunning(false)
 {
 }
 
 // Processing upon start of the application
 void
-DumbRequester::StartApplication ()
+DumbRequester::StartApplication()
 {
   // initialize ndn::App
-  ndn::App::StartApplication ();
+  ndn::App::StartApplication();
 
   m_isRunning = true;
-  Simulator::ScheduleNow (&DumbRequester::SendInterest, this);
+  Simulator::ScheduleNow(&DumbRequester::SendInterest, this);
 }
 
 // Processing when application is stopped
 void
-DumbRequester::StopApplication ()
+DumbRequester::StopApplication()
 {
   m_isRunning = false;
   // cleanup ndn::App
-  ndn::App::StopApplication ();
+  ndn::App::StopApplication();
 }
 
 void
-DumbRequester::SendInterest ()
+DumbRequester::SendInterest()
 {
-  if (!m_isRunning) return;
+  if (!m_isRunning)
+    return;
 
   /////////////////////////////////////
   // Sending one Interest packet out //
   /////////////////////////////////////
 
-  shared_ptr<::ndn::Name> prefix = make_shared<::ndn::Name> (m_name); // another way to create name
+  shared_ptr<::ndn::Name> prefix = make_shared<::ndn::Name>(m_name); // another way to create name
 
   // Create and configure ndn::Interest
-  shared_ptr<Interest> interest = make_shared<Interest> ();
-  UniformVariable rand (0,std::numeric_limits<uint32_t>::max ());
-  interest->setNonce            (rand.GetValue ());
-  interest->setName             (*prefix);
-  Time lifetime = MilliSeconds (1000);
-  interest->setInterestLifetime (::ndn::time::milliseconds (lifetime.GetMilliSeconds ()));
+  shared_ptr<Interest> interest = make_shared<Interest>();
+  UniformVariable rand(0, std::numeric_limits<uint32_t>::max());
+  interest->setNonce(rand.GetValue());
+  interest->setName(*prefix);
+  Time lifetime = MilliSeconds(1000);
+  interest->setInterestLifetime(::ndn::time::milliseconds(lifetime.GetMilliSeconds()));
 
-  NS_LOG_DEBUG ("Sending Interest packet for " << *prefix);
-
+  NS_LOG_DEBUG("Sending Interest packet for " << *prefix);
 
   // Call trace (for logging purposes)
-  m_transmittedInterests (interest, this, m_face);
+  m_transmittedInterests(interest, this, m_face);
 
   // Forward packet to lower (network) layer
-  m_face->onReceiveInterest (*interest);
+  m_face->onReceiveInterest(*interest);
 
-  Simulator::Schedule (Seconds (1.0), &DumbRequester::SendInterest, this);
+  Simulator::Schedule(Seconds(1.0), &DumbRequester::SendInterest, this);
 }
 
 void
-DumbRequester::OnData (shared_ptr<const Data> contentObject)
+DumbRequester::OnData(shared_ptr<const Data> contentObject)
 {
-  NS_LOG_DEBUG ("Receiving Data packet for " << contentObject->getName ());
+  NS_LOG_DEBUG("Receiving Data packet for " << contentObject->getName());
 }
-
 
 } // namespace ns3

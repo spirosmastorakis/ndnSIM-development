@@ -29,47 +29,44 @@
 
 #include "apps/ndn-app.hpp"
 
-NS_LOG_COMPONENT_DEFINE ("ndn.AppFace");
+NS_LOG_COMPONENT_DEFINE("ndn.AppFace");
 
 namespace ns3 {
 namespace ndn {
 
-ATTRIBUTE_HELPER_CPP (Name);
+ATTRIBUTE_HELPER_CPP(Name);
 
-NS_OBJECT_ENSURE_REGISTERED (AppFace);
+NS_OBJECT_ENSURE_REGISTERED(AppFace);
 
 TypeId
-AppFace::GetTypeId ()
+AppFace::GetTypeId()
 {
-  static TypeId tid = TypeId ("ns3::ndn::AppFace")
-    .SetParent<Face> ()
-    .SetGroupName ("Ndn")
-    ;
+  static TypeId tid = TypeId("ns3::ndn::AppFace").SetParent<Face>().SetGroupName("Ndn");
   return tid;
 }
 
-AppFace::AppFace (Ptr<App> app)
-: Face (app->GetNode ())
-, m_app (app)
+AppFace::AppFace(Ptr<App> app)
+  : Face(app->GetNode())
+  , m_app(app)
 {
-  NS_LOG_FUNCTION (this << app);
+  NS_LOG_FUNCTION(this << app);
 
-  NS_ASSERT (m_app != 0);
-  SetFlags (Face::APPLICATION);
+  NS_ASSERT(m_app != 0);
+  SetFlags(Face::APPLICATION);
 }
 
-AppFace::~AppFace ()
+AppFace::~AppFace()
 {
-  NS_LOG_FUNCTION_NOARGS ();
+  NS_LOG_FUNCTION_NOARGS();
 }
 
-AppFace::AppFace ()
-  : Face (0)
+AppFace::AppFace()
+  : Face(0)
 {
 }
 
-AppFace::AppFace (const AppFace &)
-  : Face (0)
+AppFace::AppFace(const AppFace&)
+  : Face(0)
 {
 }
 
@@ -80,14 +77,14 @@ AppFace::operator= (const AppFace &)
 }
 
 void
-AppFace::close ()
+AppFace::close()
 {
 }
 
 void
-AppFace::sendInterest (const Interest& interest)
+AppFace::sendInterest(const Interest& interest)
 {
-  NS_LOG_FUNCTION (this << interest);
+  NS_LOG_FUNCTION(this << interest);
 
   // if (!IsUp ())
   //   {
@@ -95,15 +92,15 @@ AppFace::sendInterest (const Interest& interest)
   //   }
 
   // to decouple callbacks
-  Simulator::ScheduleNow(&App::OnInterest, m_app, interest.shared_from_this ());
+  Simulator::ScheduleNow(&App::OnInterest, m_app, interest.shared_from_this());
 
   // return true;
 }
 
 void
-AppFace::sendData (const Data& data)
+AppFace::sendData(const Data& data)
 {
-  NS_LOG_FUNCTION (this << data);
+  NS_LOG_FUNCTION(this << data);
 
   // if (!IsUp ())
   //   {
@@ -111,13 +108,13 @@ AppFace::sendData (const Data& data)
   //   }
 
   // to decouple callbacks
-  Simulator::ScheduleNow(&App::OnData, m_app, data.shared_from_this ());
+  Simulator::ScheduleNow(&App::OnData, m_app, data.shared_from_this());
 
   // return true;
 }
 
 std::ostream&
-AppFace::Print (std::ostream& os) const
+AppFace::Print(std::ostream& os) const
 {
   os << "dev=local(" << GetId() << ")";
   return os;

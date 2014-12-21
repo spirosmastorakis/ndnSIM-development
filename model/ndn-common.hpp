@@ -55,5 +55,4 @@ namespace name = ::ndn::name;
 } // namespace ndn
 } // namespace ns3
 
-
 #endif // NDN_COMMON_H

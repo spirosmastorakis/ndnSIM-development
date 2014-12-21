@@ -21,32 +21,31 @@
 #include "ns3/log.h"
 #include "ns3/packet.h"
 
-NS_LOG_COMPONENT_DEFINE ("ndn.cs.ContentStore");
+NS_LOG_COMPONENT_DEFINE("ndn.cs.ContentStore");
 
 namespace ns3 {
 namespace ndn {
 
-NS_OBJECT_ENSURE_REGISTERED (ContentStore);
+NS_OBJECT_ENSURE_REGISTERED(ContentStore);
 
 TypeId
-ContentStore::GetTypeId (void)
+ContentStore::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::ndn::ContentStore")
-    .SetGroupName ("Ndn")
-    .SetParent<Object> ()
+  static TypeId tid =
+    TypeId("ns3::ndn::ContentStore")
+      .SetGroupName("Ndn")
+      .SetParent<Object>()
 
-    .AddTraceSource ("CacheHits", "Trace called every time there is a cache hit",
-                     MakeTraceSourceAccessor (&ContentStore::m_cacheHitsTrace))
+      .AddTraceSource("CacheHits", "Trace called every time there is a cache hit",
+                      MakeTraceSourceAccessor(&ContentStore::m_cacheHitsTrace))
 
-    .AddTraceSource ("CacheMisses", "Trace called every time there is a cache miss",
-                     MakeTraceSourceAccessor (&ContentStore::m_cacheMissesTrace))
-    ;
+      .AddTraceSource("CacheMisses", "Trace called every time there is a cache miss",
+                      MakeTraceSourceAccessor(&ContentStore::m_cacheMissesTrace));
 
   return tid;
 }
 
-
-ContentStore::~ContentStore ()
+ContentStore::~ContentStore()
 {
 }
 
@@ -54,30 +53,29 @@ namespace cs {
 
 //////////////////////////////////////////////////////////////////////
 
-Entry::Entry (Ptr<ContentStore> cs, shared_ptr<const Data> data)
-  : m_cs (cs)
-  , m_data (data)
+Entry::Entry(Ptr<ContentStore> cs, shared_ptr<const Data> data)
+  : m_cs(cs)
+  , m_data(data)
 {
 }
 
 const Name&
-Entry::GetName () const
+Entry::GetName() const
 {
-  return m_data->getName ();
+  return m_data->getName();
 }
 
 shared_ptr<const Data>
-Entry::GetData () const
+Entry::GetData() const
 {
   return m_data;
 }
 
 Ptr<ContentStore>
-Entry::GetContentStore ()
+Entry::GetContentStore()
 {
   return m_cs;
 }
-
 
 } // namespace cs
 } // namespace ndn

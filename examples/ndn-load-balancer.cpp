@@ -58,60 +58,60 @@ using ns3::AnnotatedTopologyReader;
 using ::ndn::Name;
 
 int
-main (int argc, char *argv[])
+main(int argc, char* argv[])
 {
   CommandLine cmd;
-  cmd.Parse (argc, argv);
+  cmd.Parse(argc, argv);
 
-  AnnotatedTopologyReader topologyReader ("", 25);
-  topologyReader.SetFileName ("src/ndnSIM/examples/topologies/topo-load-balancer.txt");
-  topologyReader.Read ();
+  AnnotatedTopologyReader topologyReader("", 25);
+  topologyReader.SetFileName("src/ndnSIM/examples/topologies/topo-load-balancer.txt");
+  topologyReader.Read();
 
   // Install NDN stack on all nodes
   StackHelper ndnHelper;
-  ndnHelper.InstallAll ();
+  ndnHelper.InstallAll();
 
   // Installing global routing interface on all nodes
   GlobalRoutingHelper ndnGlobalRoutingHelper;
-  ndnGlobalRoutingHelper.InstallAll ();
+  ndnGlobalRoutingHelper.InstallAll();
 
   // Getting containers for the consumer/producer
-  Ptr<Node> producer1 = Names::Find<Node> ("UCLA-1");
-  Ptr<Node> producer2 = Names::Find<Node> ("UCLA-2");
+  Ptr<Node> producer1 = Names::Find<Node>("UCLA-1");
+  Ptr<Node> producer2 = Names::Find<Node>("UCLA-2");
   NodeContainer consumerNodes;
-  consumerNodes.Add (Names::Find<Node> ("CSU-1"));
+  consumerNodes.Add(Names::Find<Node>("CSU-1"));
 
   // Install NDN applications
   std::string prefix = "/ucla/hello";
 
-  AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
-  consumerHelper.SetPrefix (prefix);
-  consumerHelper.SetAttribute ("Frequency", StringValue ("100")); // 100 interests a second
-  consumerHelper.Install (consumerNodes);
+  AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
+  consumerHelper.SetPrefix(prefix);
+  consumerHelper.SetAttribute("Frequency", StringValue("100")); // 100 interests a second
+  consumerHelper.Install(consumerNodes);
 
-  AppHelper producerHelper ("ns3::ndn::Producer");
-  producerHelper.SetPrefix (prefix);
-  producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
-  producerHelper.Install (producer1);
-  producerHelper.Install (producer2);
+  AppHelper producerHelper("ns3::ndn::Producer");
+  producerHelper.SetPrefix(prefix);
+  producerHelper.SetAttribute("PayloadSize", StringValue("1024"));
+  producerHelper.Install(producer1);
+  producerHelper.Install(producer2);
 
   // Install random-load-balancer forwarding strategy in
   // node UCLA-HUB
   StrategyChoiceHelper strategyChoiceHelper;
-  strategyChoiceHelper.Install (Names::Find<Node> ("UCLA-HUB"), prefix,
-                                   "/localhost/nfd/strategy/random-load-balancer");
+  strategyChoiceHelper.Install(Names::Find<Node>("UCLA-HUB"), prefix,
+                               "/localhost/nfd/strategy/random-load-balancer");
 
   // Add /prefix origins to ndn::GlobalRouter
-  ndnGlobalRoutingHelper.AddOrigins (prefix, producer1);
-  ndnGlobalRoutingHelper.AddOrigins (prefix, producer2);
+  ndnGlobalRoutingHelper.AddOrigins(prefix, producer1);
+  ndnGlobalRoutingHelper.AddOrigins(prefix, producer2);
 
   // Calculate and install FIBs
-  GlobalRoutingHelper::CalculateRoutes ();
+  GlobalRoutingHelper::CalculateRoutes();
 
-  Simulator::Stop (Seconds (1.0));
+  Simulator::Stop(Seconds(1.0));
 
-  Simulator::Run ();
-  Simulator::Destroy ();
+  Simulator::Run();
+  Simulator::Destroy();
 
   return 0;
 }

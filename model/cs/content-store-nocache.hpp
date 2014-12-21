@@ -18,7 +18,7 @@
  **/
 
 #ifndef NDN_CONTENT_STORE_NOCACHE_H
-#define	NDN_CONTENT_STORE_NOCACHE_H
+#define NDN_CONTENT_STORE_NOCACHE_H
 
 #include "ns3/ndnSIM/model/cs/ndn-content-store.hpp"
 #include "ns3/ndnSIM/model/ndn-common.hpp"
@@ -31,49 +31,45 @@ namespace cs {
  * @ingroup ndn-cs
  * @brief Implementation of ContentStore that completely disables caching
  */
-class Nocache : public ContentStore
-{
+class Nocache : public ContentStore {
 public:
   /**
    * \brief Interface ID
    *
    * \return interface ID
    */
-  static
-  TypeId GetTypeId ();
+  static TypeId
+  GetTypeId();
 
   /**
    * @brief Default constructor
    */
-  Nocache ();
+  Nocache();
 
   /**
    * @brief Virtual destructor
    */
-  virtual
-  ~Nocache ();
+  virtual ~Nocache();
 
   virtual shared_ptr<Data>
-  Lookup (shared_ptr<const Interest> interest);
+  Lookup(shared_ptr<const Interest> interest);
 
   virtual bool
-  Add (shared_ptr<const Data> data);
+  Add(shared_ptr<const Data> data);
 
   virtual void
-  Print (std::ostream &os) const;
+  Print(std::ostream& os) const;
 
   virtual uint32_t
-  GetSize () const;
+  GetSize() const;
 
   virtual Ptr<cs::Entry>
-  Begin ();
+  Begin();
 
   virtual Ptr<cs::Entry>
-  End ();
+  End();
 
-  virtual Ptr<cs::Entry>
-  Next (Ptr<cs::Entry>);
-
+  virtual Ptr<cs::Entry> Next(Ptr<cs::Entry>);
 };
 
 } // namespace cs

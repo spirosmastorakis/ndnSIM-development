@@ -21,9 +21,9 @@
 
 namespace ndn {
 
-NdnTrailer::NdnTrailer() :
-  m_trailerLength (0),
-  m_trailerBuffer (nullptr)
+NdnTrailer::NdnTrailer()
+  : m_trailerLength(0)
+  , m_trailerBuffer(nullptr)
 {
 }
 
@@ -40,9 +40,7 @@ NdnTrailer::~NdnTrailer()
 ns3::TypeId
 NdnTrailer::GetInstanceTypeId(void) const
 {
-  static ns3::TypeId tid = ns3::TypeId ("ndn::NdnTrailer")
-  .SetParent<ns3::Chunk> ()
-  ;
+  static ns3::TypeId tid = ns3::TypeId("ndn::NdnTrailer").SetParent<ns3::Chunk>();
   return tid;
 }
 
@@ -56,7 +54,7 @@ void
 NdnTrailer::Serialize(ns3::Buffer::Iterator start) const
 {
   ns3::Buffer::Iterator i = start;
-  i.Write(m_trailerBuffer,  uint32_t(m_trailerLength));
+  i.Write(m_trailerBuffer, uint32_t(m_trailerLength));
 }
 
 uint32_t
@@ -68,7 +66,7 @@ NdnTrailer::Deserialize(ns3::Buffer::Iterator start)
 }
 
 void
-NdnTrailer::Print(std::ostream &os) const
+NdnTrailer::Print(std::ostream& os) const
 {
   os << m_trailerBuffer;
 }
@@ -96,5 +94,4 @@ NdnTrailer::SetLength(size_t trailerLength)
 {
   m_trailerLength = trailerLength;
 }
-
 }

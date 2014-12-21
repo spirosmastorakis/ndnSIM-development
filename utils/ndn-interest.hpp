@@ -31,17 +31,16 @@ namespace ndn {
 using ns3::Ptr;
 using ns3::Packet;
 
-class Interest : public ::ndn::Interest
-{
+class Interest : public ::ndn::Interest {
 public:
   Ptr<Packet>
-  getPacket () const;
+  getPacket() const;
 
   void
-  setPacket (Ptr<Packet> packet);
+  setPacket(Ptr<Packet> packet);
 
 private:
-  Ptr<Packet> m_packet = Create<Packet> ();
+  Ptr<Packet> m_packet = Create<Packet>();
 };
 
 } // namespace ndn
