@@ -49,7 +49,7 @@ LinkControlHelper::FailLink(Ptr<Node> node1, Ptr<Node> node2)
   NS_ASSERT(ndn2 != 0);
 
   // iterate over all faces to find the right one
-  for (uint32_t faceId = 0; faceId < ndn1->GetNFaces(); faceId++) {
+  for (const auto& i : ndn1->getForwarder()->getFaceTable()) {
     Ptr<ndn::NetDeviceFace> ndFace = ndn1->GetFace(faceId)->GetObject<ndn::NetDeviceFace>();
     if (ndFace == 0)
       continue;
@@ -69,11 +69,11 @@ LinkControlHelper::FailLink(Ptr<Node> node1, Ptr<Node> node2)
       nd2 = ppChannel->GetDevice(1);
 
     if (nd2->GetNode() == node2) {
-      Ptr<ndn::Face> face1 = ndn1->GetFaceByNetDevice(nd1);
-      Ptr<ndn::Face> face2 = ndn2->GetFaceByNetDevice(nd2);
+      shared_ptr<Face> face1 = ndn1->GetFaceByNetDevice(nd1);
+      shared_ptr<Face> face2 = ndn2->GetFaceByNetDevice(nd2);
 
-      face1->SetUp(false);
-      face2->SetUp(false);
+      // face1->SetUp(false);
+      // face2->SetUp(false);
       break;
     }
   }
@@ -119,8 +119,8 @@ LinkControlHelper::UpLink(Ptr<Node> node1, Ptr<Node> node2)
       nd2 = ppChannel->GetDevice(1);
 
     if (nd2->GetNode() == node2) {
-      Ptr<ndn::Face> face1 = ndn1->GetFaceByNetDevice(nd1);
-      Ptr<ndn::Face> face2 = ndn2->GetFaceByNetDevice(nd2);
+      shared_ptr<Face> face1 = ndn1->GetFaceByNetDevice(nd1);
+      shared_ptr<Face> face2 = ndn2->GetFaceByNetDevice(nd2);
 
       face1->SetUp(true);
       face2->SetUp(true);

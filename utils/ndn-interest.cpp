@@ -26,14 +26,14 @@ namespace ndn {
 using ns3::Ptr;
 using ns3::Packet;
 
-Ptr<Packet>
+Ptr<const Packet>
 Interest::getPacket() const
 {
   return m_packet;
 }
 
 void
-Interest::setPacket(Ptr<Packet> packet)
+Interest::setPacket(Ptr<const Packet> packet)
 {
   m_packet = packet;
 }

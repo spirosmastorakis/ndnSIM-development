@@ -26,8 +26,6 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "model/ndn-face.hpp"
-
 using namespace std;
 
 namespace ns3 {

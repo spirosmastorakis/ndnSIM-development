@@ -30,7 +30,6 @@
 #include "ns3/simulator.h"
 #include "ns3/random-variable.h"
 
-#include "model/ndn-face.hpp"
 #include "model/ndn-net-device-face.hpp"
 #include "helper/ndn-fib-helper.hpp"
 
@@ -60,8 +59,6 @@ L3Protocol::GetTypeId(void)
       .SetGroupName("ndn")
       .SetParent<Object>()
       .AddConstructor<L3Protocol>()
-      .AddAttribute("FaceList", "List of faces associated with ndn stack", ObjectVectorValue(),
-                    MakeObjectVectorAccessor(&L3Protocol::m_faces), MakeObjectVectorChecker<Face>())
 
       .AddTraceSource("OutInterests", "OutInterests",
                       MakeTraceSourceAccessor(&L3Protocol::m_outInterests))
@@ -76,7 +73,6 @@ L3Protocol::GetTypeId(void)
 }
 
 L3Protocol::L3Protocol()
-  : m_faceCounter(0)
 {
   NS_LOG_FUNCTION(this);
 }
@@ -218,10 +214,6 @@ L3Protocol::DoDispose(void)
 {
   NS_LOG_FUNCTION(this);
 
-  for (FaceList::iterator i = m_faces.begin(); i != m_faces.end(); ++i) {
-    *i = 0;
-  }
-  m_faces.clear();
   m_node = 0;
 
   // Force delete on objects
@@ -230,28 +222,14 @@ L3Protocol::DoDispose(void)
   Object::DoDispose();
 }
 
-static void
-faceNullDeleter(const Ptr<Face>& face)
+nfd::FaceId
+L3Protocol::AddFace(shared_ptr<Face> face)
 {
-}
+  NS_LOG_FUNCTION(this << face.get());
 
-uint32_t
-L3Protocol::AddFace(const Ptr<Face>& face)
-{
-  NS_LOG_FUNCTION(this << &face);
+  m_forwarder->addFace(face);
 
-  face->SetId(
-    m_faceCounter); // sets a unique ID of the face. This ID serves only informational purposes
-
-  shared_ptr<Face> sharedFace = shared_ptr<Face>(GetPointer(face), bind(&faceNullDeleter, face));
-
-  m_forwarder->addFace(sharedFace);
-
-  face->RegisterProtocolHandlers();
-
-  m_faces.push_back(face);
-  m_faceCounter++;
-
+  // Connect Signals to TraceSource
   face->onReceiveInterest +=
     [this, face](const Interest& interest) { this->m_inInterests(interest, *face); };
 
@@ -262,66 +240,58 @@ L3Protocol::AddFace(const Ptr<Face>& face)
 
   face->onSendData += [this, face](const Data& data) { this->m_outData(data, *face); };
 
-  return face->GetId();
+  return face->getId();
 }
 
-void
-L3Protocol::RemoveFace(Ptr<Face> face)
+// void
+// L3Protocol::RemoveFace(shared_ptr<Face> face)
+// {
+//   NS_LOG_FUNCTION(this << std::cref(*face));
+
+//   face->UnRegisterProtocolHandlers();
+
+//   // Just call the fail method. This should do the work for us and remove face from FIB and PIT
+//   face->fail("Remove Face");
+
+//   FaceList::iterator face_it = find(m_faces.begin(), m_faces.end(), face);
+//   if (face_it == m_faces.end()) {
+//     return;
+//   }
+//   m_faces.erase(face_it);
+// }
+
+// shared_ptr<Face>
+// L3Protocol::GetFace(uint32_t index) const
+// {
+//   NS_ASSERT(0 <= index && index < m_faces.size());
+//   return m_faces[index];
+// }
+
+shared_ptr<Face>
+L3Protocol::GetFaceById(nfd::FaceId id) const
 {
-  NS_LOG_FUNCTION(this << std::cref(*face));
-
-  face->UnRegisterProtocolHandlers();
-
-  // Just call the fail method. This should do the work for us and remove face from FIB and PIT
-  face->fail("Remove Face");
-
-  FaceList::iterator face_it = find(m_faces.begin(), m_faces.end(), face);
-  if (face_it == m_faces.end()) {
-    return;
-  }
-  m_faces.erase(face_it);
+  return m_forwarder->getFaceTable().get(id);
 }
 
-Ptr<Face>
-L3Protocol::GetFace(uint32_t index) const
-{
-  NS_ASSERT(0 <= index && index < m_faces.size());
-  return m_faces[index];
-}
-
-Ptr<Face>
-L3Protocol::GetFaceById(uint32_t index) const
-{
-  BOOST_FOREACH (const Ptr<Face>& face, m_faces) // this function is not supposed to be called
-                                                 // often, so linear search is fine
-  {
-    if (face->GetId() == index)
-      return face;
-  }
-  return 0;
-}
-
-Ptr<Face>
+shared_ptr<Face>
 L3Protocol::GetFaceByNetDevice(Ptr<NetDevice> netDevice) const
 {
-  BOOST_FOREACH (const Ptr<Face>& face, m_faces) // this function is not supposed to be called
-                                                 // often, so linear search is fine
-  {
-    Ptr<NetDeviceFace> netDeviceFace = DynamicCast<NetDeviceFace>(face);
-    if (netDeviceFace == 0)
+  for (const auto& i : m_forwarder->getFaceTable()) {
+    shared_ptr<NetDeviceFace> netDeviceFace = std::dynamic_pointer_cast<NetDeviceFace>(i);
+    if (netDeviceFace == nullptr)
       continue;
 
     if (netDeviceFace->GetNetDevice() == netDevice)
-      return face;
+      return i;
   }
-  return 0;
+  return nullptr;
 }
 
-uint32_t
-L3Protocol::GetNFaces(void) const
-{
-  return m_faces.size();
-}
+// uint32_t
+// L3Protocol::GetNFaces(void) const
+// {
+//   return m_faces.size();
+// }
 
 } // namespace ndn
 } // namespace ns3

@@ -94,9 +94,9 @@ FibHelper::RemoveNextHop(const ControlParameters& parameters, Ptr<Node> node)
 }
 
 void
-FibHelper::AddRoute(Ptr<Node> node, const std::string& prefix, Ptr<Face> face, int32_t metric)
+FibHelper::AddRoute(Ptr<Node> node, const std::string& prefix, shared_ptr<Face> face, int32_t metric)
 {
-  NS_LOG_LOGIC("[" << node->GetId() << "]$ route add " << prefix << " via " << *face << " metric "
+  NS_LOG_LOGIC("[" << node->GetId() << "]$ route add " << prefix << " via " << face->getLocalUri() << " metric "
                    << metric);
 
   // Get L3Protocol object
@@ -118,7 +118,7 @@ FibHelper::AddRoute(Ptr<Node> node, const std::string& prefix, uint32_t faceId, 
   Ptr<L3Protocol> ndn = node->GetObject<L3Protocol>();
   NS_ASSERT_MSG(ndn != 0, "Ndn stack should be installed on the node");
 
-  Ptr<Face> face = ndn->GetFace(faceId);
+  shared_ptr<Face> face = ndn->GetFaceById(faceId);
   NS_ASSERT_MSG(face != 0, "Face with ID [" << faceId << "] does not exist on node ["
                                             << node->GetId() << "]");
 
@@ -135,7 +135,7 @@ FibHelper::AddRoute(const std::string& nodeName, const std::string& prefix, uint
   Ptr<L3Protocol> ndn = node->GetObject<L3Protocol>();
   NS_ASSERT_MSG(ndn != 0, "Ndn stack should be installed on the node");
 
-  Ptr<Face> face = ndn->GetFace(faceId);
+  shared_ptr<Face> face = ndn->GetFaceById(faceId);
   NS_ASSERT_MSG(face != 0, "Face with ID [" << faceId << "] does not exist on node [" << nodeName
                                             << "]");
 
@@ -160,7 +160,7 @@ FibHelper::AddRoute(Ptr<Node> node, const std::string& prefix, Ptr<Node> otherNo
       Ptr<L3Protocol> ndn = node->GetObject<L3Protocol>();
       NS_ASSERT_MSG(ndn != 0, "Ndn stack should be installed on the node");
 
-      Ptr<Face> face = ndn->GetFaceByNetDevice(netDevice);
+      shared_ptr<Face> face = ndn->GetFaceByNetDevice(netDevice);
       NS_ASSERT_MSG(face != 0, "There is no face associated with the p2p link");
 
       AddRoute(node, prefix, face, metric);

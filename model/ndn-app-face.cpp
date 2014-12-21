@@ -36,44 +36,20 @@ namespace ndn {
 
 ATTRIBUTE_HELPER_CPP(Name);
 
-NS_OBJECT_ENSURE_REGISTERED(AppFace);
-
-TypeId
-AppFace::GetTypeId()
-{
-  static TypeId tid = TypeId("ns3::ndn::AppFace").SetParent<Face>().SetGroupName("Ndn");
-  return tid;
-}
 
 AppFace::AppFace(Ptr<App> app)
-  : Face(app->GetNode())
+  : LocalFace(FaceUri("appFace://"), FaceUri("appFace://"))
+  , m_node(app->GetNode())
   , m_app(app)
 {
   NS_LOG_FUNCTION(this << app);
 
   NS_ASSERT(m_app != 0);
-  SetFlags(Face::APPLICATION);
 }
 
 AppFace::~AppFace()
 {
   NS_LOG_FUNCTION_NOARGS();
-}
-
-AppFace::AppFace()
-  : Face(0)
-{
-}
-
-AppFace::AppFace(const AppFace&)
-  : Face(0)
-{
-}
-
-AppFace&
-AppFace::operator= (const AppFace &)
-{
-  return *((AppFace*)0);
 }
 
 void
@@ -84,41 +60,27 @@ AppFace::close()
 void
 AppFace::sendInterest(const Interest& interest)
 {
-  NS_LOG_FUNCTION(this << interest);
-
-  // if (!IsUp ())
-  //   {
-  //     return false;
-  //   }
+  NS_LOG_FUNCTION(this << &interest);
 
   // to decouple callbacks
   Simulator::ScheduleNow(&App::OnInterest, m_app, interest.shared_from_this());
-
-  // return true;
 }
 
 void
 AppFace::sendData(const Data& data)
 {
-  NS_LOG_FUNCTION(this << data);
-
-  // if (!IsUp ())
-  //   {
-  //     return false;
-  //   }
+  NS_LOG_FUNCTION(this << &data);
 
   // to decouple callbacks
   Simulator::ScheduleNow(&App::OnData, m_app, data.shared_from_this());
-
-  // return true;
 }
 
-std::ostream&
-AppFace::Print(std::ostream& os) const
-{
-  os << "dev=local(" << GetId() << ")";
-  return os;
-}
+// std::ostream&
+// AppFace::Print(std::ostream& os) const
+// {
+//   os << "dev=local(" << GetId() << ")";
+//   return os;
+// }
 
 } // namespace ndn
 } // namespace ns3

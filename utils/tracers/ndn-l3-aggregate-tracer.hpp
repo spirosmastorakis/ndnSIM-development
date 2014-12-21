@@ -28,7 +28,7 @@
 #include <ns3/node-container.h>
 #include <ns3/ptr.h>
 
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 #include <boost/shared_ptr.hpp>
 #include <map>
 #include <list>
@@ -147,28 +147,11 @@ protected:
   virtual void
   InInterests(const Interest&, const Face&);
 
-  // virtual void
-  // DropInterests (shared_ptr<const ::ndn::Interest>, Ptr<const Face>);
-
-  /*
-  virtual void
-  OutNacks  (Ptr<const Interest>, Ptr<const Face>);
-
-  virtual void
-  InNacks   (Ptr<const Interest>, Ptr<const Face>);
-
-  virtual void
-  DropNacks (Ptr<const Interest>, Ptr<const Face>);
-  */
-
   virtual void
   OutData(const Data&, const Face&);
 
   virtual void
   InData(const Data&, const Face&);
-
-  // virtual void
-  // DropData (shared_ptr<const ::ndn::Data>, Ptr<const Face>);
 
   // virtual void
   // SatisfiedInterests (Ptr<const pit::Entry>);
@@ -192,7 +175,7 @@ protected:
   Time m_period;
   EventId m_printEvent;
 
-  mutable std::map<Ptr<const Face>, boost::tuple<Stats, Stats>> m_stats;
+  mutable std::map<shared_ptr<const Face>, std::tuple<Stats, Stats>> m_stats;
 };
 
 } // namespace ndn

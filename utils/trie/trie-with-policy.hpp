@@ -70,7 +70,7 @@ public:
   {
     iterator foundItem, lastItem;
     bool reachLast;
-    boost::tie(foundItem, reachLast, lastItem) = trie_.find(key);
+    std::tie(foundItem, reachLast, lastItem) = trie_.find(key);
 
     if (!reachLast || lastItem->payload() == PayloadTraits::empty_payload)
       return; // nothing to invalidate
@@ -117,7 +117,7 @@ public:
   {
     iterator foundItem, lastItem;
     bool reachLast;
-    boost::tie(foundItem, reachLast, lastItem) = trie_.find(key);
+    std::tie(foundItem, reachLast, lastItem) = trie_.find(key);
 
     if (!reachLast || lastItem->payload() == PayloadTraits::empty_payload)
       return end();
@@ -133,7 +133,7 @@ public:
   {
     iterator foundItem, lastItem;
     bool reachLast;
-    boost::tie(foundItem, reachLast, lastItem) = trie_.find(key);
+    std::tie(foundItem, reachLast, lastItem) = trie_.find(key);
     if (foundItem != trie_.end()) {
       policy_.lookup(s_iterator_to(foundItem));
     }
@@ -149,7 +149,7 @@ public:
   {
     iterator foundItem, lastItem;
     bool reachLast;
-    boost::tie(foundItem, reachLast, lastItem) = trie_.find_if(key, pred);
+    std::tie(foundItem, reachLast, lastItem) = trie_.find_if(key, pred);
     if (foundItem != trie_.end()) {
       policy_.lookup(s_iterator_to(foundItem));
     }
@@ -174,7 +174,7 @@ public:
   {
     iterator foundItem, lastItem;
     bool reachLast;
-    boost::tie(foundItem, reachLast, lastItem) = trie_.find(key);
+    std::tie(foundItem, reachLast, lastItem) = trie_.find(key);
 
     // guard in case we don't have anything in the trie
     if (lastItem == trie_.end())
@@ -201,7 +201,7 @@ public:
   {
     iterator foundItem, lastItem;
     bool reachLast;
-    boost::tie(foundItem, reachLast, lastItem) = trie_.find(key);
+    std::tie(foundItem, reachLast, lastItem) = trie_.find(key);
 
     // guard in case we don't have anything in the trie
     if (lastItem == trie_.end())
@@ -232,7 +232,7 @@ public:
   {
     iterator foundItem, lastItem;
     bool reachLast;
-    boost::tie(foundItem, reachLast, lastItem) = trie_.find(key);
+    std::tie(foundItem, reachLast, lastItem) = trie_.find(key);
 
     // guard in case we don't have anything in the trie
     if (lastItem == trie_.end())

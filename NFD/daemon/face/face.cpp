@@ -1,4 +1,3 @@
-
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * Copyright (c) 2014,  Regents of the University of California,
@@ -40,6 +39,7 @@ Face::Face(const FaceUri& remoteUri, const FaceUri& localUri, bool isLocal)
   , m_localUri(localUri)
   , m_isOnDemand(false)
   , m_isFailed(false)
+  , m_metric(0)
 {
   onReceiveInterest += [this](const ndn::Interest&) { ++m_counters.getNInInterests(); };
   onReceiveData     += [this](const ndn::Data&) {     ++m_counters.getNInDatas(); };
@@ -94,7 +94,7 @@ Face::isUp() const
 }
 
 bool
-Face::decodeAndDispatchInput(const Block& element, ns3::Ptr<ns3::Packet> packet)
+Face::decodeAndDispatchInput(const Block& element, ns3::Ptr<const ns3::Packet> packet)
 {
   try {
     /// \todo Ensure lazy field decoding process

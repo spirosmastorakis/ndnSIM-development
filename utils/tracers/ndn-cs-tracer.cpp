@@ -42,7 +42,7 @@ using namespace std;
 namespace ns3 {
 namespace ndn {
 
-static std::list<boost::tuple<boost::shared_ptr<std::ostream>, std::list<Ptr<CsTracer>>>> g_tracers;
+static std::list<std::tuple<boost::shared_ptr<std::ostream>, std::list<Ptr<CsTracer>>>> g_tracers;
 
 template<class T>
 static inline void
@@ -90,7 +90,7 @@ CsTracer::InstallAll(const std::string& file, Time averagingPeriod /* = Seconds 
     *outputStream << "\n";
   }
 
-  g_tracers.push_back(boost::make_tuple(outputStream, tracers));
+  g_tracers.push_back(std::make_tuple(outputStream, tracers));
 }
 
 void
@@ -128,7 +128,7 @@ CsTracer::Install(const NodeContainer& nodes, const std::string& file,
     *outputStream << "\n";
   }
 
-  g_tracers.push_back(boost::make_tuple(outputStream, tracers));
+  g_tracers.push_back(std::make_tuple(outputStream, tracers));
 }
 
 void
@@ -164,7 +164,7 @@ CsTracer::Install(Ptr<Node> node, const std::string& file,
     *outputStream << "\n";
   }
 
-  g_tracers.push_back(boost::make_tuple(outputStream, tracers));
+  g_tracers.push_back(std::make_tuple(outputStream, tracers));
 }
 
 Ptr<CsTracer>

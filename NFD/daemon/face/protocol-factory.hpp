@@ -27,11 +27,14 @@
 #define NFD_DAEMON_FACE_PROTOCOL_FACTORY_HPP
 
 #include "common.hpp"
-#include "core/face-uri.hpp"
+
+#include <ndn-cxx/util/face-uri.hpp>
 
 namespace nfd {
 
+using ndn::util::FaceUri;
 class Channel;
+class Face;
 
 /**
  * \brief Prototype for the callback called when face is created

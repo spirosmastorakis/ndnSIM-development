@@ -62,7 +62,6 @@
 #include "ns3/ndnSIM/model/ip-faces/ndn-udp-face.hpp"
 #include "ns3/ndnSIM/model/ndn-app-face.hpp"
 #include "ns3/ndnSIM/model/ndn-common.hpp"
-#include "ns3/ndnSIM/model/ndn-face.hpp"
 #include "ns3/ndnSIM/model/ndn-global-router.hpp"
 #include "ns3/ndnSIM/model/ndn-header.hpp"
 #include "ns3/ndnSIM/model/ndn-l3-protocol.hpp"

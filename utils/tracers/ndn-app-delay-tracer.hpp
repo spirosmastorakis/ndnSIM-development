@@ -26,7 +26,7 @@
 #include <ns3/event-id.h>
 #include <ns3/node-container.h>
 
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 #include <boost/shared_ptr.hpp>
 #include <list>
 

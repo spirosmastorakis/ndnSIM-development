@@ -42,7 +42,6 @@ using ::ndn::Data;
 using ::ndn::KeyLocator;
 using ::ndn::Signature;
 using ::ndn::SignatureInfo;
-using ::ndn::Convert;
 using ::ndn::Block;
 using ::ndn::KeyChain;
 

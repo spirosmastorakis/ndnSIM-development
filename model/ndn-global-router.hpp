@@ -24,9 +24,10 @@
 #include "ns3/ptr.h"
 
 #include "ns3/ndnSIM/model/ndn-common.hpp"
+#include "ns3/ndnSIM/model/ndn-face.hpp"
 
 #include <list>
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 
 namespace ns3 {
 
@@ -35,9 +36,6 @@ class Channel;
 namespace ndn {
 
 class L3Protocol;
-class Face;
-
-using std::shared_ptr;
 
 /**
  * @ingroup ndn
@@ -48,7 +46,7 @@ public:
   /**
    * @brief Graph edge
    */
-  typedef boost::tuple<Ptr<GlobalRouter>, Ptr<Face>, Ptr<GlobalRouter>> Incidency;
+  typedef std::tuple<Ptr<GlobalRouter>, shared_ptr<Face>, Ptr<GlobalRouter>> Incidency;
   /**
    * @brief List of graph edges
    */
@@ -96,7 +94,7 @@ public:
    * @param ndn GlobalRouter of another node
    */
   void
-  AddIncidency(Ptr<Face> face, Ptr<GlobalRouter> ndn);
+  AddIncidency(shared_ptr<Face> face, Ptr<GlobalRouter> ndn);
 
   /**
    * @brief Get list of edges that are connected to this node
@@ -129,7 +127,9 @@ private:
 inline bool
 operator==(const GlobalRouter::Incidency& a, const GlobalRouter::Incidency& b)
 {
-  return a.get<0>() == b.get<0>() && a.get<1>() == b.get<1>() && a.get<2>() == b.get<2>();
+  return std::get<0>(a) == std::get<0>(b) &&
+    std::get<1>(a) == std::get<1>(b) &&
+    std::get<2>(a) == std::get<2>(b);
 }
 
 inline bool

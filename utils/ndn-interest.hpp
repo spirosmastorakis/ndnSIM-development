@@ -33,14 +33,14 @@ using ns3::Packet;
 
 class Interest : public ::ndn::Interest {
 public:
-  Ptr<Packet>
+  Ptr<const Packet>
   getPacket() const;
 
   void
-  setPacket(Ptr<Packet> packet);
+  setPacket(Ptr<const Packet> packet);
 
 private:
-  Ptr<Packet> m_packet = Create<Packet>();
+  Ptr<const Packet> m_packet = Create<Packet>();
 };
 
 } // namespace ndn

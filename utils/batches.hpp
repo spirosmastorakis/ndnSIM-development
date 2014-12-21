@@ -24,7 +24,7 @@
 #include "ns3/attribute-helper.h"
 #include "ns3/nstime.h"
 #include <list>
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 
 namespace ns3 {
 
@@ -33,7 +33,7 @@ namespace ns3 {
  * @brief Class representing sets of (time, number) tuples with support of reading writing to
  * streams
  */
-class Batches : public std::list<boost::tuple<Time, uint32_t>> {
+class Batches : public std::list<std::tuple<Time, uint32_t>> {
 public:
   /**
    * @brief Default constructor
@@ -48,7 +48,7 @@ public:
   void
   Add(const Time& when, uint32_t amount)
   {
-    push_back(boost::make_tuple<Time, uint32_t>(when, amount));
+    push_back(std::make_tuple(when, amount));
   }
 };
 

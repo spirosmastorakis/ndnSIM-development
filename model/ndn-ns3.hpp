@@ -30,21 +30,19 @@
 
 #include <ndn-cxx/encoding/block.hpp>
 
+namespace ns3 {
 namespace ndn {
-
-class Block;
-
-class UnknownHeaderException {
-};
 
 class Convert {
 public:
-  static shared_ptr<Block>
-  FromPacket(ns3::Ptr<ns3::Packet> packet);
+  static ::ndn::Block
+  FromPacket(Ptr<const Packet> packet);
 
   static void
-  ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet);
+  ToPacket(const ::ndn::Block& block, Ptr<Packet> packet);
 };
-}
+
+} // namespace ndn
+} // namespace ns3
 
 #endif

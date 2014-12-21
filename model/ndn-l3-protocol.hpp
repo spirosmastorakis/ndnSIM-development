@@ -26,6 +26,10 @@
 #include "ns3/ptr.h"
 #include "ns3/net-device.h"
 #include "ns3/nstime.h"
+#include "ns3/traced-callback.h"
+
+#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
+#include "ns3/ndnSIM/model/ndn-common.hpp"
 
 #include "ns3/ndnSIM/NFD/core/privilege-helper.hpp"
 #include "ns3/ndnSIM/NFD/daemon/fw/forwarder.hpp"
@@ -42,12 +46,6 @@
 #include "ns3/ndnSIM/NFD/daemon/table/pit-entry.hpp"
 #include "ns3/ndnSIM/NFD/daemon/table/name-tree.hpp"
 
-using nfd::Forwarder;
-using nfd::InternalFace;
-using nfd::FaceManager;
-using nfd::FibManager;
-using nfd::StrategyChoiceManager;
-using nfd::StatusServer;
 
 namespace ns3 {
 
@@ -58,8 +56,15 @@ class Header;
 
 namespace ndn {
 
-class Face;
-// class ForwardingStrategy;
+using nfd::Forwarder;
+using nfd::InternalFace;
+using nfd::FaceManager;
+using nfd::FibManager;
+using nfd::StrategyChoiceManager;
+using nfd::StatusServer;
+
+using nfd::Face;
+using std::shared_ptr;
 
 /**
  * \defgroup ndn ndnSIM: NDN simulation module
@@ -84,8 +89,6 @@ class Face;
  */
 class L3Protocol : public Object {
 public:
-  typedef std::vector<Ptr<Face>> FaceList;
-
   /**
    * \brief Interface ID
    *
@@ -156,44 +159,50 @@ public:
    *
    * \see NdnLocalFace, NdnNetDeviceFace, NdnUdpFace
    */
-  virtual uint32_t
-  AddFace(const Ptr<Face>& face);
+  virtual nfd::FaceId
+  AddFace(shared_ptr<Face> face);
 
-  /**
-   * \brief Get current number of faces added to Ndn stack
-   *
-   * \returns the number of faces
-   */
-  virtual uint32_t
-  GetNFaces() const;
+  // /**
+  //  * \brief Get current number of faces added to Ndn stack
+  //  *
+  //  * \returns the number of faces
+  //  */
+  // virtual uint32_t
+  // GetNFaces() const;
 
-  /**
-   * \brief Get face by face index
-   * \param face The face number (number in face list)
-   * \returns The NdnFace associated with the Ndn face number.
-   */
-  virtual Ptr<Face>
-  GetFace(uint32_t face) const;
+  // /**
+  //  * \brief Get face by face index
+  //  * \param face The face number (number in face list)
+  //  * \returns The NdnFace associated with the Ndn face number.
+  //  */
+  // virtual shared_ptr<Face>
+  // GetFace(uint32_t face) const;
 
   /**
    * \brief Get face by face ID
    * \param face The face ID number
    * \returns The NdnFace associated with the Ndn face number.
    */
-  virtual Ptr<Face>
-  GetFaceById(uint32_t face) const;
+  virtual shared_ptr<Face>
+  GetFaceById(nfd::FaceId face) const;
 
-  /**
-   * \brief Remove face from ndn stack (remove callbacks)
-   */
-  virtual void
-  RemoveFace(Ptr<Face> face);
+  // /**
+  //  * \brief Remove face from ndn stack (remove callbacks)
+  //  */
+  // virtual void
+  // RemoveFace(shared_ptr<Face> face);
 
   /**
    * \brief Get face for NetDevice
    */
-  virtual Ptr<Face>
+  virtual shared_ptr<Face>
   GetFaceByNetDevice(Ptr<NetDevice> netDevice) const;
+
+  shared_ptr<Forwarder>
+  getForwarder()
+  {
+    return m_forwarder;
+  }
 
 protected:
   virtual void
@@ -214,9 +223,6 @@ private:
   operator=(const L3Protocol&); ///< copy operator is disabled
 
 private:
-  uint32_t m_faceCounter; ///< \brief counter of faces. Increased every time a new face is added to
-                          ///the stack
-  FaceList m_faces;       ///< \brief list of faces that belongs to ndn stack on this node
   shared_ptr<Forwarder> m_forwarder;
 
   shared_ptr<InternalFace> m_internalFace;

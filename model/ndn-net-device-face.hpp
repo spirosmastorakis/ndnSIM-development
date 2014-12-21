@@ -20,7 +20,8 @@
 #ifndef NDN_NET_DEVICE_FACE_H
 #define NDN_NET_DEVICE_FACE_H
 
-#include "ndn-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
+#include "ns3/ndnSIM/model/ndn-common.hpp"
 #include "ns3/net-device.h"
 
 namespace ns3 {
@@ -40,11 +41,8 @@ namespace ndn {
  *
  * \see NdnAppFace, NdnNetDeviceFace, NdnIpv4Face, NdnUdpFace
  */
-class NetDeviceFace : public Face {
+class NetDeviceFace : public nfd::Face {
 public:
-  static TypeId
-  GetTypeId();
-
   /**
    * \brief Constructor
    *
@@ -55,29 +53,17 @@ public:
   NetDeviceFace(Ptr<Node> node, const Ptr<NetDevice>& netDevice);
   virtual ~NetDeviceFace();
 
-  ////////////////////////////////////////////////////////////////////
-  // methods overloaded from NdnFace
-  virtual void
-  RegisterProtocolHandlers();
-
   virtual void
   close();
 
-  virtual void
-  UnRegisterProtocolHandlers();
-
 protected:
-  virtual bool
-  Send(Ptr<Packet> p);
+  virtual void
+  sendInterest(const Interest& interest);
+
+  virtual void
+  sendData(const Data& data);
 
 public:
-  /**
-   * @brief Print out name of the NdnFace to the stream
-   */
-  virtual std::ostream&
-  Print(std::ostream& os) const;
-  ////////////////////////////////////////////////////////////////////
-
   /**
    * \brief Get NetDevice associated with the face
    *
@@ -87,16 +73,18 @@ public:
   GetNetDevice() const;
 
 private:
-  NetDeviceFace(const NetDeviceFace&); ///< \brief Disabled copy constructor
+  NetDeviceFace(const NetDeviceFace&) = delete; ///< \brief Disabled copy constructor
+
   NetDeviceFace&
-  operator=(const NetDeviceFace&); ///< \brief Disabled copy operator
+  operator=(const NetDeviceFace&) = delete; ///< \brief Disabled copy operator
 
   /// \brief callback from lower layers
   void
-  ReceiveFromNetDevice(Ptr<NetDevice> device, Ptr<const Packet> p, uint16_t protocol,
+  receiveFromNetDevice(Ptr<NetDevice> device, Ptr<const Packet> p, uint16_t protocol,
                        const Address& from, const Address& to, NetDevice::PacketType packetType);
 
 private:
+  Ptr<Node> m_node;
   Ptr<NetDevice> m_netDevice; ///< \brief Smart pointer to NetDevice
 };
 

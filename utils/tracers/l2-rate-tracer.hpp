@@ -25,7 +25,7 @@
 #include "ns3/nstime.h"
 #include "ns3/event-id.h"
 
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 #include <boost/shared_ptr.hpp>
 #include <map>
 
@@ -94,7 +94,7 @@ private:
   Time m_period;
   EventId m_printEvent;
 
-  mutable boost::tuple<Stats, Stats, Stats, Stats> m_stats;
+  mutable std::tuple<Stats, Stats, Stats, Stats> m_stats;
 };
 
 } // namespace ns3

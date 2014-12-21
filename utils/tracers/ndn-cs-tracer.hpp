@@ -28,7 +28,7 @@
 
 #include "ns3/ndnSIM/model/ndn-common.hpp"
 
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 #include <boost/shared_ptr.hpp>
 #include <map>
 #include <list>

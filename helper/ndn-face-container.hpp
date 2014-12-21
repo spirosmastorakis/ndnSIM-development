@@ -25,10 +25,12 @@
 
 #include "ns3/ptr.h"
 #include "ns3/simple-ref-count.h"
-#include "ns3/ndnSIM/model/ndn-face.hpp"
+#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
 
 namespace ns3 {
 namespace ndn {
+
+using std::shared_ptr;
 
 /**
  * @ingroup ndn-helpers
@@ -41,7 +43,7 @@ namespace ndn {
  */
 class FaceContainer : public SimpleRefCount<FaceContainer> {
 private:
-  typedef std::vector<Ptr<Face>> Container;
+  typedef std::vector<shared_ptr<nfd::Face>> Container;
 
 public:
   typedef Container::const_iterator Iterator; ///< \brief Iterator over FaceContainer
@@ -125,7 +127,7 @@ public:
    * @see Face
    */
   void
-  Add(const Ptr<Face>& face);
+  Add(const shared_ptr<nfd::Face>& face);
 
   /**
    * Get a smart pointer to Face-derived object stored in the container
@@ -136,7 +138,7 @@ public:
    *
    * @see Face
    */
-  Ptr<Face>
+  shared_ptr<nfd::Face>
   Get(Iterator i) const;
 
 private:

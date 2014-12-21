@@ -39,7 +39,6 @@ class Node;
 namespace ndn {
 
 class FaceContainer;
-class Face;
 class NetDeviceFace;
 class L3Protocol;
 
@@ -137,7 +136,7 @@ public:
          const std::string& attr3 = "", const std::string& value3 = "",
          const std::string& attr4 = "", const std::string& value4 = "");
 
-  typedef Callback<Ptr<NetDeviceFace>, Ptr<Node>, Ptr<L3Protocol>, Ptr<NetDevice>>
+  typedef Callback<shared_ptr<NetDeviceFace>, Ptr<Node>, Ptr<L3Protocol>, Ptr<NetDevice>>
     NetDeviceFaceCreateCallback;
 
   /**
@@ -257,10 +256,10 @@ public:
   getKeyChain();
 
 private:
-  Ptr<NetDeviceFace>
+  shared_ptr<NetDeviceFace>
   DefaultNetDeviceCallback(Ptr<Node> node, Ptr<L3Protocol> ndn, Ptr<NetDevice> netDevice) const;
 
-  Ptr<NetDeviceFace>
+  shared_ptr<NetDeviceFace>
   PointToPointNetDeviceCallback(Ptr<Node> node, Ptr<L3Protocol> ndn,
                                 Ptr<NetDevice> netDevice) const;
 

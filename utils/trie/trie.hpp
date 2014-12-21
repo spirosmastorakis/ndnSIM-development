@@ -27,7 +27,7 @@
 #include <boost/intrusive/set.hpp>
 #include <boost/functional/hash.hpp>
 #include <boost/interprocess/smart_ptr/unique_ptr.hpp>
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 #include <boost/foreach.hpp>
 #include <boost/mpl/if.hpp>
 
@@ -271,7 +271,7 @@ public:
     }
   }
 
-  // inline boost::tuple<const iterator, bool, const iterator>
+  // inline std::tuple<const iterator, bool, const iterator>
   // find (const FullKey &key) const
   // {
   //   return const_cast<trie*> (this)->find (key);
@@ -283,7 +283,7 @@ public:
    *
    * @return ->second is true if prefix in ->first is longer than key
    */
-  inline boost::tuple<iterator, bool, iterator>
+  inline std::tuple<iterator, bool, iterator>
   find(const FullKey& key)
   {
     trie* trieNode = this;
@@ -304,7 +304,7 @@ public:
       }
     }
 
-    return boost::make_tuple(foundNode, reachLast, trieNode);
+    return std::make_tuple(foundNode, reachLast, trieNode);
   }
 
   /**
@@ -314,7 +314,7 @@ public:
    * @return ->second is true if prefix in ->first is longer than key
    */
   template<class Predicate>
-  inline boost::tuple<iterator, bool, iterator>
+  inline std::tuple<iterator, bool, iterator>
   find_if(const FullKey& key, Predicate pred)
   {
     trie* trieNode = this;
@@ -336,7 +336,7 @@ public:
       }
     }
 
-    return boost::make_tuple(foundNode, reachLast, trieNode);
+    return std::make_tuple(foundNode, reachLast, trieNode);
   }
 
   /**

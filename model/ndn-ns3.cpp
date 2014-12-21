@@ -26,27 +26,29 @@
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
 
+namespace ns3 {
 namespace ndn {
 
-shared_ptr<Block>
-Convert::FromPacket(ns3::Ptr<ns3::Packet> packet)
+::ndn::Block
+Convert::FromPacket(Ptr<const Packet> packet)
 {
-  Buffer buffer(packet->GetSize());
-  packet->CopyData(buffer.buf(), packet->GetSize());
-  shared_ptr<Block> block = make_shared<Block>(Block(buffer.buf(), packet->GetSize()));
-  return block;
+  auto buffer = std::make_shared<::ndn::Buffer>(packet->GetSize());
+  packet->CopyData(buffer->buf(), packet->GetSize());
+  return ::ndn::Block(buffer);
 }
 
 void
-Convert::ToPacket(shared_ptr<Block> block, ns3::Ptr<ns3::Packet> packet)
+Convert::ToPacket(const ::ndn::Block& block, Ptr<Packet> packet)
 {
   size_t headerLength;
   uint8_t* headerBuffer;
 
-  block->parse();
-  headerLength = block->size();
-  headerBuffer = const_cast<uint8_t*>(block->wire());
-  NdnHeader ndnHeader(headerBuffer, headerLength);
+  block.parse();
+  headerLength = block.size();
+  headerBuffer = const_cast<uint8_t*>(block.wire());
+  ::ndn::NdnHeader ndnHeader(headerBuffer, headerLength);
   ndnHeader.AddNdnHeader(packet, ndnHeader);
 }
-}
+
+} // namespace ndn
+} // namespace ns3

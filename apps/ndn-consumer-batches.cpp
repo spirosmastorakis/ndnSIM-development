@@ -66,8 +66,8 @@ ConsumerBatches::StartApplication()
 
   // std::cout << "Batches: " << batches << "\n";
   for (Batches::const_iterator i = m_batches.begin(); i != m_batches.end(); i++) {
-    Simulator::ScheduleWithContext(GetNode()->GetId(), i->get<0>(), &ConsumerBatches::AddBatch,
-                                   this, i->get<1>());
+    Simulator::ScheduleWithContext(GetNode()->GetId(), std::get<0>(*i), &ConsumerBatches::AddBatch,
+                                   this, std::get<1>(*i));
   }
 }
 

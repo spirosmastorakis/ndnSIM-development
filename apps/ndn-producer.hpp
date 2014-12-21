@@ -20,10 +20,10 @@
 #ifndef NDN_PRODUCER_H
 #define NDN_PRODUCER_H
 
-#include "ndn-app.h"
-#include "ns3/ndnSIM/model/ndn-common.h"
-#include "ns3/nstime.h"
+#include "ndn-app.hpp"
+#include "ns3/ndnSIM/model/ndn-common.hpp"
 
+#include "ns3/nstime.h"
 #include "ns3/ptr.h"
 
 namespace ns3 {

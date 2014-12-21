@@ -35,25 +35,26 @@ NS_OBJECT_ENSURE_REGISTERED(App);
 TypeId
 App::GetTypeId(void)
 {
-  static TypeId tid = TypeId("ns3::ndn::App")
-                        .SetGroupName("Ndn")
-                        .SetParent<Application>()
-                        .AddConstructor<App>()
+  static TypeId tid =
+    TypeId("ns3::ndn::App")
+    .SetGroupName("Ndn")
+    .SetParent<Application>()
+    .AddConstructor<App>()
 
-                        .AddTraceSource("ReceivedInterests", "ReceivedInterests",
-                                        MakeTraceSourceAccessor(&App::m_receivedInterests))
+    .AddTraceSource("ReceivedInterests", "ReceivedInterests",
+                    MakeTraceSourceAccessor(&App::m_receivedInterests))
 
-                        //.AddTraceSource ("ReceivedNacks", "ReceivedNacks",
-                        // MakeTraceSourceAccessor (&App::m_receivedNacks))
+    //.AddTraceSource ("ReceivedNacks", "ReceivedNacks",
+    // MakeTraceSourceAccessor (&App::m_receivedNacks))
 
-                        .AddTraceSource("ReceivedDatas", "ReceivedDatas",
-                                        MakeTraceSourceAccessor(&App::m_receivedDatas))
+    .AddTraceSource("ReceivedDatas", "ReceivedDatas",
+                    MakeTraceSourceAccessor(&App::m_receivedDatas))
 
-                        .AddTraceSource("TransmittedInterests", "TransmittedInterests",
-                                        MakeTraceSourceAccessor(&App::m_transmittedInterests))
+    .AddTraceSource("TransmittedInterests", "TransmittedInterests",
+                    MakeTraceSourceAccessor(&App::m_transmittedInterests))
 
-                        .AddTraceSource("TransmittedDatas", "TransmittedDatas",
-                                        MakeTraceSourceAccessor(&App::m_transmittedDatas));
+    .AddTraceSource("TransmittedDatas", "TransmittedDatas",
+                    MakeTraceSourceAccessor(&App::m_transmittedDatas));
   return tid;
 }
 
@@ -84,7 +85,7 @@ App::GetId() const
   if (m_face == 0)
     return (uint32_t)-1;
   else
-    return m_face->GetId();
+    return m_face->getId();
 }
 
 void
@@ -114,13 +115,13 @@ App::StartApplication() // Called at time specified by Start
                 "Ndn stack should be installed on the node " << GetNode());
 
   // step 1. Create a face
-  m_face = CreateObject<AppFace>(/*Ptr<App> (this)*/ this);
+  m_face = std::make_shared<AppFace>(/*Ptr<App> (this)*/ this);
 
   // step 2. Add face to the Ndn stack
   GetNode()->GetObject<L3Protocol>()->AddFace(m_face);
 
   // step 3. Enable face
-  m_face->SetUp(true);
+  // m_face->SetUp(true);
 }
 
 void
@@ -136,20 +137,20 @@ App::StopApplication() // Called at time specified by Stop
   m_active = false;
 
   // step 1. Disable face
-  m_face->SetUp(false);
+  // m_face->SetUp(false);
 
-  // step 2. Remove face from Ndn stack
-  GetNode()->GetObject<L3Protocol>()->RemoveFace(m_face);
+  // // step 2. Remove face from Ndn stack
+  // GetNode()->GetObject<L3Protocol>()->RemoveFace(m_face);
 
-  // step 3. Destroy face
-  if (m_face->GetReferenceCount() != 1) {
-    NS_LOG_ERROR("Please a bug report on https://github.com/NDN-Routing/ndnSIM/issues");
-    NS_LOG_ERROR("At this point, nobody else should have referenced this face, but we have "
-                 << m_face->GetReferenceCount() << " references");
-  }
-  NS_ASSERT_MSG(m_face->GetReferenceCount() == 2,
-                "At this point, nobody else should have referenced this face, but we have "
-                  << m_face->GetReferenceCount() << " references");
+  // // step 3. Destroy face
+  // if (m_face->GetReferenceCount() != 1) {
+  //   NS_LOG_ERROR("Please a bug report on https://github.com/NDN-Routing/ndnSIM/issues");
+  //   NS_LOG_ERROR("At this point, nobody else should have referenced this face, but we have "
+  //                << m_face->GetReferenceCount() << " references");
+  // }
+  // NS_ASSERT_MSG(m_face->GetReferenceCount() == 2,
+  //               "At this point, nobody else should have referenced this face, but we have "
+  //                 << m_face->GetReferenceCount() << " references");
   m_face = 0;
 }
 

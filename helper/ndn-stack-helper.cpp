@@ -256,7 +256,7 @@ StackHelper::Install(Ptr<Node> node) const
     // if (DynamicCast<LoopbackNetDevice> (device) != 0)
     //   continue; // don't create face for a LoopbackNetDevice
 
-    Ptr<NetDeviceFace> face;
+    shared_ptr<NetDeviceFace> face;
 
     for (std::list<std::pair<TypeId, NetDeviceFaceCreateCallback>>::const_iterator item =
            m_netDeviceCallbacks.begin();
@@ -275,10 +275,10 @@ StackHelper::Install(Ptr<Node> node) const
     if (m_needSetDefaultRoutes) {
       // default route with lowest priority possible
       FibHelper fibHelper;
-      fibHelper.AddRoute(node, "/", StaticCast<Face>(face), std::numeric_limits<int32_t>::max());
+      fibHelper.AddRoute(node, "/", face, std::numeric_limits<int32_t>::max());
     }
 
-    face->SetUp();
+    // face->SetUp();
     faces->Add(face);
   }
 
@@ -325,30 +325,30 @@ StackHelper::RemoveNetDeviceFaceCreateCallback(TypeId netDeviceType,
   }
 }
 
-Ptr<NetDeviceFace>
+shared_ptr<NetDeviceFace>
 StackHelper::DefaultNetDeviceCallback(Ptr<Node> node, Ptr<L3Protocol> ndn,
                                       Ptr<NetDevice> netDevice) const
 {
   NS_LOG_DEBUG("Creating default NetDeviceFace on node " << node->GetId());
 
-  Ptr<NetDeviceFace> face = CreateObject<NetDeviceFace>(node, netDevice);
+  shared_ptr<NetDeviceFace> face = std::make_shared<NetDeviceFace>(node, netDevice);
 
   ndn->AddFace(face);
-  NS_LOG_LOGIC("Node " << node->GetId() << ": added NetDeviceFace as face #" << *face);
+  NS_LOG_LOGIC("Node " << node->GetId() << ": added NetDeviceFace as face #" << face->getLocalUri());
 
   return face;
 }
 
-Ptr<NetDeviceFace>
+shared_ptr<NetDeviceFace>
 StackHelper::PointToPointNetDeviceCallback(Ptr<Node> node, Ptr<L3Protocol> ndn,
                                            Ptr<NetDevice> device) const
 {
   NS_LOG_DEBUG("Creating point-to-point NetDeviceFace on node " << node->GetId());
 
-  Ptr<NetDeviceFace> face = CreateObject<NetDeviceFace>(node, device);
+  shared_ptr<NetDeviceFace> face = std::make_shared<NetDeviceFace>(node, device);
 
   ndn->AddFace(face);
-  NS_LOG_LOGIC("Node " << node->GetId() << ": added NetDeviceFace as face #" << *face);
+  NS_LOG_LOGIC("Node " << node->GetId() << ": added NetDeviceFace as face #" << face->getLocalUri());
 
   if (m_limitsEnabled) {
     // Ptr<Limits> limits = face->GetObject<Limits> ();

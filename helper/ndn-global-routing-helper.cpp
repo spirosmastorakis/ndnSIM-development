@@ -85,8 +85,8 @@ GlobalRoutingHelper::Install(Ptr<Node> node)
   gr = CreateObject<GlobalRouter>();
   node->AggregateObject(gr);
 
-  for (uint32_t faceId = 0; faceId < ndn->GetNFaces(); faceId++) {
-    Ptr<NetDeviceFace> face = DynamicCast<NetDeviceFace>(ndn->GetFace(faceId));
+  for (auto& i : ndn->getForwarder()->getFaceTable()) {
+    shared_ptr<NetDeviceFace> face = std::dynamic_pointer_cast<NetDeviceFace>(i);
     if (face == 0) {
       NS_LOG_DEBUG("Skipping non-netdevice face");
       continue;
@@ -281,14 +281,14 @@ GlobalRoutingHelper::CalculateRoutes(bool invalidatedRoutes /* = true*/)
         continue;
       else {
         // cout << "  Node " << i->first->GetObject<Node> ()->GetId ();
-        if (i->second.get<0>() == 0) {
+        if (std::get<0>(*i) == 0) {
           // cout << " is unreachable" << endl;
         }
         else {
           BOOST_FOREACH (const shared_ptr<const Name>& prefix, i->first->GetLocalPrefixes()) {
-            NS_LOG_DEBUG(" prefix " << prefix << " reachable via face " << *i->second.get<0>()
-                                    << " with distance " << i->second.get<1>() << " with delay "
-                                    << i->second.get<2>());
+            NS_LOG_DEBUG(" prefix " << prefix << " reachable via face " << *std::get<0>(i->second)
+                                    << " with distance " << std::get<1>(i->second) << " with delay "
+                                    << std::get<2>(i->second));
 
             // Ptr<fib::Entry> entry = fib->Add (prefix, i->second.get<0> (), i->second.get<1> ());
 
@@ -297,8 +297,8 @@ GlobalRoutingHelper::CalculateRoutes(bool invalidatedRoutes /* = true*/)
 
             ControlParameters parameters;
             parameters.setName(*prefix);
-            parameters.setFaceId((i->second.get<0>())->getId());
-            parameters.setCost(i->second.get<1>());
+            parameters.setFaceId((std::get<0>(i->second))->getId());
+            parameters.setCost(std::get<1>(i->second));
 
             FibHelper fibHelper;
             fibHelper.AddNextHop(parameters, *node);

@@ -37,38 +37,33 @@ NS_LOG_COMPONENT_DEFINE("ndn.NetDeviceFace");
 namespace ns3 {
 namespace ndn {
 
-NS_OBJECT_ENSURE_REGISTERED(NetDeviceFace);
-
-TypeId
-NetDeviceFace::GetTypeId()
-{
-  static TypeId tid = TypeId("ns3::ndn::NetDeviceFace").SetParent<Face>().SetGroupName("Ndn");
-  return tid;
-}
+using ::ndn::util::FaceUri;
 
 /**
  * By default, Ndn face are created in the "down" state.  Before
  * becoming useable, the user must invoke SetUp on the face
  */
 NetDeviceFace::NetDeviceFace(Ptr<Node> node, const Ptr<NetDevice>& netDevice)
-  : Face(node)
+  : Face(FaceUri("netDeviceFace://"), FaceUri("netDeviceFace://"))
+  , m_node(node)
   , m_netDevice(netDevice)
 {
   NS_LOG_FUNCTION(this << netDevice);
 
-  SetMetric(1); // default metric
+  setMetric(1); // default metric
 
   NS_ASSERT_MSG(m_netDevice != 0, "NetDeviceFace needs to be assigned a valid NetDevice");
+
+  m_node->RegisterProtocolHandler(MakeCallback(&NetDeviceFace::receiveFromNetDevice, this),
+                                  L3Protocol::ETHERNET_FRAME_TYPE, m_netDevice,
+                                  true /*promiscuous mode*/);
 }
 
 NetDeviceFace::~NetDeviceFace()
 {
   NS_LOG_FUNCTION_NOARGS();
-}
 
-NetDeviceFace& NetDeviceFace::operator= (const NetDeviceFace &)
-{
-  return *this;
+  m_node->UnregisterProtocolHandler(MakeCallback(&NetDeviceFace::receiveFromNetDevice, this));
 }
 
 void
@@ -83,76 +78,57 @@ NetDeviceFace::GetNetDevice() const
 }
 
 void
-NetDeviceFace::RegisterProtocolHandlers()
+NetDeviceFace::sendInterest(const Interest& interest)
 {
-  NS_LOG_FUNCTION(this);
+  NS_LOG_FUNCTION(this << &interest);
 
-  m_node->RegisterProtocolHandler(MakeCallback(&NetDeviceFace::ReceiveFromNetDevice, this),
-                                  L3Protocol::ETHERNET_FRAME_TYPE, m_netDevice,
-                                  true /*promiscuous mode*/);
+  this->onSendInterest(interest);
+  const Block& payload = interest.wireEncode();
+
+  NS_ASSERT_MSG(payload.size() <= m_netDevice->GetMtu(),
+                "Packet size " << payload.size() << " exceeds device MTU "
+                               << m_netDevice->GetMtu());
+
+  Ptr<Packet> packet = Create<Packet>();
+  Convert::ToPacket(payload, packet);
+
+  m_netDevice->Send(packet, m_netDevice->GetBroadcast(), L3Protocol::ETHERNET_FRAME_TYPE);
 }
 
 void
-NetDeviceFace::UnRegisterProtocolHandlers()
+NetDeviceFace::sendData(const Data& data)
 {
-  m_node->UnregisterProtocolHandler(MakeCallback(&NetDeviceFace::ReceiveFromNetDevice, this));
-}
+  NS_LOG_FUNCTION(this << &data);
 
-bool
-NetDeviceFace::Send(Ptr<Packet> packet)
-{
-  if (!Face::Send(packet)) {
-    return false;
-  }
+  this->onSendData(data);
+  const Block& payload = data.wireEncode();
 
-  NS_LOG_FUNCTION(this << packet);
-  // to please the syntax highlighter
-  std::string s = "for Ndn ; fragmentation not supported";
-  NS_ASSERT_MSG(packet->GetSize() <= m_netDevice->GetMtu(),
-                "Packet size " << packet->GetSize() << " exceeds device MTU "
-                               << m_netDevice->GetMtu() << s);
+  NS_ASSERT_MSG(payload.size() <= m_netDevice->GetMtu(),
+                "Packet size " << payload.size() << " exceeds device MTU "
+                               << m_netDevice->GetMtu());
 
-  bool ok = m_netDevice->Send(packet, m_netDevice->GetBroadcast(), L3Protocol::ETHERNET_FRAME_TYPE);
-  return ok;
+  Ptr<Packet> packet = Create<Packet>();
+  Convert::ToPacket(payload, packet);
+
+  m_netDevice->Send(packet, m_netDevice->GetBroadcast(), L3Protocol::ETHERNET_FRAME_TYPE);
 }
 
 // callback
 void
-NetDeviceFace::ReceiveFromNetDevice(Ptr<NetDevice> device, Ptr<const Packet> p, uint16_t protocol,
+NetDeviceFace::receiveFromNetDevice(Ptr<NetDevice> device, Ptr<const Packet> p, uint16_t protocol,
                                     const Address& from, const Address& to,
                                     NetDevice::PacketType packetType)
 {
   NS_LOG_FUNCTION(device << p << protocol << from << to << packetType);
-  Receive(p);
-}
 
-std::ostream&
-NetDeviceFace::Print(std::ostream& os) const
-{
-#ifdef NS3_LOG_ENABLE
-  os << "dev[" << GetNode()->GetId() << "]=net(" << GetId();
-
-  if (DynamicCast<PointToPointNetDevice>(m_netDevice)) {
-    // extra debugging information which available ONLY for PointToPointNetDevice's
-    os << ",";
-    os << DynamicCast<PointToPointNetDevice>(m_netDevice)
-            ->GetChannel()
-            ->GetDevice(0)
-            ->GetNode()
-            ->GetId();
-    os << "-";
-    os << DynamicCast<PointToPointNetDevice>(m_netDevice)
-            ->GetChannel()
-            ->GetDevice(1)
-            ->GetNode()
-            ->GetId();
+  try {
+    ::ndn::Block block = Convert::FromPacket(p);
+    decodeAndDispatchInput(block, p);
   }
-  os << ")";
-#else
-  os << "dev=net(" << GetId() << ")";
-#endif
-  return os;
+  catch (::ndn::tlv::Error&) {
+    NS_LOG_ERROR("Unrecognized TLV packet");
+  }
 }
 
-} // namespace ndnsim
+} // namespace ndn
 } // namespace ns3

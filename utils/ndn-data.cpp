@@ -36,14 +36,14 @@ Data::Data(::ndn::Block block)
 {
 }
 
-Ptr<Packet>
+Ptr<const Packet>
 Data::getPacket() const
 {
   return m_packet;
 }
 
 void
-Data::setPacket(Ptr<Packet> packet)
+Data::setPacket(Ptr<const Packet> packet)
 {
   m_packet = packet;
 }

@@ -21,8 +21,6 @@
 
 #include <algorithm>
 
-#include "model/ndn-face.hpp"
-
 namespace ns3 {
 namespace ndn {
 
@@ -86,12 +84,12 @@ FaceContainer::GetN(void) const
 // }
 
 void
-FaceContainer::Add(const Ptr<Face>& face)
+FaceContainer::Add(const shared_ptr<nfd::Face>& face)
 {
   m_faces.push_back(face);
 }
 
-Ptr<Face>
+shared_ptr<nfd::Face>
 FaceContainer::Get(FaceContainer::Iterator i) const
 {
   return *i;

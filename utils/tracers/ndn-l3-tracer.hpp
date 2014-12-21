@@ -26,14 +26,14 @@
 #include "ns3/ndnSIM/model/ndn-common.hpp"
 #include "ns3/ndnSIM/model/ndn-l3-protocol.hpp"
 
+#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
+
 namespace ns3 {
 
 class Node;
 class Packet;
 
 namespace ndn {
-
-class Face;
 
 /**
  * @ingroup ndn-tracers
@@ -85,17 +85,17 @@ protected:
   InInterests(const Interest&, const Face&) = 0;
 
   // virtual void
-  // DropInterests (shared_ptr<const ::ndn::Interest>, Ptr<const Face>) = 0;
+  // DropInterests (shared_ptr<const ::ndn::Interest>, shared_ptr<const Face>) = 0;
 
   /*
   virtual void
-  OutNacks  (Ptr<const Interest>, Ptr<const Face>) = 0;
+  OutNacks  (Ptr<const Interest>, shared_ptr<const Face>) = 0;
 
   virtual void
-  InNacks   (Ptr<const Interest>, Ptr<const Face>) = 0;
+  InNacks   (Ptr<const Interest>, shared_ptr<const Face>) = 0;
 
   virtual void
-  DropNacks (Ptr<const Interest>, Ptr<const Face>) = 0;
+  DropNacks (Ptr<const Interest>, shared_ptr<const Face>) = 0;
   */
 
   virtual void
@@ -105,7 +105,7 @@ protected:
   InData(const Data&, const Face&) = 0;
 
   // virtual void
-  // DropData (shared_ptr<const ::ndn::Data>, Ptr<const Face>) = 0;
+  // DropData (shared_ptr<const ::ndn::Data>, shared_ptr<const Face>) = 0;
 
   // virtual void
   // SatisfiedInterests (Ptr<const pit::Entry>) = 0;

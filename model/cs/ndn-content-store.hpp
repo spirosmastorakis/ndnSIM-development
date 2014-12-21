@@ -26,7 +26,7 @@
 
 #include "ns3/ndnSIM/model/ndn-common.hpp"
 
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 
 namespace ns3 {
 

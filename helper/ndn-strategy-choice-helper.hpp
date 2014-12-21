@@ -26,7 +26,7 @@
 
 #include "ns3/ndnSIM/model/ndn-common.hpp"
 #include "ns3/ndnSIM/model/ndn-l3-protocol.hpp"
-#include "ns3/ndnSIM/model/ndn-face.hpp"
+#include "ns3/ndnSIM/model/ndn-app-face.hpp"
 #include "ndn-stack-helper.hpp"
 
 namespace ndn {

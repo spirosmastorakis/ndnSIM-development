@@ -37,14 +37,14 @@ public:
 
   Data(::ndn::Block block);
 
-  Ptr<Packet>
+  Ptr<const Packet>
   getPacket() const;
 
   void
-  setPacket(Ptr<Packet> packet);
+  setPacket(Ptr<const Packet> packet);
 
 private:
-  Ptr<Packet> m_packet = Create<Packet>();
+  Ptr<const Packet> m_packet = Create<Packet>();
 };
 
 } // namespace ndn

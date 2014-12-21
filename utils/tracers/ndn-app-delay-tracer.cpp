@@ -45,7 +45,7 @@ using namespace std;
 namespace ns3 {
 namespace ndn {
 
-static std::list<boost::tuple<boost::shared_ptr<std::ostream>, std::list<Ptr<AppDelayTracer>>>>
+static std::list<std::tuple<boost::shared_ptr<std::ostream>, std::list<Ptr<AppDelayTracer>>>>
   g_tracers;
 
 template<class T>
@@ -94,7 +94,7 @@ AppDelayTracer::InstallAll(const std::string& file)
     *outputStream << "\n";
   }
 
-  g_tracers.push_back(boost::make_tuple(outputStream, tracers));
+  g_tracers.push_back(std::make_tuple(outputStream, tracers));
 }
 
 void
@@ -131,7 +131,7 @@ AppDelayTracer::Install(const NodeContainer& nodes, const std::string& file)
     *outputStream << "\n";
   }
 
-  g_tracers.push_back(boost::make_tuple(outputStream, tracers));
+  g_tracers.push_back(std::make_tuple(outputStream, tracers));
 }
 
 void
@@ -166,7 +166,7 @@ AppDelayTracer::Install(Ptr<Node> node, const std::string& file)
     *outputStream << "\n";
   }
 
-  g_tracers.push_back(boost::make_tuple(outputStream, tracers));
+  g_tracers.push_back(std::make_tuple(outputStream, tracers));
 }
 
 Ptr<AppDelayTracer>

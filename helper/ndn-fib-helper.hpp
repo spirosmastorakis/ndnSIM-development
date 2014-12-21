@@ -26,7 +26,7 @@
 
 #include "ns3/ndnSIM/model/ndn-common.hpp"
 #include "ns3/ndnSIM/model/ndn-l3-protocol.hpp"
-#include "ns3/ndnSIM/model/ndn-face.hpp"
+#include "ns3/ndnSIM/model/ndn-app-face.hpp"
 #include "ns3/ndnSIM/helper/ndn-stack-helper.hpp"
 
 namespace ndn {
@@ -83,7 +83,7 @@ public:
    * \param metric Routing metric
    */
   static void
-  AddRoute(Ptr<Node> node, const std::string& prefix, Ptr<Face> face, int32_t metric);
+  AddRoute(Ptr<Node> node, const std::string& prefix, shared_ptr<Face> face, int32_t metric);
 
   /**
    * @brief Add forwarding entry to FIB (work only with point-to-point links)

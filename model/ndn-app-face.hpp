@@ -20,6 +20,7 @@
 #ifndef NDN_APP_FACE_H
 #define NDN_APP_FACE_H
 
+#include "ns3/ndnSIM/NFD/daemon/face/local-face.hpp"
 #include "ns3/ndnSIM/model/ndn-face.hpp"
 #include "ns3/ndnSIM/model/ndn-common.hpp"
 
@@ -30,10 +31,12 @@
 namespace ns3 {
 
 class Packet;
+class Node;
 
 namespace ndn {
 
 class App;
+using nfd::Face;
 
 /**
  * \ingroup ndn-face
@@ -45,16 +48,15 @@ class App;
  *
  * \see AppFace, NdnNetDeviceFace, NdnIpv4Face, NdnUdpFace
  */
-class AppFace : public Face {
+class AppFace : public nfd::LocalFace {
 public:
-  static TypeId
-  GetTypeId();
-
   /**
    * \brief Default constructor
    */
   AppFace(Ptr<App> app);
-  virtual ~AppFace();
+
+  virtual
+  ~AppFace();
 
   virtual void
   close();
@@ -67,29 +69,18 @@ public:
   virtual void
   sendData(const Data& data);
 
-  virtual bool
-  isLocal() const;
-
 public:
-  virtual std::ostream&
-  Print(std::ostream& os) const;
-  ////////////////////////////////////////////////////////////////////
 
 private:
-  AppFace();
-  AppFace(const AppFace&); ///< \brief Disabled copy constructor
+  AppFace(const AppFace&) = delete; ///< \brief Disabled copy constructor
+
   AppFace&
-  operator=(const AppFace&); ///< \brief Disabled copy operator
+  operator=(const AppFace&) = delete; ///< \brief Disabled copy operator
 
 private:
+  Ptr<Node> m_node;
   Ptr<App> m_app;
 };
-
-inline bool
-AppFace::isLocal() const
-{
-  return true;
-}
 
 ATTRIBUTE_HELPER_HEADER(Name);
 

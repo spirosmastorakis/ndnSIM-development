@@ -25,7 +25,7 @@
 #include "ns3/callback.h"
 
 #include "apps/ndn-app.hpp"
-#include "model/ndn-face.hpp"
+#include "model/ndn-app-face.hpp"
 
 #include <ndn-cxx/interest.hpp>
 #include <ndn-cxx/data.hpp>
@@ -41,7 +41,7 @@ NS_LOG_COMPONENT_DEFINE("ndn.L3AggregateTracer");
 namespace ns3 {
 namespace ndn {
 
-static std::list<boost::tuple<boost::shared_ptr<std::ostream>, std::list<Ptr<L3AggregateTracer>>>>
+static std::list<std::tuple<boost::shared_ptr<std::ostream>, std::list<Ptr<L3AggregateTracer>>>>
   g_tracers;
 
 template<class T>
@@ -90,7 +90,7 @@ L3AggregateTracer::InstallAll(const std::string& file, Time averagingPeriod /* =
     *outputStream << "\n";
   }
 
-  g_tracers.push_back(boost::make_tuple(outputStream, tracers));
+  g_tracers.push_back(std::make_tuple(outputStream, tracers));
 }
 
 void
@@ -128,7 +128,7 @@ L3AggregateTracer::Install(const NodeContainer& nodes, const std::string& file,
     *outputStream << "\n";
   }
 
-  g_tracers.push_back(boost::make_tuple(outputStream, tracers));
+  g_tracers.push_back(std::make_tuple(outputStream, tracers));
 }
 
 void
@@ -164,7 +164,7 @@ L3AggregateTracer::Install(Ptr<Node> node, const std::string& file,
     *outputStream << "\n";
   }
 
-  g_tracers.push_back(boost::make_tuple(outputStream, tracers));
+  g_tracers.push_back(std::make_tuple(outputStream, tracers));
 }
 
 Ptr<L3AggregateTracer>
@@ -235,19 +235,19 @@ L3AggregateTracer::PrintHeader(std::ostream& os) const
 void
 L3AggregateTracer::Reset()
 {
-  for (std::map<Ptr<const Face>, boost::tuple<Stats, Stats>>::iterator stats = m_stats.begin();
+  for (std::map<shared_ptr<const Face>, std::tuple<Stats, Stats>>::iterator stats = m_stats.begin();
        stats != m_stats.end(); stats++) {
-    stats->second.get<0>().Reset();
-    stats->second.get<1>().Reset();
+    std::get<0>(stats->second).Reset();
+    std::get<1>(stats->second).Reset();
   }
 }
 
-#define STATS(INDEX) stats->second.get<INDEX>()
+#define STATS(INDEX) std::get<INDEX>(stats->second)
 
 #define PRINTER(printName, fieldName)                                                              \
   os << time.ToDouble(Time::S) << "\t" << m_node << "\t";                                          \
   if (stats->first) {                                                                              \
-    os << stats->first->GetId() << "\t" << *stats->first << "\t";                                  \
+    os << stats->first->getId() << "\t" << stats->first->getLocalUri() << "\t";                    \
   }                                                                                                \
   else {                                                                                           \
     os << "-1\tall\t";                                                                             \
@@ -259,27 +259,21 @@ L3AggregateTracer::Print(std::ostream& os) const
 {
   Time time = Simulator::Now();
 
-  for (std::map<Ptr<const Face>, boost::tuple<Stats, Stats>>::iterator stats = m_stats.begin();
+  for (std::map<shared_ptr<const Face>, std::tuple<Stats, Stats>>::iterator stats = m_stats.begin();
        stats != m_stats.end(); stats++) {
     if (!stats->first)
       continue;
 
     PRINTER("InInterests", m_inInterests);
     PRINTER("OutInterests", m_outInterests);
-    // PRINTER ("DropInterests", m_dropInterests);
-
-    // PRINTER ("InNacks",   m_inNacks);
-    // PRINTER ("OutNacks",  m_outNacks);
-    // PRINTER ("DropNacks", m_dropNacks);
 
     PRINTER("InData", m_inData);
     PRINTER("OutData", m_outData);
-    // PRINTER ("DropData", m_dropData);
   }
 
   {
-    std::map<Ptr<const Face>, boost::tuple<Stats, Stats>>::iterator stats =
-      m_stats.find(Ptr<const Face>(0));
+    std::map<shared_ptr<const Face>, std::tuple<Stats, Stats>>::iterator stats =
+      m_stats.find(shared_ptr<const Face>(0));
     if (stats != m_stats.end()) {
       // PRINTER ("SatisfiedInterests", m_satisfiedInterests);
       // PRINTER ("TimedOutInterests", m_timedOutInterests);
@@ -290,9 +284,9 @@ L3AggregateTracer::Print(std::ostream& os) const
 void
 L3AggregateTracer::OutInterests(const Interest& interest, const Face& face)
 {
-  m_stats[Ptr<Face>(const_cast<Face*>(&face))].get<0>().m_outInterests++;
+  std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_outInterests++;
   if (interest.hasWire()) {
-    m_stats[Ptr<Face>(const_cast<Face*>(&face))].get<1>().m_outInterests +=
+    std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_outInterests +=
       interest.wireEncode().size();
   }
 }
@@ -300,84 +294,30 @@ L3AggregateTracer::OutInterests(const Interest& interest, const Face& face)
 void
 L3AggregateTracer::InInterests(const Interest& interest, const Face& face)
 {
-  m_stats[Ptr<Face>(const_cast<Face*>(&face))].get<0>().m_inInterests++;
+  std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_inInterests++;
   if (interest.hasWire()) {
-    m_stats[Ptr<Face>(const_cast<Face*>(&face))].get<1>().m_inInterests +=
+    std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_inInterests +=
       interest.wireEncode().size();
   }
 }
 
-// void
-// L3AggregateTracer::DropInterests (::ndn::shared_ptr<const ::ndn::Interest> interest, Ptr<const
-// Face> face)
-// {
-//   m_stats[face].get<0> ().m_dropInterests ++;
-//   if (interest->hasWire ())
-//     {
-//       m_stats[face].get<1> ().m_dropInterests += interest->wireEncode ().size ();
-//     }
-// }
-
-/*
-void
-L3AggregateTracer::OutNacks  (Ptr<const Interest> nack, Ptr<const Face> face)
-{
-  m_stats[face].get<0> ().m_outNacks ++;
-  if (nack->GetWire ())
-    {
-      m_stats[face].get<1> ().m_outNacks += nack->GetWire ()->GetSize ();
-    }
-}
-
-void
-L3AggregateTracer::InNacks   (Ptr<const Interest> nack, Ptr<const Face> face)
-{
-  m_stats[face].get<0> ().m_inNacks ++;
-  if (nack->GetWire ())
-    {
-      m_stats[face].get<1> ().m_inNacks += nack->GetWire ()->GetSize ();
-    }
-}
-
-void
-L3AggregateTracer::DropNacks (Ptr<const Interest> nack, Ptr<const Face> face)
-{
-  m_stats[face].get<0> ().m_dropNacks ++;
-  if (nack->GetWire ())
-    {
-      m_stats[face].get<1> ().m_dropNacks += nack->GetWire ()->GetSize ();
-    }
-}
-*/
-
 void
 L3AggregateTracer::OutData(const Data& data, const Face& face)
 {
-  m_stats[Ptr<Face>(const_cast<Face*>(&face))].get<0>().m_outData++;
+  std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_outData++;
   if (data.hasWire()) {
-    m_stats[Ptr<Face>(const_cast<Face*>(&face))].get<1>().m_outData += data.wireEncode().size();
+    std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_outData += data.wireEncode().size();
   }
 }
 
 void
 L3AggregateTracer::InData(const Data& data, const Face& face)
 {
-  m_stats[Ptr<Face>(const_cast<Face*>(&face))].get<0>().m_inData++;
+  std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_inData++;
   if (data.hasWire()) {
-    m_stats[Ptr<Face>(const_cast<Face*>(&face))].get<1>().m_inData += data.wireEncode().size();
+    std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_inData += data.wireEncode().size();
   }
 }
-
-// void
-// L3AggregateTracer::DropData (::ndn::shared_ptr<const ::ndn::Data> data,
-//                              Ptr<const Face> face)
-// {
-//   m_stats[face].get<0> ().m_dropData ++;
-//   if (data->hasWire ())
-//     {
-//       m_stats[face].get<1> ().m_dropData += data->wireEncode ().size ();
-//     }
-// }
 
 // void
 // L3AggregateTracer::SatisfiedInterests (Ptr<const pit::Entry>)

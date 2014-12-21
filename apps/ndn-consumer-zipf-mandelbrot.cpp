@@ -179,7 +179,7 @@ ConsumerZipfMandelbrot::SendPacket()
   interest->setName(*nameWithSequence);
 
   // NS_LOG_INFO ("Requesting Interest: \n" << *interest);
-  NS_LOG_INFO("> Interest for " << seq << ", Total: " << m_seq << ", face: " << m_face->GetId());
+  NS_LOG_INFO("> Interest for " << seq << ", Total: " << m_seq << ", face: " << m_face->getId());
   NS_LOG_DEBUG("Trying to add " << seq << " with " << Simulator::Now() << ". already "
                                 << m_seqTimeouts.size() << " items");
 

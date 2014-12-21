@@ -25,7 +25,7 @@
 
 #include "internal-face.hpp"
 #include "core/logger.hpp"
-#include "core/global-io.hpp"
+#include "core/scheduler.hpp"
 
 namespace nfd {
 
