@@ -29,8 +29,8 @@
 #include "available-strategies.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
 
-#include "ns3/ndn-data.h"
-#include "ns3/ndn-interest.h"
+#include "ns3/ndnSIM/utils/ndn-data.hpp"
+#include "ns3/ndnSIM/utils/ndn-interest.hpp"
 
 namespace nfd {
 

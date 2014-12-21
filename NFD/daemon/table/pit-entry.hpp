@@ -30,6 +30,10 @@
 #include "pit-out-record.hpp"
 #include "core/scheduler.hpp"
 
+#include "daemon/table/pit-in-record.hpp"
+#include "daemon/table/pit-out-record.hpp"
+#include "core/scheduler.hpp"
+
 namespace nfd {
 
 class NameTree;

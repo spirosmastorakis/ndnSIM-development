@@ -24,12 +24,12 @@
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ns3/ndnSIM/NFD/daemon/face/face.hpp"
-#include "ns3/ndnSIM/NFD/core/logger.hpp"
+#include "daemon/face/face.hpp"
+#include "core/logger.hpp"
 
-#include "ns3/ndn-fw-hop-count-tag.h"
-#include "ns3/ndn-data.h"
-#include "ns3/ndn-interest.h"
+#include "ns3/ndnSIM/utils/ndn-fw-hop-count-tag.hpp"
+#include "ns3/ndnSIM/utils/ndn-data.hpp"
+#include "ns3/ndnSIM/utils/ndn-interest.hpp"
 
 namespace nfd {
 

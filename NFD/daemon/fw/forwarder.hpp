@@ -39,9 +39,9 @@
 
 #include "ns3/node.h"
 #include "ns3/ptr.h"
-#include "ns3/ndn-l3-protocol.h"
-#include "ns3/ndn-stack-helper.h"
-#include "ns3/ndn-content-store.h"
+#include "ns3/ndnSIM/model/ndn-l3-protocol.hpp"
+#include "ns3/ndnSIM/helper/ndn-stack-helper.hpp"
+#include "ns3/ndnSIM/model/cs/ndn-content-store.hpp"
 
 namespace nfd {
 

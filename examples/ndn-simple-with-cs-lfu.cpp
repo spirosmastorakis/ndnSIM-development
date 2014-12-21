@@ -25,7 +25,7 @@
 #include "ns3/ndnSIM-module.h"
 
 #include <sys/time.h>
-#include "ns3/ndnSIM/utils/mem-usage.h"
+#include "ns3/ndnSIM/utils/mem-usage.hpp"
 
 using namespace ns3;
 using ns3::ndn::StackHelper;

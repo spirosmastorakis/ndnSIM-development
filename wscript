@@ -75,6 +75,7 @@ def build(bld):
 
     headers = bld (features='ns3header')
     headers.module = 'ndnSIM'
+    headers.source = ["ndn-all.hpp"]
 
     if not bld.env['ENABLE_NDNSIM']:
         bld.env['MODULES_NOT_BUILT'].append('ndnSIM')

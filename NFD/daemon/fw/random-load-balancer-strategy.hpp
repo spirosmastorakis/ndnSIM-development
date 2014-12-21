@@ -28,7 +28,7 @@
 #define NFD_DAEMON_FW_SIMPLE_LOAD_BALANCER_STRATEGY_HPP
 
 #include <boost/random/mersenne_twister.hpp>
-#include "ns3/ndn-face.h"
+#include "ns3/ndnSIM/model/ndn-face.hpp"
 #include "strategy.hpp"
 
 namespace nfd {
