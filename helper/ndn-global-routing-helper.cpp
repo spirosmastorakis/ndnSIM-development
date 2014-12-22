@@ -262,13 +262,11 @@ GlobalRoutingHelper::CalculateRoutes(bool invalidatedRoutes /* = true*/)
 
     if (invalidatedRoutes) {
       std::vector<::nfd::fib::NextHop> NextHopList;
-      for (::nfd::NameTree::const_iterator it =
-             forwarder->getNameTree().fullEnumerate(&(nfd::predicate_NameTreeEntry_hasFibEntry));
-           it != forwarder->getNameTree().end();) {
+      for (nfd::Fib::const_iterator fibIt = forwarder->getFib().begin();
+           fibIt != forwarder->getFib().end();) {
         NextHopList.clear();
-        shared_ptr<::nfd::fib::Entry> entry = it->getFibEntry();
-        ++it;
-        NextHopList = entry->getNextHops();
+        NextHopList = fibIt->getNextHops();
+        ++fibIt;
         for (int i = 0; i < NextHopList.size(); i++) {
           NextHopList[i].setCost(std::numeric_limits<uint64_t>::max());
         }
@@ -286,7 +284,7 @@ GlobalRoutingHelper::CalculateRoutes(bool invalidatedRoutes /* = true*/)
         }
         else {
           BOOST_FOREACH (const shared_ptr<const Name>& prefix, i->first->GetLocalPrefixes()) {
-            NS_LOG_DEBUG(" prefix " << prefix << " reachable via face " << *std::get<0>(i->second)
+            NS_LOG_DEBUG(" prefix " << prefix << " reachable via face " << std::get<0>(i->second)
                                     << " with distance " << std::get<1>(i->second) << " with delay "
                                     << std::get<2>(i->second));
 
@@ -354,13 +352,11 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes(bool invalidatedRoutes /* = true
 
     if (invalidatedRoutes) {
       std::vector<::nfd::fib::NextHop> NextHopList;
-      for (nfd::NameTree::const_iterator it =
-             forwarder->getNameTree().fullEnumerate(&(nfd::predicate_NameTreeEntry_hasFibEntry));
-           it != forwarder->getNameTree().end();) {
+      for (nfd::Fib::const_iterator fibIt = forwarder->getFib().begin();
+           fibIt != forwarder->getFib().end();) {
         NextHopList.clear();
-        shared_ptr<::nfd::fib::Entry> entry = it->getFibEntry();
-        ++it;
-        NextHopList = entry->getNextHops();
+        NextHopList = fibIt->getNextHops();
+        ++fibIt;
         for (int i = 0; i < NextHopList.size(); i++) {
           NextHopList[i].setCost(std::numeric_limits<uint64_t>::max());
         }
@@ -376,19 +372,27 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes(bool invalidatedRoutes /* = true
     NS_ASSERT(l3 != 0);
 
     // remember interface statuses
-    std::vector<uint16_t> originalMetric(l3->GetNFaces());
-    for (uint32_t faceId = 0; faceId < l3->GetNFaces(); faceId++) {
-      originalMetric[faceId] = l3->GetFace(faceId)->GetMetric();
-      l3->GetFace(faceId)->SetMetric(std::numeric_limits<uint16_t>::max() - 1);
+    int faceNumber = 0;
+    std::vector<uint16_t> originalMetric(uint32_t(l3->getForwarder()->getFaceTable().size()));
+    for (auto& i : l3->getForwarder()->getFaceTable()) {
+      faceNumber++;
+      shared_ptr<Face> nfdFace = std::dynamic_pointer_cast<Face>(i);
+      originalMetric[uint32_t(faceNumber)] = nfdFace->getMetric();
+      nfdFace->setMetric(std::numeric_limits<uint16_t>::max() - 1);
       // value std::numeric_limits<uint16_t>::max () MUST NOT be used (reserved)
     }
 
-    for (uint32_t enabledFaceId = 0; enabledFaceId < l3->GetNFaces(); enabledFaceId++) {
-      if (DynamicCast<ndn::NetDeviceFace>(l3->GetFace(enabledFaceId)) == 0)
-        continue;
+    faceNumber = 0;
+    for (auto& k : l3->getForwarder()->getFaceTable()) {
+    faceNumber++;
+    shared_ptr<NetDeviceFace> face = std::dynamic_pointer_cast<NetDeviceFace>(k);
+    if (face == 0) {
+      NS_LOG_DEBUG("Skipping non-netdevice face");
+      continue;
+    }
 
       // enabling only faceId
-      l3->GetFace(enabledFaceId)->SetMetric(originalMetric[enabledFaceId]);
+      face->setMetric(originalMetric[uint32_t(faceNumber)]);
 
       DistancesMap distances;
 
@@ -410,16 +414,16 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes(bool invalidatedRoutes /* = true
           continue;
         else {
           // cout << "  Node " << i->first->GetObject<Node> ()->GetId ();
-          if (i->second.get<0>() == 0) {
+          if (std::get<0>(i->second) == 0) {
             // cout << " is unreachable" << endl;
           }
           else {
             BOOST_FOREACH (const shared_ptr<const Name>& prefix, i->first->GetLocalPrefixes()) {
-              NS_LOG_DEBUG(" prefix " << *prefix << " reachable via face " << *i->second.get<0>()
-                                      << " with distance " << i->second.get<1>() << " with delay "
-                                      << i->second.get<2>());
+              NS_LOG_DEBUG(" prefix " << *prefix << " reachable via face " << std::get<0>(i->second)
+                                      << " with distance " << std::get<1>(i->second) << " with delay "
+                                      << std::get<2>(i->second));
 
-              if (i->second.get<0>()->GetMetric() == std::numeric_limits<uint16_t>::max() - 1)
+              if (std::get<0>(i->second)->getMetric() == std::numeric_limits<uint16_t>::max() - 1)
                 continue;
 
               // Ptr<fib::Entry> entry = fib->Add (prefix, i->second.get<0> (), i->second.get<1>
@@ -428,8 +432,8 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes(bool invalidatedRoutes /* = true
               // entry->addNextHop((i->second.get<0> ())->shared_from_this (), i->second.get<1> ());
               ControlParameters parameters;
               parameters.setName(*prefix);
-              parameters.setFaceId((i->second.get<0>())->getId());
-              parameters.setCost(i->second.get<1>());
+              parameters.setFaceId(std::get<0>(i->second)->getId());
+              parameters.setCost(std::get<1>(i->second));
 
               FibHelper fibHelper;
               fibHelper.AddNextHop(parameters, *node);
@@ -454,12 +458,15 @@ GlobalRoutingHelper::CalculateAllPossibleRoutes(bool invalidatedRoutes /* = true
       }
 
       // disabling the face again
-      l3->GetFace(enabledFaceId)->SetMetric(std::numeric_limits<uint16_t>::max() - 1);
+      face->setMetric(std::numeric_limits<uint16_t>::max() - 1);
     }
 
     // recover original interface statuses
-    for (uint32_t faceId = 0; faceId < l3->GetNFaces(); faceId++) {
-      l3->GetFace(faceId)->SetMetric(originalMetric[faceId]);
+    faceNumber = 0;
+    for (auto& i : l3->getForwarder()->getFaceTable()) {
+      faceNumber++;
+      shared_ptr<Face> face = std::dynamic_pointer_cast<Face>(i);
+      face->setMetric(originalMetric[faceNumber]);
     }
   }
 }

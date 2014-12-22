@@ -35,7 +35,7 @@ class Packet;
 
 namespace ndn {
 
-class Face;
+using nfd::Face;
 class TcpFace;
 class UdpFace;
 

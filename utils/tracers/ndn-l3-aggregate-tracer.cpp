@@ -284,9 +284,9 @@ L3AggregateTracer::Print(std::ostream& os) const
 void
 L3AggregateTracer::OutInterests(const Interest& interest, const Face& face)
 {
-  std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_outInterests++;
+  std::get<0>(m_stats[(const_cast<Face*>(&face))->shared_from_this()]).m_outInterests++;
   if (interest.hasWire()) {
-    std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_outInterests +=
+    std::get<1>(m_stats[(const_cast<Face*>(&face))->shared_from_this()]).m_outInterests +=
       interest.wireEncode().size();
   }
 }
@@ -294,9 +294,9 @@ L3AggregateTracer::OutInterests(const Interest& interest, const Face& face)
 void
 L3AggregateTracer::InInterests(const Interest& interest, const Face& face)
 {
-  std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_inInterests++;
+  std::get<0>(m_stats[(const_cast<Face*>(&face))->shared_from_this()]).m_inInterests++;
   if (interest.hasWire()) {
-    std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_inInterests +=
+    std::get<1>(m_stats[(const_cast<Face*>(&face))->shared_from_this()]).m_inInterests +=
       interest.wireEncode().size();
   }
 }
@@ -304,18 +304,20 @@ L3AggregateTracer::InInterests(const Interest& interest, const Face& face)
 void
 L3AggregateTracer::OutData(const Data& data, const Face& face)
 {
-  std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_outData++;
+  std::get<0>(m_stats[(const_cast<Face*>(&face))->shared_from_this()]).m_outData++;
   if (data.hasWire()) {
-    std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_outData += data.wireEncode().size();
+    std::get<1>(m_stats[(const_cast<Face*>(&face))->shared_from_this()]).m_outData +=
+      data.wireEncode().size();
   }
 }
 
 void
 L3AggregateTracer::InData(const Data& data, const Face& face)
 {
-  std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_inData++;
+  std::get<0>(m_stats[(const_cast<Face*>(&face))->shared_from_this()]).m_inData++;
   if (data.hasWire()) {
-    std::get<0>(m_stats[shared_ptr<Face>(const_cast<Face*>(&face))]).m_inData += data.wireEncode().size();
+    std::get<1>(m_stats[(const_cast<Face*>(&face))->shared_from_this()]).m_inData +=
+      data.wireEncode().size();
   }
 }
 

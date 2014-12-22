@@ -177,7 +177,7 @@ L2RateTracer::Drop(Ptr<const Packet> packet)
   // no interface information... this should be part of this L2Tracer object data
 
   std::get<0>(m_stats).m_drop++;
-  std::get<0>(m_stats).m_drop += packet->GetSize();
+  std::get<1>(m_stats).m_drop += packet->GetSize();
 }
 
 } // namespace ns3

@@ -37,7 +37,7 @@ namespace ndn {
  *
  * \see NdnAppFace, NdnNetDeviceFace, NdnIpv4Face, NdnUdpFace
  */
-class TcpFace : public Face {
+class TcpFace : public nfd::Face {
 public:
   static TypeId
   GetTypeId();
@@ -70,11 +70,11 @@ public:
 
   ////////////////////////////////////////////////////////////////////
   // methods overloaded from ndn::Face
-  virtual void
-  RegisterProtocolHandlers(const InterestHandler& interestHandler, const DataHandler& dataHandler);
+  // virtual void
+  // RegisterProtocolHandlers(const InterestHandler& interestHandler, const DataHandler& dataHandler);
 
-  virtual void
-  UnRegisterProtocolHandlers();
+  // virtual void
+  // UnRegisterProtocolHandlers();
 
   virtual std::ostream&
   Print(std::ostream& os) const;
