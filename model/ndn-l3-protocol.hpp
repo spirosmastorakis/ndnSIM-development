@@ -185,6 +185,10 @@ public:
     return m_forwarder;
   }
 
+public: // Workaround for python bindings
+  static Ptr<L3Protocol>
+  getL3Protocol(Ptr<Object> node);
+
 protected:
   virtual void
   DoDispose(void); ///< @brief Do cleanup
