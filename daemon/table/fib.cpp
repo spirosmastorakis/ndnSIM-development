@@ -27,9 +27,17 @@
 #include "pit-entry.hpp"
 #include "measurements-entry.hpp"
 
+#include <boost/concept/assert.hpp>
+#include <boost/concept_check.hpp>
+
 namespace nfd {
 
 const shared_ptr<fib::Entry> Fib::s_emptyEntry = make_shared<fib::Entry>(Name());
+
+// http://en.cppreference.com/w/cpp/concept/ForwardIterator
+BOOST_CONCEPT_ASSERT((boost::ForwardIterator<Fib::const_iterator>));
+BOOST_CONCEPT_ASSERT((boost::InputIterator<Fib::const_iterator>));
+BOOST_CONCEPT_ASSERT((boost::DefaultConstructible<Fib::const_iterator>));
 
 Fib::Fib(NameTree& nameTree)
   : m_nameTree(nameTree)

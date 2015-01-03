@@ -27,9 +27,17 @@
 #include "core/logger.hpp"
 #include "core/city-hash.hpp"
 
+#include <boost/concept/assert.hpp>
+#include <boost/concept_check.hpp>
+
 namespace nfd {
 
 NFD_LOG_INIT("NameTree");
+
+// http://en.cppreference.com/w/cpp/concept/ForwardIterator
+BOOST_CONCEPT_ASSERT((boost::ForwardIterator<NameTree::const_iterator>));
+BOOST_CONCEPT_ASSERT((boost::InputIterator<NameTree::const_iterator>));
+BOOST_CONCEPT_ASSERT((boost::DefaultConstructible<NameTree::const_iterator>));
 
 namespace name_tree {
 
@@ -569,12 +577,17 @@ NameTree::dump(std::ostream& output) const
   output << "--------------------------\n";
 }
 
+NameTree::const_iterator::const_iterator()
+  : m_nameTree(nullptr)
+{
+}
+
 NameTree::const_iterator::const_iterator(NameTree::IteratorType type,
                             const NameTree& nameTree,
                             shared_ptr<name_tree::Entry> entry,
                             const name_tree::EntrySelector& entrySelector,
                             const name_tree::EntrySubTreeSelector& entrySubTreeSelector)
-  : m_nameTree(nameTree)
+  : m_nameTree(&nameTree)
   , m_entry(entry)
   , m_subTreeRoot(entry)
   , m_entrySelector(make_shared<name_tree::EntrySelector>(entrySelector))
@@ -590,7 +603,7 @@ NameTree::const_iterator::operator++()
 {
   NFD_LOG_TRACE("const_iterator::operator++()");
 
-  BOOST_ASSERT(m_entry != m_nameTree.m_end);
+  BOOST_ASSERT(m_entry != m_nameTree->m_end);
 
   if (m_type == FULL_ENUMERATE_TYPE) // fullEnumerate
     {
@@ -608,12 +621,12 @@ NameTree::const_iterator::operator++()
 
       // process other buckets
 
-      for (int newLocation = m_entry->m_hash % m_nameTree.m_nBuckets + 1;
-           newLocation < static_cast<int>(m_nameTree.m_nBuckets);
+      for (int newLocation = m_entry->m_hash % m_nameTree->m_nBuckets + 1;
+           newLocation < static_cast<int>(m_nameTree->m_nBuckets);
            ++newLocation)
         {
           // process each bucket
-          name_tree::Node* node = m_nameTree.m_buckets[newLocation];
+          name_tree::Node* node = m_nameTree->m_buckets[newLocation];
           while (node != 0)
             {
               m_entry = node->m_entry;
@@ -627,7 +640,7 @@ NameTree::const_iterator::operator++()
         }
       BOOST_VERIFY(isFound == false);
       // Reach to the end()
-      m_entry = m_nameTree.m_end;
+      m_entry = m_nameTree->m_end;
       return *this;
     }
 
@@ -727,7 +740,7 @@ NameTree::const_iterator::operator++()
             }
         }
 
-      m_entry = m_nameTree.m_end;
+      m_entry = m_nameTree->m_end;
       return *this;
     }
 
@@ -745,7 +758,7 @@ NameTree::const_iterator::operator++()
         }
 
       // Reach to the end (Root)
-      m_entry = m_nameTree.m_end;
+      m_entry = m_nameTree->m_end;
       return *this;
     }
 
