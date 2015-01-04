@@ -26,6 +26,9 @@
 #include "pit.hpp"
 #include <type_traits>
 
+#include <boost/concept/assert.hpp>
+#include <boost/concept_check.hpp>
+
 namespace nfd {
 namespace pit {
 
@@ -35,6 +38,11 @@ static_assert(std::is_move_constructible<DataMatchResult>::value,
 #endif // HAVE_IS_MOVE_CONSTRUCTIBLE
 
 } // namespace pit
+
+// http://en.cppreference.com/w/cpp/concept/ForwardIterator
+BOOST_CONCEPT_ASSERT((boost::ForwardIterator<Pit::const_iterator>));
+BOOST_CONCEPT_ASSERT((boost::InputIterator<Pit::const_iterator>));
+BOOST_CONCEPT_ASSERT((boost::DefaultConstructible<Pit::const_iterator>));
 
 Pit::Pit(NameTree& nameTree)
   : m_nameTree(nameTree)
@@ -99,6 +107,13 @@ Pit::erase(shared_ptr<pit::Entry> pitEntry)
   m_nameTree.eraseEntryIfEmpty(nameTreeEntry);
 
   --m_nItems;
+}
+
+Pit::const_iterator
+Pit::begin() const
+{
+  return const_iterator(m_nameTree.fullEnumerate(
+    [] (const name_tree::Entry& entry) { return entry.hasPitEntries(); }).begin());
 }
 
 } // namespace nfd

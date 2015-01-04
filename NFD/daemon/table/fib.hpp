@@ -101,9 +101,11 @@ public: // enumeration
   const_iterator
   end() const;
 
-  class const_iterator : public std::iterator<std::forward_iterator_tag, fib::Entry>
+  class const_iterator : public std::iterator<std::forward_iterator_tag, const fib::Entry>
   {
   public:
+    const_iterator();
+
     explicit
     const_iterator(const NameTree::const_iterator& it);
 
@@ -161,6 +163,11 @@ inline Fib::const_iterator
 Fib::end() const
 {
   return const_iterator(m_nameTree.end());
+}
+
+inline
+Fib::const_iterator::const_iterator()
+{
 }
 
 inline

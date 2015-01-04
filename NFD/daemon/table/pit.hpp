@@ -78,6 +78,49 @@ public:
   void
   erase(shared_ptr<pit::Entry> pitEntry);
 
+public: // enumeration
+  class const_iterator;
+
+  const_iterator
+  begin() const;
+
+  const_iterator
+  end() const;
+
+  class const_iterator : public std::iterator<std::forward_iterator_tag, const pit::Entry>
+  {
+  public:
+    const_iterator();
+
+    explicit
+    const_iterator(const NameTree::const_iterator& it);
+
+    ~const_iterator();
+
+    const pit::Entry&
+    operator*() const;
+
+    shared_ptr<pit::Entry>
+    operator->() const;
+
+    const_iterator&
+    operator++();
+
+    const_iterator
+    operator++(int);
+
+    bool
+    operator==(const const_iterator& other) const;
+
+    bool
+    operator!=(const const_iterator& other) const;
+
+  private:
+    NameTree::const_iterator m_nameTreeIterator;
+    // use index, so it is not necessary to dereference m_nameTreeIterato, which could be invalid
+    size_t m_nLastPitEntry;
+  };
+
 private:
   NameTree& m_nameTree;
   size_t m_nItems;
@@ -87,6 +130,77 @@ inline size_t
 Pit::size() const
 {
   return m_nItems;
+}
+
+inline Pit::const_iterator
+Pit::end() const
+{
+  return const_iterator(m_nameTree.end());
+}
+
+inline
+Pit::const_iterator::const_iterator()
+  : m_nLastPitEntry(0)
+{
+}
+
+inline
+Pit::const_iterator::const_iterator(const NameTree::const_iterator& it)
+  : m_nameTreeIterator(it)
+  , m_nLastPitEntry(0)
+{
+}
+
+inline
+Pit::const_iterator::~const_iterator()
+{
+}
+
+inline
+Pit::const_iterator
+Pit::const_iterator::operator++(int)
+{
+  Pit::const_iterator temp(*this);
+  ++(*this);
+  return temp;
+}
+
+inline Pit::const_iterator&
+Pit::const_iterator::operator++()
+{
+  ++m_nLastPitEntry;
+  if (m_nLastPitEntry < m_nameTreeIterator->getPitEntries().size()) {
+    return *this;
+  }
+
+  ++m_nameTreeIterator;
+  m_nLastPitEntry = 0;
+  return *this;
+}
+
+inline const pit::Entry&
+Pit::const_iterator::operator*() const
+{
+  return *(m_nameTreeIterator->getPitEntries()[m_nLastPitEntry]);
+}
+
+inline shared_ptr<pit::Entry>
+Pit::const_iterator::operator->() const
+{
+  return m_nameTreeIterator->getPitEntries()[m_nLastPitEntry];
+}
+
+inline bool
+Pit::const_iterator::operator==(const Pit::const_iterator& other) const
+{
+  return m_nameTreeIterator == other.m_nameTreeIterator &&
+         m_nLastPitEntry == other.m_nLastPitEntry;
+}
+
+inline bool
+Pit::const_iterator::operator!=(const Pit::const_iterator& other) const
+{
+  return !(*this == other);
 }
 
 } // namespace nfd

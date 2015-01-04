@@ -234,10 +234,12 @@ public: // enumeration
     FIND_ALL_MATCHES_TYPE
   };
 
-  class const_iterator : public std::iterator<std::forward_iterator_tag, name_tree::Entry>
+  class const_iterator : public std::iterator<std::forward_iterator_tag, const name_tree::Entry>
   {
   public:
     friend class NameTree;
+
+    const_iterator();
 
     const_iterator(NameTree::IteratorType type,
       const NameTree& nameTree,
@@ -266,7 +268,7 @@ public: // enumeration
     operator!=(const const_iterator& other) const;
 
   private:
-    const NameTree&                             m_nameTree;
+    const NameTree*                             m_nameTree;
     shared_ptr<name_tree::Entry>                m_entry;
     shared_ptr<name_tree::Entry>                m_subTreeRoot;
     shared_ptr<name_tree::EntrySelector>        m_entrySelector;

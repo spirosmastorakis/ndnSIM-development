@@ -35,6 +35,8 @@
 #include <ndn-cxx/security/signature-sha256-with-rsa.hpp>
 
 #include <boost/random/bernoulli_distribution.hpp>
+#include <boost/concept/assert.hpp>
+#include <boost/concept_check.hpp>
 
 /// max skip list layers
 static const size_t SKIPLIST_MAX_LAYERS = 32;
@@ -44,6 +46,11 @@ static const double SKIPLIST_PROBABILITY = 0.25;
 NFD_LOG_INIT("ContentStore");
 
 namespace nfd {
+
+// http://en.cppreference.com/w/cpp/concept/ForwardIterator
+BOOST_CONCEPT_ASSERT((boost::ForwardIterator<Cs::const_iterator>));
+BOOST_CONCEPT_ASSERT((boost::InputIterator<Cs::const_iterator>));
+BOOST_CONCEPT_ASSERT((boost::DefaultConstructible<Cs::const_iterator>));
 
 Cs::Cs(size_t nMaxPackets)
   : m_nMaxPackets(nMaxPackets)
