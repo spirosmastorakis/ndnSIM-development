@@ -155,6 +155,48 @@ public:
   size_t
   size() const;
 
+public: // enumeration
+  class const_iterator;
+
+  const_iterator
+  begin() const;
+
+  const_iterator
+  end() const;
+
+  class const_iterator : public std::iterator<std::forward_iterator_tag, const cs::Entry>
+  {
+  public:
+    friend class NameTree;
+
+    const_iterator();
+
+    const_iterator(SkipListLayer::const_iterator it);
+
+    ~const_iterator();
+
+    reference
+    operator*() const;
+
+    pointer
+    operator->() const;
+
+    const_iterator&
+    operator++();
+
+    const_iterator
+    operator++(int);
+
+    bool
+    operator==(const const_iterator& other) const;
+
+    bool
+    operator!=(const const_iterator& other) const;
+
+  private:
+    SkipListLayer::const_iterator m_skipListIterator;
+  };
+
 protected:
   /** \brief removes one Data packet from Content Store based on replacement policy
    *  \return{ whether the Data was removed }
@@ -233,6 +275,73 @@ private:
   size_t m_nPackets;    // current number of packets in Content Store
   std::queue<cs::Entry*> m_freeCsEntries; // memory pool
 };
+
+inline Cs::const_iterator
+Cs::begin() const
+{
+  return const_iterator(m_skipList.front()->begin());
+}
+
+inline Cs::const_iterator
+Cs::end() const
+{
+  return const_iterator(m_skipList.front()->end());
+}
+
+inline
+Cs::const_iterator::const_iterator()
+{
+}
+
+inline
+Cs::const_iterator::const_iterator(SkipListLayer::const_iterator it)
+  : m_skipListIterator(it)
+{
+}
+
+inline
+Cs::const_iterator::~const_iterator()
+{
+}
+
+inline Cs::const_iterator&
+Cs::const_iterator::operator++()
+{
+  ++m_skipListIterator;
+  return *this;
+}
+
+inline Cs::const_iterator
+Cs::const_iterator::operator++(int)
+{
+  Cs::const_iterator temp(*this);
+  ++(*this);
+  return temp;
+}
+
+inline Cs::const_iterator::reference
+Cs::const_iterator::operator*() const
+{
+  return **m_skipListIterator;
+}
+
+inline Cs::const_iterator::pointer
+Cs::const_iterator::operator->() const
+{
+  return *m_skipListIterator;
+}
+
+inline bool
+Cs::const_iterator::operator==(const Cs::const_iterator& other) const
+{
+  return m_skipListIterator == other.m_skipListIterator;
+}
+
+inline bool
+Cs::const_iterator::operator!=(const Cs::const_iterator& other) const
+{
+  return !(*this == other);
+}
 
 } // namespace nfd
 
