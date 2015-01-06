@@ -47,12 +47,16 @@ namespace ns3 {
  *     NS_LOG=ndn.Consumer ./waf --run ndn-simple-with-cs-lfu
  */
 
+bool nfdCS = true;
+
 void
 PrintCsMemStatsHeader(std::ostream& os)
 {
   os << "SimulationTime"
      << "\t"
      << "RealTime"
+     << "\t"
+     << "NumberPitEntries"
      << "\t"
      << "NumberCsEntries"
      << "\t"
@@ -73,14 +77,28 @@ PrintCsMemStats(std::ostream& os, Time nextPrintTime, double beginRealTime)
   // os << ndn::L3Protocol::GetDataCounter () << "\t";
   // os << ndn::L3Protocol::GetInterestCounter () << "\t";
 
+  uint64_t pitCount = 0;
   uint64_t csCount = 0;
   for (NodeList::Iterator node = NodeList::Begin(); node != NodeList::End(); node++) {
-    Ptr<ndn::ContentStore> cs = (*node)->GetObject<ndn::ContentStore>();
 
-    if (cs != 0)
-      csCount += cs->GetSize();
+    auto pitSize = (*node)->GetObject<ndn::L3Protocol>()->GetForwarder()->getPit().size();
+    if (pitSize != 0)
+      pitCount += pitSize;
+
+    if (nfdCS != true) {
+      Ptr<ndn::ContentStore> cs = (*node)->GetObject<ndn::ContentStore>();
+      if (cs != 0)
+        csCount += cs->GetSize();
+    }
+    else {
+      auto csSize = (*node)->GetObject<ndn::L3Protocol>()->GetForwarder()->getCs().size();
+      if (csSize != 0)
+        csCount += csSize;
+    }
+
   }
 
+  os << pitCount << "\t";
   os << csCount << "\t";
   os << MemUsage::Get() / 1024.0 / 1024.0 << "\n";
 
@@ -111,21 +129,23 @@ main(int argc, char* argv[])
   // Install CCNx stack on all nodes
   ndn::StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes(true);
-  ndnHelper.SetContentStoreChoice(false);
+  ndnHelper.SetContentStoreChoice(nfdCS);
 
   // node 0: disable cache completely
-  ndnHelper.SetContentStore("ns3::ndn::cs::Nocache"); // disable cache
+  if (nfdCS == false)
+    ndnHelper.SetContentStore("ns3::ndn::cs::Nocache"); // disable cache
   ndnHelper.Install(nodes.Get(0));
 
   // node 1 and 2: set cache with Lfu policy
-  ndnHelper.SetContentStore("ns3::ndn::cs::Freshness::Lfu", "MaxSize",
-                             "2"); // can set cache size this way
+  if (nfdCS == false)
+    ndnHelper.SetContentStore("ns3::ndn::cs::Freshness::Lfu", "MaxSize",
+                              "2"); // can set cache size this way
   ndnHelper.Install(nodes.Get(1));
   ndnHelper.Install(nodes.Get(2));
 
   // alternative way to configure cache size
   // [number after nodeList is global ID of the node (= node->GetId ())]
-  Config::Set("/NodeList/2/$ns3::ndn::ContentStore/MaxSize", UintegerValue(100000));
+  // Config::Set("/NodeList/2/$ns3::ndn::ContentStore/MaxSize", UintegerValue(100000));
 
   // Installing applications
 
@@ -143,7 +163,7 @@ main(int argc, char* argv[])
   producerHelper.SetAttribute("PayloadSize", StringValue("1024"));
   producerHelper.Install(nodes.Get(2)); // last node
 
-  Simulator::Stop(Seconds(200000.0));
+  Simulator::Stop(Seconds(20000.5));
 
   struct ::timeval t;
   gettimeofday(&t, NULL);
